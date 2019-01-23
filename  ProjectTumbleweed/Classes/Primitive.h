@@ -64,7 +64,7 @@ namespace Pm {
 	//	void setLocation(const cocos2d::Vec2 &LOCATION);
 
 	private:
-		float radius, angle;
+		float radius, angle;//
 //		cocos2d::Vec2 location;
 		unsigned int segments;
 		cocos2d::DrawNode* Node;
