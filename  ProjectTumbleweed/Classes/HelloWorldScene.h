@@ -44,6 +44,7 @@ public:
     CREATE_FUNC(HelloWorld);
 private:
 	Pm::CirclePrimitive c{ cocos2d::Vec2(100,100),10,5,20 };
+	Pm::SquarePrimitive s{ cocos2d::Vec2(100,100),cocos2d::Vec2(200,200) };
 	SednaInput::XinputManager managerR;
 };
 

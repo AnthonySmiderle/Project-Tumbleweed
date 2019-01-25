@@ -80,6 +80,7 @@ bool HelloWorld::init()
     menu->setPosition(Vec2::ZERO);
     this->addChild(menu, 1);
 
+
     /////////////////////////////
     // 3. add your codes below...
 
@@ -88,6 +89,7 @@ bool HelloWorld::init()
 
   
 	this->addChild(c.getDrawNode(), 100);
+	this->addChild(s.getDrawNode(), 1);
 
 	this->scheduleUpdate();
 
@@ -100,7 +102,8 @@ void HelloWorld::update(float dt)
 
 	if (managerR.getController(0)->isButtonPressed(SednaInput::A)) {
 //		c.setLocation(cocos2d::Vec2(c.getLocation().x + 1, c.getLocation().y));
-		system("pause");
+		s.setPoint(cocos2d::Vec2(200, 200), cocos2d::Vec2(300, 300));
+		s.update();
 	}
 
 

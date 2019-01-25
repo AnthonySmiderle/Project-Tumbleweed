@@ -1,3 +1,5 @@
+//Anthony Smiderle
+//100695532
 #pragma once
 
 //forward declaring a vec2 class for use in constructor
@@ -8,21 +10,18 @@ namespace cocos2d {
 
 
 namespace Pm {
+
 	class Capsule {
 
 	public:
 		Capsule(cocos2d::Vec2& ORIGIN, cocos2d::Vec2& ENDPOINT, float RADIUS);
+		~Capsule();
 
-		cocos2d::DrawNode* getDrawNode();
+		//returns the draw note
+		cocos2d::DrawNode* getDrawNode() const;
 	private:
-		//SquarePrimitive rectangle;
-		//CirclePrimitive circleOne;
-		//CirclePrimitive circleTwo;
+		//node that allows us to draw things like primitives
 		cocos2d::DrawNode* Node;
-		
-
-
-
 	};
 	class LinePrimitive {
 	
@@ -61,8 +60,6 @@ namespace Pm {
 		cocos2d::DrawNode* getDrawNode() const;
 
 	private:
-		float radius, angle;
-		unsigned int segments;
 		cocos2d::DrawNode* Node;
 	};
 
