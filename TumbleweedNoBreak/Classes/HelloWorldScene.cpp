@@ -80,42 +80,34 @@ bool HelloWorld::init()
     menu->setPosition(Vec2::ZERO);
     this->addChild(menu, 1);
 
+
     /////////////////////////////
     // 3. add your codes below...
 
     // add a label shows "Hello World"
     // create and initialize a label
 
-    auto label = Label::createWithTTF("Hello World", "fonts/Marker Felt.ttf", 24);
-    if (label == nullptr)
-    {
-        problemLoading("'fonts/Marker Felt.ttf'");
-    }
-    else
-    {
-        // position the label on the center of the screen
-        label->setPosition(Vec2(origin.x + visibleSize.width/2,
-                                origin.y + visibleSize.height - label->getContentSize().height));
+  
+	this->addChild(c.getDrawNode(), 100);
+	this->addChild(s.getDrawNode(), 1);
 
-        // add the label as a child to this layer
-        this->addChild(label, 1);
-    }
+	this->scheduleUpdate();
 
-    // add "HelloWorld" splash screen"
-    auto sprite = Sprite::create("HelloWorld.png");
-    if (sprite == nullptr)
-    {
-        problemLoading("'HelloWorld.png'");
-    }
-    else
-    {
-        // position the sprite on the center of the screen
-        sprite->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y));
-
-        // add the sprite as a child to this layer
-        this->addChild(sprite, 0);
-    }
     return true;
+}
+
+void HelloWorld::update(float dt)
+{
+	managerR.update();
+
+	if (managerR.getController(0)->isButtonPressed(SednaInput::A)) {
+//		c.setLocation(cocos2d::Vec2(c.getLocation().x + 1, c.getLocation().y));
+		s.setPoint(cocos2d::Vec2(200, 200), cocos2d::Vec2(300, 300));
+		s.update();
+	}
+
+
+
 }
 
 
