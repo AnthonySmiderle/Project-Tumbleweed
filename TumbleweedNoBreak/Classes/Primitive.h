@@ -49,6 +49,8 @@ namespace Pm {
 
 		cocos2d::DrawNode* getDrawNode() const;
 		void setPoint(cocos2d::Vec2 &newPosition1,cocos2d::Vec2 &newPosition2);
+		cocos2d::Vec2 getStart() const;
+		cocos2d::Vec2 getEnd() const;
 		void update();
 	private:
 		cocos2d::DrawNode *Node;

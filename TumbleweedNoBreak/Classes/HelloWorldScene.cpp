@@ -24,7 +24,7 @@
 
 #include "HelloWorldScene.h"
 #include "SimpleAudioEngine.h"
-
+#include <iostream>
 USING_NS_CC;
 
 Scene* HelloWorld::createScene()
@@ -88,8 +88,10 @@ bool HelloWorld::init()
     // create and initialize a label
 
   
-	this->addChild(c.getDrawNode(), 100);
+	//this->addChild(c.getDrawNode(), 100);
 	this->addChild(s.getDrawNode(), 1);
+
+	p1 = managerR.getController(0);
 
 	this->scheduleUpdate();
 
@@ -99,13 +101,56 @@ bool HelloWorld::init()
 void HelloWorld::update(float dt)
 {
 	managerR.update();
+	p1->getSticks(sticks);
 
-	if (managerR.getController(0)->isButtonPressed(SednaInput::A)) {
-//		c.setLocation(cocos2d::Vec2(c.getLocation().x + 1, c.getLocation().y));
-		s.setPoint(cocos2d::Vec2(200, 200), cocos2d::Vec2(300, 300));
+	//std::cout<< p1->getLStickDirection()<<std::endl;
+
+	checkInput();
+	
+
+
+
+}
+
+void HelloWorld::checkInput()
+{
+	////////////////////
+	//move right
+	if (sticks[0].x > 0.3f) {
+
+		s.setPoint(cocos2d::Vec2(s.getStart().x + 5, s.getStart().y), cocos2d::Vec2(s.getEnd().x + 5, s.getEnd().y));
+		s.getDrawNode()->clear();
 		s.update();
-	}
 
+	}
+	//move left
+	if (sticks[0].x < -0.3f) {
+
+		s.setPoint(cocos2d::Vec2(s.getStart().x - 5, s.getStart().y), cocos2d::Vec2(s.getEnd().x - 5, s.getEnd().y));
+		s.getDrawNode()->clear();
+		s.update();
+
+	}
+	////////////////////
+
+	////////////////////
+	//move up
+	if (sticks[0].y > 0.3f) {
+
+		s.setPoint(cocos2d::Vec2(s.getStart().x, s.getStart().y + 5), cocos2d::Vec2(s.getEnd().x, s.getEnd().y + 5));
+		s.getDrawNode()->clear();
+		s.update();
+
+	}
+	//move down
+	if (sticks[0].y < -0.3f) {
+
+		s.setPoint(cocos2d::Vec2(s.getStart().x, s.getStart().y - 5), cocos2d::Vec2(s.getEnd().x, s.getEnd().y - 5));
+		s.getDrawNode()->clear();
+		s.update();
+
+	}
+	////////////////////
 
 
 }

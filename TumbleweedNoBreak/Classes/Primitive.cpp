@@ -35,6 +35,14 @@ namespace Pm {
 		end = newPosition2;
 	}
 
+	cocos2d::Vec2 SquarePrimitive::getStart() const
+	{
+		return start;
+	}cocos2d::Vec2 SquarePrimitive::getEnd() const
+	{
+		return end;
+	}
+
 	void SquarePrimitive::update()
 	{
 		Node->drawRect(start, end, cocos2d::Color4F(1.0f, 0.0f, 0.0f, 1.0f));
@@ -54,7 +62,7 @@ namespace Pm {
 
 	Pm::CirclePrimitive::~CirclePrimitive()
 	{
-		Node->release();
+//		Node->release();
 	}
 
 	cocos2d::DrawNode * Pm::CirclePrimitive::getDrawNode() const

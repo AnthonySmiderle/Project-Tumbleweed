@@ -67,6 +67,11 @@ namespace SednaInput {
 		void deadZoneTriggers(float dz) {
 			deadZoneTrigger = dz;
 		}
+		float getLStickDirection() {
+			float x = (float)state.Gamepad.sThumbLX / 32768,
+				y = (float)state.Gamepad.sThumbLX / 32767;
+			return sqrt(x*x + y * y);
+		}
 
 		void getSticks(Stick sticks[2]) {
 			//LEFT STICK
@@ -81,14 +86,23 @@ namespace SednaInput {
 				else
 					sticks[0].x = (float)state.Gamepad.sThumbLX / 32767;
 
-				if (state.Gamepad.sThumbLX < 0)
+				if (state.Gamepad.sThumbLY < 0)
 					sticks[0].y = (float)state.Gamepad.sThumbLY / 32768;//conver to a float from 1 -> 1;
 				else
 					sticks[0].y = (float)state.Gamepad.sThumbLY / 32767;
-			}
 
+			}
+			else {
+
+				sticks[0].x = 0.0f;
+				sticks[0].y = 0.0f;
+
+			}
 			x = (float)state.Gamepad.sThumbRX / 32768,
 				y = (float)state.Gamepad.sThumbRX / 32767;
+			
+			
+			if (sqrt(x*x + y * y) > deadZoneStick) {
 			//RIGHT STICK
 			if (state.Gamepad.sThumbLX < 0) {
 				if (state.Gamepad.sThumbRX < 0)
@@ -96,13 +110,19 @@ namespace SednaInput {
 				else
 					sticks[1].x = (float)state.Gamepad.sThumbRX / 32767;
 
-				if (state.Gamepad.sThumbRX < 0)
+				if (state.Gamepad.sThumbRY < 0)
 					sticks[1].y = (float)state.Gamepad.sThumbRY / 32768;//conver to a float from 1 -> 1;
 				else
 					sticks[1].y = (float)state.Gamepad.sThumbRY / 32767;
 			}
 
+			}
+			else {
 
+				sticks[1].x = 0.0f;
+				sticks[1].y = 0.0f;
+
+			}
 		}
 
 		void getTriggers(Triggers &triggers) {

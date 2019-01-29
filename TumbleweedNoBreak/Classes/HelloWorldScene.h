@@ -36,6 +36,8 @@ public:
 
     virtual bool init();
 	void update(float dt);
+
+	void checkInput();
     
     // a selector callback
     void menuCloseCallback(cocos2d::Ref* pSender);
@@ -44,8 +46,10 @@ public:
     CREATE_FUNC(HelloWorld);
 private:
 	Pm::CirclePrimitive c{ cocos2d::Vec2(100,100),10,5,20 };
-	Pm::SquarePrimitive s{ cocos2d::Vec2(100,100),cocos2d::Vec2(200,200) };
+	Pm::SquarePrimitive s{ cocos2d::Vec2(50,100),cocos2d::Vec2(100,200) };
 	SednaInput::XinputManager managerR;
+	SednaInput::XinputController* p1;
+	SednaInput::Stick sticks[2];
 };
 
 #endif // __HELLOWORLD_SCENE_H__
