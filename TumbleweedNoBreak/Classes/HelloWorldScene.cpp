@@ -109,7 +109,7 @@ void HelloWorld::update(float dt)
 	p1->getSticks(sticks);
 
 
-	//this->getDefaultCamera()->runAction(cocos2d::MoveBy::create(0, cocos2d::Vec2(0, 100 * dt)));
+	this->getDefaultCamera()->runAction(cocos2d::MoveBy::create(0, cocos2d::Vec2(0, 100 * dt)));
 
 	//std::cout<< p1->getLStickDirection()<<std::endl;
 	player->setPosition(c.getLocation());
