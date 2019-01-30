@@ -27,6 +27,8 @@
 
 #include "cocos2d.h"
 #include "Primitive.h"
+#include "Bullet.h"
+#include <vector>
 #include "XinputManager.h"
 
 class HelloWorld : public cocos2d::Scene
@@ -37,6 +39,7 @@ public:
     virtual bool init();
 	void update(float dt);
 
+	void initSprites();
 	void checkInput();
     
     // a selector callback
@@ -45,11 +48,14 @@ public:
     // implement the "static create()" method manually
     CREATE_FUNC(HelloWorld);
 private:
+	float deltaTimeTracker;
+	std::vector<Pm::SquarePrimitive> bullets;
+	cocos2d::Sprite* player;
 	Pm::CirclePrimitive c{ cocos2d::Vec2(100,100),10,5,20 };
 	Pm::SquarePrimitive s{ cocos2d::Vec2(50,100),cocos2d::Vec2(100,200) };
-	SednaInput::XinputManager managerR;
-	SednaInput::XinputController* p1;
-	SednaInput::Stick sticks[2];
+	Sedna::XinputManager managerR;
+	Sedna::XinputController* p1;
+	Sedna::Stick sticks[2];
 };
 
 #endif // __HELLOWORLD_SCENE_H__

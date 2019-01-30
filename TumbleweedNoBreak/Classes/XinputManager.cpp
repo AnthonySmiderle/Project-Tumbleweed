@@ -1,14 +1,14 @@
 #include "XinputManager.h"
 
 
-SednaInput::XinputController SednaInput::XinputManager::controllers[4];
-SednaInput::XinputManager::XinputManager()
+Sedna::XinputController Sedna::XinputManager::controllers[4];
+Sedna::XinputManager::XinputManager()
 {
 	for (int index = 0; index < 4; index++) {
 		controllers[index].setControllerIndex(index);
 	}
 }
-bool SednaInput::XinputManager::controllerConnected(int index)
+bool Sedna::XinputManager::controllerConnected(int index)
 {
 	if (index < 0 || index >= 4)
 		return false;
@@ -16,14 +16,14 @@ bool SednaInput::XinputManager::controllerConnected(int index)
 	return XInputGetState(index,&connected) == ERROR_SUCCESS;
 }
 
-SednaInput::XinputController * SednaInput::XinputManager::getController(int index)
+Sedna::XinputController * Sedna::XinputManager::getController(int index)
 {
 	if(index >=0 && index < 4)
 	return &controllers[index];
 	return nullptr;
 }
 
-void SednaInput::XinputManager::update()
+void Sedna::XinputManager::update()
 {
 
 	for (int index = 0; index < 4; index++) {

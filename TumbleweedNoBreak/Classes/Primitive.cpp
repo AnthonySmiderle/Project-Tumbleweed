@@ -21,7 +21,7 @@ namespace Pm {
 
 	Pm::SquarePrimitive::~SquarePrimitive()
 	{
-		Node->release();//destroy draw node
+//		Node->release();//destroy draw node
 	}
 
 	cocos2d::DrawNode * Pm::SquarePrimitive::getDrawNode() const
@@ -33,6 +33,8 @@ namespace Pm {
 	{
 		start = newPosition1;
 		end = newPosition2;
+		position = cocos2d::Vec2(start.x + end.x, start.y + end.y);
+		velocity = cocos2d::Vec2(0, 0);
 	}
 
 	cocos2d::Vec2 SquarePrimitive::getStart() const
@@ -45,12 +47,19 @@ namespace Pm {
 
 	void SquarePrimitive::update()
 	{
+		position += velocity;
 		Node->drawRect(start, end, cocos2d::Color4F(1.0f, 0.0f, 0.0f, 1.0f));
+	}
+
+	void SquarePrimitive::addForce(cocos2d::Vec2 v)
+	{
+		velocity = v;
+		update();
 	}
 
 	//Circle
 	Pm::CirclePrimitive::CirclePrimitive(const cocos2d::Vec2 &LOCATION, float RADIUS, float ANGLE, unsigned int SEGMENTS)
-		: Node(cocos2d::DrawNode::create())
+		: Node(cocos2d::DrawNode::create()),location(LOCATION), radius(RADIUS), angle(ANGLE), segments(SEGMENTS)
 	{
 		//draw a circle given dimensions
 		Node->drawCircle(LOCATION, RADIUS, ANGLE, SEGMENTS, false, cocos2d::Color4F(0.0f, 1.0f, 0.0f, 1.0f));
@@ -68,6 +77,39 @@ namespace Pm {
 	cocos2d::DrawNode * Pm::CirclePrimitive::getDrawNode() const
 	{
 		return Node;
+	}
+
+	void CirclePrimitive::update()
+	{
+		location += velocity;
+		Node->clear();
+		Node->drawCircle(location, radius, angle, segments, false, cocos2d::Color4F(0.0f, 1.0f, 0.0f, 1.0f));
+
+	}
+
+	void CirclePrimitive::addForce(cocos2d::Vec2 v)
+	{
+		int maxVelocity = 5;
+		int minVelocity = -5;
+		velocity += v/5;
+		if (velocity.x >= maxVelocity)
+			velocity.x = maxVelocity;
+		else if (velocity.x <= minVelocity)
+			velocity.x = minVelocity;
+		if (velocity.y >= maxVelocity)
+			velocity.y = maxVelocity;
+		else if (velocity.y <= minVelocity)
+			velocity.y = minVelocity;
+	}
+
+	cocos2d::Vec2 CirclePrimitive::getVelocity() const
+	{
+		return velocity;
+	}
+
+	cocos2d::Vec2 CirclePrimitive::getLocation() const
+	{
+		return location;
 	}
 
 	//Line
