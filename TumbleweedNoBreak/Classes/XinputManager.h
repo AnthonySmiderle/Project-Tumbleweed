@@ -5,7 +5,7 @@
 
 #pragma comment(lib,"Xinput.lib")
 
-namespace SednaInput {
+namespace Sedna {
 	//Buttons used for the controllers
 	enum CONTROLLER_INPUT_BUTTONS
 	{

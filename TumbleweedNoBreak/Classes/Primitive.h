@@ -52,7 +52,10 @@ namespace Pm {
 		cocos2d::Vec2 getStart() const;
 		cocos2d::Vec2 getEnd() const;
 		void update();
+		void addForce(cocos2d::Vec2 v);
 	private:
+		cocos2d::Vec2 position;
+		cocos2d::Vec2 velocity;
 		cocos2d::DrawNode *Node;
 		cocos2d::Vec2 start;
 		cocos2d::Vec2 end;
@@ -65,8 +68,16 @@ namespace Pm {
 
 
 		cocos2d::DrawNode* getDrawNode() const;
-
+		void update();
+		void addForce(cocos2d::Vec2 v);
+		cocos2d::Vec2 getVelocity() const;
+		cocos2d::Vec2 getLocation() const;
 	private:
+		cocos2d::Vec2 location;
+		float radius;
+		float angle;
+		unsigned int segments;
+		cocos2d::Vec2 velocity;
 		cocos2d::DrawNode* Node;
 	};
 
