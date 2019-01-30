@@ -90,7 +90,7 @@ bool HelloWorld::init()
 
 	initSprites();
 	//this->addChild(c.getDrawNode(), 100);
-	
+
 	this->addChild(c.getDrawNode(), 1);
 	c.getDrawNode()->setVisible(false);
 
@@ -109,7 +109,7 @@ void HelloWorld::update(float dt)
 	p1->getSticks(sticks);
 
 
-	this->getDefaultCamera()->runAction(cocos2d::MoveBy::create(0, cocos2d::Vec2(0, 100 * dt)));
+	//this->getDefaultCamera()->runAction(cocos2d::MoveBy::create(0, cocos2d::Vec2(0, 100 * dt)));
 
 	//std::cout<< p1->getLStickDirection()<<std::endl;
 	player->setPosition(c.getLocation());
@@ -118,7 +118,7 @@ void HelloWorld::update(float dt)
 	checkInput();
 
 
-	
+
 }
 
 void HelloWorld::initSprites()
@@ -149,30 +149,35 @@ void HelloWorld::checkInput()
 	////////////////////
 	//move right
 	if (sticks[0].x > 0.3f)
-		c.addForce(cocos2d::Vec2(1, 0));
+		c.setForce(cocos2d::Vec2(3.3,0 ));
+
 	//move left
-	if (sticks[0].x < -0.3f)
-		c.addForce(cocos2d::Vec2(-1, 0));
+	else if (sticks[0].x < -0.3f) 
+		c.setForce(cocos2d::Vec2(-3.3, 0));
+
+	
+	//else
+	//	c.setForce(cocos2d::Vec2())
 
 	////////////////////
 
 	////////////////////
 	//move up
-	if (sticks[0].y > 0.3f)
-		c.addForce(cocos2d::Vec2(0, 1));
+	if (sticks[0].y > 0.3f) 
+		c.setForce(cocos2d::Vec2(0, 3));
 
 	//move down
-	if (sticks[0].y < -0.3f)
-		c.addForce(cocos2d::Vec2(0, -1));
+	else if (sticks[0].y < -0.3f) 
+		c.setForce(cocos2d::Vec2(0, -3));
 
 	////////////////////
 
 
-	if (sticks[0].x > -0.3f && sticks[0].x < 0.3f &&sticks[0].y > -0.3f && sticks[0].y < 0.3f) {
-		c.addForce(cocos2d::Vec2(c.getVelocity().x *-0.5f, c.getVelocity().y*-0.5f));
+	if (sticks[0].x > -0.3f && sticks[0].x < 0.3f && sticks[0].y > -0.3f && sticks[0].y < 0.3f) {
+		c.addForce(cocos2d::Vec2(c.getVelocity().x *-1.0f, c.getVelocity().y*-1.0f));
 
 	}
-	
+
 
 }
 

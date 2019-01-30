@@ -70,6 +70,7 @@ namespace Pm {
 		cocos2d::DrawNode* getDrawNode() const;
 		void update();
 		void addForce(cocos2d::Vec2 v);
+		void setForce(cocos2d::Vec2 v);
 		cocos2d::Vec2 getVelocity() const;
 		cocos2d::Vec2 getLocation() const;
 	private:
