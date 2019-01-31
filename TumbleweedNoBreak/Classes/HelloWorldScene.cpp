@@ -115,6 +115,18 @@ void HelloWorld::update(float dt)
 	player->setPosition(c.getLocation());
 	table->getBox().update();
 	table->getSprite()->setPosition(table->getBox().getLocation());
+
+	if (p1->isButtonPressed(Sedna::A)) {
+		//Sedna::GameObject* temp = table;
+		//this->addChild(temp->getBox().getDrawNode());
+		//this->addChild(temp->getSprite());
+		//temp->getBox().setForce(cocos2d::Vec2(0, 1));
+		//temp->getBox().update();
+		//temp->getSprite()->setPosition(temp->getBox().getLocation());
+
+
+	}
+
 	c.update();
 	checkInput();
 
