@@ -29,6 +29,7 @@
 #include "Primitive.h"
 #include <vector>
 #include "XinputManager.h"
+#include "GameObject.h"
 
 class HelloWorld : public cocos2d::Scene
 {
@@ -53,6 +54,10 @@ private:
 	Sedna::XinputManager managerR;
 	Sedna::XinputController* p1;
 	Sedna::Stick sticks[2];
+	Sedna::GameObject *table;
+	Pm::CirclePrimitive tableC{ cocos2d::Vec2(200,200),10,5,20 };
+	cocos2d::Sprite* tableSprite;
+
 };
 
 #endif // __HELLOWORLD_SCENE_H__
