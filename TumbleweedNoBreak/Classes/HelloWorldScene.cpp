@@ -109,7 +109,7 @@ void HelloWorld::update(float dt)
 	p1->getSticks(sticks);
 
 
-	//this->getDefaultCamera()->runAction(cocos2d::MoveBy::create(0, cocos2d::Vec2(0, 100 * dt)));
+	this->getDefaultCamera()->runAction(cocos2d::MoveBy::create(0, cocos2d::Vec2(0, 60 * dt)));
 
 	//std::cout<< p1->getLStickDirection()<<std::endl;
 	player->setPosition(c.getLocation());
@@ -135,17 +135,6 @@ void HelloWorld::initSprites()
 
 void HelloWorld::checkInput()
 {
-	if (managerR.getController(0)->isButtonPressed(Sedna::A)) {
-		Pm::SquarePrimitive temp(cocos2d::Vec2(1, 5), cocos2d::Vec2(2, 10));
-		bullets.push_back(temp);
-
-	}
-
-
-
-
-
-
 	////////////////////
 	//move right
 	if (sticks[0].x > 0.3f)
@@ -154,10 +143,6 @@ void HelloWorld::checkInput()
 	//move left
 	else if (sticks[0].x < -0.3f) 
 		c.setForce(cocos2d::Vec2(-3.3, 0));
-
-	
-	//else
-	//	c.setForce(cocos2d::Vec2())
 
 	////////////////////
 
