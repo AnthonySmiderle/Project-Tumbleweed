@@ -1,11 +1,15 @@
 #include "GameObject.h"
 
-Sedna::GameObject::GameObject(std::string image)
+Sedna::GameObject::GameObject(cocos2d::Sprite* image,Pm::CirclePrimitive box):sprite(image),hitBox(box)
 {
-	sprite = cocos2d::Sprite::create(image);
 }
 
 cocos2d::Sprite * Sedna::GameObject::getSprite() const
 {
 	return sprite;
+}
+
+Pm::CirclePrimitive Sedna::GameObject::getBox() const
+{
+	return hitBox;
 }

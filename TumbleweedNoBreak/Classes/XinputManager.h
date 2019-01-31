@@ -73,7 +73,7 @@ namespace Sedna {
 			return sqrt(x*x + y * y);
 		}
 
-		void getSticks(Stick sticks[2]) {
+		void updateSticks(Stick sticks[2]) {
 			//LEFT STICK
 			float x = (float)state.Gamepad.sThumbLX / 32768,
 				y = (float)state.Gamepad.sThumbLX / 32767;

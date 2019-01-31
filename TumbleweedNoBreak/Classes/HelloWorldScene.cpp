@@ -106,14 +106,15 @@ bool HelloWorld::init()
 void HelloWorld::update(float dt)
 {
 	managerR.update();
-	p1->getSticks(sticks);
+	p1->updateSticks(sticks);
 
 
-	this->getDefaultCamera()->runAction(cocos2d::MoveBy::create(0, cocos2d::Vec2(0, 60 * dt)));
+	//this->getDefaultCamera()->runAction(cocos2d::MoveBy::create(0, cocos2d::Vec2(0, 60 * dt)));
 
 	//std::cout<< p1->getLStickDirection()<<std::endl;
 	player->setPosition(c.getLocation());
-
+	table->getBox().update();
+	table->getSprite()->setPosition(table->getBox().getLocation());
 	c.update();
 	checkInput();
 
@@ -130,6 +131,12 @@ void HelloWorld::initSprites()
 	player->setScale(2.0f);
 	this->addChild(player, 1);
 	player->setVisible(true);
+	tableSprite = Sprite::create("table.jpg");
+	this->addChild(tableSprite);
+	this->addChild(tableC.getDrawNode());
+	tableC.getDrawNode()->setVisible(false);
+	table = new Sedna::GameObject(tableSprite,tableC);
+
 }
 
 void HelloWorld::checkInput()
