@@ -106,7 +106,7 @@ bool HelloWorld::init()
 void HelloWorld::update(float dt)
 {
 	managerR.update();
-	p1->getSticks(sticks);
+	p1->updateSticks(sticks);
 
 
 	this->getDefaultCamera()->runAction(cocos2d::MoveBy::create(0, cocos2d::Vec2(0, 60 * dt)));
