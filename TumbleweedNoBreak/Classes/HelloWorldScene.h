@@ -29,6 +29,7 @@
 #include "Primitive.h"
 #include <vector>
 #include "XinputManager.h"
+#include "GameObject.h"
 
 class HelloWorld : public cocos2d::Scene
 {

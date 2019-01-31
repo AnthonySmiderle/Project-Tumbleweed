@@ -123,7 +123,6 @@ void HelloWorld::update(float dt)
 
 void HelloWorld::initSprites()
 {
-
 	player = Sprite::create("player1.png");
 	//player->setPosition(cocos2d::Vec2((s.getStart().x + s.getEnd().x) / 2, (s.getStart().y + s.getEnd().y) / 2));
 	player->setPosition(c.getLocation());
