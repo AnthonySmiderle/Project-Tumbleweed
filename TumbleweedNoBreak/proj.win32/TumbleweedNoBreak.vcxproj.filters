@@ -27,9 +27,12 @@
     <ClCompile Include="..\Classes\Primitive.cpp">
       <Filter>src</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="..\Classes\GameObject.cpp">
       <Filter>src</Filter>
     </ClCompile>
+=======
+>>>>>>> masterUnstable
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -47,9 +50,12 @@
     <ClInclude Include="..\Classes\HelloWorldScene.h">
       <Filter>src</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="..\Classes\GameObject.h">
       <Filter>src</Filter>
     </ClInclude>
+=======
+>>>>>>> masterUnstable
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc">
