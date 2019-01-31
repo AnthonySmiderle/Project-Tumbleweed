@@ -27,7 +27,6 @@
     <ClCompile Include="..\Classes\Primitive.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="Bullet.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -45,7 +44,6 @@
     <ClInclude Include="..\Classes\HelloWorldScene.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="Bullet.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc">

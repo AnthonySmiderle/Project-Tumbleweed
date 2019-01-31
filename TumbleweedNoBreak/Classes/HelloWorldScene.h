@@ -27,7 +27,6 @@
 
 #include "cocos2d.h"
 #include "Primitive.h"
-#include "Bullet.h"
 #include <vector>
 #include "XinputManager.h"
 
