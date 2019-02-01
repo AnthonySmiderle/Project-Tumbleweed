@@ -3,10 +3,10 @@
 #include "Primitive.h"
 #include "2d/CCDrawNode.h"
 
-namespace Pm {
+namespace Sedna {
 
 	//Square
-	Pm::SquarePrimitive::SquarePrimitive(cocos2d::Vec2  startingPosition, cocos2d::Vec2 endPosition)
+	Sedna::SquarePrimitive::SquarePrimitive(cocos2d::Vec2  startingPosition, cocos2d::Vec2 endPosition)
 		: Node(cocos2d::DrawNode::create())//initialize draw node
 	{
 		start = startingPosition;
@@ -15,21 +15,21 @@ namespace Pm {
 		Node->drawRect(start, end, cocos2d::Color4F(1.0f, 0.0f, 0.0f, 1.0f));
 	}
 
-	Pm::SquarePrimitive::SquarePrimitive()
+	Sedna::SquarePrimitive::SquarePrimitive()
 	{
 	}
 
-	Pm::SquarePrimitive::~SquarePrimitive()
+	Sedna::SquarePrimitive::~SquarePrimitive()
 	{
 //		Node->release();//destroy draw node
 	}
 
-	cocos2d::DrawNode * Pm::SquarePrimitive::getDrawNode() const
+	cocos2d::DrawNode * Sedna::SquarePrimitive::getDrawNode() const
 	{
 		return Node;
 	}
 
-	void Pm::SquarePrimitive::setPoint(cocos2d::Vec2 & newPosition1, cocos2d::Vec2 & newPosition2)
+	void Sedna::SquarePrimitive::setPoint(cocos2d::Vec2 & newPosition1, cocos2d::Vec2 & newPosition2)
 	{
 		start = newPosition1;
 		end = newPosition2;
@@ -58,23 +58,23 @@ namespace Pm {
 	}
 
 	//Circle
-	Pm::CirclePrimitive::CirclePrimitive(const cocos2d::Vec2 &LOCATION, float RADIUS, float ANGLE, unsigned int SEGMENTS)
+	Sedna::CirclePrimitive::CirclePrimitive(const cocos2d::Vec2 &LOCATION, float RADIUS, float ANGLE, unsigned int SEGMENTS)
 		: Node(cocos2d::DrawNode::create()),location(LOCATION), radius(RADIUS), angle(ANGLE), segments(SEGMENTS)
 	{
 		//draw a circle given dimensions
 		Node->drawCircle(LOCATION, RADIUS, ANGLE, SEGMENTS, false, cocos2d::Color4F(0.0f, 1.0f, 0.0f, 1.0f));
 	}
 
-	Pm::CirclePrimitive::CirclePrimitive()
+	Sedna::CirclePrimitive::CirclePrimitive()
 	{
 	}
 
-	Pm::CirclePrimitive::~CirclePrimitive()
+	Sedna::CirclePrimitive::~CirclePrimitive()
 	{
 //		Node->release();
 	}
 
-	cocos2d::DrawNode * Pm::CirclePrimitive::getDrawNode() const
+	cocos2d::DrawNode * Sedna::CirclePrimitive::getDrawNode() const
 	{
 		return Node;
 	}
@@ -130,31 +130,43 @@ namespace Pm {
 		return location;
 	}
 
+	bool CirclePrimitive::checkCollision(CirclePrimitive other)
+	{
+		float distance = sqrt((this->location.x - other.location.x)*(this->location.x - other.location.x) + 
+			(this->location.y - other.location.y)*(this->location.y - other.location.y));
+
+		
+		if (distance <= (this->radius + other.radius))
+			return true;
+
+		return false;
+	}
+
 	//Line
-	Pm::LinePrimitive::LinePrimitive(cocos2d::Vec2& ORIGIN, cocos2d::Vec2& ENDPOINT)
+	Sedna::LinePrimitive::LinePrimitive(cocos2d::Vec2& ORIGIN, cocos2d::Vec2& ENDPOINT)
 		: Node(cocos2d::DrawNode::create())
 	{
 		//draw a line given two points
 		Node->drawLine(ORIGIN, ENDPOINT, cocos2d::Color4F(0.0f, 0.0f, 1.0f, 1.0f));
 	}
 
-	Pm::LinePrimitive::LinePrimitive()
+	Sedna::LinePrimitive::LinePrimitive()
 	{
 	}
 
-	Pm::LinePrimitive::~LinePrimitive()
+	Sedna::LinePrimitive::~LinePrimitive()
 	{
 		Node->release();
 	}
 
-	cocos2d::DrawNode * Pm::LinePrimitive::getDrawNode() const
+	cocos2d::DrawNode * Sedna::LinePrimitive::getDrawNode() const
 	{
 		return Node;
 	}
 
 
 	//Capsule
-	Pm::Capsule::Capsule(cocos2d::Vec2 & ORIGIN, cocos2d::Vec2 & ENDPOINT, float RADIUS)
+	Sedna::Capsule::Capsule(cocos2d::Vec2 & ORIGIN, cocos2d::Vec2 & ENDPOINT, float RADIUS)
 		: Node(cocos2d::DrawNode::create())
 	{
 		//draw two circles, one at the left most point and one at the right most point, given dimensions
@@ -175,12 +187,12 @@ namespace Pm {
 
 	}
 
-	Pm::Capsule::~Capsule()
+	Sedna::Capsule::~Capsule()
 	{
 		Node->release();
 	}
 
-	cocos2d::DrawNode * Pm::Capsule::getDrawNode() const
+	cocos2d::DrawNode * Sedna::Capsule::getDrawNode() const
 	{
 		return Node;
 	}

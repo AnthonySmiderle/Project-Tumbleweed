@@ -11,7 +11,7 @@
 //}
 
 
-namespace Pm {
+namespace Sedna {
 
 	class Capsule {
 
@@ -60,6 +60,9 @@ namespace Pm {
 		cocos2d::Vec2 start;
 		cocos2d::Vec2 end;
 	};
+
+
+	//the actually useful one
 	class CirclePrimitive {
 	public:
 		CirclePrimitive(const cocos2d::Vec2 &LOCATION,float RADIUS, float ANGLE,unsigned int SEGMENTS);
@@ -73,6 +76,7 @@ namespace Pm {
 		void setForce(cocos2d::Vec2 v);
 		cocos2d::Vec2 getVelocity() const;
 		cocos2d::Vec2 getLocation() const;
+		bool checkCollision(CirclePrimitive other);
 	private:
 		cocos2d::Vec2 location;
 		float radius;

@@ -92,7 +92,7 @@ bool HelloWorld::init()
 	//this->addChild(c.getDrawNode(), 100);
 
 	this->addChild(c.getDrawNode(), 1);
-	c.getDrawNode()->setVisible(false);
+	c.getDrawNode()->setVisible(true);
 
 
 	p1 = managerR.getController(0);
@@ -113,10 +113,14 @@ void HelloWorld::update(float dt)
 
 	//std::cout<< p1->getLStickDirection()<<std::endl;
 	player->setPosition(c.getLocation());
-	table->getBox().update();
-	table->getSprite()->setPosition(table->getBox().getLocation());
+	//table->getBox().update();
+	//table->getSprite()->setPosition(table->getBox().getLocation());
+	checkInput();
 
-	if (p1->isButtonPressed(Sedna::A)) {
+	if (p1->isButtonPressed(Sedna::A) && c.checkCollision(baseTable->getGameObject().getBox())) {
+
+		baseTable->getGameObject().getBox().setForce(cocos2d::Vec2(5,0));
+		baseTable->spriteSwitch();
 		//Sedna::GameObject* temp = table;
 		//this->addChild(temp->getBox().getDrawNode());
 		//this->addChild(temp->getSprite());
@@ -126,9 +130,11 @@ void HelloWorld::update(float dt)
 
 
 	}
+	//else if(baseTable->getGameObject().getBox().getVelocity() == cocos2d::Vec2(0,0))
+	//	baseTable->getGameObject().getBox().addForce(cocos2d::Vec2(baseTable->getGameObject().getBox().getVelocity().x *-1.0f, baseTable->getGameObject().getBox().getVelocity().y*-1.0f));
 
+	baseTable->getGameObject().getBox().update();
 	c.update();
-	checkInput();
 
 
 
@@ -143,12 +149,17 @@ void HelloWorld::initSprites()
 	player->setScale(2.0f);
 	this->addChild(player, 1);
 	player->setVisible(true);
-	tableSprite = Sprite::create("table.jpg");
-	this->addChild(tableSprite);
-	this->addChild(tableC.getDrawNode());
-	tableC.getDrawNode()->setVisible(false);
-	table = new Sedna::GameObject(tableSprite,tableC);
 
+	baseTable = new Sedna::Table();
+	this->addChild(baseTable->getGameObject().getBox().getDrawNode());
+	this->addChild(baseTable->getGameObject().getSprite());
+	baseTable->getGameObject().getSprite()->setVisible(true);
+	//tableSprite = Sprite::create("table.jpg");
+	//this->addChild(tableSprite);
+	//this->addChild(tableC.getDrawNode());
+	//tableC.getDrawNode()->setVisible(false);
+	//table = new Sedna::GameObject(tableSprite,tableC);
+	 
 }
 
 void HelloWorld::checkInput()
