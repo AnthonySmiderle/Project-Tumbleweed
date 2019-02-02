@@ -106,18 +106,7 @@ namespace Sedna {
 
 	void CirclePrimitive::setForce(cocos2d::Vec2 v)
 	{
-		int maxVelocity = 5;
-		int minVelocity = -5;
-
 		velocity = v;
-		if (velocity.x >= maxVelocity)
-			velocity.x = maxVelocity;
-		else if (velocity.x <= minVelocity)
-			velocity.x = minVelocity;
-		if (velocity.y >= maxVelocity)
-			velocity.y = maxVelocity;
-		else if (velocity.y <= minVelocity)
-			velocity.y = minVelocity;
 	}
 
 	cocos2d::Vec2 CirclePrimitive::getVelocity() const

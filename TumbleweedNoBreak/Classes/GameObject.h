@@ -12,8 +12,14 @@ namespace Sedna {
 
 		cocos2d::Sprite* getSprite()const;
 		Sedna::CirclePrimitive getBox()const;
-		void setCircle(Sedna::CirclePrimitive c) { hitBox = c; };
-		void setSprite(cocos2d::Sprite* temp) {  sprite = temp; };
+		void setCircle(Sedna::CirclePrimitive c) { hitBox = c; }
+		void setSprite(const char* temp, cocos2d::Scene* s) { 
+		//	sprite->release(); 
+
+		sprite = cocos2d::Sprite::create(temp); 
+		s->addChild(sprite);
+		s->setPosition(hitBox.getLocation());
+		}
 		void updateGameObject();//todo
 	private:
 		cocos2d::Sprite *sprite;

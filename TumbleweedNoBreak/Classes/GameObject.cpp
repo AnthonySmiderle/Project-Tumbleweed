@@ -23,4 +23,6 @@ Sedna::CirclePrimitive Sedna::GameObject::getBox() const
 
 void Sedna::GameObject::updateGameObject()
 {
+	hitBox.update();
+	sprite->setPosition(hitBox.getLocation());
 }

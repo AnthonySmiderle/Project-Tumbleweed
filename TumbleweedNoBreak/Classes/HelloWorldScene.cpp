@@ -119,8 +119,10 @@ void HelloWorld::update(float dt)
 
 	if (p1->isButtonPressed(Sedna::A) && c.checkCollision(baseTable->getGameObject().getBox())) {
 
-		baseTable->getGameObject().getBox().setForce(cocos2d::Vec2(5,0));
-		baseTable->spriteSwitch();
+		//baseTable->getGameObject().getBox().setForce(cocos2d::Vec2(5,0));
+		baseTable->spriteSwitch(this);
+		this->addChild(baseTable->getGameObject().getSprite());
+		baseTable->getGameObject().getSprite()->setPosition(baseTable->getGameObject().getBox().getLocation());
 		//Sedna::GameObject* temp = table;
 		//this->addChild(temp->getBox().getDrawNode());
 		//this->addChild(temp->getSprite());
@@ -133,7 +135,8 @@ void HelloWorld::update(float dt)
 	//else if(baseTable->getGameObject().getBox().getVelocity() == cocos2d::Vec2(0,0))
 	//	baseTable->getGameObject().getBox().addForce(cocos2d::Vec2(baseTable->getGameObject().getBox().getVelocity().x *-1.0f, baseTable->getGameObject().getBox().getVelocity().y*-1.0f));
 
-	baseTable->getGameObject().getBox().update();
+
+	baseTable->getGameObject().updateGameObject();
 	c.update();
 
 

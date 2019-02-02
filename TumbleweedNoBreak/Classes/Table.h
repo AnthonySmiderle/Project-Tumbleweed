@@ -6,7 +6,7 @@ namespace Sedna {
 	public:
 		Table();
 
-		void spriteSwitch();
+		void spriteSwitch(cocos2d::Scene* yeet);
 		GameObject getGameObject() const;
 
 	private:

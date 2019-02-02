@@ -49,7 +49,7 @@ public:
 	// implement the "static create()" method manually
 	CREATE_FUNC(HelloWorld);
 private:
-	std::vector<Sedna::SquarePrimitive> bullets;
+	//std::vector<Sedna::SquarePrimitive> bullets;
 	cocos2d::Sprite* player;
 	Sedna::CirclePrimitive c{ cocos2d::Vec2(100,100),10,5,20 };
 	Sedna::XinputManager managerR;
