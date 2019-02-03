@@ -7,22 +7,23 @@ namespace Sedna {
 	class GameObject{
 	public:
 		GameObject() {}
-		GameObject(cocos2d::Sprite* image,Sedna::CirclePrimitive box);
+		//GameObject(cocos2d::Sprite* image,Sedna::CirclePrimitive box);
 		GameObject(const char* FILEPATH, const cocos2d::Vec2 &LOCATION, float RADIUS, float ANGLE, unsigned int SEGMENTS);
-
+		~GameObject() { delete sprite; delete hitBox; }
 		cocos2d::Sprite* getSprite()const;
-		Sedna::CirclePrimitive getBox()const;
-		void setCircle(Sedna::CirclePrimitive c) { hitBox = c; }
-		void setSprite(const char* temp, cocos2d::Scene* s) { 
+		Sedna::CirclePrimitive* getBox()const;
+		void setCircle(CirclePrimitive c) { *hitBox = c; }
+		void setSprite(cocos2d::Sprite* s,cocos2d::Scene* myB) { 
 		//	sprite->release(); 
+		//	myB->removeChild(sprite);
+		//myB->addChild(s);
 
-		sprite = cocos2d::Sprite::create(temp); 
-		s->addChild(sprite);
-		s->setPosition(hitBox.getLocation());
+		sprite = s;
+		sprite->setPosition(hitBox->getLocation());
 		}
 		void updateGameObject();//todo
 	private:
 		cocos2d::Sprite *sprite;
-		Sedna::CirclePrimitive hitBox;
+		Sedna::CirclePrimitive* hitBox;
 	};
 }

@@ -117,26 +117,26 @@ void HelloWorld::update(float dt)
 	//table->getSprite()->setPosition(table->getBox().getLocation());
 	checkInput();
 
-	if (p1->isButtonPressed(Sedna::A) && c.checkCollision(baseTable->getGameObject().getBox())) {
+	if (p1->isButtonPressed(Sedna::A) && c.checkCollision(*baseTable.getGameObject()->getBox())) {
 
-		//baseTable->getGameObject().getBox().setForce(cocos2d::Vec2(5,0));
-		baseTable->spriteSwitch(this);
-		this->addChild(baseTable->getGameObject().getSprite());
-		baseTable->getGameObject().getSprite()->setPosition(baseTable->getGameObject().getBox().getLocation());
-		//Sedna::GameObject* temp = table;
-		//this->addChild(temp->getBox().getDrawNode());
-		//this->addChild(temp->getSprite());
-		//temp->getBox().setForce(cocos2d::Vec2(0, 1));
-		//temp->getBox().update();
-		//temp->getSprite()->setPosition(temp->getBox().getLocation());
+		std::cout << "pre x " <<baseTable.getGameObject()->getBox()->getVelocity().x << std::endl;
+		std::cout << "pre y "<< baseTable.getGameObject()->getBox()->getVelocity().y << std::endl;
+		baseTable.getGameObject()->getBox()->setForce(cocos2d::Vec2(5, 0));
+		std::cout << "post x " << baseTable.getGameObject()->getBox()->getVelocity().x << std::endl;
+		std::cout << "post y " << baseTable.getGameObject()->getBox()->getVelocity().y << std::endl;
 
-
+		//baseTable.spriteSwitch(this);
+	}
+	else {
+		baseTable.getGameObject()->getBox()->addForce(cocos2d::Vec2(
+			baseTable.getGameObject()->getBox()->getVelocity().x * -1, 
+			baseTable.getGameObject()->getBox()->getVelocity().y * -1));
 	}
 	//else if(baseTable->getGameObject().getBox().getVelocity() == cocos2d::Vec2(0,0))
 	//	baseTable->getGameObject().getBox().addForce(cocos2d::Vec2(baseTable->getGameObject().getBox().getVelocity().x *-1.0f, baseTable->getGameObject().getBox().getVelocity().y*-1.0f));
 
 
-	baseTable->getGameObject().updateGameObject();
+	baseTable.getGameObject()->updateGameObject();
 	c.update();
 
 
@@ -153,10 +153,10 @@ void HelloWorld::initSprites()
 	this->addChild(player, 1);
 	player->setVisible(true);
 
-	baseTable = new Sedna::Table();
-	this->addChild(baseTable->getGameObject().getBox().getDrawNode());
-	this->addChild(baseTable->getGameObject().getSprite());
-	baseTable->getGameObject().getSprite()->setVisible(true);
+	baseTable = Sedna::Table();
+	this->addChild(baseTable.getGameObject()->getBox()->getDrawNode());
+	this->addChild(baseTable.getGameObject()->getSprite());
+	baseTable.getGameObject()->getSprite()->setVisible(true);
 	//tableSprite = Sprite::create("table.jpg");
 	//this->addChild(tableSprite);
 	//this->addChild(tableC.getDrawNode());
@@ -169,29 +169,31 @@ void HelloWorld::checkInput()
 {
 	////////////////////
 	//move right
-	if (sticks[0].x > 0.3f)
-		c.setForce(cocos2d::Vec2(3.3,0 ));
-
+	if (sticks[0].x > 0.3f) {
+		c.addForce(cocos2d::Vec2(3.3, 0));
+	//	baseTable->getGameObject().getBox().setForce(cocos2d::Vec2(3.3, 0));
+	}
 	//move left
 	else if (sticks[0].x < -0.3f) 
-		c.setForce(cocos2d::Vec2(-3.3, 0));
+		c.addForce(cocos2d::Vec2(-3.3, 0));
 
 	////////////////////
 
 	////////////////////
 	//move up
 	if (sticks[0].y > 0.3f) 
-		c.setForce(cocos2d::Vec2(0, 3));
+		c.addForce(cocos2d::Vec2(0, 3));
 
 	//move down
 	else if (sticks[0].y < -0.3f) 
-		c.setForce(cocos2d::Vec2(0, -3));
+		c.addForce(cocos2d::Vec2(0, -3));
 
 	////////////////////
 
 
 	if (sticks[0].x > -0.3f && sticks[0].x < 0.3f && sticks[0].y > -0.3f && sticks[0].y < 0.3f) {
 		c.addForce(cocos2d::Vec2(c.getVelocity().x *-1.0f, c.getVelocity().y*-1.0f));
+	//	baseTable->getGameObject().getBox().addForce(cocos2d::Vec2(baseTable->getGameObject().getBox().getVelocity().x * -1, baseTable->getGameObject().getBox().getVelocity().y * -1));
 
 	}
 

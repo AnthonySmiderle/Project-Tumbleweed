@@ -6,12 +6,13 @@ Sedna::Table::Table(){
 	//this->setSprite("TableKnocked.png");
 	//this->setCircle(Sedna::CirclePrimitive(cocos2d::Vec2(300, 300), 10, 5, 50));
 }
-void Sedna::Table::spriteSwitch(cocos2d::Scene* yeet)
+void Sedna::Table::spriteSwitch(cocos2d::Scene* myB)
 {
-	this->getGameObject().setSprite("TableKnocked.png",yeet);
+	auto temp = cocos2d::Sprite::create("TableKnocked.png");
+	this->getGameObject()->setSprite(temp,myB);
 }
 
-Sedna::GameObject  Sedna::Table::getGameObject() const
+Sedna::GameObject* Sedna::Table::getGameObject() const
 {
-	return *this->tableGameObject;
+	return this->tableGameObject;
 }
