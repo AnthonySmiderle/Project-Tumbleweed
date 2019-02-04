@@ -8,6 +8,8 @@
     <ClCompile Include="..\Classes\XinputManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="..\Classes\Table.cpp" />
+    <ClCompile Include="..\Classes\Projectile.cpp" />
+    <ClCompile Include="..\Classes\Player.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Classes\AppDelegate.h" />
@@ -17,6 +19,8 @@
     <ClInclude Include="..\Classes\XinputManager.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="..\Classes\Table.h" />
+    <ClInclude Include="..\Classes\Projectile.h" />
+    <ClInclude Include="..\Classes\Player.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc" />

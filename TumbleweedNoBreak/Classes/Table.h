@@ -2,14 +2,11 @@
 #include "GameObject.h"
 
 namespace Sedna {
-	class Table  {
+	class Table : public GameObject  {
 	public:
-		Table();
+		Table(float x, float y);
 
 		void spriteSwitch();
-		GameObject *getGameObject() const;
 
-	private:
-		GameObject* tableGameObject;
 	};
 }

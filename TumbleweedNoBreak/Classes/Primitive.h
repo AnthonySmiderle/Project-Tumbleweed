@@ -28,6 +28,7 @@ namespace Sedna {
 		cocos2d::Vec2 getVelocity() const;
 		cocos2d::Vec2 getLocation() const;
 		bool checkCollision(CirclePrimitive other);
+		bool checkTouching(CirclePrimitive other);
 	private:
 		cocos2d::Vec2 location;
 		float radius;

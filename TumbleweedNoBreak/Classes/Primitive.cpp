@@ -41,8 +41,8 @@ namespace Sedna {
 	void CirclePrimitive::addForce(float vX, float vY)
 	{
 		cocos2d::Vec2 v = cocos2d::Vec2(vX, vY);
-		int maxVelocity = 5;
-		int minVelocity = -5;
+		int maxVelocity = 4;
+		int minVelocity = -4;
 
 		velocity += v / 10;
 
@@ -85,6 +85,17 @@ namespace Sedna {
 		if (distance <= (this->radius + other.radius))
 			return true;
 
+		return false;
+	}
+
+	bool CirclePrimitive::checkTouching(CirclePrimitive other)
+	{
+		float distance = sqrt((this->location.x - other.location.x)*(this->location.x - other.location.x) +
+			(this->location.y - other.location.y)*(this->location.y - other.location.y));
+
+
+		if (distance == (this->radius + other.radius))
+			return true;
 		return false;
 	}
 
