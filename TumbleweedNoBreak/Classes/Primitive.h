@@ -22,7 +22,7 @@ namespace Sedna {
 
 		cocos2d::DrawNode* getDrawNode() const;
 		void update();
-		void addForce(cocos2d::Vec2 v);
+		void addForce(float vX, float vY);
 		void setForce(cocos2d::Vec2 v);
 		void setLocation(cocos2d::Vec2 p);//test function 
 		cocos2d::Vec2 getVelocity() const;

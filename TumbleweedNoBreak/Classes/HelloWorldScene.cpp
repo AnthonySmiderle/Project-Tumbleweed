@@ -128,9 +128,9 @@ void HelloWorld::update(float dt)
 		//baseTable.spriteSwitch(this);
 	}
 	else {
-		baseTable.getGameObject()->getBox()->addForce(cocos2d::Vec2(
+		baseTable.getGameObject()->getBox()->addForce(
 			baseTable.getGameObject()->getBox()->getVelocity().x * -1, 
-			baseTable.getGameObject()->getBox()->getVelocity().y * -1));
+			baseTable.getGameObject()->getBox()->getVelocity().y * -1);
 	}
 	//else if(baseTable->getGameObject().getBox().getVelocity() == cocos2d::Vec2(0,0))
 	//	baseTable->getGameObject().getBox().addForce(cocos2d::Vec2(baseTable->getGameObject().getBox().getVelocity().x *-1.0f, baseTable->getGameObject().getBox().getVelocity().y*-1.0f));
@@ -170,29 +170,29 @@ void HelloWorld::checkInput()
 	////////////////////
 	//move right
 	if (sticks[0].x > 0.3f) {
-		c.addForce(cocos2d::Vec2(3.3, 0));
+		c.addForce(3.3, 0);
 	//	baseTable->getGameObject().getBox().setForce(cocos2d::Vec2(3.3, 0));
 	}
 	//move left
 	else if (sticks[0].x < -0.3f) 
-		c.addForce(cocos2d::Vec2(-3.3, 0));
+		c.addForce(-3.3, 0);
 
 	////////////////////
 
 	////////////////////
 	//move up
 	if (sticks[0].y > 0.3f) 
-		c.addForce(cocos2d::Vec2(0, 3));
+		c.addForce(0, 3);
 
 	//move down
 	else if (sticks[0].y < -0.3f) 
-		c.addForce(cocos2d::Vec2(0, -3));
+		c.addForce(0, -3);
 
 	////////////////////
 
 
 	if (sticks[0].x > -0.3f && sticks[0].x < 0.3f && sticks[0].y > -0.3f && sticks[0].y < 0.3f) {
-		c.addForce(cocos2d::Vec2(c.getVelocity().x *-1.0f, c.getVelocity().y*-1.0f));
+		c.addForce(c.getVelocity().x *-1.0f, c.getVelocity().y*-1.0f);
 	//	baseTable->getGameObject().getBox().addForce(cocos2d::Vec2(baseTable->getGameObject().getBox().getVelocity().x * -1, baseTable->getGameObject().getBox().getVelocity().y * -1));
 
 	}
