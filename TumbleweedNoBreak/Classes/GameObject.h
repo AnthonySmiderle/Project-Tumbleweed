@@ -13,13 +13,13 @@ namespace Sedna {
 		cocos2d::Sprite* getSprite()const;
 		Sedna::CirclePrimitive* getBox()const;
 		void setCircle(CirclePrimitive c) { *hitBox = c; }
-		void setSprite(cocos2d::Sprite* s,cocos2d::Scene* myB) { 
+		void setSprite(cocos2d::Sprite* s) { 
 		//	sprite->release(); 
 		//	myB->removeChild(sprite);
 		//myB->addChild(s);
 
-		sprite = s;
-		sprite->setPosition(hitBox->getLocation());
+			sprite->setTexture("TableKnocked.png");
+		//sprite->setPosition(hitBox->getLocation());
 		}
 		void updateGameObject();//todo
 	private:

@@ -25,6 +25,7 @@
 #include "HelloWorldScene.h"
 #include "SimpleAudioEngine.h"
 #include <iostream>
+#define tableHitBox baseTable.getGameObject()->getBox()
 USING_NS_CC;
 
 Scene* HelloWorld::createScene()
@@ -118,19 +119,16 @@ void HelloWorld::update(float dt)
 	checkInput();
 
 	if (p1->isButtonPressed(Sedna::A) && c.checkCollision(*baseTable.getGameObject()->getBox())) {
-
-		std::cout << "pre x " <<baseTable.getGameObject()->getBox()->getVelocity().x << std::endl;
-		std::cout << "pre y "<< baseTable.getGameObject()->getBox()->getVelocity().y << std::endl;
-		baseTable.getGameObject()->getBox()->setForce(cocos2d::Vec2(5, 0));
-		std::cout << "post x " << baseTable.getGameObject()->getBox()->getVelocity().x << std::endl;
-		std::cout << "post y " << baseTable.getGameObject()->getBox()->getVelocity().y << std::endl;
-
-		//baseTable.spriteSwitch(this);
+		//float distance = sqrt((tableHitBox->getLocation().x - c.getLocation.x)*(tableHitBox->getLocation().x - c.getLocation().x) +
+			//(tableHitBox->getLocation().y - c.getLocation().y)*(tableHitBox->getLocation().y - c.getLocation().y));
+		cocos2d::Vec2 distanceVector((tableHitBox->getLocation().x - c.getLocation().x), (tableHitBox->getLocation().y - c.getLocation().y));
+		baseTable.spriteSwitch();
+		tableHitBox->setForce(distanceVector);
 	}
-	else {
-		baseTable.getGameObject()->getBox()->addForce(
-			baseTable.getGameObject()->getBox()->getVelocity().x * -1, 
-			baseTable.getGameObject()->getBox()->getVelocity().y * -1);
+	else if (tableHitBox->getVelocity() != cocos2d::Vec2(0,0)){
+		tableHitBox->addForce(
+			tableHitBox->getVelocity().x * -1, 
+			tableHitBox->getVelocity().y * -1);
 	}
 	//else if(baseTable->getGameObject().getBox().getVelocity() == cocos2d::Vec2(0,0))
 	//	baseTable->getGameObject().getBox().addForce(cocos2d::Vec2(baseTable->getGameObject().getBox().getVelocity().x *-1.0f, baseTable->getGameObject().getBox().getVelocity().y*-1.0f));
@@ -154,7 +152,7 @@ void HelloWorld::initSprites()
 	player->setVisible(true);
 
 	baseTable = Sedna::Table();
-	this->addChild(baseTable.getGameObject()->getBox()->getDrawNode());
+	this->addChild(tableHitBox->getDrawNode());
 	this->addChild(baseTable.getGameObject()->getSprite());
 	baseTable.getGameObject()->getSprite()->setVisible(true);
 	//tableSprite = Sprite::create("table.jpg");
