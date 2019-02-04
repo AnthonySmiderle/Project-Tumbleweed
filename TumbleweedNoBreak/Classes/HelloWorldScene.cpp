@@ -108,7 +108,7 @@ void HelloWorld::update(float dt)
 {
 	managerR.update();
 	p1->updateSticks(sticks);
-
+	p1->getTriggers(p1Triggers);
 
 	//this->getDefaultCamera()->runAction(cocos2d::MoveBy::create(0, cocos2d::Vec2(0, 60 * dt)));
 
@@ -129,6 +129,11 @@ void HelloWorld::update(float dt)
 		tableHitBox->addForce(
 			tableHitBox->getVelocity().x * -1, 
 			tableHitBox->getVelocity().y * -1);
+	}
+
+	//std::cout << p1Triggers.RT<<std::endl;
+	if (p1Triggers.RT > 0) {
+		std::cout << "works" << std::endl;
 	}
 	//else if(baseTable->getGameObject().getBox().getVelocity() == cocos2d::Vec2(0,0))
 	//	baseTable->getGameObject().getBox().addForce(cocos2d::Vec2(baseTable->getGameObject().getBox().getVelocity().x *-1.0f, baseTable->getGameObject().getBox().getVelocity().y*-1.0f));
@@ -190,7 +195,7 @@ void HelloWorld::checkInput()
 
 
 	if (sticks[0].x > -0.3f && sticks[0].x < 0.3f && sticks[0].y > -0.3f && sticks[0].y < 0.3f) {
-		c.addForce(c.getVelocity().x *-1.0f, c.getVelocity().y*-1.0f);
+		c.addForce(c.getVelocity().x *-2.0f, c.getVelocity().y*-2.0f);
 	//	baseTable->getGameObject().getBox().addForce(cocos2d::Vec2(baseTable->getGameObject().getBox().getVelocity().x * -1, baseTable->getGameObject().getBox().getVelocity().y * -1));
 
 	}

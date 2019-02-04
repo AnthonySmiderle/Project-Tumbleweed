@@ -41,8 +41,8 @@ namespace Sedna {
 	void CirclePrimitive::addForce(float vX, float vY)
 	{
 		cocos2d::Vec2 v = cocos2d::Vec2(vX, vY);
-		int maxVelocity = 5;
-		int minVelocity = -5;
+		int maxVelocity = 4;
+		int minVelocity = -4;
 
 		velocity += v / 10;
 

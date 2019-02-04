@@ -57,6 +57,8 @@ private:
 	Sedna::Stick sticks[2];
 	Sedna::GameObject *table;
 
+	Sedna::Triggers p1Triggers;
+
 	Sedna::Table baseTable;
 
 	Sedna::CirclePrimitive tableC{ cocos2d::Vec2(200,200),10,5,20 };
