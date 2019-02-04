@@ -1,18 +1,11 @@
 #include "Table.h"
 
-Sedna::Table::Table(){
-
-	tableGameObject = new GameObject("Table.png", cocos2d::Vec2(200, 200), 20, 5, 50);
-	//this->setSprite("TableKnocked.png");
-	//this->setCircle(Sedna::CirclePrimitive(cocos2d::Vec2(300, 300), 10, 5, 50));
+Sedna::Table::Table(float x, float y)   {
+	this->sprite = cocos2d::Sprite::create("Table.png");
+	this->hitBox = new CirclePrimitive(cocos2d::Vec2(x, y),20,5,50);
 }
 void Sedna::Table::spriteSwitch()
-{
-	auto temp = cocos2d::Sprite::create("TableKnocked.png");
-	this->getGameObject()->setSprite(temp);
+{	
+	sprite->setTexture("TableKnocked.png");
 }
 
-Sedna::GameObject* Sedna::Table::getGameObject() const
-{
-	return this->tableGameObject;
-}

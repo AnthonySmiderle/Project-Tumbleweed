@@ -88,6 +88,17 @@ namespace Sedna {
 		return false;
 	}
 
+	bool CirclePrimitive::checkTouching(CirclePrimitive other)
+	{
+		float distance = sqrt((this->location.x - other.location.x)*(this->location.x - other.location.x) +
+			(this->location.y - other.location.y)*(this->location.y - other.location.y));
+
+
+		if (distance == (this->radius + other.radius))
+			return true;
+		return false;
+	}
+
 	
 
 }

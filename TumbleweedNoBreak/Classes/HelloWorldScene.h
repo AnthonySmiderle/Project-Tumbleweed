@@ -29,8 +29,8 @@
 #include "Primitive.h"
 #include <vector>
 #include "XinputManager.h"
-#include "GameObject.h"
 #include "Table.h"
+#include "Player.h"
 
 class HelloWorld : public cocos2d::Scene
 {
@@ -50,16 +50,15 @@ public:
 	CREATE_FUNC(HelloWorld);
 private:
 	//std::vector<Sedna::SquarePrimitive> bullets;
-	cocos2d::Sprite* player;
-	Sedna::CirclePrimitive c{ cocos2d::Vec2(100,100),10,5,20 };
 	Sedna::XinputManager managerR;
-	Sedna::XinputController* p1;
+	Sedna::XinputController* p1Controller;
 	Sedna::Stick sticks[2];
-	Sedna::GameObject *table;
 
 	Sedna::Triggers p1Triggers;
 
-	Sedna::Table baseTable;
+	Sedna::Table* baseTable;
+
+	Sedna::Player* playerOne;
 
 	Sedna::CirclePrimitive tableC{ cocos2d::Vec2(200,200),10,5,20 };
 	cocos2d::Sprite* tableSprite;

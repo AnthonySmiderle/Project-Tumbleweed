@@ -25,7 +25,7 @@
 #include "HelloWorldScene.h"
 #include "SimpleAudioEngine.h"
 #include <iostream>
-#define tableHitBox baseTable.getGameObject()->getBox()
+
 USING_NS_CC;
 
 Scene* HelloWorld::createScene()
@@ -92,11 +92,10 @@ bool HelloWorld::init()
 	initSprites();
 	//this->addChild(c.getDrawNode(), 100);
 
-	this->addChild(c.getDrawNode(), 1);
-	c.getDrawNode()->setVisible(true);
+	
 
 
-	p1 = managerR.getController(0);
+	p1Controller = managerR.getController(0);
 
 	this->scheduleUpdate();
 
@@ -107,28 +106,30 @@ bool HelloWorld::init()
 void HelloWorld::update(float dt)
 {
 	managerR.update();
-	p1->updateSticks(sticks);
-	p1->getTriggers(p1Triggers);
+	p1Controller->updateSticks(sticks);
+	p1Controller->getTriggers(p1Triggers);
 
 	//this->getDefaultCamera()->runAction(cocos2d::MoveBy::create(0, cocos2d::Vec2(0, 60 * dt)));
 
 	//std::cout<< p1->getLStickDirection()<<std::endl;
-	player->setPosition(c.getLocation());
-	//table->getBox().update();
+	//table->getBox().update();                                                                                                          
 	//table->getSprite()->setPosition(table->getBox().getLocation());
 	checkInput();
 
-	if (p1->isButtonPressed(Sedna::A) && c.checkCollision(*baseTable.getGameObject()->getBox())) {
+	if (p1Controller->isButtonPressed(Sedna::A) && playerOne->getBox()->checkCollision(*baseTable->getBox())) {
 		//float distance = sqrt((tableHitBox->getLocation().x - c.getLocation.x)*(tableHitBox->getLocation().x - c.getLocation().x) +
 			//(tableHitBox->getLocation().y - c.getLocation().y)*(tableHitBox->getLocation().y - c.getLocation().y));
-		cocos2d::Vec2 distanceVector((tableHitBox->getLocation().x - c.getLocation().x), (tableHitBox->getLocation().y - c.getLocation().y));
-		baseTable.spriteSwitch();
-		tableHitBox->setForce(distanceVector);
+		cocos2d::Vec2 distanceVector((baseTable->getBox()->getLocation().x - playerOne->getBox()->getLocation().x), (baseTable->getBox()->getLocation().y - playerOne->getBox()->getLocation().y));
+		baseTable->spriteSwitch();
+		baseTable->getBox()->addForce(distanceVector.x * 2,distanceVector.y * 2);
 	}
-	else if (tableHitBox->getVelocity() != cocos2d::Vec2(0,0)){
-		tableHitBox->addForce(
-			tableHitBox->getVelocity().x * -1, 
-			tableHitBox->getVelocity().y * -1);
+	else if (playerOne->getBox()->checkTouching(*baseTable->getBox())) {
+		playerOne->getBox()->setForce(cocos2d::Vec2(0, 0));
+	}
+	else if (baseTable->getBox()->getVelocity() != cocos2d::Vec2(0,0)){
+			baseTable->getBox()->addForce(
+			baseTable->getBox()->getVelocity().x * -1, 
+			baseTable->getBox()->getVelocity().y * -1);
 	}
 
 	//std::cout << p1Triggers.RT<<std::endl;
@@ -138,34 +139,33 @@ void HelloWorld::update(float dt)
 	//else if(baseTable->getGameObject().getBox().getVelocity() == cocos2d::Vec2(0,0))
 	//	baseTable->getGameObject().getBox().addForce(cocos2d::Vec2(baseTable->getGameObject().getBox().getVelocity().x *-1.0f, baseTable->getGameObject().getBox().getVelocity().y*-1.0f));
 
-
-	baseTable.getGameObject()->updateGameObject();
-	c.update();
-
+	playerOne->updateGameObject();
+	baseTable->updateGameObject();
+	
 
 
 }
 
 void HelloWorld::initSprites()
 {
-	player = Sprite::create("player1.png");
-	//player->setPosition(cocos2d::Vec2((s.getStart().x + s.getEnd().x) / 2, (s.getStart().y + s.getEnd().y) / 2));
-	player->setPosition(c.getLocation());
-	player->setAnchorPoint(cocos2d::Vec2(0.5f, 0.5f));
-	player->setScale(2.0f);
-	this->addChild(player, 1);
-	player->setVisible(true);
+	//player = Sprite::create("player1.png");
+	////player->setPosition(cocos2d::Vec2((s.getStart().x + s.getEnd().x) / 2, (s.getStart().y + s.getEnd().y) / 2));
+	//player->setPosition(c.getLocation());
+	//player->setAnchorPoint(cocos2d::Vec2(0.5f, 0.5f));
+	//player->setScale(2.0f);
+	//this->addChild(player, 1);
+	//player->setVisible(true);
 
-	baseTable = Sedna::Table();
-	this->addChild(tableHitBox->getDrawNode());
-	this->addChild(baseTable.getGameObject()->getSprite());
-	baseTable.getGameObject()->getSprite()->setVisible(true);
-	//tableSprite = Sprite::create("table.jpg");
-	//this->addChild(tableSprite);
-	//this->addChild(tableC.getDrawNode());
-	//tableC.getDrawNode()->setVisible(false);
-	//table = new Sedna::GameObject(tableSprite,tableC);
-	 
+	
+	playerOne = new Sedna::Player(1,100,100);
+	this->addChild(playerOne->getBox()->getDrawNode());
+	this->addChild(playerOne->getSprite());
+	playerOne->getSprite()->setVisible(true);
+
+	baseTable = new Sedna::Table(200,200);
+	this->addChild(baseTable->getBox()->getDrawNode());
+	this->addChild(baseTable->getSprite());
+	baseTable->getSprite()->setVisible(true);
 }
 
 void HelloWorld::checkInput()
@@ -173,29 +173,29 @@ void HelloWorld::checkInput()
 	////////////////////
 	//move right
 	if (sticks[0].x > 0.3f) {
-		c.addForce(3.3, 0);
+		playerOne->getBox()->addForce(3, 0);
 	//	baseTable->getGameObject().getBox().setForce(cocos2d::Vec2(3.3, 0));
 	}
 	//move left
 	else if (sticks[0].x < -0.3f) 
-		c.addForce(-3.3, 0);
+		playerOne->getBox()->addForce(-3, 0);
 
 	////////////////////
 
 	////////////////////
 	//move up
 	if (sticks[0].y > 0.3f) 
-		c.addForce(0, 3);
+		playerOne->getBox()->addForce(0, 3);
 
 	//move down
 	else if (sticks[0].y < -0.3f) 
-		c.addForce(0, -3);
+		playerOne->getBox()->addForce(0, -3);
 
 	////////////////////
 
 
 	if (sticks[0].x > -0.3f && sticks[0].x < 0.3f && sticks[0].y > -0.3f && sticks[0].y < 0.3f) {
-		c.addForce(c.getVelocity().x *-2.0f, c.getVelocity().y*-2.0f);
+		playerOne->getBox()->addForce(playerOne->getBox()->getVelocity().x *-2.0f, playerOne->getBox()->getVelocity().y*-2.0f);
 	//	baseTable->getGameObject().getBox().addForce(cocos2d::Vec2(baseTable->getGameObject().getBox().getVelocity().x * -1, baseTable->getGameObject().getBox().getVelocity().y * -1));
 
 	}
