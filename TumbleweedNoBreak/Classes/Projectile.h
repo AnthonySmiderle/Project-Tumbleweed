@@ -6,7 +6,9 @@ namespace Sedna {
 		Enemy
 
 	};
-class Projectile {
+
+///<projectiles>
+class Projectile : GameObject {
 public:
 
 	Projectile();
@@ -16,12 +18,13 @@ public:
 	unsigned int getDamage() const;
 
 protected:
-	GameObject *projectileGameObject;
 	unsigned int team;
 	unsigned int damage;
 
 };
 
+
+///<might not need this>
 class PistolBullet : Projectile {
 public:
 
