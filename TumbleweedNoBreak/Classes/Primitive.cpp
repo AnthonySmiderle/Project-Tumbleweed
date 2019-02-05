@@ -99,6 +99,16 @@ namespace Sedna {
 		return false;
 	}
 
+	bool CirclePrimitive::checkCloseTouching(CirclePrimitive other)
+	{
+		float distance = sqrt((this->location.x - other.location.x)*(this->location.x - other.location.x) +
+			(this->location.y - other.location.y)*(this->location.y - other.location.y));
+
+		if (distance <= ((this->radius-(this->radius/10)) + (other.radius-(other.radius/10))))
+			return true;
+		return false;
+	}
+
 	
 
 }

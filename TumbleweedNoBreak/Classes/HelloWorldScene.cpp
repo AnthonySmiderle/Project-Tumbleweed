@@ -131,7 +131,10 @@ void HelloWorld::update(float dt)
 			baseTable->getBox()->getVelocity().x * -1, 
 			baseTable->getBox()->getVelocity().y * -1);
 	}
-
+	if (playerOne->getBox()->checkCloseTouching(*baseTable->getBox())) {
+		cocos2d::Vec2 distanceVector((playerOne->getBox()->getLocation().x - baseTable->getBox()->getLocation().x), (playerOne->getBox()->getLocation().y - baseTable->getBox()->getLocation().y));
+		playerOne->getBox()->addForce(((distanceVector.x * 2)/2), (distanceVector.y * 2)/2);
+	}
 	//std::cout << p1Triggers.RT<<std::endl;
 	if (p1Triggers.RT > 0) {
 		std::cout << "works" << std::endl;
