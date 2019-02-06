@@ -5,14 +5,21 @@
 
 namespace Sedna {
 
-	//Square
-	
+	cocos2d::Color4F lerpdeColour(cocos2d::Color4F c1, cocos2d::Color4F c2,float dt) {
+		
+		cocos2d::Color4F temp;
+		temp = cocos2d::Color4F((1.0f - dt)*c1.r + dt * c2.r, (1.0f - dt)*c1.g + dt * c2.g, (1.0f - dt)*c1.b + dt * c2.b, 1.0f);
+		return temp;
+	}
+
+
+
 	//Circle
 	Sedna::CirclePrimitive::CirclePrimitive(const cocos2d::Vec2 &LOCATION, float RADIUS, float ANGLE, unsigned int SEGMENTS)
 		: Node(cocos2d::DrawNode::create()),location(LOCATION), radius(RADIUS), angle(ANGLE), segments(SEGMENTS)
 	{
 		//draw a circle given dimensions
-		Node->drawCircle(LOCATION, RADIUS, ANGLE, SEGMENTS, false, cocos2d::Color4F(0.0f, 1.0f, 0.0f, 1.0f));
+		Node->drawCircle(LOCATION, RADIUS, ANGLE, SEGMENTS, false, lerpdeColour(cocos2d::Color4F(1.0f,0.0f,0.0f,1.0f),cocos2d::Color4F(0.0f,0.0f,1.0f,1.0f),1.0f));
 	}
 
 	Sedna::CirclePrimitive::CirclePrimitive()
@@ -32,9 +39,19 @@ namespace Sedna {
 
 	void CirclePrimitive::update()
 	{
+		
+
+		if (dt > 0.9f || dt < 0.01f)
+		{
+			dt = dt > .9f ? .9f : 0.01f;
+			dt2 *= -1;
+		}
+		
+		dt += dt2;
+		
 		location += velocity;
 		Node->clear();
-		Node->drawCircle(location, radius, angle, segments, false, cocos2d::Color4F(0.0f, 1.0f, 0.0f, 1.0f));
+		Node->drawCircle(location, radius, angle, segments, false, lerpdeColour(cocos2d::Color4F(1.0f, 0.0f, 0.0f, 1.0f), cocos2d::Color4F(0.0f, 0.0f, 1.0f, 1.0f), dt));
 
 	}
 
@@ -43,6 +60,11 @@ namespace Sedna {
 		cocos2d::Vec2 v = cocos2d::Vec2(vX, vY);
 		int maxVelocity = 4;
 		int minVelocity = -4;
+		if (isTumble) {
+
+			maxVelocity =  10;
+			minVelocity = -10;
+		}
 
 		velocity += v / 10;
 
@@ -75,7 +97,7 @@ namespace Sedna {
 	{
 		return location;
 	}
-
+	
 	bool CirclePrimitive::checkCollision(CirclePrimitive other)
 	{
 		float distance = sqrt((this->location.x - other.location.x)*(this->location.x - other.location.x) + 
@@ -99,6 +121,12 @@ namespace Sedna {
 		return false;
 	}
 
+
+	bool CirclePrimitive::isTumbling() const
+	{
+		return isTumble;
+	}
+
 	bool CirclePrimitive::checkCloseTouching(CirclePrimitive other)
 	{
 		float distance = sqrt((this->location.x - other.location.x)*(this->location.x - other.location.x) +
@@ -108,7 +136,12 @@ namespace Sedna {
 			return true;
 		return false;
 	}
-
 	
 
+	void CirclePrimitive::setTumbling(bool YN)
+	{
+		isTumble = YN;
+
+
+	}
 }

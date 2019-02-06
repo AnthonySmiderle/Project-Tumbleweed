@@ -11,13 +11,17 @@
 //}
 
 
+		
+
 namespace Sedna {
+
 	//the actually useful one
 	class CirclePrimitive {
 	public:
 		CirclePrimitive(const cocos2d::Vec2 &LOCATION,float RADIUS, float ANGLE,unsigned int SEGMENTS);
 		CirclePrimitive();
 		~CirclePrimitive();
+
 
 
 		cocos2d::DrawNode* getDrawNode() const;
@@ -29,7 +33,11 @@ namespace Sedna {
 		cocos2d::Vec2 getLocation() const;
 		bool checkCollision(CirclePrimitive other);
 		bool checkTouching(CirclePrimitive other);
+		bool isTumbling() const;
+		void setTumbling(bool YN);
+
 		bool checkCloseTouching(CirclePrimitive other);
+
 	private:
 		cocos2d::Vec2 location;
 		float radius;
@@ -37,6 +45,9 @@ namespace Sedna {
 		unsigned int segments;
 		cocos2d::Vec2 velocity;
 		cocos2d::DrawNode* Node;
+		bool isTumble;
+
+		float dt = 0, dt2 = 0.01f;
 	};
 
 }

@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "XinputManager.h"
 namespace Sedna {
 
 
@@ -19,7 +20,8 @@ public:
 	//extend member functions here
 	
 	void shoot();
-	void roll();
+private:
+
 
 };
 

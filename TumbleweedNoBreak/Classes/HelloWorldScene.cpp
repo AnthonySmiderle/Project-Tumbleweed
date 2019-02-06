@@ -33,6 +33,8 @@ Scene* HelloWorld::createScene()
 	return HelloWorld::create();
 }
 
+
+
 // Print useful error message instead of segfaulting when files are not there.
 static void problemLoading(const char* filename)
 {
@@ -82,18 +84,11 @@ bool HelloWorld::init()
 	this->addChild(menu, 1);
 
 
-	/////////////////////////////
-	// 3. add your codes below...
-
-	// add a label shows "Hello World"
-	// create and initialize a label
+	
 
 
 	initSprites();
-	//this->addChild(c.getDrawNode(), 100);
-
 	
-
 
 	p1Controller = managerR.getController(0);
 
@@ -109,62 +104,29 @@ void HelloWorld::update(float dt)
 	p1Controller->updateSticks(sticks);
 	p1Controller->getTriggers(p1Triggers);
 
-	//this->getDefaultCamera()->runAction(cocos2d::MoveBy::create(0, cocos2d::Vec2(0, 60 * dt)));
-
-	//std::cout<< p1->getLStickDirection()<<std::endl;
-	//table->getBox().update();                                                                                                          
-	//table->getSprite()->setPosition(table->getBox().getLocation());
+	
 	checkInput();
-
-	if (p1Controller->isButtonPressed(Sedna::A) && playerOne->getBox()->checkCollision(*baseTable->getBox())) {
-		//float distance = sqrt((tableHitBox->getLocation().x - c.getLocation.x)*(tableHitBox->getLocation().x - c.getLocation().x) +
-			//(tableHitBox->getLocation().y - c.getLocation().y)*(tableHitBox->getLocation().y - c.getLocation().y));
-		cocos2d::Vec2 distanceVector((baseTable->getBox()->getLocation().x - playerOne->getBox()->getLocation().x), (baseTable->getBox()->getLocation().y - playerOne->getBox()->getLocation().y));
-		baseTable->spriteSwitch();
-		baseTable->getBox()->addForce(distanceVector.x * 2,distanceVector.y * 2);
-	}
-	else if (playerOne->getBox()->checkTouching(*baseTable->getBox())) {
-		playerOne->getBox()->setForce(cocos2d::Vec2(0, 0));
-	}
-	else if (baseTable->getBox()->getVelocity() != cocos2d::Vec2(0,0)){
-			baseTable->getBox()->addForce(
-			baseTable->getBox()->getVelocity().x * -1, 
-			baseTable->getBox()->getVelocity().y * -1);
-	}
-	if (playerOne->getBox()->checkCloseTouching(*baseTable->getBox())) {
-		cocos2d::Vec2 distanceVector((playerOne->getBox()->getLocation().x - baseTable->getBox()->getLocation().x), (playerOne->getBox()->getLocation().y - baseTable->getBox()->getLocation().y));
-		playerOne->getBox()->addForce(((distanceVector.x * 2)/2), (distanceVector.y * 2)/2);
-	}
+	getCollisions();
+	
 	//std::cout << p1Triggers.RT<<std::endl;
 	if (p1Triggers.RT > 0) {
-		std::cout << "works" << std::endl;
+		std::cout << "bam" << std::endl;
 	}
-	//else if(baseTable->getGameObject().getBox().getVelocity() == cocos2d::Vec2(0,0))
-	//	baseTable->getGameObject().getBox().addForce(cocos2d::Vec2(baseTable->getGameObject().getBox().getVelocity().x *-1.0f, baseTable->getGameObject().getBox().getVelocity().y*-1.0f));
-
+	
 	playerOne->updateGameObject();
 	baseTable->updateGameObject();
-	
-
 
 }
 
 void HelloWorld::initSprites()
 {
-	//player = Sprite::create("player1.png");
-	////player->setPosition(cocos2d::Vec2((s.getStart().x + s.getEnd().x) / 2, (s.getStart().y + s.getEnd().y) / 2));
-	//player->setPosition(c.getLocation());
-	//player->setAnchorPoint(cocos2d::Vec2(0.5f, 0.5f));
-	//player->setScale(2.0f);
-	//this->addChild(player, 1);
-	//player->setVisible(true);
 
-	
 	playerOne = new Sedna::Player(1,100,100);
 	this->addChild(playerOne->getBox()->getDrawNode());
 	this->addChild(playerOne->getSprite());
 	playerOne->getSprite()->setVisible(true);
 
+	//replace this with a base table that can be copied later
 	baseTable = new Sedna::Table(200,200);
 	this->addChild(baseTable->getBox()->getDrawNode());
 	this->addChild(baseTable->getSprite());
@@ -196,14 +158,62 @@ void HelloWorld::checkInput()
 
 	////////////////////
 
+	if (p1Controller->isButtonPressed(Sedna::B)) {
+		playerOne->getBox()->setTumbling(true);
+		if (sticks[0].x > 0.3f) {
+			playerOne->getBox()->addForce(6, 0);
 
-	if (sticks[0].x > -0.3f && sticks[0].x < 0.3f && sticks[0].y > -0.3f && sticks[0].y < 0.3f) {
+		}
+		else if (sticks[0].x < -0.3f) {
+			playerOne->getBox()->addForce(-6, 0);
+
+		}
+
+		else if (sticks[0].y > 0.3f) {
+			playerOne->getBox()->addForce(0,6);
+
+		}
+		else if (sticks[0].y < -0.3f) {
+			playerOne->getBox()->addForce(0, -6);
+
+		}
+	}
+	else {
+		playerOne->getBox()->setTumbling(false);
+	}
+	if (sticks[0].x > -0.3f && sticks[0].x < 0.3f && sticks[0].y > -0.3f && sticks[0].y < 0.3f) 
 		playerOne->getBox()->addForce(playerOne->getBox()->getVelocity().x *-2.0f, playerOne->getBox()->getVelocity().y*-2.0f);
-	//	baseTable->getGameObject().getBox().addForce(cocos2d::Vec2(baseTable->getGameObject().getBox().getVelocity().x * -1, baseTable->getGameObject().getBox().getVelocity().y * -1));
+
+
+
+}
+
+void HelloWorld::getCollisions()
+{
+	if (p1Controller->isButtonPressed(Sedna::A) && playerOne->getBox()->checkCollision(*baseTable->getBox())) {
+
+		cocos2d::Vec2 distanceVector((baseTable->getBox()->getLocation().x - playerOne->getBox()->getLocation().x), (baseTable->getBox()->getLocation().y - playerOne->getBox()->getLocation().y));
+		baseTable->spriteSwitch();
+		//times 2 to give a better feel to kicking the table
+		baseTable->getBox()->addForce(distanceVector.x * 2, distanceVector.y * 2);
 
 	}
+	//else if (playerOne->getBox()->checkTouching(*baseTable->getBox())) {
+	//
+	//	playerOne->getBox()->setForce(cocos2d::Vec2(0, 0));
+	//
+	//}
 
+	else if (baseTable->getBox()->getVelocity() != cocos2d::Vec2(0, 0)) {
 
+		baseTable->getBox()->addForce(
+			baseTable->getBox()->getVelocity().x * -1,
+			baseTable->getBox()->getVelocity().y * -1);
+	}
+	if (playerOne->getBox()->checkCloseTouching(*baseTable->getBox())) {
+		cocos2d::Vec2 distanceVector((playerOne->getBox()->getLocation().x - baseTable->getBox()->getLocation().x), (playerOne->getBox()->getLocation().y - baseTable->getBox()->getLocation().y));
+		playerOne->getBox()->addForce(((distanceVector.x * 2) / 2), (distanceVector.y * 2) / 2);
+	}
 }
 
 
