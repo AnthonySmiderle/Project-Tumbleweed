@@ -31,6 +31,7 @@
 #include "XinputManager.h"
 #include "Table.h"
 #include "Player.h"
+#include "Potion.h"
 
 class HelloWorld : public cocos2d::Scene
 {
@@ -63,7 +64,8 @@ private:
 
 	Sedna::CirclePrimitive tableC{ cocos2d::Vec2(200,200),10,5,20 };
 	cocos2d::Sprite* tableSprite;
-
+	std::vector <Sedna::Table> tableList;
+	std::vector <Sedna::Potion> potionList;
 };
 
 #endif // __HELLOWORLD_SCENE_H__

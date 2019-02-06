@@ -10,6 +10,7 @@
     <ClCompile Include="..\Classes\Table.cpp" />
     <ClCompile Include="..\Classes\Projectile.cpp" />
     <ClCompile Include="..\Classes\Player.cpp" />
+    <ClCompile Include="..\Classes\Potion.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Classes\AppDelegate.h" />
@@ -21,6 +22,7 @@
     <ClInclude Include="..\Classes\Table.h" />
     <ClInclude Include="..\Classes\Projectile.h" />
     <ClInclude Include="..\Classes\Player.h" />
+    <ClInclude Include="..\Classes\Potion.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc" />
