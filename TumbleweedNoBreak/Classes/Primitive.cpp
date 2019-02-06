@@ -62,8 +62,8 @@ namespace Sedna {
 		int minVelocity = -4;
 		if (isTumble) {
 
-			maxVelocity = 6;
-			minVelocity = -6;
+			maxVelocity =  10;
+			minVelocity = -10;
 		}
 
 		velocity += v / 10;
@@ -121,16 +121,27 @@ namespace Sedna {
 		return false;
 	}
 
+
 	bool CirclePrimitive::isTumbling() const
 	{
 		return isTumble;
 	}
 
+	bool CirclePrimitive::checkCloseTouching(CirclePrimitive other)
+	{
+		float distance = sqrt((this->location.x - other.location.x)*(this->location.x - other.location.x) +
+			(this->location.y - other.location.y)*(this->location.y - other.location.y));
+
+		if (distance <= ((this->radius-(this->radius/10)) + (other.radius-(other.radius/10))))
+			return true;
+		return false;
+	}
+	
+
 	void CirclePrimitive::setTumbling(bool YN)
 	{
 		isTumble = YN;
+
+
 	}
-
-	
-
 }

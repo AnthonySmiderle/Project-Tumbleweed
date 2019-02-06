@@ -42,6 +42,7 @@ public:
 
 	void initSprites();
 	void checkInput();
+	void getCollisions();
 
 	// a selector callback
 	void menuCloseCallback(cocos2d::Ref* pSender);

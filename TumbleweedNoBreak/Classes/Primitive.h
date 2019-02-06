@@ -35,6 +35,9 @@ namespace Sedna {
 		bool checkTouching(CirclePrimitive other);
 		bool isTumbling() const;
 		void setTumbling(bool YN);
+
+		bool checkCloseTouching(CirclePrimitive other);
+
 	private:
 		cocos2d::Vec2 location;
 		float radius;

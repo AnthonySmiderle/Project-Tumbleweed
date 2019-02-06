@@ -106,28 +106,8 @@ void HelloWorld::update(float dt)
 
 	
 	checkInput();
-
-	if (p1Controller->isButtonPressed(Sedna::A) && playerOne->getBox()->checkCollision(*baseTable->getBox())) {
+	getCollisions();
 	
-		cocos2d::Vec2 distanceVector((baseTable->getBox()->getLocation().x - playerOne->getBox()->getLocation().x), (baseTable->getBox()->getLocation().y - playerOne->getBox()->getLocation().y));
-		baseTable->spriteSwitch();
-		//times 2 to give a better feel to kicking the table
-		baseTable->getBox()->addForce(distanceVector.x * 2,distanceVector.y * 2);
-
-	}
-	//else if (playerOne->getBox()->checkTouching(*baseTable->getBox())) {
-	//
-	//	playerOne->getBox()->setForce(cocos2d::Vec2(0, 0));
-	//
-	//}
-
-	else if (baseTable->getBox()->getVelocity() != cocos2d::Vec2(0,0)){
-
-			baseTable->getBox()->addForce(
-			baseTable->getBox()->getVelocity().x * -1, 
-			baseTable->getBox()->getVelocity().y * -1);
-	}
-
 	//std::cout << p1Triggers.RT<<std::endl;
 	if (p1Triggers.RT > 0) {
 		std::cout << "bam" << std::endl;
@@ -206,6 +186,34 @@ void HelloWorld::checkInput()
 
 
 
+}
+
+void HelloWorld::getCollisions()
+{
+	if (p1Controller->isButtonPressed(Sedna::A) && playerOne->getBox()->checkCollision(*baseTable->getBox())) {
+
+		cocos2d::Vec2 distanceVector((baseTable->getBox()->getLocation().x - playerOne->getBox()->getLocation().x), (baseTable->getBox()->getLocation().y - playerOne->getBox()->getLocation().y));
+		baseTable->spriteSwitch();
+		//times 2 to give a better feel to kicking the table
+		baseTable->getBox()->addForce(distanceVector.x * 2, distanceVector.y * 2);
+
+	}
+	//else if (playerOne->getBox()->checkTouching(*baseTable->getBox())) {
+	//
+	//	playerOne->getBox()->setForce(cocos2d::Vec2(0, 0));
+	//
+	//}
+
+	else if (baseTable->getBox()->getVelocity() != cocos2d::Vec2(0, 0)) {
+
+		baseTable->getBox()->addForce(
+			baseTable->getBox()->getVelocity().x * -1,
+			baseTable->getBox()->getVelocity().y * -1);
+	}
+	if (playerOne->getBox()->checkCloseTouching(*baseTable->getBox())) {
+		cocos2d::Vec2 distanceVector((playerOne->getBox()->getLocation().x - baseTable->getBox()->getLocation().x), (playerOne->getBox()->getLocation().y - baseTable->getBox()->getLocation().y));
+		playerOne->getBox()->addForce(((distanceVector.x * 2) / 2), (distanceVector.y * 2) / 2);
+	}
 }
 
 
