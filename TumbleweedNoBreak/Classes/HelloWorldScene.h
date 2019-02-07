@@ -42,7 +42,7 @@ public:
 	void update(float dt);
 
 	void initSprites();
-	void checkInput();
+	void checkInput(float dt);
 	void getCollisions();
 
 	// a selector callback
@@ -66,6 +66,8 @@ private:
 	cocos2d::Sprite* tableSprite;
 	std::vector <Sedna::Table> tableList;
 	std::vector <Sedna::Potion> potionList;
+	float tumbleTimer = 0.0f;
+	bool isTumbling = false;
 };
 
 #endif // __HELLOWORLD_SCENE_H__

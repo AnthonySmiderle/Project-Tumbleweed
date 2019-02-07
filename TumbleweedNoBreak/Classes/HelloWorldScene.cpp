@@ -105,7 +105,7 @@ void HelloWorld::update(float dt)
 	p1Controller->getTriggers(p1Triggers);
 
 	
-	checkInput();
+	checkInput(dt);
 	getCollisions();
 	
 	//std::cout << p1Triggers.RT<<std::endl;
@@ -133,7 +133,7 @@ void HelloWorld::initSprites()
 	baseTable->getSprite()->setVisible(true);
 }
 
-void HelloWorld::checkInput()
+void HelloWorld::checkInput(float dt)
 {
 	////////////////////
 	//move right
@@ -159,24 +159,19 @@ void HelloWorld::checkInput()
 	////////////////////
 
 	if (p1Controller->isButtonPressed(Sedna::B)) {
-		playerOne->getBox()->setTumbling(true);
-		if (sticks[0].x > 0.3f) {
-			playerOne->getBox()->addForce(6, 0);
-
+		std::cout << tumbleTimer <<std::endl;
+		if (tumbleTimer > 5)
+		{
+			tumbleTimer = 0;
+			isTumbling = false;
 		}
-		else if (sticks[0].x < -0.3f) {
-			playerOne->getBox()->addForce(-6, 0);
-
-		}
-
-		else if (sticks[0].y > 0.3f) {
-			playerOne->getBox()->addForce(0,6);
-
-		}
-		else if (sticks[0].y < -0.3f) {
-			playerOne->getBox()->addForce(0, -6);
-
-		}
+			
+		if (!tumbleTimer)
+		{
+			isTumbling = true;
+			playerOne->getBox()->setTumbling(true);
+			playerOne->getBox()->addForce(0,1000);
+		}		
 	}
 	else {
 		playerOne->getBox()->setTumbling(false);
@@ -185,7 +180,8 @@ void HelloWorld::checkInput()
 		playerOne->getBox()->addForce(playerOne->getBox()->getVelocity().x *-2.0f, playerOne->getBox()->getVelocity().y*-2.0f);
 
 
-
+	if (isTumbling)
+		tumbleTimer += dt;
 }
 
 void HelloWorld::getCollisions()
