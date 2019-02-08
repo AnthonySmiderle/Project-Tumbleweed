@@ -8,9 +8,10 @@ namespace Sedna {
 	};
 
 ///<projectiles>
-class Projectile : GameObject {
+class Projectile : public GameObject {
 public:
 
+	Projectile(float x, float y);
 	Projectile();
 	~Projectile();
 
@@ -24,15 +25,5 @@ protected:
 };
 
 
-///<might not need this>
-class PistolBullet : Projectile {
-public:
 
-	PistolBullet();
-	~PistolBullet();
-
-private:
-
-
-};
 }
