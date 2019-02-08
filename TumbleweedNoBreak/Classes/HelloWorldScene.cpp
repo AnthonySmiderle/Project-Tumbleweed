@@ -159,7 +159,7 @@ void HelloWorld::checkInput(float dt)
 	////////////////////
 
 	if (p1Controller->isButtonPressed(Sedna::B)) {
-		std::cout << tumbleTimer <<std::endl;
+		//std::cout << tumbleTimer <<std::endl;
 		if (tumbleTimer > 5)
 		{
 			tumbleTimer = 0;
