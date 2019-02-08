@@ -107,22 +107,14 @@ void HelloWorld::update(float dt)
 
 	checkInput(dt);
 	getCollisions();
-	if (gunTimer == 5)
-	{
-		gunTimer = 0;
-		isShooting = false;
-	}
+	
 
-	this->getDefaultCamera()->setPosition(cocos2d::Vec2(this->getDefaultCamera()->getPosition().x,
-		this->getDefaultCamera()->getPosition().y + 1));
-	if (!gunTimer)
-	{
-		isShooting = true;	
-	}
-		gunTimer += 1;
+	//this->getDefaultCamera()->setPosition(cocos2d::Vec2(this->getDefaultCamera()->getPosition().x,
+	//	this->getDefaultCamera()->getPosition().y + 1));
+	
 
 	//std::cout << p1Triggers.RT<<std::endl;
-	if (p1Triggers.RT > 0 && isShooting) {
+	if (p1Triggers.RT > 0 ) {
 		//Sedna::Projectile* tempProjectile = new Sedna::Projectile(*playerProjectile);
 		//tempProjectile->getBox()->setLocation(playerOne->getBox()->getLocation());
 		//tempProjectile->getBox()->addForce(0, 1);
