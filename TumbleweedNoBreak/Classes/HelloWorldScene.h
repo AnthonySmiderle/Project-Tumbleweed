@@ -74,8 +74,6 @@ private:
 	std::vector <Sedna::Table> tableList;
 	std::vector <Sedna::Potion> potionList;
 	float tumbleTimer = 0.0f;
-	float gunTimer = 0.0f;
-	bool isShooting = false;
 	bool isTumbling = false;
 };
 
