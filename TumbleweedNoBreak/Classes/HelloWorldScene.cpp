@@ -119,7 +119,8 @@ void HelloWorld::update(float dt)
 		//tempProjectile->getBox()->setLocation(playerOne->getBox()->getLocation());
 		//tempProjectile->getBox()->addForce(0, 1);
 		//tempProjectile->updateGameObject();
-		if (gunTimer>0.5)
+		std::cout << gunTimer<<std::endl;
+		if (gunTimer>0.5f)
 		{
 			gunTimer = 0.0f;
 			hasShot = false;
@@ -127,9 +128,9 @@ void HelloWorld::update(float dt)
 		if (!gunTimer)
 		{
 			hasShot = true;
-			playerProjectile = new Sedna::Projectile(-1000, 0);
-			this->addChild(playerProjectile->getBox()->getDrawNode());
-			this->addChild(playerProjectile->getSprite());
+			//playerProjectile = new Sedna::Projectile(-1000, 0);
+			//this->addChild(playerProjectile->getBox()->getDrawNode());
+			//this->addChild(playerProjectile->getSprite());
 		if (sticks[1].y < 0.3f && sticks[1].y > -0.3f && sticks[1].x > 0.3f ||
 			sticks[1].y < 0.3f && sticks[1].y > -0.3f && sticks[1].x < -0.3f ||
 			sticks[1].y < -0.3f) {}
@@ -145,9 +146,6 @@ void HelloWorld::update(float dt)
 			projectiles.back()->getBox()->setLocation(playerOne->getBox()->getLocation());
 			projectiles.back()->getBox()->setForce(cocos2d::Vec2(0, 1));
 			projectiles.back()->updateGameObject();
-		}
-		if (hasShot)
-			gunTimer += dt;
 		if (sticks[1].x < -0.3f && sticks[1].y > 0.3f) 
 			projectiles.back()->getBox()->setForce(cocos2d::Vec2(-5,5));
 		if (sticks[1].x > 0.3f && sticks[1].y > 0.3f)
@@ -155,6 +153,9 @@ void HelloWorld::update(float dt)
 		if(sticks[1].y > 0.3f && sticks[1].x < 0.3f && sticks[1].x > -0.3f||
 			sticks[1].y < 0.3f && sticks[1].y > -0.3f && sticks[1].x < 0.3f && sticks[1].x > -0.3f)
 			projectiles.back()->getBox()->setForce(cocos2d::Vec2(0, 5));
+		}
+		
+
 
 		}
 
@@ -167,6 +168,8 @@ void HelloWorld::update(float dt)
 
 
 	}
+	if (hasShot)
+		gunTimer += dt;
 	//if(!projectiles.empty())
 	//projectiles.back()->updateGameObject();
 
@@ -175,7 +178,7 @@ void HelloWorld::update(float dt)
 		projectiles[i]->updateGameObject();
 	
 	}
-	std::cout << sticks[1].x<<" "<<sticks[1].y<< "\n";
+	//std::cout << sticks[1].x<<" "<<sticks[1].y<< "\n";
 	
 	playerOne->updateGameObject();
 	baseTable->updateGameObject();
