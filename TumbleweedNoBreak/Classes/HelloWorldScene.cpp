@@ -114,15 +114,11 @@ void HelloWorld::update(float dt)
 	
 
 	//std::cout << p1Triggers.RT<<std::endl;
-	if (p1Triggers.RT > 0) {
+	if (p1Triggers.RT > 0 ) {
 		//Sedna::Projectile* tempProjectile = new Sedna::Projectile(*playerProjectile);
 		//tempProjectile->getBox()->setLocation(playerOne->getBox()->getLocation());
 		//tempProjectile->getBox()->addForce(0, 1);
 		//tempProjectile->updateGameObject();
-		if (sticks[1].y < 0.3f && sticks[1].y > -0.3f && sticks[1].x > 0.3f ||
-			sticks[1].y < 0.3f && sticks[1].y > -0.3f && sticks[1].x < -0.3f ||
-			sticks[1].y < -0.3f) {}
-		else {
 		playerProjectile = new Sedna::Projectile(-1000, 0);
 		this->addChild(playerProjectile->getBox()->getDrawNode());
 		this->addChild(playerProjectile->getSprite());
@@ -130,24 +126,8 @@ void HelloWorld::update(float dt)
 		projectiles.push_back(new Sedna::Projectile(*playerProjectile));
 		
 		projectiles.back()->getBox()->setLocation(playerOne->getBox()->getLocation());
-
-		if (sticks[1].x < -0.3f && sticks[1].y > 0.3f) 
-			projectiles.back()->getBox()->setForce(cocos2d::Vec2(-5,5));
-		if (sticks[1].x > 0.3f && sticks[1].y > 0.3f)
-			projectiles.back()->getBox()->setForce(cocos2d::Vec2(5, 5));
-		if(sticks[1].y > 0.3f && sticks[1].x < 0.3f && sticks[1].x > -0.3f||
-			sticks[1].y < 0.3f && sticks[1].y > -0.3f && sticks[1].x < 0.3f && sticks[1].x > -0.3f)
-			projectiles.back()->getBox()->setForce(cocos2d::Vec2(0, 5));
-
-		}
-
-		//else if(sticks[1].x > 0.3f)
-		//	projectiles.back()->getBox()->setForce(cocos2d::Vec2(5, 0));
-		//if(sticks[1].y < -0.3f)
-		//	projectiles.back()->getBox()->setForce(cocos2d::Vec2(0, -5));
-		//else if(sticks[1].y > 0.3f)
-		//	projectiles.back()->getBox()->setForce(cocos2d::Vec2(0, 5));
-
+		projectiles.back()->getBox()->setForce(cocos2d::Vec2(0,1));
+		projectiles.back()->updateGameObject();
 
 	}
 	//if(!projectiles.empty())
@@ -158,7 +138,7 @@ void HelloWorld::update(float dt)
 		projectiles[i]->updateGameObject();
 	
 	}
-	std::cout << sticks[1].x<<" "<<sticks[1].y<< "\n";
+	std::cout << projectiles.size() << "\n";
 	
 	playerOne->updateGameObject();
 	baseTable->updateGameObject();
