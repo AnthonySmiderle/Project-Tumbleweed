@@ -94,7 +94,7 @@ bool HelloWorld::init()
 
 	this->scheduleUpdate();
 
-
+	initPauseMenu();
 	return true;
 }
 
@@ -119,7 +119,7 @@ void HelloWorld::update(float dt)
 		//tempProjectile->getBox()->setLocation(playerOne->getBox()->getLocation());
 		//tempProjectile->getBox()->addForce(0, 1);
 		//tempProjectile->updateGameObject();
-		std::cout << gunTimer<<std::endl;
+		//std::cout << gunTimer<<std::endl;
 		if (gunTimer>0.5f)
 		{
 			gunTimer = 0.0f;
@@ -135,7 +135,7 @@ void HelloWorld::update(float dt)
 			sticks[1].y < 0.3f && sticks[1].y > -0.3f && sticks[1].x < -0.3f ||
 			sticks[1].y < -0.3f) {}
 		else {
-		playerProjectile = new Sedna::Projectile(-1000, 0);
+		playerProjectile = new Sedna::Projectile(-1000, 0, Sedna::Ally);
 		this->addChild(playerProjectile->getBox()->getDrawNode());
 		this->addChild(playerProjectile->getSprite());
 
@@ -153,6 +153,7 @@ void HelloWorld::update(float dt)
 		if(sticks[1].y > 0.3f && sticks[1].x < 0.3f && sticks[1].x > -0.3f||
 			sticks[1].y < 0.3f && sticks[1].y > -0.3f && sticks[1].x < 0.3f && sticks[1].x > -0.3f)
 			projectiles.back()->getBox()->setForce(cocos2d::Vec2(0, 5));
+		//playerProjectile->getBox()->getDrawNode()->setVisible(true);//bugtesting
 		}
 		
 
@@ -203,6 +204,10 @@ void HelloWorld::initSprites()
 
 void HelloWorld::checkInput(float dt)
 {
+	if (p1Controller->isButtonPressed(Sedna::SELECT))
+		exit(0);
+	if (p1Controller->isButtonPressed(Sedna::START))
+		togglePause();
 	////////////////////
 	//move right
 	if (sticks[0].x > 0.3f) {
@@ -293,4 +298,36 @@ void HelloWorld::menuCloseCallback(Ref* pSender)
 	//_eventDispatcher->dispatchEvent(&customEndEvent);
 
 
+}
+
+
+
+void HelloWorld::initPauseMenu() {
+	Label* pausedLabel = Label::create("PAUSED", "fonts/Roboto/Roboto-Regular.ttf", 48, Size::ZERO, TextHAlignment::CENTER, TextVAlignment::CENTER);
+	pausedLabel->enableShadow();
+
+	Label* resumeLabel = Label::create("Resume Game", "fonts/Roboto/Roboto-Regular.ttf", 24, Size::ZERO, TextHAlignment::LEFT, TextVAlignment::BOTTOM);
+	resumeLabel->enableShadow();
+
+	MenuItem* pausedItem = MenuItemLabel::create(pausedLabel, NULL);
+	MenuItem* resumeButton = MenuItemLabel::create(resumeLabel, [&](Ref* sender) { togglePause(); });
+
+	pausedItem->setPosition(0, 100);
+	resumeButton->setPosition(0, -200);
+
+	pauseMenu = Menu::create(pausedItem, resumeButton, NULL);
+
+	this->addChild(pauseMenu, 100);
+	pauseMenu->setVisible(false);
+}
+
+void HelloWorld::togglePause() {
+	paused ^=1;
+
+	if (paused) {
+		pauseMenu->setVisible(true);
+	}
+	else {
+		pauseMenu->setVisible(false);
+	}
 }

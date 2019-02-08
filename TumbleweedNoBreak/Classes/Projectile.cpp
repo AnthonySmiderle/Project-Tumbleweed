@@ -1,10 +1,10 @@
 #include "Projectile.h"
 namespace Sedna{
-Projectile::Projectile(float x,float y)
+Projectile::Projectile(float x, float y, Team t)
 {
-	//projectileGameObject = new GameObject("table.jpg")
-	sprite = cocos2d::Sprite::create("bullet.jpg");
-	hitBox = new CirclePrimitive(cocos2d::Vec2(x, y), 20, 5, 30);
+	sprite = cocos2d::Sprite::create("bullet2.png");
+	hitBox = new CirclePrimitive(cocos2d::Vec2(x, y), 3, 5, 30);
+	team = t;
 }
 Projectile::~Projectile()
 {

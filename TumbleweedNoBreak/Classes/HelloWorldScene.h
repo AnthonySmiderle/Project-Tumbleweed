@@ -77,6 +77,10 @@ private:
 	bool isTumbling = false;
 	float gunTimer = 0.0f;
 	bool hasShot = false;
+	bool paused = false;
+	void togglePause();
+	cocos2d::Menu* pauseMenu;
+	void initPauseMenu();	
 };
 
 #endif // __HELLOWORLD_SCENE_H__

@@ -10,8 +10,7 @@ namespace Sedna {
 ///<projectiles>
 class Projectile : public GameObject {
 public:
-
-	Projectile(float x, float y);
+	Projectile(float x, float y, Team t);
 	Projectile();
 	~Projectile();
 
