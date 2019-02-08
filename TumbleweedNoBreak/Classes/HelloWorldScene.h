@@ -32,6 +32,7 @@
 #include "Table.h"
 #include "Player.h"
 #include "Potion.h"
+#include "Projectile.h"
 
 class HelloWorld : public cocos2d::Scene
 {
@@ -60,13 +61,21 @@ private:
 
 	Sedna::Table* baseTable;
 
+
 	Sedna::Player* playerOne;
+
+	Sedna::Projectile *playerProjectile;
+	std::vector<Sedna::Projectile*>projectiles;
+
+
 
 	Sedna::CirclePrimitive tableC{ cocos2d::Vec2(200,200),10,5,20 };
 	cocos2d::Sprite* tableSprite;
 	std::vector <Sedna::Table> tableList;
 	std::vector <Sedna::Potion> potionList;
 	float tumbleTimer = 0.0f;
+	float gunTimer = 0.0f;
+	bool isShooting = false;
 	bool isTumbling = false;
 };
 

@@ -104,14 +104,49 @@ void HelloWorld::update(float dt)
 	p1Controller->updateSticks(sticks);
 	p1Controller->getTriggers(p1Triggers);
 
-	
+
 	checkInput(dt);
 	getCollisions();
-	
-	//std::cout << p1Triggers.RT<<std::endl;
-	if (p1Triggers.RT > 0) {
-		std::cout << "bam" << std::endl;
+	if (gunTimer == 5)
+	{
+		gunTimer = 0;
+		isShooting = false;
 	}
+
+	this->getDefaultCamera()->setPosition(cocos2d::Vec2(this->getDefaultCamera()->getPosition().x,
+		this->getDefaultCamera()->getPosition().y + 1));
+	if (!gunTimer)
+	{
+		isShooting = true;	
+	}
+		gunTimer += 1;
+
+	//std::cout << p1Triggers.RT<<std::endl;
+	if (p1Triggers.RT > 0 && isShooting) {
+		//Sedna::Projectile* tempProjectile = new Sedna::Projectile(*playerProjectile);
+		//tempProjectile->getBox()->setLocation(playerOne->getBox()->getLocation());
+		//tempProjectile->getBox()->addForce(0, 1);
+		//tempProjectile->updateGameObject();
+		playerProjectile = new Sedna::Projectile(-1000, 0);
+		this->addChild(playerProjectile->getBox()->getDrawNode());
+		this->addChild(playerProjectile->getSprite());
+
+		projectiles.push_back(new Sedna::Projectile(*playerProjectile));
+		
+		projectiles.back()->getBox()->setLocation(playerOne->getBox()->getLocation());
+		projectiles.back()->getBox()->setForce(cocos2d::Vec2(0,1));
+		projectiles.back()->updateGameObject();
+
+	}
+	//if(!projectiles.empty())
+	//projectiles.back()->updateGameObject();
+
+	for (int i = 0; i < projectiles.size(); i++) {
+	
+		projectiles[i]->updateGameObject();
+	
+	}
+	std::cout << projectiles.size() << "\n";
 	
 	playerOne->updateGameObject();
 	baseTable->updateGameObject();
@@ -120,6 +155,7 @@ void HelloWorld::update(float dt)
 
 void HelloWorld::initSprites()
 {
+	
 
 	playerOne = new Sedna::Player(1,100,100);
 	this->addChild(playerOne->getBox()->getDrawNode());
@@ -165,6 +201,7 @@ void HelloWorld::checkInput(float dt)
 			tumbleTimer = 0;
 			isTumbling = false;
 		}
+		
 			
 		if (!tumbleTimer)
 		{
