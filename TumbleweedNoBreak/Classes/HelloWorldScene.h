@@ -75,6 +75,8 @@ private:
 	std::vector <Sedna::Potion> potionList;
 	float tumbleTimer = 0.0f;
 	bool isTumbling = false;
+	float gunTimer = 0.0f;
+	bool hasShot = false;
 };
 
 #endif // __HELLOWORLD_SCENE_H__

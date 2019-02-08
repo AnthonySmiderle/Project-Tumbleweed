@@ -119,16 +119,26 @@ void HelloWorld::update(float dt)
 		//tempProjectile->getBox()->setLocation(playerOne->getBox()->getLocation());
 		//tempProjectile->getBox()->addForce(0, 1);
 		//tempProjectile->updateGameObject();
-		playerProjectile = new Sedna::Projectile(-1000, 0);
-		this->addChild(playerProjectile->getBox()->getDrawNode());
-		this->addChild(playerProjectile->getSprite());
+		if (gunTimer>0.5)
+		{
+			gunTimer = 0.0f;
+			hasShot = false;
+		}
+		if (!gunTimer)
+		{
+			hasShot = true;
+			playerProjectile = new Sedna::Projectile(-1000, 0);
+			this->addChild(playerProjectile->getBox()->getDrawNode());
+			this->addChild(playerProjectile->getSprite());
 
-		projectiles.push_back(new Sedna::Projectile(*playerProjectile));
-		
-		projectiles.back()->getBox()->setLocation(playerOne->getBox()->getLocation());
-		projectiles.back()->getBox()->setForce(cocos2d::Vec2(0,1));
-		projectiles.back()->updateGameObject();
+			projectiles.push_back(new Sedna::Projectile(*playerProjectile));
 
+			projectiles.back()->getBox()->setLocation(playerOne->getBox()->getLocation());
+			projectiles.back()->getBox()->setForce(cocos2d::Vec2(0, 1));
+			projectiles.back()->updateGameObject();
+		}
+		if (hasShot)
+			gunTimer += dt;
 	}
 	//if(!projectiles.empty())
 	//projectiles.back()->updateGameObject();
