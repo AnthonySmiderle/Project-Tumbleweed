@@ -112,7 +112,14 @@ void HelloWorld::update(float dt)
 	//this->getDefaultCamera()->setPosition(cocos2d::Vec2(this->getDefaultCamera()->getPosition().x,
 	//	this->getDefaultCamera()->getPosition().y + 1));
 
-
+		///srand(time(0));
+		///auto x = rand() % 100 + 100 + (rand() % 200 + 200);
+		///auto y = 300;
+		///outlaw = new Sedna::Outlaw(-1000, 0);
+		///this->addChild(outlaw->getBox()->getDrawNode());
+		///this->addChild(outlaw->getSprite());
+		///outlawList.push_back(new Sedna::Outlaw(*outlaw));
+		///outlawList.back()->getBox()->setLocation(cocos2d::Vec2(100, 100));
 	if (p1Triggers.RT > 0) {
 		
 		if (gunTimer > 0.5f)
@@ -149,14 +156,7 @@ void HelloWorld::update(float dt)
 					pProjectileList.back()->getBox()->setForce(cocos2d::Vec2(0, 5));
 			}
 		}
-		///srand(time(0));
-		///auto x = rand() % 1900 + 100;
-		///auto y = 300;
-		///outlaw = new Sedna::Outlaw(-1000, 0);
-		///this->addChild(outlaw->getBox()->getDrawNode());
-		///this->addChild(outlaw->getSprite());
-		///outlawList.push_back(new Sedna::Outlaw(*outlaw));
-		///outlawList.back()->getBox()->setLocation(cocos2d::Vec2(100, 100));
+		
 
 	}
 	if (hasShot)
@@ -168,12 +168,18 @@ void HelloWorld::update(float dt)
 		outlawList[i]->updateGameObject(); 
 
 	}
+
+	if (pProjectileList.size() > 4) {
+		pProjectileList.erase(pProjectileList.begin());
+
+	}
 	for (int i = 0; i < pProjectileList.size(); i++) {
 
 		pProjectileList[i]->updateGameObject();
-
+		
 	}
 	//std::cout << sticks[1].x<<" "<<sticks[1].y<< "\n";
+	
 
 	playerOne->updateGameObject();
 	baseTable->updateGameObject();
