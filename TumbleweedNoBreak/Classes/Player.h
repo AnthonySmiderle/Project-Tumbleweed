@@ -1,15 +1,11 @@
 #pragma once
 #include "GameObject.h"
+#include "Enums and Typdefs.h"
 #include "XinputManager.h"
 namespace Sedna {
 
 
-	enum playerNumber {
-
-		playerOne = 1,
-		playerTwo
-
-	};
+	
 class Player : public GameObject
 {
 public:

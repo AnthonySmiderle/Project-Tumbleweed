@@ -26,13 +26,13 @@
 #define __HELLOWORLD_SCENE_H__
 
 #include "cocos2d.h"
-#include "Primitive.h"
 #include <vector>
 #include "XinputManager.h"
 #include "Table.h"
 #include "Player.h"
 #include "Potion.h"
 #include "Projectile.h"
+#include "Enemy.h"
 
 class HelloWorld : public cocos2d::Scene
 {
@@ -65,9 +65,10 @@ private:
 	Sedna::Player* playerOne;
 
 	Sedna::Projectile *playerProjectile;
-	std::vector<Sedna::Projectile*>projectiles;
+	std::vector<Sedna::Projectile*>pProjectileList;
 
-
+	Sedna::Outlaw* outlaw;
+	std::vector<Sedna::Outlaw*>outlawList;
 
 	Sedna::CirclePrimitive tableC{ cocos2d::Vec2(200,200),10,5,20 };
 	cocos2d::Sprite* tableSprite;

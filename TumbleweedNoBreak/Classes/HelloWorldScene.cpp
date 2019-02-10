@@ -84,11 +84,11 @@ bool HelloWorld::init()
 	this->addChild(menu, 1);
 
 
-	
+
 
 
 	initSprites();
-	
+
 
 	p1Controller = managerR.getController(0);
 
@@ -107,20 +107,15 @@ void HelloWorld::update(float dt)
 
 	checkInput(dt);
 	getCollisions();
-	
+
 
 	//this->getDefaultCamera()->setPosition(cocos2d::Vec2(this->getDefaultCamera()->getPosition().x,
 	//	this->getDefaultCamera()->getPosition().y + 1));
-	
 
-	//std::cout << p1Triggers.RT<<std::endl;
-	if (p1Triggers.RT > 0 ) {
-		//Sedna::Projectile* tempProjectile = new Sedna::Projectile(*playerProjectile);
-		//tempProjectile->getBox()->setLocation(playerOne->getBox()->getLocation());
-		//tempProjectile->getBox()->addForce(0, 1);
-		//tempProjectile->updateGameObject();
-		std::cout << gunTimer<<std::endl;
-		if (gunTimer>0.5f)
+
+	if (p1Triggers.RT > 0) {
+		
+		if (gunTimer > 0.5f)
 		{
 			gunTimer = 0.0f;
 			hasShot = false;
@@ -131,57 +126,55 @@ void HelloWorld::update(float dt)
 			//playerProjectile = new Sedna::Projectile(-1000, 0);
 			//this->addChild(playerProjectile->getBox()->getDrawNode());
 			//this->addChild(playerProjectile->getSprite());
-		if (sticks[1].y < 0.3f && sticks[1].y > -0.3f && sticks[1].x > 0.3f ||
-			sticks[1].y < 0.3f && sticks[1].y > -0.3f && sticks[1].x < -0.3f ||
-			sticks[1].y < -0.3f) {}
-		else {
-		playerProjectile = new Sedna::Projectile(-1000, 0);
-		this->addChild(playerProjectile->getBox()->getDrawNode());
-		this->addChild(playerProjectile->getSprite());
+			if (sticks[1].y < 0.3f && sticks[1].y > -0.3f && sticks[1].x > 0.3f ||
+				sticks[1].y < 0.3f && sticks[1].y > -0.3f && sticks[1].x < -0.3f ||
+				sticks[1].y < -0.3f) {
+			}
+			else {
 
-		projectiles.push_back(new Sedna::Projectile(*playerProjectile));
-		
-		projectiles.back()->getBox()->setLocation(playerOne->getBox()->getLocation());
-		projectiles.back()->getBox()->setForce(cocos2d::Vec2(0,1));
-		projectiles.back()->updateGameObject();
+				playerProjectile = new Sedna::Projectile(-1000, 0);
+				this->addChild(playerProjectile->getBox()->getDrawNode());
+				this->addChild(playerProjectile->getSprite());
 
-			projectiles.back()->getBox()->setLocation(playerOne->getBox()->getLocation());
-			projectiles.back()->getBox()->setForce(cocos2d::Vec2(0, 1));
-			projectiles.back()->updateGameObject();
-		if (sticks[1].x < -0.3f && sticks[1].y > 0.3f) 
-			projectiles.back()->getBox()->setForce(cocos2d::Vec2(-5,5));
-		if (sticks[1].x > 0.3f && sticks[1].y > 0.3f)
-			projectiles.back()->getBox()->setForce(cocos2d::Vec2(5, 5));
-		if(sticks[1].y > 0.3f && sticks[1].x < 0.3f && sticks[1].x > -0.3f||
-			sticks[1].y < 0.3f && sticks[1].y > -0.3f && sticks[1].x < 0.3f && sticks[1].x > -0.3f)
-			projectiles.back()->getBox()->setForce(cocos2d::Vec2(0, 5));
+				pProjectileList.push_back(new Sedna::Projectile(*playerProjectile));
+
+				pProjectileList.back()->getBox()->setLocation(playerOne->getBox()->getLocation());
+
+				if (sticks[1].x < -0.3f && sticks[1].y > 0.3f)
+					pProjectileList.back()->getBox()->setForce(cocos2d::Vec2(-5, 5));
+				if (sticks[1].x > 0.3f && sticks[1].y > 0.3f)
+					pProjectileList.back()->getBox()->setForce(cocos2d::Vec2(5, 5));
+				if (sticks[1].y > 0.3f && sticks[1].x < 0.3f && sticks[1].x > -0.3f ||
+					sticks[1].y < 0.3f && sticks[1].y > -0.3f && sticks[1].x < 0.3f && sticks[1].x > -0.3f)
+					pProjectileList.back()->getBox()->setForce(cocos2d::Vec2(0, 5));
+			}
 		}
-		
-
-
-		}
-
-		//else if(sticks[1].x > 0.3f)
-		//	projectiles.back()->getBox()->setForce(cocos2d::Vec2(5, 0));
-		//if(sticks[1].y < -0.3f)
-		//	projectiles.back()->getBox()->setForce(cocos2d::Vec2(0, -5));
-		//else if(sticks[1].y > 0.3f)
-		//	projectiles.back()->getBox()->setForce(cocos2d::Vec2(0, 5));
-
+		///srand(time(0));
+		///auto x = rand() % 1900 + 100;
+		///auto y = 300;
+		///outlaw = new Sedna::Outlaw(-1000, 0);
+		///this->addChild(outlaw->getBox()->getDrawNode());
+		///this->addChild(outlaw->getSprite());
+		///outlawList.push_back(new Sedna::Outlaw(*outlaw));
+		///outlawList.back()->getBox()->setLocation(cocos2d::Vec2(100, 100));
 
 	}
 	if (hasShot)
 		gunTimer += dt;
 	//if(!projectiles.empty())
 	//projectiles.back()->updateGameObject();
+	for (int i = 0; i < outlawList.size(); i++) {
 
-	for (int i = 0; i < projectiles.size(); i++) {
-	
-		projectiles[i]->updateGameObject();
-	
+		outlawList[i]->updateGameObject(); 
+
+	}
+	for (int i = 0; i < pProjectileList.size(); i++) {
+
+		pProjectileList[i]->updateGameObject();
+
 	}
 	//std::cout << sticks[1].x<<" "<<sticks[1].y<< "\n";
-	
+
 	playerOne->updateGameObject();
 	baseTable->updateGameObject();
 
@@ -189,15 +182,16 @@ void HelloWorld::update(float dt)
 
 void HelloWorld::initSprites()
 {
+
 	
 
-	playerOne = new Sedna::Player(1,100,100);
+	playerOne = new Sedna::Player(1, 100, 100);
 	this->addChild(playerOne->getBox()->getDrawNode());
 	this->addChild(playerOne->getSprite());
 	playerOne->getSprite()->setVisible(true);
 
 	//replace this with a base table that can be copied later
-	baseTable = new Sedna::Table(200,200);
+	baseTable = new Sedna::Table(200, 200);
 	this->addChild(baseTable->getBox()->getDrawNode());
 	this->addChild(baseTable->getSprite());
 	baseTable->getSprite()->setVisible(true);
@@ -209,21 +203,21 @@ void HelloWorld::checkInput(float dt)
 	//move right
 	if (sticks[0].x > 0.3f) {
 		playerOne->getBox()->addForce(3, 0);
-	//	baseTable->getGameObject().getBox().setForce(cocos2d::Vec2(3.3, 0));
+		//	baseTable->getGameObject().getBox().setForce(cocos2d::Vec2(3.3, 0));
 	}
 	//move left
-	else if (sticks[0].x < -0.3f) 
+	else if (sticks[0].x < -0.3f)
 		playerOne->getBox()->addForce(-3, 0);
 
 	////////////////////
 
 	////////////////////
 	//move up
-	if (sticks[0].y > 0.3f) 
+	if (sticks[0].y > 0.3f)
 		playerOne->getBox()->addForce(0, 3);
 
 	//move down
-	else if (sticks[0].y < -0.3f) 
+	else if (sticks[0].y < -0.3f)
 		playerOne->getBox()->addForce(0, -3);
 
 	////////////////////
@@ -235,19 +229,19 @@ void HelloWorld::checkInput(float dt)
 			tumbleTimer = 0;
 			isTumbling = false;
 		}
-		
-			
+
+
 		if (!tumbleTimer)
 		{
 			isTumbling = true;
 			playerOne->getBox()->setTumbling(true);
-			playerOne->getBox()->addForce(0,1000);
-		}		
+			playerOne->getBox()->addForce(0, 1000);
+		}
 	}
 	else {
 		playerOne->getBox()->setTumbling(false);
 	}
-	if (sticks[0].x > -0.3f && sticks[0].x < 0.3f && sticks[0].y > -0.3f && sticks[0].y < 0.3f) 
+	if (sticks[0].x > -0.3f && sticks[0].x < 0.3f && sticks[0].y > -0.3f && sticks[0].y < 0.3f)
 		playerOne->getBox()->addForce(playerOne->getBox()->getVelocity().x *-2.0f, playerOne->getBox()->getVelocity().y*-2.0f);
 
 

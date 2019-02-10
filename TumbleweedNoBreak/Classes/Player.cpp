@@ -17,7 +17,7 @@ Player::Player(int wPlayer,float x, float y)
 
 Player::~Player()
 {
-	delete this;
+	//delete this;
 }
 
 
