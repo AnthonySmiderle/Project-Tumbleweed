@@ -244,7 +244,7 @@ void HelloWorld::checkInput(float dt)
 		{
 			isTumbling = true;
 			playerOne->getBox()->setTumbling(true);
-			playerOne->getBox()->addForce(0,1000);
+			playerOne->getBox()->addForce(sticks[0].x*100,sticks[0].y*100);
 		}		
 	}
 	else {
