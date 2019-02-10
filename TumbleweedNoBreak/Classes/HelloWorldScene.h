@@ -78,6 +78,8 @@ private:
 	bool isTumbling = false;
 	float gunTimer = 0.0f;
 	bool hasShot = false;
+	float enemyTimer = 0.0f;
+	bool hasSpawn = false;
 	bool paused = false;
 	void togglePause();
 	cocos2d::Menu* pauseMenu;
