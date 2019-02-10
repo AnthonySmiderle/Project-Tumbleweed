@@ -1,11 +1,8 @@
 #pragma once
 #include "GameObject.h"
+#include "Enums and Typdefs.h"
 namespace Sedna {
-	enum Team {
-		Ally,
-		Enemy
 
-	};
 
 ///<projectiles>
 class Projectile : public GameObject {
