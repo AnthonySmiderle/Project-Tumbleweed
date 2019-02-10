@@ -91,6 +91,7 @@ bool HelloWorld::init()
 
 
 	p1Controller = managerR.getController(0);
+	p2Controller = managerR.getController(1);
 
 	this->scheduleUpdate();
 
@@ -101,17 +102,19 @@ bool HelloWorld::init()
 void HelloWorld::update(float dt)
 {
 	managerR.update();
-	p1Controller->updateSticks(sticks);
+	p1Controller->updateSticks(p1Sticks);
 	p1Controller->getTriggers(p1Triggers);
+	p2Controller->updateSticks(p2Sticks);
+	p2Controller->getTriggers(p2Triggers);
 
-
+	srand(time(0));
 	checkInput(dt);
 	getCollisions();
 
 
 	//this->getDefaultCamera()->setPosition(cocos2d::Vec2(this->getDefaultCamera()->getPosition().x,
 	//	this->getDefaultCamera()->getPosition().y + 1));
-	if (enemyTimer >4.0f)
+	if (enemyTimer > 4.0f)
 	{
 		enemyTimer = 0.0f;
 		hasSpawn = false;
@@ -119,24 +122,20 @@ void HelloWorld::update(float dt)
 	if (!enemyTimer)
 	{
 		hasSpawn = true;
-		outlaw = new Sedna::Outlaw(-1000, 0);
+		int x = rand() % 100 + 1 + (rand() % 200 + 1);
+		int y = 150;	///<fix later>
+		outlaw = new Sedna::Outlaw(x, y);
 		this->addChild(outlaw->getBox()->getDrawNode());
 		this->addChild(outlaw->getSprite());
 		outlawList.push_back(new Sedna::Outlaw(*outlaw));
-		outlawList.back()->getBox()->setLocation(cocos2d::Vec2(100, 100));
+
 	}
 	if (hasSpawn)
 		enemyTimer += dt;
-		///srand(time(0));
-		///auto x = rand() % 100 + 100 + (rand() % 200 + 200);
-		///auto y = 300;
-		///outlaw = new Sedna::Outlaw(-1000, 0);
-		///this->addChild(outlaw->getBox()->getDrawNode());
-		///this->addChild(outlaw->getSprite());
-		///outlawList.push_back(new Sedna::Outlaw(*outlaw));
-		///outlawList.back()->getBox()->setLocation(cocos2d::Vec2(100, 100));
+
+
 	if (p1Triggers.RT > 0) {
-		
+
 		if (gunTimer > 0.2f)
 		{
 			gunTimer = 0.0f;
@@ -148,13 +147,13 @@ void HelloWorld::update(float dt)
 			//playerProjectile = new Sedna::Projectile(-1000, 0);
 			//this->addChild(playerProjectile->getBox()->getDrawNode());
 			//this->addChild(playerProjectile->getSprite());
-			if (sticks[1].y < 0.3f && sticks[1].y > -0.3f && sticks[1].x > 0.3f ||
-				sticks[1].y < 0.3f && sticks[1].y > -0.3f && sticks[1].x < -0.3f ||
-				sticks[1].y < -0.3f) {
+			if (p1Sticks[1].y < 0.3f && p1Sticks[1].y > -0.3f && p1Sticks[1].x > 0.3f ||
+				p1Sticks[1].y < 0.3f && p1Sticks[1].y > -0.3f && p1Sticks[1].x < -0.3f ||
+				p1Sticks[1].y < -0.3f) {
 			}
 			else {
 
-				playerProjectile = new Sedna::Projectile(-1000, 0,Sedna::Ally);
+				playerProjectile = new Sedna::Projectile(-1000, 0, Sedna::Ally);
 				this->addChild(playerProjectile->getBox()->getDrawNode());
 				this->addChild(playerProjectile->getSprite());
 
@@ -162,45 +161,51 @@ void HelloWorld::update(float dt)
 
 				pProjectileList.back()->getBox()->setLocation(playerOne->getBox()->getLocation());
 
-				if (sticks[1].x < -0.3f && sticks[1].y > 0.3f)
+				if (p1Sticks[1].x < -0.3f && p1Sticks[1].y > 0.3f)
 					pProjectileList.back()->getBox()->setForce(cocos2d::Vec2(-5, 5));
-				if (sticks[1].x > 0.3f && sticks[1].y > 0.3f)
+				if (p1Sticks[1].x > 0.3f && p1Sticks[1].y > 0.3f)
 					pProjectileList.back()->getBox()->setForce(cocos2d::Vec2(5, 5));
-				if (sticks[1].y > 0.3f && sticks[1].x < 0.3f && sticks[1].x > -0.3f ||
-					sticks[1].y < 0.3f && sticks[1].y > -0.3f && sticks[1].x < 0.3f && sticks[1].x > -0.3f)
+				if (p1Sticks[1].y > 0.3f && p1Sticks[1].x < 0.3f && p1Sticks[1].x > -0.3f ||
+					p1Sticks[1].y < 0.3f && p1Sticks[1].y > -0.3f && p1Sticks[1].x < 0.3f && p1Sticks[1].x > -0.3f)
 					pProjectileList.back()->getBox()->setForce(cocos2d::Vec2(0, 5));
 			}
 		}
-		
+
 
 	}
 	if (hasShot)
 		gunTimer += dt;
-	//if(!projectiles.empty())
-	//projectiles.back()->updateGameObject();
-	if (outlawList.size() > 4) {
-		outlawList.erase(outlawList.begin());
 
-	}
-	for (int i = 0; i < outlawList.size(); i++) {
-
-		outlawList[i]->updateGameObject(); 
-
-	}
-
-	if (pProjectileList.size() > 4) {
-		pProjectileList.erase(pProjectileList.begin());
-
-	}
+	///
 	for (int i = 0; i < pProjectileList.size(); i++) {
+		for (int j = 0; j < outlawList.size(); j++) {
+			if (pProjectileList[i]->getBox()->checkCollision(*outlawList[j]->getBox())) {
 
-		pProjectileList[i]->updateGameObject();
-		
+				outlawList[j]->setHP(outlawList[j]->getHP() - 1);
+				pProjectileList[i]->getBox()->getDrawNode()->removeFromParent();
+				pProjectileList[i]->getSprite()->removeFromParent();
+				pProjectileList.erase(pProjectileList.begin() + i);
+
+				if (!outlawList[j]->getHP()) {
+					outlawList[j]->getBox()->getDrawNode()->removeFromParent();
+					outlawList[j]->getSprite()->removeFromParent();
+					outlawList.erase(outlawList.begin() + j);
+				j--;
+				}
+
+				i--;
+
+			}
+
+		}
 	}
-	//std::cout << sticks[1].x<<" "<<sticks[1].y<< "\n";
-	
+
+
+	checkLists();
+
 
 	playerOne->updateGameObject();
+	playerTwo->updateGameObject();
 	baseTable->updateGameObject();
 
 }
@@ -208,7 +213,10 @@ void HelloWorld::update(float dt)
 void HelloWorld::initSprites()
 {
 
-	
+	playerTwo = new Sedna::Player(2, 300, 100);
+	this->addChild(playerTwo->getBox()->getDrawNode());
+	this->addChild(playerTwo->getSprite());
+	playerTwo->getSprite()->setVisible(true);
 
 	playerOne = new Sedna::Player(1, 100, 100);
 	this->addChild(playerOne->getBox()->getDrawNode());
@@ -228,28 +236,36 @@ void HelloWorld::checkInput(float dt)
 		exit(0);
 	if (p1Controller->isButtonPressed(Sedna::START))
 		togglePause();
-	////////////////////
-	//move right
-	if (sticks[0].x > 0.3f) {
+
+
+	///<player 1>
+	if (p1Sticks[0].x > 0.3f)
 		playerOne->getBox()->addForce(3, 0);
-		//	baseTable->getGameObject().getBox().setForce(cocos2d::Vec2(3.3, 0));
-	}
-	//move left
-	else if (sticks[0].x < -0.3f)
+
+	else if (p1Sticks[0].x < -0.3f)
 		playerOne->getBox()->addForce(-3, 0);
 
-	////////////////////
-
-	////////////////////
-	//move up
-	if (sticks[0].y > 0.3f)
+	if (p1Sticks[0].y > 0.3f)
 		playerOne->getBox()->addForce(0, 3);
 
-	//move down
-	else if (sticks[0].y < -0.3f)
+	else if (p1Sticks[0].y < -0.3f)
 		playerOne->getBox()->addForce(0, -3);
 
-	////////////////////
+	///<player 2>
+	if (p2Sticks[0].x > 0.3f)
+		playerOne->getBox()->addForce(3, 0);
+
+	else if (p2Sticks[0].x < -0.3f)
+		playerOne->getBox()->addForce(-3, 0);
+
+	if (p2Sticks[0].y > 0.3f)
+		playerOne->getBox()->addForce(0, 3);
+
+	else if (p2Sticks[0].y < -0.3f)
+		playerOne->getBox()->addForce(0, -3);
+
+
+
 
 	if (p1Controller->isButtonPressed(Sedna::B)) {
 		//std::cout << tumbleTimer <<std::endl;
@@ -264,13 +280,13 @@ void HelloWorld::checkInput(float dt)
 		{
 			isTumbling = true;
 			playerOne->getBox()->setTumbling(true);
-			if(sticks[0].x < -0.3f)
-			playerOne->getBox()->addForce(-500, 0);
-			else if (sticks[0].x > 0.3f)
+			if (p1Sticks[0].x < -0.3f)
+				playerOne->getBox()->addForce(-500, 0);
+			else if (p1Sticks[0].x > 0.3f)
 				playerOne->getBox()->addForce(500, 0);
-			if (sticks[0].y < -0.3f)
+			if (p1Sticks[0].y < -0.3f)
 				playerOne->getBox()->addForce(0, -500);
-			else if (sticks[0].y > 0.3f)
+			else if (p1Sticks[0].y > 0.3f)
 				playerOne->getBox()->addForce(0, 500);
 
 
@@ -279,9 +295,10 @@ void HelloWorld::checkInput(float dt)
 	else {
 		playerOne->getBox()->setTumbling(false);
 	}
-	if (sticks[0].x > -0.3f && sticks[0].x < 0.3f && sticks[0].y > -0.3f && sticks[0].y < 0.3f)
+	if (p1Sticks[0].x > -0.3f && p1Sticks[0].x < 0.3f && p1Sticks[0].y > -0.3f && p1Sticks[0].y < 0.3f)
 		playerOne->getBox()->addForce(playerOne->getBox()->getVelocity().x *-2.0f, playerOne->getBox()->getVelocity().y*-2.0f);
-
+	if (p2Sticks[0].x > -0.3f && p2Sticks[0].x < 0.3f && p2Sticks[0].y > -0.3f && p2Sticks[0].y < 0.3f)
+		playerTwo->getBox()->addForce(playerTwo->getBox()->getVelocity().x *-2.0f, playerTwo->getBox()->getVelocity().y*-2.0f);
 
 	if (isTumbling)
 		tumbleTimer += dt;
@@ -297,13 +314,8 @@ void HelloWorld::getCollisions()
 		baseTable->getBox()->addForce(distanceVector.x * 2, distanceVector.y * 2);
 
 	}
-	//else if (playerOne->getBox()->checkTouching(*baseTable->getBox())) {
-	//
-	//	playerOne->getBox()->setForce(cocos2d::Vec2(0, 0));
-	//
-	//}
 
-	else if (baseTable->getBox()->getVelocity() != cocos2d::Vec2(0, 0)) {
+	if (baseTable->getBox()->getVelocity() != cocos2d::Vec2(0, 0)) {
 
 		baseTable->getBox()->addForce(
 			baseTable->getBox()->getVelocity().x * -1,
@@ -313,6 +325,57 @@ void HelloWorld::getCollisions()
 		cocos2d::Vec2 distanceVector((playerOne->getBox()->getLocation().x - baseTable->getBox()->getLocation().x), (playerOne->getBox()->getLocation().y - baseTable->getBox()->getLocation().y));
 		playerOne->getBox()->addForce(((distanceVector.x * 2) / 2), (distanceVector.y * 2) / 2);
 	}
+	//////////////////////////////////////////////////////////////////////////////////////
+	if (p2Controller->isButtonPressed(Sedna::A) && playerTwo->getBox()->checkCollision(*baseTable->getBox())) {
+
+		cocos2d::Vec2 distanceVector((baseTable->getBox()->getLocation().x - playerTwo->getBox()->getLocation().x), (baseTable->getBox()->getLocation().y - playerTwo->getBox()->getLocation().y));
+		baseTable->spriteSwitch();
+		//times 2 to give a better feel to kicking the table
+		baseTable->getBox()->addForce(distanceVector.x * 2, distanceVector.y * 2);
+
+	}
+	if (playerTwo->getBox()->checkCloseTouching(*baseTable->getBox())) {
+		cocos2d::Vec2 distanceVector((playerTwo->getBox()->getLocation().x - baseTable->getBox()->getLocation().x), (playerTwo->getBox()->getLocation().y - baseTable->getBox()->getLocation().y));
+		playerTwo->getBox()->addForce(((distanceVector.x * 2) / 2), (distanceVector.y * 2) / 2);
+	}
+}
+
+void HelloWorld::checkLists()
+{
+	if (outlawList.size() > 4) {
+		outlawList.front()->getBox()->getDrawNode()->removeFromParent();
+		outlawList.front()->getSprite()->removeFromParent();
+		outlawList.erase(outlawList.begin());
+	}
+
+
+	for (int i = 0; i < outlawList.size(); i++)
+		outlawList[i]->updateGameObject();
+
+samePosition:
+	for (int i = 0; i < outlawList.size(); i++) {
+		for (int j = 0; j < outlawList.size(); j++) {
+			if (i == j)
+				continue;
+			if (outlawList[i]->getBox()->checkCollision(*outlawList[j]->getBox())) {
+				outlawList[i]->getBox()->setLocation(cocos2d::Vec2(rand() % 100 + 1 + (rand() % 200 + 1),
+					outlawList[i]->getBox()->getLocation().y));
+				goto samePosition;
+			}
+
+		}
+	}
+
+	if (pProjectileList.size() > 4) {
+		pProjectileList.front()->getBox()->getDrawNode()->removeFromParent();
+		pProjectileList.front()->getSprite()->removeFromParent();
+		pProjectileList.erase(pProjectileList.begin());
+	}
+
+
+	for (int i = 0; i < pProjectileList.size(); i++)
+		pProjectileList[i]->updateGameObject();
+
 }
 
 
@@ -351,7 +414,7 @@ void HelloWorld::initPauseMenu() {
 }
 
 void HelloWorld::togglePause() {
-	paused ^=1;
+	paused ^= 1;
 
 	if (paused) {
 		pauseMenu->setVisible(true);

@@ -45,6 +45,7 @@ public:
 	void initSprites();
 	void checkInput(float dt);
 	void getCollisions();
+	void checkLists();
 
 	// a selector callback
 	void menuCloseCallback(cocos2d::Ref* pSender);
@@ -55,14 +56,18 @@ private:
 	//std::vector<Sedna::SquarePrimitive> bullets;
 	Sedna::XinputManager managerR;
 	Sedna::XinputController* p1Controller;
-	Sedna::Stick sticks[2];
-
+	Sedna::XinputController* p2Controller;
+	Sedna::Stick p1Sticks[2];
+	Sedna::Stick p2Sticks[2];
 	Sedna::Triggers p1Triggers;
+	Sedna::Triggers p2Triggers;
+
 
 	Sedna::Table* baseTable;
 
 
 	Sedna::Player* playerOne;
+	Sedna::Player* playerTwo;
 
 	Sedna::Projectile *playerProjectile;
 	std::vector<Sedna::Projectile*>pProjectileList;
@@ -70,7 +75,6 @@ private:
 	Sedna::Outlaw* outlaw;
 	std::vector<Sedna::Outlaw*>outlawList;
 
-	Sedna::CirclePrimitive tableC{ cocos2d::Vec2(200,200),10,5,20 };
 	cocos2d::Sprite* tableSprite;
 	std::vector <Sedna::Table> tableList;
 	std::vector <Sedna::Potion> potionList;

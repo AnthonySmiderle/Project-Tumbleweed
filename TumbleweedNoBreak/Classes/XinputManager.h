@@ -104,7 +104,6 @@ namespace Sedna {
 			
 			if (sqrt(x*x + y * y) > deadZoneStick) {
 			//RIGHT STICK
-			if (state.Gamepad.sThumbLX < 0) {
 				if (state.Gamepad.sThumbRX < 0)
 					sticks[1].x = (float)state.Gamepad.sThumbRX / 32768;//conver to a float from 1 -> 1;
 				else
@@ -116,7 +115,6 @@ namespace Sedna {
 					sticks[1].y = (float)state.Gamepad.sThumbRY / 32767;
 			}
 
-			}
 			else {
 
 				sticks[1].x = 0.0f;

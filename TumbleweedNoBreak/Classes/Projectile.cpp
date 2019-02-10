@@ -6,9 +6,7 @@ Projectile::Projectile(float x, float y, Team t)
 	hitBox = new CirclePrimitive(cocos2d::Vec2(x, y), 3, 5, 30);
 	team = t;
 }
-Projectile::~Projectile()
-{
-}
+
 Projectile::Projectile()
 {
 }

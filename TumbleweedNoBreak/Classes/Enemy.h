@@ -9,6 +9,8 @@ namespace Sedna {
 	public:
 		Outlaw(float x, float y);
 		
+		HP getHP() const;
+		void setHP(HP hp);
 	protected:
 		HP enemyHp = 3;
 		int x = 0;
