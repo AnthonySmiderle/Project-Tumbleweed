@@ -122,7 +122,7 @@ void HelloWorld::update(float dt)
 		///outlawList.back()->getBox()->setLocation(cocos2d::Vec2(100, 100));
 	if (p1Triggers.RT > 0) {
 		
-		if (gunTimer > 0.5f)
+		if (gunTimer > 0.2f)
 		{
 			gunTimer = 0.0f;
 			hasShot = false;
@@ -234,7 +234,7 @@ void HelloWorld::checkInput(float dt)
 
 	if (p1Controller->isButtonPressed(Sedna::B)) {
 		//std::cout << tumbleTimer <<std::endl;
-		if (tumbleTimer > 5)
+		if (tumbleTimer > 3)
 		{
 			tumbleTimer = 0;
 			isTumbling = false;
@@ -245,7 +245,16 @@ void HelloWorld::checkInput(float dt)
 		{
 			isTumbling = true;
 			playerOne->getBox()->setTumbling(true);
-			playerOne->getBox()->addForce(0, 1000);
+			if(sticks[0].x < -0.3f)
+			playerOne->getBox()->addForce(-500, 0);
+			else if (sticks[0].x > 0.3f)
+				playerOne->getBox()->addForce(500, 0);
+			if (sticks[0].y < -0.3f)
+				playerOne->getBox()->addForce(0, -500);
+			else if (sticks[0].y > 0.3f)
+				playerOne->getBox()->addForce(0, 500);
+
+
 		}
 	}
 	else {
