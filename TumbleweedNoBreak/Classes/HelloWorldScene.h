@@ -61,16 +61,16 @@ private:
 	Sedna::Stick p2Sticks[2];
 	Sedna::Triggers p1Triggers;
 	Sedna::Triggers p2Triggers;
-
+	Sedna::Projectile* eBaseProjectile;
 
 	Sedna::Table* baseTable;
-
 
 	Sedna::Player* playerOne;
 	Sedna::Player* playerTwo;
 
-	Sedna::Projectile *playerProjectile;
-	std::vector<Sedna::Projectile*>pProjectileList;
+	Sedna::Projectile *baseProjectile;
+	std::vector<Sedna::Projectile*>pProjectiles;
+	std::vector<Sedna::Projectile*>eProjectiles;
 
 	Sedna::Outlaw* outlaw;
 	std::vector<Sedna::Outlaw*>outlawList;
@@ -81,10 +81,15 @@ private:
 	std::vector <Sedna::Potion> potionList;
 	float tumbleTimer = 0.0f;
 	bool isTumbling = false;
+
 	float gunTimer = 0.0f;
 	bool hasShot = false;
+
 	float enemyTimer = 0.0f;
 	bool hasSpawn = false;
+
+	float enemyShootTimer = 0.0f;
+	bool eHasShot = false;
 	bool paused = false;
 	void togglePause();
 	cocos2d::Menu* pauseMenu;

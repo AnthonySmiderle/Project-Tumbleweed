@@ -22,6 +22,16 @@ namespace Sedna {
 		//delete this;
 	}
 
+	void Player::setHp(HP hp)
+	{
+		playerHp = hp;
+	}
+
+	HP Player::getHP() const
+	{
+		return playerHp;
+	}
+
 
 
 }
