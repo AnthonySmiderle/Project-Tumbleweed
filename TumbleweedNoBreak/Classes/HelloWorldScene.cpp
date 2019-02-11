@@ -101,15 +101,16 @@ bool HelloWorld::init()
 
 void HelloWorld::update(float dt)
 {
-	managerR.update();
-	p1Controller->updateSticks(p1Sticks);
-	p1Controller->getTriggers(p1Triggers);
-	p2Controller->updateSticks(p2Sticks);
-	p2Controller->getTriggers(p2Triggers);
-
 	srand(time(0));
+
+	
+
+	updateController();
 	checkInput(dt);
 	getCollisions();
+
+
+
 
 	if (p1Controller->isButtonPressed(Sedna::Y)) 
 	this->getDefaultCamera()->setPosition(cocos2d::Vec2(this->getDefaultCamera()->getPosition().x,
@@ -144,9 +145,6 @@ void HelloWorld::update(float dt)
 		if (!gunTimer)
 		{
 			hasShot = true;
-			//playerProjectile = new Sedna::Projectile(-1000, 0);
-			//this->addChild(playerProjectile->getBox()->getDrawNode());
-			//this->addChild(playerProjectile->getSprite());
 			if (p1Sticks[1].y < 0.3f && p1Sticks[1].y > -0.3f && p1Sticks[1].x > 0.3f ||
 				p1Sticks[1].y < 0.3f && p1Sticks[1].y > -0.3f && p1Sticks[1].x < -0.3f ||
 				p1Sticks[1].y < -0.3f) {
@@ -176,7 +174,7 @@ void HelloWorld::update(float dt)
 	if (hasShot)
 		gunTimer += dt;
 
-	///
+	
 	for (int i = 0; i < pProjectileList.size(); i++) {
 		for (int j = 0; j < outlawList.size(); j++) {
 			if (pProjectileList[i]->getBox()->checkCollision(*outlawList[j]->getBox())) {
@@ -232,76 +230,22 @@ void HelloWorld::initSprites()
 
 void HelloWorld::checkInput(float dt)
 {
-	if (p1Controller->isButtonPressed(Sedna::SELECT))
-		exit(0);
-	if (p1Controller->isButtonPressed(Sedna::START))
-		togglePause();
+	///if (p1Controller->isButtonPressed(Sedna::SELECT))
+	///	exit(0);
+	///if (p1Controller->isButtonPressed(Sedna::START))
+	///	togglePause();
 
 
 	///<player 1>
-	if (p1Sticks[0].x > 0.3f)
-		playerOne->getBox()->addForce(3, 0);
-
-	else if (p1Sticks[0].x < -0.3f)
-		playerOne->getBox()->addForce(-3, 0);
-
-	if (p1Sticks[0].y > 0.3f)
-		playerOne->getBox()->addForce(0, 3);
-
-	else if (p1Sticks[0].y < -0.3f)
-		playerOne->getBox()->addForce(0, -3);
+	
 
 	///<player 2>
-	if (p2Sticks[0].x > 0.3f)
-		playerOne->getBox()->addForce(3, 0);
-
-	else if (p2Sticks[0].x < -0.3f)
-		playerOne->getBox()->addForce(-3, 0);
-
-	if (p2Sticks[0].y > 0.3f)
-		playerOne->getBox()->addForce(0, 3);
-
-	else if (p2Sticks[0].y < -0.3f)
-		playerOne->getBox()->addForce(0, -3);
+	
 
 
 
 
-	if (p1Controller->isButtonPressed(Sedna::B)) {
-		//std::cout << tumbleTimer <<std::endl;
-		if (tumbleTimer > 3)
-		{
-			tumbleTimer = 0;
-			isTumbling = false;
-		}
-
-
-		if (!tumbleTimer)
-		{
-			isTumbling = true;
-			playerOne->getBox()->setTumbling(true);
-			if (p1Sticks[0].x < -0.3f)
-				playerOne->getBox()->addForce(-500, 0);
-			else if (p1Sticks[0].x > 0.3f)
-				playerOne->getBox()->addForce(500, 0);
-			if (p1Sticks[0].y < -0.3f)
-				playerOne->getBox()->addForce(0, -500);
-			else if (p1Sticks[0].y > 0.3f)
-				playerOne->getBox()->addForce(0, 500);
-
-
-		}
-	}
-	else {
-		playerOne->getBox()->setTumbling(false);
-	}
-	if (p1Sticks[0].x > -0.3f && p1Sticks[0].x < 0.3f && p1Sticks[0].y > -0.3f && p1Sticks[0].y < 0.3f)
-		playerOne->getBox()->addForce(playerOne->getBox()->getVelocity().x *-2.0f, playerOne->getBox()->getVelocity().y*-2.0f);
-	if (p2Sticks[0].x > -0.3f && p2Sticks[0].x < 0.3f && p2Sticks[0].y > -0.3f && p2Sticks[0].y < 0.3f)
-		playerTwo->getBox()->addForce(playerTwo->getBox()->getVelocity().x *-2.0f, playerTwo->getBox()->getVelocity().y*-2.0f);
-
-	if (isTumbling)
-		tumbleTimer += dt;
+	
 }
 
 void HelloWorld::getCollisions()
@@ -378,6 +322,15 @@ samePosition:
 	for (int i = 0; i < pProjectileList.size(); i++)
 		pProjectileList[i]->updateGameObject();
 
+}
+
+void HelloWorld::updateController()
+{
+	managerR.update();
+	p1Controller->updateSticks(p1Sticks);
+	p1Controller->getTriggers(p1Triggers);
+	p2Controller->updateSticks(p2Sticks);
+	p2Controller->getTriggers(p2Triggers);
 }
 
 

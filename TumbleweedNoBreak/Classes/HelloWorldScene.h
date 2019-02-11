@@ -46,6 +46,7 @@ public:
 	void checkInput(float dt);
 	void getCollisions();
 	void checkLists();
+	void updateController();
 
 	// a selector callback
 	void menuCloseCallback(cocos2d::Ref* pSender);
@@ -78,12 +79,13 @@ private:
 	cocos2d::Sprite* tableSprite;
 	std::vector <Sedna::Table> tableList;
 	std::vector <Sedna::Potion> potionList;
-	float tumbleTimer = 0.0f;
-	bool isTumbling = false;
-	float gunTimer = 0.0f;
-	bool hasShot = false;
+
+	
+	
+	
 	float enemyTimer = 0.0f;
 	bool hasSpawn = false;
+	
 	bool paused = false;
 	void togglePause();
 	cocos2d::Menu* pauseMenu;
