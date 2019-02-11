@@ -111,9 +111,9 @@ void HelloWorld::update(float dt)
 	checkInput(dt);
 	getCollisions();
 
-
-	//this->getDefaultCamera()->setPosition(cocos2d::Vec2(this->getDefaultCamera()->getPosition().x,
-	//	this->getDefaultCamera()->getPosition().y + 1));
+	if (p1Controller->isButtonPressed(Sedna::Y)) 
+	this->getDefaultCamera()->setPosition(cocos2d::Vec2(this->getDefaultCamera()->getPosition().x,
+		this->getDefaultCamera()->getPosition().y + 1));
 	if (enemyTimer > 4.0f)
 	{
 		enemyTimer = 0.0f;
@@ -123,7 +123,7 @@ void HelloWorld::update(float dt)
 	{
 		hasSpawn = true;
 		int x = rand() % 100 + 1 + (rand() % 200 + 1);
-		int y = 150;	///<fix later>
+		int y = 150;
 		outlaw = new Sedna::Outlaw(x, y);
 		this->addChild(outlaw->getBox()->getDrawNode());
 		this->addChild(outlaw->getSprite());
@@ -325,6 +325,8 @@ void HelloWorld::getCollisions()
 		cocos2d::Vec2 distanceVector((playerOne->getBox()->getLocation().x - baseTable->getBox()->getLocation().x), (playerOne->getBox()->getLocation().y - baseTable->getBox()->getLocation().y));
 		playerOne->getBox()->addForce(((distanceVector.x * 2) / 2), (distanceVector.y * 2) / 2);
 	}
+
+
 	//////////////////////////////////////////////////////////////////////////////////////
 	if (p2Controller->isButtonPressed(Sedna::A) && playerTwo->getBox()->checkCollision(*baseTable->getBox())) {
 
