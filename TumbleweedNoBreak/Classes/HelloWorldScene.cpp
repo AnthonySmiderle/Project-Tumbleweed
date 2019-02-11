@@ -110,10 +110,15 @@ void HelloWorld::update(float dt)
 	srand(time(0));
 	checkInput(dt);
 	getCollisions();
+	
 
-	if (p1Controller->isButtonPressed(Sedna::Y)) 
-	this->getDefaultCamera()->setPosition(cocos2d::Vec2(this->getDefaultCamera()->getPosition().x,
-		this->getDefaultCamera()->getPosition().y + 1));
+	if (p1Controller->isButtonPressed(Sedna::Y))
+	{
+		this->getDefaultCamera()->setPosition(cocos2d::Vec2(this->getDefaultCamera()->getPosition().x,
+			this->getDefaultCamera()->getPosition().y + 1));
+		DOS->getSprite()->setPosition(cocos2d::Vec2(100, (DOS->getSprite()->getPosition().y + 1)));
+		
+	}
 	if (enemyTimer > 4.0f)
 	{
 		enemyTimer = 0.0f;
