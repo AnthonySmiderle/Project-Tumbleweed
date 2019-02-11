@@ -14,10 +14,11 @@ public:
 	~Player();
 
 	//extend member functions here
-	
+	void setHp(HP hp);
+	HP getHP() const; 
 	void shoot();
 private:
-
+	HP playerHp = 3;
 
 };
 

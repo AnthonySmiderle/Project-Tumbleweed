@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "Enums and Typdefs.h"
 
 namespace Sedna {
 	class Table : public GameObject  {
@@ -8,6 +9,11 @@ namespace Sedna {
 
 		void spriteSwitch();
 		bool hasDrink;
+		
+		void setHp(HP hp);
+		HP getHp() const;
+	private:
+		HP tableHp = 3;
 
 	};
 }
