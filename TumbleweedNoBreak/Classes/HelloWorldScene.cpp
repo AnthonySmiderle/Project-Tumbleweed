@@ -212,7 +212,10 @@ void HelloWorld::update(float dt)
 
 void HelloWorld::initSprites()
 {
-
+	DOS = new Sedna::GameObject("DOS.jpg", cocos2d::Vec2(100,300),1,1,1);
+	this->addChild(DOS->getBox()->getDrawNode());
+	this->addChild(DOS->getSprite());
+	DOS->getSprite()->setVisible(true);
 	playerTwo = new Sedna::Player(2, 300, 100);
 	this->addChild(playerTwo->getBox()->getDrawNode());
 	this->addChild(playerTwo->getSprite());
