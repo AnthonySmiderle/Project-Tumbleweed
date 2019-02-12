@@ -152,6 +152,7 @@ namespace Sedna {
 					pProjectiles.erase(pProjectiles.begin() + i);
 
 					if (!outlawList[j]->getHP()) {
+						outlawList[j]->removeProjectiles();
 						outlawList[j]->getBox()->getDrawNode()->removeFromParent();
 						outlawList[j]->getSprite()->removeFromParent();
 						outlawList.erase(outlawList.begin() + j);

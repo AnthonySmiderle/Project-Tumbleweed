@@ -45,7 +45,8 @@ public:
 	void initSprites();
 	void checkInput(float dt);
 	void getCollisions();
-	void checkLists();
+	void bigCheckList();
+	void recursiveFunction(std::vector<Sedna::Outlaw*>& outlawList);
 
 	// a selector callback
 	void menuCloseCallback(cocos2d::Ref* pSender);
@@ -80,16 +81,11 @@ private:
 	Sedna::GameObject* DOS;
 	std::vector <Sedna::Table*> tableList;
 	std::vector <Sedna::Potion> potionList;
-	float tumbleTimer = 0.0f;
-	bool isTumbling = false;
-
-	float gunTimer = 0.0f;
-	bool hasShot = false;
-
+	
 	float enemyTimer = 0.0f;
 	bool hasSpawn = false;
 
-	float enemyShootTimer = 0.0f;
+	float eShootTimer = 0.0f;
 	bool eHasShot = false;
 	bool paused = false;
 	void togglePause();

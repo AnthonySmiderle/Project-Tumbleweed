@@ -19,4 +19,46 @@ void Outlaw::setHP(HP hp)
 {
 	enemyHp = hp;
 }
+void Outlaw::shoot(float dt,cocos2d::Scene* s)
+{
+	if (eShootTimer > 0.4f) {
+		eShootTimer = 0.0f;
+		eHasShot = false;
+	}
+	if (!eShootTimer) {
+		eHasShot = true;
+		Projectile* eBaseProjectile = new Sedna::Projectile(-1000, 10, Enemy);
+		s->addChild(eBaseProjectile->getBox()->getDrawNode());
+		s->addChild(eBaseProjectile->getSprite());
+
+		eProjectiles.push_back(new Sedna::Projectile(*eBaseProjectile));
+
+		eProjectiles.back()->getBox()->setLocation(this->getBox()->getLocation());
+		eProjectiles.back()->getBox()->setForce(cocos2d::Vec2(0, -5));
+	}
+	if (eHasShot)
+		eShootTimer += dt;
 }
+void Outlaw::checkList()
+{
+	if (eProjectiles.size() > 4) {
+		eProjectiles.front()->getBox()->getDrawNode()->removeFromParent();
+		eProjectiles.front()->getSprite()->removeFromParent();
+		eProjectiles.erase(eProjectiles.begin());
+	}
+	for (int i = 0; i < eProjectiles.size(); i++)
+		eProjectiles[i]->updateGameObject();
+}
+void Outlaw::removeProjectiles()
+{
+	for (int i = 0; i < eProjectiles.size(); i++) {
+		eProjectiles[i]->getBox()->getDrawNode()->removeFromParent();
+		eProjectiles[i]->getSprite()->removeFromParent();
+		eProjectiles.erase(eProjectiles.begin() + i);
+		if (i == 0)
+			i = 0;
+		else
+		i--;
+	}
+}
+}		

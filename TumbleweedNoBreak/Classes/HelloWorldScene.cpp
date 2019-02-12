@@ -135,7 +135,7 @@ void HelloWorld::update(float dt)
 	{
 		hasSpawn = true;
 		int x = rand() % 100 + 1 + (rand() % 200 + 1);
-		int y = 150;
+		int y = 250;
 		outlaw = new Sedna::Outlaw(x, y);
 		this->addChild(outlaw->getBox()->getDrawNode());
 		this->addChild(outlaw->getSprite());
@@ -144,25 +144,17 @@ void HelloWorld::update(float dt)
 	}
 	if (hasSpawn)
 		enemyTimer += dt;
-
+	
+	bigCheckList();
+	for (int i = 0; i < outlawList.size(); i++) {
+		outlawList[i]->shoot(dt, this);
+	}
 
 	///
 	
-	playerOne->checkBCollision(outlawList);
-	playerTwo->checkBCollision(outlawList);
+	
 
-	for (int i = 0; i < eProjectiles.size(); i++) {
-		if (eProjectiles[i]->getBox()->checkCollision(*playerOne->getBox())) {
-			playerOne->setHp(playerOne->getHp() - 1);
-			eProjectiles[i]->getBox()->getDrawNode()->removeFromParent();
-			eProjectiles[i]->getSprite()->removeFromParent();
-			eProjectiles.erase(eProjectiles.begin() + i);
-			
-			i--;
-		}
-	}
 
-	checkLists();
 
 
 	playerOne->updateGameObject();
@@ -239,29 +231,34 @@ void HelloWorld::getCollisions()
 	}
 }
 
-void HelloWorld::checkLists()
+void HelloWorld::bigCheckList()
 {
 	playerOne->checkList();
 	playerTwo->checkList();
 	if (outlawList.size() > 4) {
+		outlawList.front()->removeProjectiles();
 		outlawList.front()->getBox()->getDrawNode()->removeFromParent();
 		outlawList.front()->getSprite()->removeFromParent();
 		outlawList.erase(outlawList.begin());
 	}
 
+	recursiveFunction(outlawList);
+
+	playerOne->checkBCollision(outlawList);
+	playerTwo->checkBCollision(outlawList);
 
 	for (int i = 0; i < outlawList.size(); i++)
+		outlawList[i]->checkList();
+	for (int i = 0; i < outlawList.size(); i++)
 		outlawList[i]->updateGameObject();
+	
 
-	if (eProjectiles.size() > 4) {
-		eProjectiles.front()->getBox()->getDrawNode()->removeFromParent();
-		eProjectiles.front()->getSprite()->removeFromParent();
-		eProjectiles.erase(eProjectiles.begin());
-	}
-	for (int i = 0; i < eProjectiles.size(); i++)
-		eProjectiles[i]->updateGameObject();
 
-samePosition:
+
+}
+
+void HelloWorld::recursiveFunction(std::vector<Sedna::Outlaw*>& outlawList)
+{
 	for (int i = 0; i < outlawList.size(); i++) {
 		for (int j = 0; j < outlawList.size(); j++) {
 			if (i == j)
@@ -269,13 +266,11 @@ samePosition:
 			if (outlawList[i]->getBox()->checkCollision(*outlawList[j]->getBox())) {
 				outlawList[i]->getBox()->setLocation(cocos2d::Vec2(rand() % 100 + 1 + (rand() % 200 + 1),
 					outlawList[i]->getBox()->getLocation().y));
-				goto samePosition;
+				recursiveFunction(outlawList);
 			}
 
 		}
 	}
-
-
 }
 
 
