@@ -9,16 +9,7 @@ Sedna::Outlaw::Outlaw(float x, float y)
 
 	hitBox = new CirclePrimitive(cocos2d::Vec2(x, y), 20, 5, 30);
 
-		
-}
-
-HP Sedna::Outlaw::getHP() const
-{
-	return this->enemyHp;
-}
-void Outlaw::setHP(HP hp)
-{
-	enemyHp = hp;
+	this->objectHp = 3;
 }
 void Outlaw::shoot(float dt,cocos2d::Scene* s)
 {

@@ -15,8 +15,8 @@ namespace Sedna {
 		Sedna::CirclePrimitive* getBox()const;
 		void setCircle(CirclePrimitive c) { *hitBox = c; }
 		void updateGameObject();
-		HP getHp() const;
-		void setHp(HP hp);
+		HP getHP() const;
+		void setHP(HP hp);
 	protected:
 		HP objectHp;
 		cocos2d::Sprite *sprite;

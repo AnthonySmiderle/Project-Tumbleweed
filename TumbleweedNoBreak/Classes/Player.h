@@ -5,6 +5,7 @@
 #include "Projectile.h"
 #include "Enemy.h"
 #include "baseObjectManager.h"
+#include "Table.h"
 #include <vector>
 namespace Sedna {
 
@@ -23,6 +24,7 @@ namespace Sedna {
 		void shoot(float dt, cocos2d::Scene* s);
 		void checkList();
 		void checkBCollision(std::vector<Outlaw*>& outlawList);
+		void checkBCollision(std::vector<Table*>& tableList);
 	
 		std::vector<Projectile*> getpProjectile() const;
 	private:

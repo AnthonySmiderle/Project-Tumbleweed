@@ -67,7 +67,7 @@ private:
 	Sedna::Projectile* eBaseProjectile;
 
 	Sedna::Table* baseTable;
-
+	std::vector <Sedna::Table*> tableList;
 
 	Sedna::Player* playerOne;
 	Sedna::Player* playerTwo;
@@ -79,9 +79,7 @@ private:
 	Sedna::Outlaw* outlaw;
 	std::vector<Sedna::Outlaw*>outlawList;
 
-
 	Sedna::GameObject* DOS;
-	std::vector <Sedna::Table*> tableList;
 	std::vector <Sedna::Potion> potionList;
 	
 	float enemyTimer = 0.0f;
