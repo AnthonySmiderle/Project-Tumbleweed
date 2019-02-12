@@ -135,7 +135,7 @@ void HelloWorld::update(float dt)
 	{
 		hasSpawn = true;
 		int x = rand() % 100 + 1 + (rand() % 200 + 1);
-		int y = 250;
+		int y = DOS->getSprite()->getPosition().y-75;
 		outlaw = new Sedna::Outlaw(x, y);
 		Sedna::BaseObjectManager::outlawBObjects.push_back(outlaw);
 		this->addChild(outlaw->getBox()->getDrawNode());
@@ -273,6 +273,10 @@ void HelloWorld::recursiveFunction(std::vector<Sedna::Outlaw*>& outlawList)
 
 		}
 	}
+}
+
+void HelloWorld::checkPosAll()
+{
 }
 
 

@@ -48,6 +48,7 @@ public:
 	void getCollisions();
 	void bigCheckList();
 	void recursiveFunction(std::vector<Sedna::Outlaw*>& outlawList);
+	void checkPosAll();
 
 	// a selector callback
 	void menuCloseCallback(cocos2d::Ref* pSender);
