@@ -3,6 +3,7 @@
 #include "Enums and Typdefs.h"
 #include "XinputManager.h"
 #include "Projectile.h"
+#include "Enemy.h"
 #include <vector>
 namespace Sedna {
 
@@ -19,6 +20,8 @@ namespace Sedna {
 
 		void checkInput(float dt);
 		void shoot(float dt, cocos2d::Scene* s);
+		void checkList();
+		void checkBCollision(std::vector<Outlaw*>& outlawList);
 	
 		std::vector<Projectile*> getpProjectile() const;
 	private:

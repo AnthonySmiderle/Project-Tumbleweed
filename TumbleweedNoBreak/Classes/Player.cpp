@@ -126,6 +126,46 @@ namespace Sedna {
 
 	}
 
+	void Player::checkList()
+	{
+		if (pProjectiles.size() > 4) {
+			pProjectiles.front()->getBox()->getDrawNode()->removeFromParent();
+			pProjectiles.front()->getSprite()->removeFromParent();
+			pProjectiles.erase(pProjectiles.begin());
+		}
+
+		for (int i = 0; i < pProjectiles.size(); i++)
+			pProjectiles[i]->updateGameObject();
+
+		
+	}
+
+	void Player::checkBCollision(std::vector<Outlaw*>& outlawList)
+	{
+		for (int i = 0; i < pProjectiles.size(); i++) {
+			for (int j = 0; j < outlawList.size(); j++) {
+				if (pProjectiles[i]->getBox()->checkCollision(*outlawList[j]->getBox())) {
+
+					outlawList[j]->setHP(outlawList[j]->getHP() - 1);
+					pProjectiles[i]->getBox()->getDrawNode()->removeFromParent();
+					pProjectiles[i]->getSprite()->removeFromParent();
+					pProjectiles.erase(pProjectiles.begin() + i);
+
+					if (!outlawList[j]->getHP()) {
+						outlawList[j]->getBox()->getDrawNode()->removeFromParent();
+						outlawList[j]->getSprite()->removeFromParent();
+						outlawList.erase(outlawList.begin() + j);
+						j--;
+					}
+
+					i--;
+
+				}
+
+			}
+		}
+	}
+
 	std::vector<Projectile*> Player::getpProjectile() const
 	{
 		return pProjectiles;

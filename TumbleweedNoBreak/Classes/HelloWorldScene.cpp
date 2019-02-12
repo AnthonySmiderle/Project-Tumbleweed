@@ -147,28 +147,10 @@ void HelloWorld::update(float dt)
 
 
 	///
-	for (int i = 0; i < pProjectiles.size(); i++) {
-		for (int j = 0; j < outlawList.size(); j++) {
-			if (pProjectiles[i]->getBox()->checkCollision(*outlawList[j]->getBox())) {
+	
+	playerOne->checkBCollision(outlawList);
+	playerTwo->checkBCollision(outlawList);
 
-				outlawList[j]->setHP(outlawList[j]->getHP() - 1);
-				pProjectiles[i]->getBox()->getDrawNode()->removeFromParent();
-				pProjectiles[i]->getSprite()->removeFromParent();
-				pProjectiles.erase(pProjectiles.begin() + i);
-
-				if (!outlawList[j]->getHP()) {
-					outlawList[j]->getBox()->getDrawNode()->removeFromParent();
-					outlawList[j]->getSprite()->removeFromParent();
-					outlawList.erase(outlawList.begin() + j);
-				j--;
-				}
-
-				i--;
-
-			}
-
-		}
-	}
 	for (int i = 0; i < eProjectiles.size(); i++) {
 		if (eProjectiles[i]->getBox()->checkCollision(*playerOne->getBox())) {
 			playerOne->setHp(playerOne->getHp() - 1);
@@ -199,18 +181,16 @@ void HelloWorld::initSprites()
 	playerTwo = new Sedna::Player(2, 300, 100,managerR);
 	this->addChild(playerTwo->getBox()->getDrawNode());
 	this->addChild(playerTwo->getSprite());
-	playerTwo->getSprite()->setVisible(true);
+	
 
 	playerOne = new Sedna::Player(1, 100, 100,managerR);
 	this->addChild(playerOne->getBox()->getDrawNode());
 	this->addChild(playerOne->getSprite());
-	playerOne->getSprite()->setVisible(true);
 
 	//replace this with a base table that can be copied later
 	baseTable = new Sedna::Table(200, 200);
 	this->addChild(baseTable->getBox()->getDrawNode());
 	this->addChild(baseTable->getSprite());
-	baseTable->getSprite()->setVisible(true);
 }
 
 void HelloWorld::checkInput(float dt)
@@ -261,6 +241,8 @@ void HelloWorld::getCollisions()
 
 void HelloWorld::checkLists()
 {
+	playerOne->checkList();
+	playerTwo->checkList();
 	if (outlawList.size() > 4) {
 		outlawList.front()->getBox()->getDrawNode()->removeFromParent();
 		outlawList.front()->getSprite()->removeFromParent();
@@ -293,15 +275,6 @@ samePosition:
 		}
 	}
 
-	if (playerOne->getpProjectile().size() > 4) {
-		playerOne->getpProjectile().front()->getBox()->getDrawNode()->removeFromParent();
-		playerOne->getpProjectile().front()->getSprite()->removeFromParent();
-		playerOne->getpProjectile().erase(pProjectiles.begin());
-	}
-
-
-	for (int i = 0; i < playerOne->getpProjectile().size(); i++)
-		playerOne->getpProjectile()[i]->updateGameObject();
 
 }
 

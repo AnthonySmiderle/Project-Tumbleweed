@@ -65,6 +65,7 @@ private:
 
 	Sedna::Table* baseTable;
 
+
 	Sedna::Player* playerOne;
 	Sedna::Player* playerTwo;
 
@@ -75,8 +76,9 @@ private:
 	Sedna::Outlaw* outlaw;
 	std::vector<Sedna::Outlaw*>outlawList;
 
+
 	Sedna::GameObject* DOS;
-	std::vector <Sedna::Table> tableList;
+	std::vector <Sedna::Table*> tableList;
 	std::vector <Sedna::Potion> potionList;
 	float tumbleTimer = 0.0f;
 	bool isTumbling = false;
