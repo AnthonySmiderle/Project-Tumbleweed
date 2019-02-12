@@ -148,6 +148,8 @@ namespace Sedna {
 		bool check = false;
 		for (int i = 0; i < pProjectiles.size(); i++) {
 			for (int j = 0; j < outlawList.size(); j++) {
+				if (pProjectiles.empty())
+					break;
 				if (pProjectiles[i]->getBox()->checkCollision(*outlawList[j]->getBox())) {
 
 					outlawList[j]->setHP(outlawList[j]->getHP() - 1);
@@ -155,7 +157,11 @@ namespace Sedna {
 					pProjectiles[i]->getSprite()->removeFromParent();
 					pProjectiles.erase(pProjectiles.begin() + i);
 					check = true;
+					break;
 
+				}
+				else
+					check = false;
 					if (!outlawList[j]->getHP()) {
 						outlawList[j]->removeProjectiles();
 						outlawList[j]->getBox()->getDrawNode()->removeFromParent();
@@ -164,10 +170,6 @@ namespace Sedna {
 						j--;
 					}
 
-
-				}
-				else
-					check = false;
 
 			}
 			if (check) {
@@ -181,6 +183,8 @@ namespace Sedna {
 		bool check = false;
 		for (int i = 0; i < pProjectiles.size(); i++) {
 			for (int j = 0; j < tableList.size(); j++) {
+				if (pProjectiles.empty())
+					break;
 				if (pProjectiles[i]->getBox()->checkCollision(*tableList[j]->getBox())) {
 
 					tableList[j]->setHP(tableList[j]->getHP() - 1);
@@ -188,7 +192,12 @@ namespace Sedna {
 					pProjectiles[i]->getSprite()->removeFromParent();
 					pProjectiles.erase(pProjectiles.begin() + i);
 					check = true;
+					break;
 
+
+				}
+				else
+					check = false;
 					if (!tableList[j]->getHP()) {
 						tableList[j]->getBox()->getDrawNode()->removeFromParent();
 						tableList[j]->getSprite()->removeFromParent();
@@ -196,15 +205,10 @@ namespace Sedna {
 						j--;
 					}
 
-
-				}
-				else
-					check = false;
-
-			}
 			if (check) {
 				i--;
 				check = false;
+			}
 			}
 		}
 	}
