@@ -277,6 +277,14 @@ void HelloWorld::recursiveFunction(std::vector<Sedna::Outlaw*>& outlawList)
 
 void HelloWorld::checkPosAll()
 {
+	for (unsigned int i = 0; i < outlawList.size(); i++)
+	{
+		if (outlawList[i]->getBox()->getLocation().y<DOS->getSprite()->getPosition().y-400)
+		{
+
+		}
+	}
+	
 }
 
 
