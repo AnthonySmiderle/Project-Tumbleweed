@@ -123,7 +123,7 @@ void HelloWorld::update(float dt)
 	{
 		this->getDefaultCamera()->setPosition(cocos2d::Vec2(this->getDefaultCamera()->getPosition().x,
 			this->getDefaultCamera()->getPosition().y + 1));
-		DOS->getSprite()->setPosition(cocos2d::Vec2(100, (DOS->getSprite()->getPosition().y + 1)));
+		DDOS->getSprite()->setPosition(cocos2d::Vec2(100, (DDOS->getSprite()->getPosition().y + 1)));
 		
 	}
 	if (enemyTimer > 4.0f)
@@ -135,7 +135,7 @@ void HelloWorld::update(float dt)
 	{
 		hasSpawn = true;
 		int x = rand() % 100 + 1 + (rand() % 200 + 1);
-		int y = DOS->getSprite()->getPosition().y-75;
+		int y = DDOS->getSprite()->getPosition().y-75;
 		outlaw = new Sedna::Outlaw(x, y);
 		Sedna::BaseObjectManager::outlawBObjects.push_back(outlaw);
 		this->addChild(outlaw->getBox()->getDrawNode());
@@ -161,10 +161,10 @@ void HelloWorld::update(float dt)
 
 void HelloWorld::initSprites()
 {
-	DOS = new Sedna::GameObject("DOS.jpg", cocos2d::Vec2(100,300),1,1,1);
-	this->addChild(DOS->getBox()->getDrawNode());
-	this->addChild(DOS->getSprite());
-	DOS->getSprite()->setVisible(true);
+	DDOS = new Sedna::GameObject("DOS.jpg", cocos2d::Vec2(100,300),1,1,1);
+	this->addChild(DDOS->getBox()->getDrawNode());
+	this->addChild(DDOS->getSprite());
+	DDOS->getSprite()->setVisible(true);
 
 	playerTwo = new Sedna::Player(2, 300, 100,managerR);
 	this->addChild(playerTwo->getBox()->getDrawNode());
@@ -284,7 +284,7 @@ void HelloWorld::checkPosAll()
 {
 	for (unsigned int i = 0; i < outlawList.size(); i++)
 	{
-		if (outlawList[i]->getBox()->getLocation().y<DOS->getSprite()->getPosition().y-400)
+		if (outlawList[i]->getBox()->getLocation().y<DDOS->getSprite()->getPosition().y-400)
 		{
 
 		}

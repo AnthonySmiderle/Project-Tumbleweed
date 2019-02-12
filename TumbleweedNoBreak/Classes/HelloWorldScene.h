@@ -79,7 +79,7 @@ private:
 	Sedna::Outlaw* outlaw;
 	std::vector<Sedna::Outlaw*>outlawList;
 
-	Sedna::GameObject* DOS;
+	Sedna::GameObject* DDOS;
 	std::vector <Sedna::Potion> potionList;
 	
 	float enemyTimer = 0.0f;
