@@ -1,4 +1,5 @@
 #include "Potion.h"
+namespace Sedna {
 
 
 Sedna::Potion::Potion(potionType t, cocos2d::Vec2 pos)
@@ -15,4 +16,5 @@ void Sedna::Potion::pickUp(Player * p)
 
 Sedna::Potion::~Potion()
 {
+}
 }

@@ -3,7 +3,9 @@
 #include "Enums and Typdefs.h"
 #include "Projectile.h"
 #include <vector>
+
 namespace Sedna {
+	
 	class Outlaw : public GameObject {
 	public:
 		Outlaw(float x, float y);

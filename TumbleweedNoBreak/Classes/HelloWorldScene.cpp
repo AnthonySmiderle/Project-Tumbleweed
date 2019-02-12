@@ -137,6 +137,7 @@ void HelloWorld::update(float dt)
 		int x = rand() % 100 + 1 + (rand() % 200 + 1);
 		int y = 250;
 		outlaw = new Sedna::Outlaw(x, y);
+		Sedna::BaseObjectManager::outlawBObjects.push_back(outlaw);
 		this->addChild(outlaw->getBox()->getDrawNode());
 		this->addChild(outlaw->getSprite());
 		outlawList.push_back(new Sedna::Outlaw(*outlaw));
@@ -145,10 +146,10 @@ void HelloWorld::update(float dt)
 	if (hasSpawn)
 		enemyTimer += dt;
 	
-	bigCheckList();
 	for (int i = 0; i < outlawList.size(); i++) {
 		outlawList[i]->shoot(dt, this);
 	}
+	bigCheckList();
 
 	///
 	
@@ -240,6 +241,7 @@ void HelloWorld::bigCheckList()
 		outlawList.front()->getBox()->getDrawNode()->removeFromParent();
 		outlawList.front()->getSprite()->removeFromParent();
 		outlawList.erase(outlawList.begin());
+		Sedna::BaseObjectManager::outlawBObjects.erase(Sedna::BaseObjectManager::outlawBObjects.begin());
 	}
 
 	recursiveFunction(outlawList);

@@ -4,6 +4,7 @@
 #include "XinputManager.h"
 #include "Projectile.h"
 #include "Enemy.h"
+#include "baseObjectManager.h"
 #include <vector>
 namespace Sedna {
 

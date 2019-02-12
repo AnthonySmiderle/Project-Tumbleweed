@@ -27,6 +27,7 @@
 
 #include "cocos2d.h"
 #include <vector>
+#include "baseObjectManager.h"
 #include "XinputManager.h"
 #include "Table.h"
 #include "Player.h"

@@ -1,4 +1,5 @@
 #include "Enemy.h"
+#include "baseObjectManager.h"
 namespace Sedna {
 
 Sedna::Outlaw::Outlaw(float x, float y)
@@ -21,7 +22,7 @@ void Outlaw::setHP(HP hp)
 }
 void Outlaw::shoot(float dt,cocos2d::Scene* s)
 {
-	if (eShootTimer > 0.4f) {
+	if (eShootTimer > 0.3f) {
 		eShootTimer = 0.0f;
 		eHasShot = false;
 	}
@@ -32,6 +33,7 @@ void Outlaw::shoot(float dt,cocos2d::Scene* s)
 		s->addChild(eBaseProjectile->getSprite());
 
 		eProjectiles.push_back(new Sedna::Projectile(*eBaseProjectile));
+		BaseObjectManager::eProjectileBObjects.push_back(eBaseProjectile);
 
 		eProjectiles.back()->getBox()->setLocation(this->getBox()->getLocation());
 		eProjectiles.back()->getBox()->setForce(cocos2d::Vec2(0, -5));
@@ -55,9 +57,7 @@ void Outlaw::removeProjectiles()
 		eProjectiles[i]->getBox()->getDrawNode()->removeFromParent();
 		eProjectiles[i]->getSprite()->removeFromParent();
 		eProjectiles.erase(eProjectiles.begin() + i);
-		if (i == 0)
-			i = 0;
-		else
+		BaseObjectManager::eProjectileBObjects.erase(BaseObjectManager::eProjectileBObjects.begin() + i);
 		i--;
 	}
 }

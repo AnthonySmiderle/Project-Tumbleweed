@@ -104,15 +104,16 @@ namespace Sedna {
 					Projectile* playerProjectile = new Sedna::Projectile(-1000, 0, Sedna::Ally);
 					s->addChild(playerProjectile->getBox()->getDrawNode());
 					s->addChild(playerProjectile->getSprite());
+					BaseObjectManager::pProjectileBObjects.push_back(playerProjectile);
 
 					pProjectiles.push_back(new Sedna::Projectile(*playerProjectile));
 
 					pProjectiles.back()->getBox()->setLocation(this->getBox()->getLocation());
 
 					if (pSticks[1].x < -0.3f && pSticks[1].y > 0.3f)
-						pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(-5, 5));
+						pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(-3.5, 3.5));
 					if (pSticks[1].x > 0.3f && pSticks[1].y > 0.3f)
-						pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(5, 5));
+						pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(3.5, 3.5));
 					if (pSticks[1].y > 0.3f && pSticks[1].x < 0.3f && pSticks[1].x > -0.3f ||
 						pSticks[1].y < 0.3f && pSticks[1].y > -0.3f && pSticks[1].x < 0.3f && pSticks[1].x > -0.3f)
 						pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(0, 5));
@@ -132,6 +133,8 @@ namespace Sedna {
 			pProjectiles.front()->getBox()->getDrawNode()->removeFromParent();
 			pProjectiles.front()->getSprite()->removeFromParent();
 			pProjectiles.erase(pProjectiles.begin());
+			BaseObjectManager::pProjectileBObjects.erase(BaseObjectManager::pProjectileBObjects.begin());
+
 		}
 
 		for (int i = 0; i < pProjectiles.size(); i++)
@@ -150,6 +153,7 @@ namespace Sedna {
 					pProjectiles[i]->getBox()->getDrawNode()->removeFromParent();
 					pProjectiles[i]->getSprite()->removeFromParent();
 					pProjectiles.erase(pProjectiles.begin() + i);
+					i--;
 
 					if (!outlawList[j]->getHP()) {
 						outlawList[j]->removeProjectiles();
@@ -159,7 +163,6 @@ namespace Sedna {
 						j--;
 					}
 
-					i--;
 
 				}
 
