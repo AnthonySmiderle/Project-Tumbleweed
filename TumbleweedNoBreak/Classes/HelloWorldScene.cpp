@@ -86,12 +86,19 @@ bool HelloWorld::init()
 
 
 
+	p1Controller = managerR.getController(0);
+	p2Controller = managerR.getController(1);
+
+	managerR.update();
+
+	p1Controller->updateSticks(p1Sticks);
+	p1Controller->getTriggers(p1Triggers);
+	p2Controller->updateSticks(p2Sticks);
+	p2Controller->getTriggers(p2Triggers);
 
 	initSprites();
 
-
-	p1Controller = managerR.getController(0);
-	p2Controller = managerR.getController(1);
+	
 
 	this->scheduleUpdate();
 
@@ -138,61 +145,6 @@ void HelloWorld::update(float dt)
 	if (hasSpawn)
 		enemyTimer += dt;
 
-	if (enemyShootTimer > 0.2f) {
-		enemyShootTimer = 0.0f;
-		eHasShot = false;
-	}
-	if (!enemyShootTimer && !outlawList.empty()) {
-		eHasShot = true;
-			eBaseProjectile = new Sedna::Projectile(-1000, 0, Sedna::Enemy);
-			this->addChild(eBaseProjectile->getBox()->getDrawNode());
-			this->addChild(eBaseProjectile->getSprite());
-
-			eProjectiles.push_back(new Sedna::Projectile(*eBaseProjectile));
-			eProjectiles.back()->getBox()->setLocation(outlawList[rand()% outlawList.size()]->getBox()->getLocation());
-			eProjectiles.back()->getBox()->setForce(cocos2d::Vec2(0, -5));
-	}
-	if (eHasShot)
-		enemyShootTimer += dt;
-
-	if (p1Triggers.RT > 0) {
-
-		if (gunTimer > 0.2f)
-		{
-			gunTimer = 0.0f;
-			hasShot = false;
-		}
-		if (!gunTimer)
-		{
-			hasShot = true;
-			if (p1Sticks[1].y < 0.3f && p1Sticks[1].y > -0.3f && p1Sticks[1].x > 0.3f ||
-				p1Sticks[1].y < 0.3f && p1Sticks[1].y > -0.3f && p1Sticks[1].x < -0.3f ||
-				p1Sticks[1].y < -0.3f) {
-			}
-			else {
-
-				baseProjectile = new Sedna::Projectile(-1000, 0, Sedna::Ally);
-				this->addChild(baseProjectile->getBox()->getDrawNode());
-				this->addChild(baseProjectile->getSprite());
-
-				pProjectiles.push_back(new Sedna::Projectile(*baseProjectile));
-
-				pProjectiles.back()->getBox()->setLocation(playerOne->getBox()->getLocation());
-
-				if (p1Sticks[1].x < -0.3f && p1Sticks[1].y > 0.3f)
-					pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(-5, 5));
-				if (p1Sticks[1].x > 0.3f && p1Sticks[1].y > 0.3f)
-					pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(5, 5));
-				if (p1Sticks[1].y > 0.3f && p1Sticks[1].x < 0.3f && p1Sticks[1].x > -0.3f ||
-					p1Sticks[1].y < 0.3f && p1Sticks[1].y > -0.3f && p1Sticks[1].x < 0.3f && p1Sticks[1].x > -0.3f)
-					pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(0, 5));
-			}
-		}
-
-
-	}
-	if (hasShot)
-		gunTimer += dt;
 
 	///
 	for (int i = 0; i < pProjectiles.size(); i++) {
@@ -217,22 +169,9 @@ void HelloWorld::update(float dt)
 
 		}
 	}
-	for (int i = 0; i < pProjectiles.size(); i++) {
-		if (pProjectiles[i]->getBox()->checkCollision(*baseTable->getBox())) {
-			baseTable->setHp(baseTable->getHp() - 1);
-			pProjectiles[i]->getBox()->getDrawNode()->removeFromParent();
-			pProjectiles[i]->getSprite()->removeFromParent();
-			pProjectiles.erase(pProjectiles.begin() + i);
-
-			if (!baseTable->getHp()) {
-				baseTable->getBox()->getDrawNode()->setVisible(false);
-				baseTable->getSprite()->setVisible(false);
-			}
-		}
-	}
 	for (int i = 0; i < eProjectiles.size(); i++) {
 		if (eProjectiles[i]->getBox()->checkCollision(*playerOne->getBox())) {
-			playerOne->setHp(playerOne->getHP() - 1);
+			playerOne->setHp(playerOne->getHp() - 1);
 			eProjectiles[i]->getBox()->getDrawNode()->removeFromParent();
 			eProjectiles[i]->getSprite()->removeFromParent();
 			eProjectiles.erase(eProjectiles.begin() + i);
@@ -256,12 +195,13 @@ void HelloWorld::initSprites()
 	this->addChild(DOS->getBox()->getDrawNode());
 	this->addChild(DOS->getSprite());
 	DOS->getSprite()->setVisible(true);
-	playerTwo = new Sedna::Player(2, 300, 100);
+
+	playerTwo = new Sedna::Player(2, 300, 100,managerR);
 	this->addChild(playerTwo->getBox()->getDrawNode());
 	this->addChild(playerTwo->getSprite());
 	playerTwo->getSprite()->setVisible(true);
 
-	playerOne = new Sedna::Player(1, 100, 100);
+	playerOne = new Sedna::Player(1, 100, 100,managerR);
 	this->addChild(playerOne->getBox()->getDrawNode());
 	this->addChild(playerOne->getSprite());
 	playerOne->getSprite()->setVisible(true);
@@ -275,76 +215,10 @@ void HelloWorld::initSprites()
 
 void HelloWorld::checkInput(float dt)
 {
-	if (p1Controller->isButtonPressed(Sedna::SELECT))
-		exit(0);
-	if (p1Controller->isButtonPressed(Sedna::START))
-		togglePause();
-
-
-	///<player 1>
-	if (p1Sticks[0].x > 0.3f)
-		playerOne->getBox()->addForce(3, 0);
-
-	else if (p1Sticks[0].x < -0.3f)
-		playerOne->getBox()->addForce(-3, 0);
-
-	if (p1Sticks[0].y > 0.3f)
-		playerOne->getBox()->addForce(0, 3);
-
-	else if (p1Sticks[0].y < -0.3f)
-		playerOne->getBox()->addForce(0, -3);
-
-	///<player 2>
-	if (p2Sticks[0].x > 0.3f)
-		playerOne->getBox()->addForce(3, 0);
-
-	else if (p2Sticks[0].x < -0.3f)
-		playerOne->getBox()->addForce(-3, 0);
-
-	if (p2Sticks[0].y > 0.3f)
-		playerOne->getBox()->addForce(0, 3);
-
-	else if (p2Sticks[0].y < -0.3f)
-		playerOne->getBox()->addForce(0, -3);
-
-
-
-
-	if (p1Controller->isButtonPressed(Sedna::B)) {
-		//std::cout << tumbleTimer <<std::endl;
-		if (tumbleTimer > 3)
-		{
-			tumbleTimer = 0;
-			isTumbling = false;
-		}
-
-
-		if (!tumbleTimer)
-		{
-			isTumbling = true;
-			playerOne->getBox()->setTumbling(true);
-			if (p1Sticks[0].x < -0.3f)
-				playerOne->getBox()->addForce(-500, 0);
-			else if (p1Sticks[0].x > 0.3f)
-				playerOne->getBox()->addForce(500, 0);
-			if (p1Sticks[0].y < -0.3f)
-				playerOne->getBox()->addForce(0, -500);
-			else if (p1Sticks[0].y > 0.3f)
-				playerOne->getBox()->addForce(0, 500);
-
-
-		}
-	}
-	else {
-		playerOne->getBox()->setTumbling(false);
-	}
-	if (p1Sticks[0].x > -0.3f && p1Sticks[0].x < 0.3f && p1Sticks[0].y > -0.3f && p1Sticks[0].y < 0.3f)
-		playerOne->getBox()->addForce(playerOne->getBox()->getVelocity().x *-2.0f, playerOne->getBox()->getVelocity().y*-2.0f);
-	if (p2Sticks[0].x > -0.3f && p2Sticks[0].x < 0.3f && p2Sticks[0].y > -0.3f && p2Sticks[0].y < 0.3f)
-		playerTwo->getBox()->addForce(playerTwo->getBox()->getVelocity().x *-2.0f, playerTwo->getBox()->getVelocity().y*-2.0f);
-
-	if (isTumbling)
-		tumbleTimer += dt;
+	playerOne->checkInput(dt);
+	playerTwo->checkInput(dt);
+	playerOne->shoot(dt,this);
+	playerTwo->shoot(dt,this);
 }
 
 void HelloWorld::getCollisions()
@@ -419,15 +293,15 @@ samePosition:
 		}
 	}
 
-	if (pProjectiles.size() > 4) {
-		pProjectiles.front()->getBox()->getDrawNode()->removeFromParent();
-		pProjectiles.front()->getSprite()->removeFromParent();
-		pProjectiles.erase(pProjectiles.begin());
+	if (playerOne->getpProjectile().size() > 4) {
+		playerOne->getpProjectile().front()->getBox()->getDrawNode()->removeFromParent();
+		playerOne->getpProjectile().front()->getSprite()->removeFromParent();
+		playerOne->getpProjectile().erase(pProjectiles.begin());
 	}
 
 
-	for (int i = 0; i < pProjectiles.size(); i++)
-		pProjectiles[i]->updateGameObject();
+	for (int i = 0; i < playerOne->getpProjectile().size(); i++)
+		playerOne->getpProjectile()[i]->updateGameObject();
 
 }
 

@@ -29,4 +29,12 @@ void GameObject::updateGameObject()
 	hitBox->update();
 	sprite->setPosition(hitBox->getLocation());
 }
+HP GameObject::getHp() const
+{
+	return objectHp;
+}
+void GameObject::setHp(HP hp)
+{
+	objectHp = hp;
+}
 }

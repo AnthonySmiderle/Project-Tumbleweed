@@ -1,6 +1,7 @@
 #pragma once
 #include "cocos2d.h"
 #include "Primitive.h"
+#include "Enums and Typdefs.h"
 #include <string>
 namespace Sedna {
 
@@ -14,7 +15,10 @@ namespace Sedna {
 		Sedna::CirclePrimitive* getBox()const;
 		void setCircle(CirclePrimitive c) { *hitBox = c; }
 		void updateGameObject();
+		HP getHp() const;
+		void setHp(HP hp);
 	protected:
+		HP objectHp;
 		cocos2d::Sprite *sprite;
 		Sedna::CirclePrimitive* hitBox;
 	};

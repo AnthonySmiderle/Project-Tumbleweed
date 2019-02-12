@@ -75,7 +75,6 @@ private:
 	Sedna::Outlaw* outlaw;
 	std::vector<Sedna::Outlaw*>outlawList;
 
-	cocos2d::Sprite* tableSprite;
 	Sedna::GameObject* DOS;
 	std::vector <Sedna::Table> tableList;
 	std::vector <Sedna::Potion> potionList;
