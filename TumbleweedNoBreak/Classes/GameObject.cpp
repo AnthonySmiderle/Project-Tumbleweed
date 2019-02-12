@@ -1,9 +1,7 @@
 #include "GameObject.h"
 namespace Sedna {
 
-//GameObject::GameObject(cocos2d::Sprite* image,CirclePrimitive box):sprite(image),hitBox(new CirclePrimtive(box))
-//{
-//}
+
 
 GameObject::GameObject(const char * FILEPATH, const cocos2d::Vec2 & LOCATION, float RADIUS, float ANGLE, unsigned int SEGMENTS) 
 	:hitBox(new CirclePrimitive(LOCATION,RADIUS,ANGLE,SEGMENTS))
@@ -29,12 +27,13 @@ void GameObject::updateGameObject()
 	hitBox->update();
 	sprite->setPosition(hitBox->getLocation());
 }
-HP GameObject::getHp() const
+HP GameObject::getHP() const
 {
 	return objectHp;
 }
-void GameObject::setHp(HP hp)
+void GameObject::setHP(HP hp)
 {
 	objectHp = hp;
 }
+
 }

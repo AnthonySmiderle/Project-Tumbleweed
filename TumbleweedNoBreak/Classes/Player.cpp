@@ -145,6 +145,7 @@ namespace Sedna {
 
 	void Player::checkBCollision(std::vector<Outlaw*>& outlawList)
 	{
+		bool check = false;
 		for (int i = 0; i < pProjectiles.size(); i++) {
 			for (int j = 0; j < outlawList.size(); j++) {
 				if (pProjectiles[i]->getBox()->checkCollision(*outlawList[j]->getBox())) {
@@ -153,7 +154,7 @@ namespace Sedna {
 					pProjectiles[i]->getBox()->getDrawNode()->removeFromParent();
 					pProjectiles[i]->getSprite()->removeFromParent();
 					pProjectiles.erase(pProjectiles.begin() + i);
-					i--;
+					check = true;
 
 					if (!outlawList[j]->getHP()) {
 						outlawList[j]->removeProjectiles();
@@ -165,7 +166,45 @@ namespace Sedna {
 
 
 				}
+				else
+					check = false;
 
+			}
+			if (check) {
+				i--;
+				check = false;
+			}
+		}
+	}
+	void Player::checkBCollision(std::vector<Table*>& tableList)
+	{
+		bool check = false;
+		for (int i = 0; i < pProjectiles.size(); i++) {
+			for (int j = 0; j < tableList.size(); j++) {
+				if (pProjectiles[i]->getBox()->checkCollision(*tableList[j]->getBox())) {
+
+					tableList[j]->setHP(tableList[j]->getHP() - 1);
+					pProjectiles[i]->getBox()->getDrawNode()->removeFromParent();
+					pProjectiles[i]->getSprite()->removeFromParent();
+					pProjectiles.erase(pProjectiles.begin() + i);
+					check = true;
+
+					if (!tableList[j]->getHP()) {
+						tableList[j]->getBox()->getDrawNode()->removeFromParent();
+						tableList[j]->getSprite()->removeFromParent();
+						tableList.erase(tableList.begin() + j);
+						j--;
+					}
+
+
+				}
+				else
+					check = false;
+
+			}
+			if (check) {
+				i--;
+				check = false;
 			}
 		}
 	}
