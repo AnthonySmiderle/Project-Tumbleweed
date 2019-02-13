@@ -13,5 +13,9 @@ void Sedna::Table::spriteSwitch()
 	sprite->setTexture("TableKnocked.png");
 }
 
+void Table::checkCollision(std::vector<Table*>& tableList)
+{
+}
+
 
 }
