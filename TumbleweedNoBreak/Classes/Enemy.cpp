@@ -90,7 +90,7 @@ void Outlaw::checkBCollision(std::vector<Table*>& tableList)
 			}
 			else
 				check = false;
-			if (!tableList[j]->getHP()) {
+			if (tableList[j]->getHP() <= 0) {
 				tableList[j]->getBox()->getDrawNode()->removeFromParent();
 				tableList[j]->getSprite()->removeFromParent();
 				tableList.erase(tableList.begin() + j);

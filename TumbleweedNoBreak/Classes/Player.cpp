@@ -75,11 +75,12 @@ namespace Sedna {
 					this->getBox()->addForce(0, -500);
 				else if (pSticks[0].y > 0.3f)
 					this->getBox()->addForce(0, 500);
-
+				//sprite->setTexture("p1T.png");
 
 			}
 		}
 		else {
+			//sprite->setTexture("player1.png");
 			this->getBox()->setTumbling(false);
 		}
 
