@@ -8,7 +8,7 @@ namespace Sedna {
 		if (wPlayer == playerOne) {
 			sprite = cocos2d::Sprite::create("player1.png");
 			sprite->setScale(0.85f);
-			hitBox = new CirclePrimitive(cocos2d::Vec2(x, y), 26, 5, 30);
+			hitBox = new CirclePrimitive(cocos2d::Vec2(x, y), 24, 5, 30);
 			hitBox->getDrawNode()->setVisible(false);
 
 			this->pController = X.getController(0);
@@ -19,7 +19,7 @@ namespace Sedna {
 
 			sprite = cocos2d::Sprite::create("player1.png");
 			sprite->setScale(0.85f);
-			hitBox = new CirclePrimitive(cocos2d::Vec2(x, y), 26, 5, 30);
+			hitBox = new CirclePrimitive(cocos2d::Vec2(x, y), 24, 5, 30);
 			hitBox->getDrawNode()->setVisible(false);
 
 			this->pController = X.getController(1);
@@ -96,6 +96,11 @@ namespace Sedna {
 			pSticks[1].y > 0.3f && pSticks[1].x < 0.3f && pSticks[1].x > -0.3f) {
 			sprite->setTexture("player1.png");
 		}
+		if (pSticks[1].x < -0.3f && pSticks[1].y > 0.3f) 
+			sprite->setTexture("p1L.png");
+		if (pSticks[1].x > 0.3f && pSticks[1].y > 0.3f) 
+			sprite->setTexture("p1R.png");
+		
 		pController->getTriggers(pTriggers);
 		if (pTriggers.RT > 0) {
 
