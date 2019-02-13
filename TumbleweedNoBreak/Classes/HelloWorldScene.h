@@ -58,6 +58,7 @@ public:
 	// implement the "static create()" method manually
 	CREATE_FUNC(HelloWorld);
 private:
+	void bounceFunct();
 	Sedna::SpawnManager sManager = Sedna::SpawnManager(this);
 	//std::vector<Sedna::SquarePrimitive> bullets;
 	Sedna::XinputManager managerR;
@@ -87,7 +88,8 @@ private:
 
 	cocos2d::Sprite* bg;
 
-
+	int barRightMax = 430;
+	int barLeftMax = 90;
 	
 	float enemyTimer = 0.0f;
 	bool hasSpawn = false;

@@ -157,7 +157,7 @@ void HelloWorld::update(float dt)
 	playerOne->updateGameObject();
 	playerTwo->updateGameObject();
 	//baseTable->updateGameObject();
-	
+	bounceFunct();
 }
 
 void HelloWorld::initSprites()
@@ -308,6 +308,47 @@ void HelloWorld::menuCloseCallback(Ref* pSender)
 	//_eventDispatcher->dispatchEvent(&customEndEvent);
 
 
+}
+
+void HelloWorld::bounceFunct()
+{
+	if ((int)playerOne->getBox()->getLocation().x >= barRightMax)
+	{
+		playerOne->getBox()->setLocation(cocos2d::Vec2(430,playerOne->getBox()->getLocation().y));
+		playerOne->getBox()->addForce(-25, 0);
+	}
+		
+	if ((int)playerOne->getBox()->getLocation().x <= barLeftMax)
+	{
+		playerOne->getBox()->setLocation(cocos2d::Vec2(90, playerOne->getBox()->getLocation().y));
+		playerOne->getBox()->addForce(25, 0);
+	}
+	if ((int)playerTwo->getBox()->getLocation().x >= barRightMax)
+	{
+		playerTwo->getBox()->setLocation(cocos2d::Vec2(430, playerTwo->getBox()->getLocation().y));
+		playerTwo->getBox()->addForce(-25, 0);
+	}
+
+	if ((int)playerTwo->getBox()->getLocation().x <= barLeftMax)
+	{
+		playerTwo->getBox()->setLocation(cocos2d::Vec2(90, playerTwo->getBox()->getLocation().y));
+		playerTwo->getBox()->addForce(25, 0);
+	}
+		
+	for (unsigned int i=0;i<tableList.size();i++)
+	{
+		if ((int)tableList[i]->getBox()->getLocation().x >= barRightMax)
+		{
+			tableList[i]->getBox()->setLocation(cocos2d::Vec2(430, tableList[i]->getBox()->getLocation().y));
+			tableList[i]->getBox()->addForce(-25, 0);
+		}
+
+		if ((int)tableList[i]->getBox()->getLocation().x <= barLeftMax)
+		{
+			tableList[i]->getBox()->setLocation(cocos2d::Vec2(90, tableList[i]->getBox()->getLocation().y));
+			tableList[i]->getBox()->addForce(25, 0);
+		}
+	}
 }
 
 
