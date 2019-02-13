@@ -216,6 +216,31 @@ namespace Sedna {
 		}
 	}
 
+	void Player::checkTableStuff(std::vector<Table*>& tableList)
+	{
+		for (int i = 0; i < tableList.size(); i++) {
+			if (pController->isButtonPressed(Sedna::A) && this->getBox()->checkCollision(*tableList[i]->getBox())) {
+				cocos2d::Vec2 distanceVector((tableList[i]->getBox()->getLocation().x - this->getBox()->getLocation().x),
+					(tableList[i]->getBox()->getLocation().y - this->getBox()->getLocation().y));
+				tableList[i]->spriteSwitch();
+				//times 2 to give a better feel to kicking the table
+				tableList[i]->getBox()->addForce(distanceVector.x * 2, distanceVector.y * 2);
+
+			}
+			if (tableList[i]->getBox()->getVelocity() != cocos2d::Vec2(0, 0)) {
+
+				tableList[i]->getBox()->addForce(
+					tableList[i]->getBox()->getVelocity().x * -1,
+					tableList[i]->getBox()->getVelocity().y * -1);
+			}
+			if (this->getBox()->checkCloseTouching(*tableList[i]->getBox())) {
+				cocos2d::Vec2 distanceVector((this->getBox()->getLocation().x - tableList[i]->getBox()->getLocation().x),
+					(this->getBox()->getLocation().y - tableList[i]->getBox()->getLocation().y));
+				this->getBox()->addForce(((distanceVector.x * 2) / 2), (distanceVector.y * 2) / 2);
+			}
+		}
+	}
+
 	std::vector<Projectile*> Player::getpProjectile() const
 	{
 		return pProjectiles;

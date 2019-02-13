@@ -195,40 +195,8 @@ void HelloWorld::checkInput(float dt)
 
 void HelloWorld::getCollisions()
 {
-	//if (p1Controller->isButtonPressed(Sedna::A) && playerOne->getBox()->checkCollision(*baseTable->getBox())) {
-	//
-	//	cocos2d::Vec2 distanceVector((baseTable->getBox()->getLocation().x - playerOne->getBox()->getLocation().x), (baseTable->getBox()->getLocation().y - playerOne->getBox()->getLocation().y));
-	//	baseTable->spriteSwitch();
-	//	//times 2 to give a better feel to kicking the table
-	//	baseTable->getBox()->addForce(distanceVector.x * 2, distanceVector.y * 2);
-	//
-	//}
-	//
-	//if (baseTable->getBox()->getVelocity() != cocos2d::Vec2(0, 0)) {
-	//
-	//	baseTable->getBox()->addForce(
-	//		baseTable->getBox()->getVelocity().x * -1,
-	//		baseTable->getBox()->getVelocity().y * -1);
-	//}
-	//if (playerOne->getBox()->checkCloseTouching(*baseTable->getBox())) {
-	//	cocos2d::Vec2 distanceVector((playerOne->getBox()->getLocation().x - baseTable->getBox()->getLocation().x), (playerOne->getBox()->getLocation().y - baseTable->getBox()->getLocation().y));
-	//	playerOne->getBox()->addForce(((distanceVector.x * 2) / 2), (distanceVector.y * 2) / 2);
-	//}
-	//
-	//
-	////////////////////////////////////////////////////////////////////////////////////////
-	//if (p2Controller->isButtonPressed(Sedna::A) && playerTwo->getBox()->checkCollision(*baseTable->getBox())) {
-	//
-	//	cocos2d::Vec2 distanceVector((baseTable->getBox()->getLocation().x - playerTwo->getBox()->getLocation().x), (baseTable->getBox()->getLocation().y - playerTwo->getBox()->getLocation().y));
-	//	baseTable->spriteSwitch();
-	//	//times 2 to give a better feel to kicking the table
-	//	baseTable->getBox()->addForce(distanceVector.x * 2, distanceVector.y * 2);
-	//
-	//}
-	//if (playerTwo->getBox()->checkCloseTouching(*baseTable->getBox())) {
-	//	cocos2d::Vec2 distanceVector((playerTwo->getBox()->getLocation().x - baseTable->getBox()->getLocation().x), (playerTwo->getBox()->getLocation().y - baseTable->getBox()->getLocation().y));
-	//	playerTwo->getBox()->addForce(((distanceVector.x * 2) / 2), (distanceVector.y * 2) / 2);
-	//}
+	playerOne->checkTableStuff(tableList);
+	playerTwo->checkTableStuff(tableList);
 }
 
 void HelloWorld::bigCheckList()
@@ -282,22 +250,24 @@ void HelloWorld::recursiveFunction(std::vector<Sedna::Outlaw*>& outlawList)
 
 void HelloWorld::checkPosAll()
 {
-	for (unsigned int i = 0; i < outlawList.size(); i++)
+	for (int i = 0; i < outlawList.size(); i++)
 	{
-		if (outlawList[i]->getBox()->getLocation().y<DDOS->getSprite()->getPosition().y-400)
+		if (outlawList[i]->getBox()->getLocation().y < DDOS->getSprite()->getPosition().y-400)
 		{
 			outlawList[i]->removeProjectiles();
 			outlawList[i]->getBox()->getDrawNode()->removeFromParent();
 			outlawList[i]->getSprite()->removeFromParent();
 			outlawList.erase(outlawList.begin() + i);
+			Sedna::BaseObjectManager::outlawBObjects.erase(Sedna::BaseObjectManager::outlawBObjects.begin() + i);
 			i--;
 		}
 	}
-	for (unsigned int i = 0; i < tableList.size();i++)
+	for (int i = 0; i < tableList.size();i++)
 	{
 		tableList[i]->getBox()->getDrawNode()->removeFromParent();
 		tableList[i]->getSprite()->removeFromParent();
 		tableList.erase(tableList.begin() + i);
+		Sedna::BaseObjectManager::tableBObjects.erase(Sedna::BaseObjectManager::tableBObjects.begin() + i);
 		i--;
 	}
 }
