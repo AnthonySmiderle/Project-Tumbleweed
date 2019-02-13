@@ -126,6 +126,24 @@ void HelloWorld::update(float dt)
 		DDOS->getSprite()->setPosition(cocos2d::Vec2(100, (DDOS->getSprite()->getPosition().y + 1)));
 
 	}
+#ifdef _DEBUG
+	if (p1Controller->isButtonPressed(Sedna::X)) {
+		for (int i = 0; i < outlawList.size(); i++)
+			outlawList[i]->getBox()->getDrawNode()->setVisible(true);
+		for (int i = 0; i < tableList.size(); i++)
+			tableList[i]->getBox()->getDrawNode()->setVisible(true);
+		playerOne->getBox()->getDrawNode()->setVisible(true);
+		playerTwo->getBox()->getDrawNode()->setVisible(true);
+	}
+	else {
+		for (int i = 0; i < outlawList.size(); i++)
+			outlawList[i]->getBox()->getDrawNode()->setVisible(false);
+		for (int i = 0; i < tableList.size(); i++)
+			tableList[i]->getBox()->getDrawNode()->setVisible(false);
+		playerOne->getBox()->getDrawNode()->setVisible(false);
+		playerTwo->getBox()->getDrawNode()->setVisible(false);
+	}
+#endif
 	if (enemyTimer > 4.0f)
 	{
 		enemyTimer = 0.0f;
@@ -243,6 +261,7 @@ void HelloWorld::bigCheckList()
 
 void HelloWorld::recursiveFunction(std::vector<Sedna::Outlaw*>& outlawList)
 {
+	yes:
 	for (int i = 0; i < outlawList.size(); i++) {
 		for (int j = 0; j < outlawList.size(); j++) {
 			if (i == j)
@@ -250,7 +269,7 @@ void HelloWorld::recursiveFunction(std::vector<Sedna::Outlaw*>& outlawList)
 			if (outlawList[i]->getBox()->checkCollision(*outlawList[j]->getBox())) {
 				outlawList[i]->getBox()->setLocation(cocos2d::Vec2(rand() % 100 + 1 + (rand() % 200 + 1),
 					outlawList[i]->getBox()->getLocation().y));
-				recursiveFunction(outlawList);
+				goto yes;		
 			}
 
 		}
@@ -258,6 +277,7 @@ void HelloWorld::recursiveFunction(std::vector<Sedna::Outlaw*>& outlawList)
 }
 void HelloWorld::recursiveFunction(std::vector<Sedna::Table*>& tableList)
 {
+	yes:
 	for (int i = 0; i < tableList.size(); i++) {
 		for (int j = 0; j < tableList.size(); j++) {
 			if (i == j)
@@ -265,7 +285,7 @@ void HelloWorld::recursiveFunction(std::vector<Sedna::Table*>& tableList)
 			if (tableList[i]->getBox()->checkCollision(*tableList[j]->getBox())) {
 				tableList[i]->getBox()->setLocation(cocos2d::Vec2(rand() % 100 + 1 + (rand() % 200 + 1),
 					tableList[i]->getBox()->getLocation().y));
-				recursiveFunction(tableList);
+				goto yes;
 			}
 
 		}

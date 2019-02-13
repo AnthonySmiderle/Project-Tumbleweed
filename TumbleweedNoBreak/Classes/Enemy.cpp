@@ -11,6 +11,7 @@ Sedna::Outlaw::Outlaw(float x, float y)
 	sprite->setScale(0.85f);
 
 	hitBox = new CirclePrimitive(cocos2d::Vec2(x, y), 28, 5, 30);
+	hitBox->getDrawNode()->setVisible(false);
 
 	this->objectHp = 3;
 }
