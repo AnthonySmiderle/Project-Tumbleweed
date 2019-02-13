@@ -153,8 +153,8 @@ void HelloWorld::update(float dt)
 	if (!enemyTimer)
 	{
 		hasSpawn = true;
-		int x = rand() % 100 + 1 + (rand() % 200 + 1);
-		int y = DDOS->getSprite()->getPosition().y - 75;
+		int x = 100 + (rand() % 300);
+		int y = DDOS->getSprite()->getPosition().y - 50-(rand()%50);
 		outlaw = new Sedna::Outlaw(x, y);
 		Sedna::BaseObjectManager::outlawBObjects.push_back(outlaw);
 		this->addChild(outlaw->getBox()->getDrawNode());
@@ -231,8 +231,8 @@ void HelloWorld::initSprites()
 					this->getDefaultCamera()->getPosition().y + 120));
 
 	//replace this with a base table that can be copied later
-	for (int i = 0; i < 4; i++) {
-		baseTable = new Sedna::Table(100 + rand() % 200, rand() % 200 + rand() % 100);
+	for (unsigned int i = 0; i < 4; i++) {
+		baseTable = new Sedna::Table(100 + rand() % 300, DDOS->getSprite()->getPosition().y-10-rand() % 150);
 		this->addChild(baseTable->getBox()->getDrawNode());
 		this->addChild(baseTable->getSprite());
 		tableList.push_back(new Sedna::Table(*baseTable));
@@ -301,7 +301,7 @@ void HelloWorld::recursiveFunction(std::vector<Sedna::Outlaw*>& outlawList)
 			if (i == j)
 				continue;
 			if (outlawList[i]->getBox()->checkCollision(*outlawList[j]->getBox())) {
-				outlawList[i]->getBox()->setLocation(cocos2d::Vec2(rand() % 100 + 1 + (rand() % 200 + 1),
+				outlawList[i]->getBox()->setLocation(cocos2d::Vec2(100 + (rand() % 300),
 					outlawList[i]->getBox()->getLocation().y));
 				goto yes;		
 			}

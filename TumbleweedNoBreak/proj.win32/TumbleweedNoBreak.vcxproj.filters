@@ -30,6 +30,7 @@
     <ClInclude Include="..\Classes\Enums and Typdefs.h" />
     <ClInclude Include="..\Classes\baseObjectManager.h" />
     <ClInclude Include="..\Classes\SpawnManager.h" />
+    <ClInclude Include="..\Classes\SpawnObject.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc" />
