@@ -205,7 +205,9 @@ void HelloWorld::initSprites()
 		this->addChild(baseTable->getSprite());
 		tableList.push_back(new Sedna::Table(*baseTable));
 		Sedna::BaseObjectManager::tableBObjects.push_back(baseTable);
+
 	}
+		recursiveFunction(tableList);
 }
 
 void HelloWorld::checkInput(float dt)
@@ -235,7 +237,6 @@ void HelloWorld::bigCheckList()
 
 
 	recursiveFunction(outlawList);
-	recursiveFunction(tableList);
 
 	playerOne->checkBCollision(outlawList);
 	playerTwo->checkBCollision(outlawList);
