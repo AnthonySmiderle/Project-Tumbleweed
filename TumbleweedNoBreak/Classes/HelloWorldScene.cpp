@@ -286,10 +286,20 @@ void HelloWorld::checkPosAll()
 	{
 		if (outlawList[i]->getBox()->getLocation().y<DDOS->getSprite()->getPosition().y-400)
 		{
-
+			outlawList[i]->removeProjectiles();
+			outlawList[i]->getBox()->getDrawNode()->removeFromParent();
+			outlawList[i]->getSprite()->removeFromParent();
+			outlawList.erase(outlawList.begin() + i);
+			i--;
 		}
 	}
-	
+	for (unsigned int i = 0; i < tableList.size();i++)
+	{
+		tableList[i]->getBox()->getDrawNode()->removeFromParent();
+		tableList[i]->getSprite()->removeFromParent();
+		tableList.erase(tableList.begin() + i);
+		i--;
+	}
 }
 
 
