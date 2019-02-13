@@ -100,8 +100,7 @@ namespace Sedna {
 				hasShot = true;
 				if (pSticks[1].y < 0.3f && pSticks[1].y > -0.3f && pSticks[1].x > 0.3f ||
 					pSticks[1].y < 0.3f && pSticks[1].y > -0.3f && pSticks[1].x < -0.3f ||
-					pSticks[1].y < -0.3f) {
-				}
+					pSticks[1].y < -0.3f) {}
 				else {
 
 					Projectile* playerProjectile = new Sedna::Projectile(-1000, 0, Sedna::Ally);
