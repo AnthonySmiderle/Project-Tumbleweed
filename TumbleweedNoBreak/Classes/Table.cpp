@@ -4,8 +4,8 @@ namespace Sedna {
 Sedna::Table::Table(float x, float y)   {
 	this->sprite = cocos2d::Sprite::create("Table.png");
 	sprite->setScale(0.9f);
-	this->hitBox = new CirclePrimitive(cocos2d::Vec2(x, y),26,5,50);
-	this->objectHp = 3;
+	this->hitBox = new CirclePrimitive(cocos2d::Vec2(x, y),28,5,50);
+	this->objectHp = 5;
 }
 void Sedna::Table::spriteSwitch()
 {	
