@@ -25,6 +25,7 @@
 #include "HelloWorldScene.h"
 #include "SimpleAudioEngine.h"
 #include <iostream>
+#include "AudioEngine.h"
 
 USING_NS_CC;
 
@@ -95,7 +96,6 @@ bool HelloWorld::init()
 	p1Controller->getTriggers(p1Triggers);
 	p2Controller->updateSticks(p2Sticks);
 	p2Controller->getTriggers(p2Triggers);
-
 	initSprites();
 
 
@@ -189,6 +189,8 @@ void HelloWorld::update(float dt)
 
 void HelloWorld::initSprites()
 {
+	cocos2d::experimental::AudioEngine::play2d("bgm.mp3", true);
+
 	DDOS = new Sedna::GameObject("DOS.jpg", cocos2d::Vec2(100, 300), 1, 1, 1);
 	this->addChild(DDOS->getBox()->getDrawNode());
 	this->addChild(DDOS->getSprite());
