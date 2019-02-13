@@ -34,6 +34,7 @@
 #include "Potion.h"
 #include "Projectile.h"
 #include "Enemy.h"
+#include "SpawnManager.h"
 
 class HelloWorld : public cocos2d::Scene
 {
@@ -56,6 +57,7 @@ public:
 	// implement the "static create()" method manually
 	CREATE_FUNC(HelloWorld);
 private:
+	Sedna::SpawnManager sManager = Sedna::SpawnManager(this);
 	//std::vector<Sedna::SquarePrimitive> bullets;
 	Sedna::XinputManager managerR;
 	Sedna::XinputController* p1Controller;

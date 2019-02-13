@@ -108,6 +108,7 @@ bool HelloWorld::init()
 
 void HelloWorld::update(float dt)
 {
+	sManager.update(dt, DDOS->getSprite()->getPosition().y);
 	managerR.update();
 	p1Controller->updateSticks(p1Sticks);
 	p1Controller->getTriggers(p1Triggers);
@@ -264,11 +265,14 @@ void HelloWorld::checkPosAll()
 	}
 	for (int i = 0; i < tableList.size();i++)
 	{
-		tableList[i]->getBox()->getDrawNode()->removeFromParent();
-		tableList[i]->getSprite()->removeFromParent();
-		tableList.erase(tableList.begin() + i);
-		Sedna::BaseObjectManager::tableBObjects.erase(Sedna::BaseObjectManager::tableBObjects.begin() + i);
-		i--;
+		if (tableList[i]->getBox()->getLocation().y< DDOS->getSprite()->getPosition().y - 400)
+		{
+			tableList[i]->getBox()->getDrawNode()->removeFromParent();
+			tableList[i]->getSprite()->removeFromParent();
+			tableList.erase(tableList.begin() + i);
+			Sedna::BaseObjectManager::tableBObjects.erase(Sedna::BaseObjectManager::tableBObjects.begin() + i);
+			i--;
+		}
 	}
 }
 

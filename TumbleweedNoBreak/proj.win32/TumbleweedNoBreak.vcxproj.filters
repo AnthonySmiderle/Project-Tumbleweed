@@ -13,6 +13,7 @@
     <ClCompile Include="..\Classes\Potion.cpp" />
     <ClCompile Include="..\Classes\Enemy.cpp" />
     <ClCompile Include="..\Classes\baseObjectManager.cpp" />
+    <ClCompile Include="..\Classes\SpawnManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Classes\AppDelegate.h" />
@@ -28,6 +29,7 @@
     <ClInclude Include="..\Classes\Enemy.h" />
     <ClInclude Include="..\Classes\Enums and Typdefs.h" />
     <ClInclude Include="..\Classes\baseObjectManager.h" />
+    <ClInclude Include="..\Classes\SpawnManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc" />

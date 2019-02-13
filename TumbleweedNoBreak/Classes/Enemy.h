@@ -21,7 +21,21 @@ namespace Sedna {
 		int x = 0;
 
 	};
+	class Pete : public GameObject
+	{
+	public:
+		Pete(float x, float y);
+		void spawnDyna(float dt, cocos2d::Scene* s);
+		void checkList();
+		void removeDyna();
+	private:
+		std::vector<Projectile*> eDyna;
+		float eDynaTimer = 0.0f;
+		bool ehasDynaPlace = false;
+	protected:
+		int x = 0;
 
+	};
 	
 
 
