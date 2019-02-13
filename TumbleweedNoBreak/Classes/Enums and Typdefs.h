@@ -16,6 +16,11 @@ namespace Sedna {
 
 	};
 
+	struct spawnObject{
+
+
+	};
+
 
 
 }
