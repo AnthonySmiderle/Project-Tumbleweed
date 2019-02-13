@@ -292,7 +292,7 @@ void HelloWorld::bigCheckList()
 		for (unsigned int j = 0; j < tableList.size(); j++) {
 			if (i == j)
 				continue;
-				tableList[i]->collideTable(tableList);
+				tableList[i]->collideTable(tableList[j]);
 		}
 	}
 

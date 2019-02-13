@@ -13,22 +13,24 @@ namespace Sedna {
 		sprite->setTexture("TableKnocked.png");
 	}
 
-	void Table::collideTable(std::vector<Table*>& tableList)
+	void Table::collideTable(Table* table)
 	{
-		for (int i = 0; i < tableList.size(); i++) {
-			cocos2d::Vec2 distanceVector((tableList[i]->getBox()->getLocation().x - this->getBox()->getLocation().x),
-				(tableList[i]->getBox()->getLocation().y - this->getBox()->getLocation().y));
-			tableList[i]->spriteSwitch();
+
+			if (this->getBox()->checkCollision(*table->getBox())) {
+
+			cocos2d::Vec2 distanceVector((table->getBox()->getLocation().x - this->getBox()->getLocation().x),
+				(table->getBox()->getLocation().y - this->getBox()->getLocation().y));
+			table->spriteSwitch();
 			//times 2 to give a better feel to kicking the table
-			tableList[i]->getBox()->addForce(distanceVector.x * 2, distanceVector.y * 2);
-
-			if (tableList[i]->getBox()->getVelocity() != cocos2d::Vec2(0, 0)) {
-
-				tableList[i]->getBox()->addForce(
-					tableList[i]->getBox()->getVelocity().x * -1,
-					tableList[i]->getBox()->getVelocity().y * -1);
+			table->getBox()->addForce(distanceVector.x * 2, distanceVector.y * 2);
 			}
-		}
+
+			if (table->getBox()->getVelocity() != cocos2d::Vec2(0, 0)) {
+
+					table->getBox()->addForce(
+					table->getBox()->getVelocity().x * -1,
+					table->getBox()->getVelocity().y * -1);
+			}
 
 	}
 }

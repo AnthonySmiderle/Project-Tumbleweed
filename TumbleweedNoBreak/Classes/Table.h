@@ -9,7 +9,7 @@ namespace Sedna {
 
 		void spriteSwitch();
 		bool hasDrink;
-		void collideTable(std::vector<Table*>& tableList);
+		void collideTable(Table* table);
 	private:
 		
 	};
