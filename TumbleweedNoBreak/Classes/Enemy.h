@@ -5,7 +5,8 @@
 #include <vector>
 
 namespace Sedna {
-	
+	class Player;
+	class Table;
 	class Outlaw : public GameObject {
 	public:
 		Outlaw(float x, float y);
@@ -13,6 +14,8 @@ namespace Sedna {
 		void shoot(float dt,cocos2d::Scene* s);
 		void checkList();
 		void removeProjectiles();
+		void checkBCollision(Player* p);
+		void checkBCollision(std::vector<Table*>& tableList);
 	private:
 		std::vector<Projectile*> eProjectiles;
 		float eShootTimer = 0.0f;

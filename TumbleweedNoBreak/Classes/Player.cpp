@@ -9,6 +9,7 @@ namespace Sedna {
 			sprite = cocos2d::Sprite::create("player1.png");
 			sprite->setScale(0.85f);
 			hitBox = new CirclePrimitive(cocos2d::Vec2(x, y), 26, 5, 30);
+			hitBox->getDrawNode()->setVisible(false);
 
 			this->pController = X.getController(0);
 		
@@ -19,6 +20,8 @@ namespace Sedna {
 			sprite = cocos2d::Sprite::create("player1.png");
 			sprite->setScale(0.85f);
 			hitBox = new CirclePrimitive(cocos2d::Vec2(x, y), 26, 5, 30);
+			hitBox->getDrawNode()->setVisible(false);
+
 			this->pController = X.getController(1);
 
 		}
