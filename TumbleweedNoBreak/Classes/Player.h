@@ -25,6 +25,7 @@ namespace Sedna {
 		void checkList();
 		void checkBCollision(std::vector<Outlaw*>& outlawList);
 		void checkBCollision(std::vector<Table*>& tableList);
+		void checkTableStuff(std::vector<Table*>& tableList);
 	
 		std::vector<Projectile*> getpProjectile() const;
 	private:
