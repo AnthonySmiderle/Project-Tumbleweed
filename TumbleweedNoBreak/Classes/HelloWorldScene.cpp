@@ -170,7 +170,11 @@ void HelloWorld::initSprites()
 	playerTwo = new Sedna::Player(2, 300, 100,managerR);
 	this->addChild(playerTwo->getBox()->getDrawNode());
 	this->addChild(playerTwo->getSprite());
-	
+
+	bg = cocos2d::Sprite::create("bg1.png");
+	this->addChild(bg, -1000);
+	bg->setScale(0.85f);
+	bg->setPosition(483 /2.0f,315/2.0f);
 
 	playerOne = new Sedna::Player(1, 100, 100,managerR);
 	this->addChild(playerOne->getBox()->getDrawNode());
@@ -178,7 +182,7 @@ void HelloWorld::initSprites()
 
 	//replace this with a base table that can be copied later
 	for (int i = 0; i < 4; i++) {
-		baseTable = new Sedna::Table(200, 200);
+		baseTable = new Sedna::Table(100 + rand()% 200, rand()% 200 + rand()% 100);
 		this->addChild(baseTable->getBox()->getDrawNode());
 		this->addChild(baseTable->getSprite());
 		tableList.push_back(new Sedna::Table(*baseTable));
@@ -213,6 +217,7 @@ void HelloWorld::bigCheckList()
 	
 
 	recursiveFunction(outlawList);
+	recursiveFunction(tableList);
 
 	playerOne->checkBCollision(outlawList);
 	playerTwo->checkBCollision(outlawList);
@@ -243,6 +248,21 @@ void HelloWorld::recursiveFunction(std::vector<Sedna::Outlaw*>& outlawList)
 				outlawList[i]->getBox()->setLocation(cocos2d::Vec2(rand() % 100 + 1 + (rand() % 200 + 1),
 					outlawList[i]->getBox()->getLocation().y));
 				recursiveFunction(outlawList);
+			}
+
+		}
+	}
+}
+void HelloWorld::recursiveFunction(std::vector<Sedna::Table*>& tableList)
+{
+	for (int i = 0; i < tableList.size(); i++) {
+		for (int j = 0; j < tableList.size(); j++) {
+			if (i == j)
+				continue;
+			if (tableList[i]->getBox()->checkCollision(*tableList[j]->getBox())) {
+				tableList[i]->getBox()->setLocation(cocos2d::Vec2(rand() % 100 + 1 + (rand() % 200 + 1),
+					tableList[i]->getBox()->getLocation().y));
+				recursiveFunction(tableList);
 			}
 
 		}

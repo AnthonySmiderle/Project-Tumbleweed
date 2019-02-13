@@ -6,8 +6,9 @@ Sedna::Outlaw::Outlaw(float x, float y)
 {
 	
 	sprite = cocos2d::Sprite::create("enemy1.png");
+	sprite->setScale(0.85f);
 
-	hitBox = new CirclePrimitive(cocos2d::Vec2(x, y), 20, 5, 30);
+	hitBox = new CirclePrimitive(cocos2d::Vec2(x, y), 28, 5, 30);
 
 	this->objectHp = 3;
 }

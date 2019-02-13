@@ -7,7 +7,8 @@ namespace Sedna {
 	{
 		if (wPlayer == playerOne) {
 			sprite = cocos2d::Sprite::create("player1.png");
-			hitBox = new CirclePrimitive(cocos2d::Vec2(x, y), 20, 5, 30);
+			sprite->setScale(0.85f);
+			hitBox = new CirclePrimitive(cocos2d::Vec2(x, y), 26, 5, 30);
 
 			this->pController = X.getController(0);
 		
@@ -16,7 +17,8 @@ namespace Sedna {
 		else {
 
 			sprite = cocos2d::Sprite::create("player1.png");
-			hitBox = new CirclePrimitive(cocos2d::Vec2(x, y), 20, 5, 30);
+			sprite->setScale(0.85f);
+			hitBox = new CirclePrimitive(cocos2d::Vec2(x, y), 26, 5, 30);
 			this->pController = X.getController(1);
 
 		}
@@ -100,8 +102,7 @@ namespace Sedna {
 				hasShot = true;
 				if (pSticks[1].y < 0.3f && pSticks[1].y > -0.3f && pSticks[1].x > 0.3f ||
 					pSticks[1].y < 0.3f && pSticks[1].y > -0.3f && pSticks[1].x < -0.3f ||
-					pSticks[1].y < -0.3f) {
-				}
+					pSticks[1].y < -0.3f) {}
 				else {
 
 					Projectile* playerProjectile = new Sedna::Projectile(-1000, 0, Sedna::Ally);

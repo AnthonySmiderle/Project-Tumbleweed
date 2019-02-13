@@ -49,6 +49,7 @@ public:
 	void getCollisions();
 	void bigCheckList();
 	void recursiveFunction(std::vector<Sedna::Outlaw*>& outlawList);
+	void recursiveFunction(std::vector<Sedna::Table*>& tableList);
 	void checkPosAll();
 
 	// a selector callback
@@ -66,7 +67,6 @@ private:
 	Sedna::Stick p2Sticks[2];
 	Sedna::Triggers p1Triggers;
 	Sedna::Triggers p2Triggers;
-	Sedna::Projectile* eBaseProjectile;
 
 	Sedna::Table* baseTable;
 	std::vector <Sedna::Table*> tableList;
@@ -76,6 +76,7 @@ private:
 
 	Sedna::Projectile *baseProjectile;
 	std::vector<Sedna::Projectile*>pProjectiles;
+	Sedna::Projectile* eBaseProjectile;
 	std::vector<Sedna::Projectile*>eProjectiles;
 
 	Sedna::Outlaw* outlaw;
@@ -83,6 +84,10 @@ private:
 
 	Sedna::GameObject* DDOS;
 	std::vector <Sedna::Potion> potionList;
+
+	cocos2d::Sprite* bg;
+
+
 	
 	float enemyTimer = 0.0f;
 	bool hasSpawn = false;
