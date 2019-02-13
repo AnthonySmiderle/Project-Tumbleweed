@@ -92,6 +92,10 @@ namespace Sedna {
 
 	void Player::shoot(float dt, cocos2d::Scene* s)
 	{
+		if (pSticks[1].y < 0.3f && pSticks[1].y > -0.3f && pSticks[1].x < 0.3f && pSticks[1].x > -0.3f||
+			pSticks[1].y > 0.3f && pSticks[1].x < 0.3f && pSticks[1].x > -0.3f) {
+			sprite->setTexture("player1.png");
+		}
 		pController->getTriggers(pTriggers);
 		if (pTriggers.RT > 0) {
 
@@ -117,13 +121,19 @@ namespace Sedna {
 
 					pProjectiles.back()->getBox()->setLocation(this->getBox()->getLocation());
 
-					if (pSticks[1].x < -0.3f && pSticks[1].y > 0.3f)
+					if (pSticks[1].x < -0.3f && pSticks[1].y > 0.3f) {
 						pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(-3.5, 3.5));
-					if (pSticks[1].x > 0.3f && pSticks[1].y > 0.3f)
+						sprite->setTexture("p1L.png");
+					}
+					if (pSticks[1].x > 0.3f && pSticks[1].y > 0.3f) {
 						pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(3.5, 3.5));
+						sprite->setTexture("p1R.png");
+					}
 					if (pSticks[1].y > 0.3f && pSticks[1].x < 0.3f && pSticks[1].x > -0.3f ||
-						pSticks[1].y < 0.3f && pSticks[1].y > -0.3f && pSticks[1].x < 0.3f && pSticks[1].x > -0.3f)
+						pSticks[1].y < 0.3f && pSticks[1].y > -0.3f && pSticks[1].x < 0.3f && pSticks[1].x > -0.3f) {
 						pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(0, 5));
+						
+					}
 				}
 			}
 

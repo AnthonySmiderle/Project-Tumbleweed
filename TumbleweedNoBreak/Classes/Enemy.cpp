@@ -17,7 +17,7 @@ Sedna::Outlaw::Outlaw(float x, float y)
 }
 void Outlaw::shoot(float dt,cocos2d::Scene* s)
 {
-	if (eShootTimer > 0.3f) {
+	if (eShootTimer > 0.4f) {
 		eShootTimer = 0.0f;
 		eHasShot = false;
 	}

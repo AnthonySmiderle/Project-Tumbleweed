@@ -170,7 +170,16 @@ void HelloWorld::update(float dt)
 	}
 	bigCheckList();
 
-
+	a->setPosition(cocos2d::Vec2(450,
+		this->getDefaultCamera()->getPosition().y));
+	b->setPosition(cocos2d::Vec2(450,
+		this->getDefaultCamera()->getPosition().y + 30));
+	rsl->setPosition(cocos2d::Vec2(450,
+		this->getDefaultCamera()->getPosition().y + 60));
+	rsr->setPosition(cocos2d::Vec2(450,
+		this->getDefaultCamera()->getPosition().y + 90));
+	rt->setPosition(cocos2d::Vec2(450,
+		this->getDefaultCamera()->getPosition().y + 120));
 
 	playerOne->updateGameObject();
 	playerTwo->updateGameObject();
@@ -187,7 +196,7 @@ void HelloWorld::initSprites()
 
 	playerTwo = new Sedna::Player(2, 300, 100, managerR);
 	this->addChild(playerTwo->getBox()->getDrawNode());
-	this->addChild(playerTwo->getSprite());
+	this->addChild(playerTwo->getSprite(),10);
 
 	bg = cocos2d::Sprite::create("bg1.png");
 	this->addChild(bg, -1000);
@@ -196,7 +205,30 @@ void HelloWorld::initSprites()
 
 	playerOne = new Sedna::Player(1, 100, 100, managerR);
 	this->addChild(playerOne->getBox()->getDrawNode());
-	this->addChild(playerOne->getSprite());
+	this->addChild(playerOne->getSprite(),10);
+
+	a = cocos2d::Sprite::create("a.png");
+	b = cocos2d::Sprite::create("b.png");
+	rsl = cocos2d::Sprite::create("rsl.png");
+	rsr = cocos2d::Sprite::create("rsr.png");
+	rt = cocos2d::Sprite::create("rt.png");
+
+	this->addChild(a, 1);
+	this->addChild(b, 1);
+	this->addChild(rsl, 1);
+	this->addChild(rsr, 1);
+	this->addChild(rt, 1);
+
+	a->setPosition(cocos2d::Vec2(450,
+		this->getDefaultCamera()->getPosition().y));
+	b->setPosition(cocos2d::Vec2(450,
+		this->getDefaultCamera()->getPosition().y + 30));
+	rsl->setPosition(cocos2d::Vec2(450,
+			this->getDefaultCamera()->getPosition().y + 60));
+	rsr->setPosition(cocos2d::Vec2(450,
+				this->getDefaultCamera()->getPosition().y + 90));
+	rt->setPosition(cocos2d::Vec2(450,
+					this->getDefaultCamera()->getPosition().y + 120));
 
 	//replace this with a base table that can be copied later
 	for (int i = 0; i < 4; i++) {

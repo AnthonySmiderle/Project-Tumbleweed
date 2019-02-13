@@ -69,6 +69,12 @@ private:
 	Sedna::Triggers p1Triggers;
 	Sedna::Triggers p2Triggers;
 
+	cocos2d::Sprite* a;
+	cocos2d::Sprite* b;
+	cocos2d::Sprite* rsl;
+	cocos2d::Sprite* rsr;
+	cocos2d::Sprite* rt;
+
 	Sedna::Table* baseTable;
 	std::vector <Sedna::Table*> tableList;
 
