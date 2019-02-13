@@ -3,6 +3,7 @@ namespace Sedna {
 
 Sedna::Table::Table(float x, float y)   {
 	this->sprite = cocos2d::Sprite::create("Table.png");
+	sprite->setScale(0.9f);
 	this->hitBox = new CirclePrimitive(cocos2d::Vec2(x, y),26,5,50);
 	this->objectHp = 3;
 }

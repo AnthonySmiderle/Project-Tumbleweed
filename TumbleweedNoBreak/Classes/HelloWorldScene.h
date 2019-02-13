@@ -48,6 +48,7 @@ public:
 	void getCollisions();
 	void bigCheckList();
 	void recursiveFunction(std::vector<Sedna::Outlaw*>& outlawList);
+	void recursiveFunction(std::vector<Sedna::Table*>& tableList);
 	void checkPosAll();
 
 	// a selector callback
