@@ -196,7 +196,7 @@ void HelloWorld::initSprites()
 
 	playerTwo = new Sedna::Player(2, 300, 100, managerR);
 	this->addChild(playerTwo->getBox()->getDrawNode());
-	this->addChild(playerTwo->getSprite(),10);
+	this->addChild(playerTwo->getSprite(), 10);
 
 	bg = cocos2d::Sprite::create("bg1.png");
 	this->addChild(bg, -1000);
@@ -205,7 +205,7 @@ void HelloWorld::initSprites()
 
 	playerOne = new Sedna::Player(1, 100, 100, managerR);
 	this->addChild(playerOne->getBox()->getDrawNode());
-	this->addChild(playerOne->getSprite(),10);
+	this->addChild(playerOne->getSprite(), 10);
 
 	a = cocos2d::Sprite::create("a.png");
 	b = cocos2d::Sprite::create("b.png");
@@ -224,11 +224,11 @@ void HelloWorld::initSprites()
 	b->setPosition(cocos2d::Vec2(450,
 		this->getDefaultCamera()->getPosition().y + 30));
 	rsl->setPosition(cocos2d::Vec2(450,
-			this->getDefaultCamera()->getPosition().y + 60));
+		this->getDefaultCamera()->getPosition().y + 60));
 	rsr->setPosition(cocos2d::Vec2(450,
-				this->getDefaultCamera()->getPosition().y + 90));
+		this->getDefaultCamera()->getPosition().y + 90));
 	rt->setPosition(cocos2d::Vec2(450,
-					this->getDefaultCamera()->getPosition().y + 120));
+		this->getDefaultCamera()->getPosition().y + 120));
 
 	//replace this with a base table that can be copied later
 	for (int i = 0; i < 4; i++) {
@@ -239,7 +239,7 @@ void HelloWorld::initSprites()
 		Sedna::BaseObjectManager::tableBObjects.push_back(baseTable);
 
 	}
-		recursiveFunction(tableList);
+	recursiveFunction(tableList);
 }
 
 void HelloWorld::checkInput(float dt)
@@ -288,6 +288,13 @@ void HelloWorld::bigCheckList()
 		outlawList[i]->updateGameObject();
 
 	}
+	for (unsigned int i = 0; i < tableList.size(); i++) {
+		for (unsigned int j = 0; j < tableList.size(); j++) {
+			if (i == j)
+				continue;
+				tableList[i]->collideTable(tableList);
+		}
+	}
 
 
 
@@ -295,7 +302,7 @@ void HelloWorld::bigCheckList()
 
 void HelloWorld::recursiveFunction(std::vector<Sedna::Outlaw*>& outlawList)
 {
-	yes:
+yes:
 	for (unsigned int i = 0; i < outlawList.size(); i++) {
 		for (unsigned int j = 0; j < outlawList.size(); j++) {
 			if (i == j)
@@ -303,7 +310,7 @@ void HelloWorld::recursiveFunction(std::vector<Sedna::Outlaw*>& outlawList)
 			if (outlawList[i]->getBox()->checkCollision(*outlawList[j]->getBox())) {
 				outlawList[i]->getBox()->setLocation(cocos2d::Vec2(rand() % 100 + 1 + (rand() % 200 + 1),
 					outlawList[i]->getBox()->getLocation().y));
-				goto yes;		
+				goto yes;
 			}
 
 		}
@@ -311,7 +318,7 @@ void HelloWorld::recursiveFunction(std::vector<Sedna::Outlaw*>& outlawList)
 }
 void HelloWorld::recursiveFunction(std::vector<Sedna::Table*>& tableList)
 {
-	yes:
+yes:
 	for (unsigned int i = 0; i < tableList.size(); i++) {
 		for (unsigned int j = 0; j < tableList.size(); j++) {
 			if (i == j)
@@ -342,7 +349,7 @@ void HelloWorld::checkPosAll()
 	}
 	for (unsigned int i = 0; i < tableList.size(); i++)
 	{
-		if (tableList[i]->getBox()->getLocation().y< DDOS->getSprite()->getPosition().y - 400)
+		if (tableList[i]->getBox()->getLocation().y < DDOS->getSprite()->getPosition().y - 400)
 		{
 			tableList[i]->getBox()->getDrawNode()->removeFromParent();
 			tableList[i]->getSprite()->removeFromParent();
@@ -371,10 +378,10 @@ void HelloWorld::bounceFunct()
 {
 	if ((int)playerOne->getBox()->getLocation().x >= barRightMax)
 	{
-		playerOne->getBox()->setLocation(cocos2d::Vec2(430,playerOne->getBox()->getLocation().y));
+		playerOne->getBox()->setLocation(cocos2d::Vec2(430, playerOne->getBox()->getLocation().y));
 		playerOne->getBox()->addForce(-25, 0);
 	}
-		
+
 	if ((int)playerOne->getBox()->getLocation().x <= barLeftMax)
 	{
 		playerOne->getBox()->setLocation(cocos2d::Vec2(90, playerOne->getBox()->getLocation().y));
@@ -391,8 +398,8 @@ void HelloWorld::bounceFunct()
 		playerTwo->getBox()->setLocation(cocos2d::Vec2(90, playerTwo->getBox()->getLocation().y));
 		playerTwo->getBox()->addForce(25, 0);
 	}
-		
-	for (unsigned int i=0;i<tableList.size();i++)
+
+	for (unsigned int i = 0; i < tableList.size(); i++)
 	{
 		if ((int)tableList[i]->getBox()->getLocation().x >= barRightMax)
 		{
