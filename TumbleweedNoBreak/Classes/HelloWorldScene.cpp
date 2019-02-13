@@ -129,17 +129,17 @@ void HelloWorld::update(float dt)
 	}
 #ifdef _DEBUG
 	if (p1Controller->isButtonPressed(Sedna::X)) {
-		for (int i = 0; i < outlawList.size(); i++)
+		for (unsigned int i = 0; i < outlawList.size(); i++)
 			outlawList[i]->getBox()->getDrawNode()->setVisible(true);
-		for (int i = 0; i < tableList.size(); i++)
+		for (unsigned int i = 0; i < tableList.size(); i++)
 			tableList[i]->getBox()->getDrawNode()->setVisible(true);
 		playerOne->getBox()->getDrawNode()->setVisible(true);
 		playerTwo->getBox()->getDrawNode()->setVisible(true);
 	}
 	else {
-		for (int i = 0; i < outlawList.size(); i++)
+		for (unsigned int i = 0; i < outlawList.size(); i++)
 			outlawList[i]->getBox()->getDrawNode()->setVisible(false);
-		for (int i = 0; i < tableList.size(); i++)
+		for (unsigned int i = 0; i < tableList.size(); i++)
 			tableList[i]->getBox()->getDrawNode()->setVisible(false);
 		playerOne->getBox()->getDrawNode()->setVisible(false);
 		playerTwo->getBox()->getDrawNode()->setVisible(false);
@@ -170,7 +170,16 @@ void HelloWorld::update(float dt)
 	}
 	bigCheckList();
 
-
+	a->setPosition(cocos2d::Vec2(450,
+		this->getDefaultCamera()->getPosition().y));
+	b->setPosition(cocos2d::Vec2(450,
+		this->getDefaultCamera()->getPosition().y + 30));
+	rsl->setPosition(cocos2d::Vec2(450,
+		this->getDefaultCamera()->getPosition().y + 60));
+	rsr->setPosition(cocos2d::Vec2(450,
+		this->getDefaultCamera()->getPosition().y + 90));
+	rt->setPosition(cocos2d::Vec2(450,
+		this->getDefaultCamera()->getPosition().y + 120));
 
 	playerOne->updateGameObject();
 	playerTwo->updateGameObject();
@@ -187,7 +196,7 @@ void HelloWorld::initSprites()
 
 	playerTwo = new Sedna::Player(2, 300, 100, managerR);
 	this->addChild(playerTwo->getBox()->getDrawNode());
-	this->addChild(playerTwo->getSprite());
+	this->addChild(playerTwo->getSprite(),10);
 
 	bg = cocos2d::Sprite::create("bg1.png");
 	this->addChild(bg, -1000);
@@ -196,7 +205,30 @@ void HelloWorld::initSprites()
 
 	playerOne = new Sedna::Player(1, 100, 100, managerR);
 	this->addChild(playerOne->getBox()->getDrawNode());
-	this->addChild(playerOne->getSprite());
+	this->addChild(playerOne->getSprite(),10);
+
+	a = cocos2d::Sprite::create("a.png");
+	b = cocos2d::Sprite::create("b.png");
+	rsl = cocos2d::Sprite::create("rsl.png");
+	rsr = cocos2d::Sprite::create("rsr.png");
+	rt = cocos2d::Sprite::create("rt.png");
+
+	this->addChild(a, 1);
+	this->addChild(b, 1);
+	this->addChild(rsl, 1);
+	this->addChild(rsr, 1);
+	this->addChild(rt, 1);
+
+	a->setPosition(cocos2d::Vec2(450,
+		this->getDefaultCamera()->getPosition().y));
+	b->setPosition(cocos2d::Vec2(450,
+		this->getDefaultCamera()->getPosition().y + 30));
+	rsl->setPosition(cocos2d::Vec2(450,
+			this->getDefaultCamera()->getPosition().y + 60));
+	rsr->setPosition(cocos2d::Vec2(450,
+				this->getDefaultCamera()->getPosition().y + 90));
+	rt->setPosition(cocos2d::Vec2(450,
+					this->getDefaultCamera()->getPosition().y + 120));
 
 	//replace this with a base table that can be copied later
 	for (int i = 0; i < 4; i++) {
@@ -244,10 +276,10 @@ void HelloWorld::bigCheckList()
 	playerTwo->checkBCollision(tableList);
 	playerOne->checkList();
 	playerTwo->checkList();
-	for (int i = 0; i < tableList.size(); i++)
+	for (unsigned int i = 0; i < tableList.size(); i++)
 		tableList[i]->updateGameObject();
 
-	for (int i = 0; i < outlawList.size(); i++) {
+	for (unsigned int i = 0; i < outlawList.size(); i++) {
 
 		outlawList[i]->checkBCollision(tableList);
 		outlawList[i]->checkBCollision(playerOne);
@@ -264,8 +296,8 @@ void HelloWorld::bigCheckList()
 void HelloWorld::recursiveFunction(std::vector<Sedna::Outlaw*>& outlawList)
 {
 	yes:
-	for (int i = 0; i < outlawList.size(); i++) {
-		for (int j = 0; j < outlawList.size(); j++) {
+	for (unsigned int i = 0; i < outlawList.size(); i++) {
+		for (unsigned int j = 0; j < outlawList.size(); j++) {
 			if (i == j)
 				continue;
 			if (outlawList[i]->getBox()->checkCollision(*outlawList[j]->getBox())) {
@@ -280,8 +312,8 @@ void HelloWorld::recursiveFunction(std::vector<Sedna::Outlaw*>& outlawList)
 void HelloWorld::recursiveFunction(std::vector<Sedna::Table*>& tableList)
 {
 	yes:
-	for (int i = 0; i < tableList.size(); i++) {
-		for (int j = 0; j < tableList.size(); j++) {
+	for (unsigned int i = 0; i < tableList.size(); i++) {
+		for (unsigned int j = 0; j < tableList.size(); j++) {
 			if (i == j)
 				continue;
 			if (tableList[i]->getBox()->checkCollision(*tableList[j]->getBox())) {
@@ -296,7 +328,7 @@ void HelloWorld::recursiveFunction(std::vector<Sedna::Table*>& tableList)
 
 void HelloWorld::checkPosAll()
 {
-	for (int i = 0; i < outlawList.size(); i++)
+	for (unsigned int i = 0; i < outlawList.size(); i++)
 	{
 		if (outlawList[i]->getBox()->getLocation().y < DDOS->getSprite()->getPosition().y - 400)
 		{
@@ -308,7 +340,7 @@ void HelloWorld::checkPosAll()
 			i--;
 		}
 	}
-	for (int i = 0; i < tableList.size(); i++)
+	for (unsigned int i = 0; i < tableList.size(); i++)
 	{
 		if (tableList[i]->getBox()->getLocation().y< DDOS->getSprite()->getPosition().y - 400)
 		{
