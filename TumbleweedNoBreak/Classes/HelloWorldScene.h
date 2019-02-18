@@ -93,6 +93,7 @@ private:
 	std::vector <Sedna::Potion> potionList;
 
 	cocos2d::Sprite* bg;
+	cocos2d::Sprite* bg2;
 
 	int barRightMax = 430;
 	int barLeftMax = 90;

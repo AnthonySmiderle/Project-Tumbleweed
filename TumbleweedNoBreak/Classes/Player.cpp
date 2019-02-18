@@ -56,12 +56,12 @@ namespace Sedna {
 
 		if (pController->isButtonPressed(Sedna::B)) {
 			//std::cout << tumbleTimer <<std::endl;
-			if (tumbleTimer > 3)
+			if (tumbleTimer > 1.5)
 			{
 				tumbleTimer = 0;
 				isTumbling = false;
 			}
-
+			
 
 			if (!tumbleTimer)
 			{

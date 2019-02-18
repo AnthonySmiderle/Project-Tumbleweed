@@ -205,6 +205,11 @@ void HelloWorld::initSprites()
 	bg->setScale(0.85f);
 	bg->setPosition(483 / 2.0f, 315 / 2.0f);
 
+	bg2 = cocos2d::Sprite::create("bgPlain.png");
+	this->addChild(bg2, -1000);
+	bg2->setScale(0.85f);
+	bg2->setPosition(bg->getPosition() + cocos2d::Vec2(0,270));
+
 	playerOne = new Sedna::Player(1, 100, 100, managerR);
 	this->addChild(playerOne->getBox()->getDrawNode());
 	this->addChild(playerOne->getSprite(), 10);
