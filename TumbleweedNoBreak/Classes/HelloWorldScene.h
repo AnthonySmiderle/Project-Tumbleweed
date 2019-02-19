@@ -60,7 +60,6 @@ public:
 private:
 	void bounceFunct();
 	Sedna::SpawnManager sManager = Sedna::SpawnManager(this);
-	//std::vector<Sedna::SquarePrimitive> bullets;
 	Sedna::XinputManager managerR;
 	Sedna::XinputController* p1Controller;
 	Sedna::XinputController* p2Controller;
@@ -80,6 +79,12 @@ private:
 
 	Sedna::Player* playerOne;
 	Sedna::Player* playerTwo;
+
+
+	//guns
+	Sedna::Gun* olReliable;//base gun
+	Sedna::Gun* bloodyMary;//shotgun
+	Sedna::Gun* theBiggestIron;//gattling gun
 
 	Sedna::Projectile *baseProjectile;
 	std::vector<Sedna::Projectile*>pProjectiles;

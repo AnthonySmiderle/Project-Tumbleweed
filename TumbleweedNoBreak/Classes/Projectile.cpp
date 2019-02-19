@@ -11,12 +11,5 @@ Projectile::Projectile()
 {
 }
 
-void Projectile::setDamage(unsigned int DAMAGE)
-{
-}
-unsigned int Projectile::getDamage() const
-{
-	return damage;
-}
 
 }

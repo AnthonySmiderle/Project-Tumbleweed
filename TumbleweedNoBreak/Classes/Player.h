@@ -2,8 +2,8 @@
 #include "GameObject.h"
 #include "Enums and Typdefs.h"
 #include "XinputManager.h"
-#include "Projectile.h"
 #include "Enemy.h"
+#include "Guns.h"
 #include "baseObjectManager.h"
 #include "Table.h"
 #include <vector>
@@ -15,7 +15,7 @@ namespace Sedna {
 	{
 	public:
 		Player() {}
-		Player(int wPlayer, float x, float y,XinputManager X);
+		Player(int wPlayer, float x, float y,XinputManager MANAGER,Gun* CURRENTGUN);
 		~Player();
 
 		//extend member functions here
@@ -26,6 +26,8 @@ namespace Sedna {
 		void checkBCollision(std::vector<Outlaw*>& outlawList);
 		void checkBCollision(std::vector<Table*>& tableList);
 		void checkTableStuff(std::vector<Table*>& tableList);
+
+		void setGun(Gun* g);
 	
 		std::vector<Projectile*> getpProjectile() const;
 	private:
@@ -33,11 +35,12 @@ namespace Sedna {
 		Stick pSticks[2];
 		Triggers pTriggers;
 
+		Gun* currentGun;
+
 		float tumbleTimer = 0.0f;
 		bool isTumbling = false;
 
-		float gunTimer = 0.0f;
-		bool hasShot = false;
+		
 
 		std::vector<Projectile*> pProjectiles;
 

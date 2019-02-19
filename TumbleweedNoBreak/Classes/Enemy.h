@@ -24,6 +24,12 @@ namespace Sedna {
 		int x = 0;
 
 	};
+
+
+
+
+
+
 	class Pete : public GameObject
 	{
 	public:
