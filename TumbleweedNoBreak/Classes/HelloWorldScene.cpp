@@ -196,6 +196,8 @@ void HelloWorld::update(float dt)
 void HelloWorld::initSprites()
 {
 	cocos2d::experimental::AudioEngine::play2d("bgm.mp3", true);
+	cocos2d::experimental::AudioEngine::preload("oRsound.mp3");
+
 
 	DDOS = new Sedna::GameObject("DOS.jpg", cocos2d::Vec2(100, 300), 1, 1, 1);
 	this->addChild(DDOS->getBox()->getDrawNode());
@@ -204,12 +206,12 @@ void HelloWorld::initSprites()
 	/////////////////////////////////////
 
 
-	olReliable = new Sedna::Gun("olReliable",2, 4, 0.25f);
+	olReliable = new Sedna::Gun("olReliable",2, 4, 0.35f);
 	bloodyMary = new Sedna::Gun("bloodyMary",3, 6, 5, 0.85f);
+	theBiggestIron = new Sedna::Gun("theBiggestIron", 3, 10, 0.05f);
 
 
-
-	playerOne = new Sedna::Player(1, 100, 100, managerR, bloodyMary);
+	playerOne = new Sedna::Player(1, 100, 100, managerR, olReliable);
 	this->addChild(playerOne->getBox()->getDrawNode());
 	this->addChild(playerOne->getSprite(), 10);
 
@@ -328,7 +330,7 @@ void HelloWorld::bigCheckList()
 
 void HelloWorld::recursiveFunction(std::vector<Sedna::Outlaw*>& outlawList)
 {
-yes:
+restart:
 	for (unsigned int i = 0; i < outlawList.size(); i++) {
 		for (unsigned int j = 0; j < outlawList.size(); j++) {
 			if (i == j)
@@ -336,7 +338,7 @@ yes:
 			if (outlawList[i]->getBox()->checkCollision(*outlawList[j]->getBox())) {
 				outlawList[i]->getBox()->setLocation(cocos2d::Vec2(100 + (rand() % 300),
 					outlawList[i]->getBox()->getLocation().y));
-				goto yes;
+				goto restart;
 			}
 
 		}
@@ -344,7 +346,7 @@ yes:
 }
 void HelloWorld::recursiveFunction(std::vector<Sedna::Table*>& tableList)
 {
-yes:
+restart:
 	for (unsigned int i = 0; i < tableList.size(); i++) {
 		for (unsigned int j = 0; j < tableList.size(); j++) {
 			if (i == j)
@@ -352,7 +354,7 @@ yes:
 			if (tableList[i]->getBox()->checkCollision(*tableList[j]->getBox())) {
 				tableList[i]->getBox()->setLocation(cocos2d::Vec2(rand() % 100 + 1 + (rand() % 200 + 1),
 					tableList[i]->getBox()->getLocation().y));
-				goto yes;
+				goto restart;
 			}
 
 		}

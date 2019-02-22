@@ -117,14 +117,7 @@ namespace Sedna {
 				}
 				else {
 
-					for (int i = 0; i < pProjectiles.size(); i++) {
-						pProjectiles[i]->getBox()->getDrawNode()->removeFromParent();
-						pProjectiles[i]->getSprite()->removeFromParent();
-						pProjectiles.erase(pProjectiles.begin() + i);
-						BaseObjectManager::pProjectileBObjects.erase(BaseObjectManager::pProjectileBObjects.begin() + i);
-					}
-
-
+					
 					if (currentGun->getName() == "olReliable" || currentGun->getName() == "theBiggestIron") {
 						Projectile* playerProjectile = new Sedna::Projectile(-1000, 0, Sedna::Ally);
 						s->addChild(playerProjectile->getBox()->getDrawNode());
@@ -149,7 +142,12 @@ namespace Sedna {
 
 					}
 					else if (currentGun->getName() == "bloodyMary") {
-
+						for (int i = 0; i < pProjectiles.size(); i++) {
+							pProjectiles[i]->getBox()->getDrawNode()->removeFromParent();
+							pProjectiles[i]->getSprite()->removeFromParent();
+							pProjectiles.erase(pProjectiles.begin() + i);
+							BaseObjectManager::pProjectileBObjects.erase(BaseObjectManager::pProjectileBObjects.begin() + i);
+						}
 						Projectile* playerProjectile1 = new Sedna::Projectile(-1000, 0, Sedna::Ally);
 						s->addChild(playerProjectile1->getBox()->getDrawNode());
 						s->addChild(playerProjectile1->getSprite());
