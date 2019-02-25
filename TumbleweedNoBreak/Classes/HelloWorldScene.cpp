@@ -163,7 +163,7 @@ void HelloWorld::update(float dt)
 		enemyTimer = 0.0f;
 		hasSpawn = false;
 	}
-	if (!enemyTimer)
+	if (enemyTimer == 0)
 	{
 		hasSpawn = true;
 		int x = 100 + (rand() % 300);
@@ -183,16 +183,7 @@ void HelloWorld::update(float dt)
 	}
 	bigCheckList();
 
-	a->setPosition(cocos2d::Vec2(450,
-		this->getDefaultCamera()->getPosition().y));
-	b->setPosition(cocos2d::Vec2(450,
-		this->getDefaultCamera()->getPosition().y + 30));
-	rsl->setPosition(cocos2d::Vec2(450,
-		this->getDefaultCamera()->getPosition().y + 60));
-	rsr->setPosition(cocos2d::Vec2(450,
-		this->getDefaultCamera()->getPosition().y + 90));
-	rt->setPosition(cocos2d::Vec2(450,
-		this->getDefaultCamera()->getPosition().y + 120));
+	
 
 	playerOne->updateGameObject();
 	playerTwo->updateGameObject();
@@ -227,32 +218,6 @@ void HelloWorld::initSprites()
 	this->addChild(playerTwo->getBox()->getDrawNode());
 	this->addChild(playerTwo->getSprite(), 10);
 
-
-
-
-
-	a = cocos2d::Sprite::create("a.png");
-	b = cocos2d::Sprite::create("b.png");
-	rsl = cocos2d::Sprite::create("rsl.png");
-	rsr = cocos2d::Sprite::create("rsr.png");
-	rt = cocos2d::Sprite::create("rt.png");
-
-	this->addChild(a, 1);
-	this->addChild(b, 1);
-	this->addChild(rsl, 1);
-	this->addChild(rsr, 1);
-	this->addChild(rt, 1);
-
-	a->setPosition(cocos2d::Vec2(450,
-		this->getDefaultCamera()->getPosition().y));
-	b->setPosition(cocos2d::Vec2(450,
-		this->getDefaultCamera()->getPosition().y + 30));
-	rsl->setPosition(cocos2d::Vec2(450,
-		this->getDefaultCamera()->getPosition().y + 60));
-	rsr->setPosition(cocos2d::Vec2(450,
-		this->getDefaultCamera()->getPosition().y + 90));
-	rt->setPosition(cocos2d::Vec2(450,
-		this->getDefaultCamera()->getPosition().y + 120));
 
 
 
@@ -338,7 +303,6 @@ void HelloWorld::bigCheckList()
 
 void HelloWorld::recursiveFunction(std::vector<Sedna::Outlaw*>& outlawList)
 {
-restart:
 	for (unsigned int i = 0; i < outlawList.size(); i++) {
 		for (unsigned int j = 0; j < outlawList.size(); j++) {
 			if (i == j)
@@ -346,7 +310,7 @@ restart:
 			if (outlawList[i]->getBox()->checkCollision(*outlawList[j]->getBox())) {
 				outlawList[i]->getBox()->setLocation(cocos2d::Vec2(100 + (rand() % 300),
 					outlawList[i]->getBox()->getLocation().y));
-				goto restart;
+				recursiveFunction(outlawList);
 			}
 
 		}
@@ -354,7 +318,6 @@ restart:
 }
 void HelloWorld::recursiveFunction(std::vector<Sedna::Table*>& tableList)
 {
-restart:
 	for (unsigned int i = 0; i < tableList.size(); i++) {
 		for (unsigned int j = 0; j < tableList.size(); j++) {
 			if (i == j)
@@ -362,7 +325,7 @@ restart:
 			if (tableList[i]->getBox()->checkCollision(*tableList[j]->getBox())) {
 				tableList[i]->getBox()->setLocation(cocos2d::Vec2(rand() % 100 + 1 + (rand() % 200 + 1),
 					tableList[i]->getBox()->getLocation().y));
-				goto restart;
+				recursiveFunction(tableList);
 			}
 
 		}
