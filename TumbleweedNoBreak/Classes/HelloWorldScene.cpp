@@ -119,15 +119,25 @@ void HelloWorld::update(float dt)
 	checkInput(dt);
 	getCollisions();
 
+	
 
+
+#ifdef _DEBUG
 	if (p1Controller->isButtonPressed(Sedna::Y))
 	{
+		playerOne->getUI()->getLabel()->setPosition(cocos2d::Vec2(playerOne->getUI()->getLabel()->getPosition().x, 
+			playerOne->getUI()->getLabel()->getPosition().y + 1));
+
+		playerOne->getUI()->getSprite()->setPosition(cocos2d::Vec2(playerOne->getUI()->getSprite()->getPosition().x, 
+			playerOne->getUI()->getSprite()->getPosition().y + 1));
+
+
+
 		this->getDefaultCamera()->setPosition(cocos2d::Vec2(this->getDefaultCamera()->getPosition().x,
 			this->getDefaultCamera()->getPosition().y + 1));
 		DDOS->getSprite()->setPosition(cocos2d::Vec2(100, (DDOS->getSprite()->getPosition().y + 1)));
 
 	}
-#ifdef _DEBUG
 	if (p1Controller->isButtonPressed(Sedna::X)) {
 		for (unsigned int i = 0; i < outlawList.size(); i++)
 			outlawList[i]->getBox()->getDrawNode()->setVisible(true);
@@ -145,6 +155,9 @@ void HelloWorld::update(float dt)
 		playerTwo->getBox()->getDrawNode()->setVisible(false);
 	}
 #endif
+
+
+
 	if (enemyTimer > 4.0f)
 	{
 		enemyTimer = 0.0f;
@@ -154,7 +167,7 @@ void HelloWorld::update(float dt)
 	{
 		hasSpawn = true;
 		int x = 100 + (rand() % 300);
-		int y = DDOS->getSprite()->getPosition().y - 50-(rand()%50);
+		int y = DDOS->getSprite()->getPosition().y - 50 - (rand() % 50);
 		outlaw = new Sedna::Outlaw(x, y);
 		Sedna::BaseObjectManager::outlawBObjects.push_back(outlaw);
 		this->addChild(outlaw->getBox()->getDrawNode());
@@ -190,24 +203,33 @@ void HelloWorld::update(float dt)
 void HelloWorld::initSprites()
 {
 	cocos2d::experimental::AudioEngine::play2d("bgm.mp3", true);
+	///<cocos2d::experimental::AudioEngine::preload("oRsound.mp3");>
 
 	DDOS = new Sedna::GameObject("DOS.jpg", cocos2d::Vec2(100, 300), 1, 1, 1);
 	this->addChild(DDOS->getBox()->getDrawNode());
 	this->addChild(DDOS->getSprite());
 	DDOS->getSprite()->setVisible(true);
+	/////////////////////////////////////
 
-	playerTwo = new Sedna::Player(2, 300, 100, managerR);
+
+	olReliable = new Sedna::Gun("olReliable", 2, 4, 0.35f);
+	bloodyMary = new Sedna::Gun("bloodyMary", 3, 6, 5, 0.85f);
+	theBiggestIron = new Sedna::Gun("theBiggestIron", 3, 10, 0.05f);
+
+
+	playerOne = new Sedna::Player(1, 100, 100, managerR, theBiggestIron);
+	this->addChild(playerOne->getBox()->getDrawNode());
+	this->addChild(playerOne->getSprite(), 10);
+	this->addChild(playerOne->getUI()->getLabel());
+	this->addChild(playerOne->getUI()->getSprite());
+
+	playerTwo = new Sedna::Player(2, 300, 100, managerR, olReliable);
 	this->addChild(playerTwo->getBox()->getDrawNode());
 	this->addChild(playerTwo->getSprite(), 10);
 
-	bg = cocos2d::Sprite::create("bg1.png");
-	this->addChild(bg, -1000);
-	bg->setScale(0.85f);
-	bg->setPosition(483 / 2.0f, 315 / 2.0f);
 
-	playerOne = new Sedna::Player(1, 100, 100, managerR);
-	this->addChild(playerOne->getBox()->getDrawNode());
-	this->addChild(playerOne->getSprite(), 10);
+
+
 
 	a = cocos2d::Sprite::create("a.png");
 	b = cocos2d::Sprite::create("b.png");
@@ -232,9 +254,21 @@ void HelloWorld::initSprites()
 	rt->setPosition(cocos2d::Vec2(450,
 		this->getDefaultCamera()->getPosition().y + 120));
 
+
+
+	bg = cocos2d::Sprite::create("bg1.png");
+	this->addChild(bg, -1000);
+	bg->setScale(0.85f);
+	bg->setPosition(483 / 2.0f, 315 / 2.0f);
+
+	bg2 = cocos2d::Sprite::create("bgPlain.png");
+	this->addChild(bg2, -1000);
+	bg2->setScale(0.85f);
+	bg2->setPosition(bg->getPosition() + cocos2d::Vec2(0, 270));
+
 	//replace this with a base table that can be copied later
 	for (unsigned int i = 0; i < 4; i++) {
-		baseTable = new Sedna::Table(100 + rand() % 300, DDOS->getSprite()->getPosition().y-10-rand() % 150);
+		baseTable = new Sedna::Table(100 + rand() % 300, DDOS->getSprite()->getPosition().y - 10 - rand() % 150);
 		this->addChild(baseTable->getBox()->getDrawNode());
 		this->addChild(baseTable->getSprite());
 		tableList.push_back(new Sedna::Table(*baseTable));
@@ -294,7 +328,7 @@ void HelloWorld::bigCheckList()
 		for (unsigned int j = 0; j < tableList.size(); j++) {
 			if (i == j)
 				continue;
-				tableList[i]->collideTable(tableList[j]);
+			tableList[i]->collideTable(tableList[j]);
 		}
 	}
 
@@ -304,7 +338,7 @@ void HelloWorld::bigCheckList()
 
 void HelloWorld::recursiveFunction(std::vector<Sedna::Outlaw*>& outlawList)
 {
-yes:
+restart:
 	for (unsigned int i = 0; i < outlawList.size(); i++) {
 		for (unsigned int j = 0; j < outlawList.size(); j++) {
 			if (i == j)
@@ -312,7 +346,7 @@ yes:
 			if (outlawList[i]->getBox()->checkCollision(*outlawList[j]->getBox())) {
 				outlawList[i]->getBox()->setLocation(cocos2d::Vec2(100 + (rand() % 300),
 					outlawList[i]->getBox()->getLocation().y));
-				goto yes;
+				goto restart;
 			}
 
 		}
@@ -320,7 +354,7 @@ yes:
 }
 void HelloWorld::recursiveFunction(std::vector<Sedna::Table*>& tableList)
 {
-yes:
+restart:
 	for (unsigned int i = 0; i < tableList.size(); i++) {
 		for (unsigned int j = 0; j < tableList.size(); j++) {
 			if (i == j)
@@ -328,7 +362,7 @@ yes:
 			if (tableList[i]->getBox()->checkCollision(*tableList[j]->getBox())) {
 				tableList[i]->getBox()->setLocation(cocos2d::Vec2(rand() % 100 + 1 + (rand() % 200 + 1),
 					tableList[i]->getBox()->getLocation().y));
-				goto yes;
+				goto restart;
 			}
 
 		}
