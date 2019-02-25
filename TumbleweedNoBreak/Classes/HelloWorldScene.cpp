@@ -119,13 +119,20 @@ void HelloWorld::update(float dt)
 	checkInput(dt);
 	getCollisions();
 
-
-
+	
 
 
 #ifdef _DEBUG
 	if (p1Controller->isButtonPressed(Sedna::Y))
 	{
+		playerOne->getUI()->getLabel()->setPosition(cocos2d::Vec2(playerOne->getUI()->getLabel()->getPosition().x, 
+			playerOne->getUI()->getLabel()->getPosition().y + 1));
+
+		playerOne->getUI()->getSprite()->setPosition(cocos2d::Vec2(playerOne->getUI()->getSprite()->getPosition().x, 
+			playerOne->getUI()->getSprite()->getPosition().y + 1));
+
+
+
 		this->getDefaultCamera()->setPosition(cocos2d::Vec2(this->getDefaultCamera()->getPosition().x,
 			this->getDefaultCamera()->getPosition().y + 1));
 		DDOS->getSprite()->setPosition(cocos2d::Vec2(100, (DDOS->getSprite()->getPosition().y + 1)));
@@ -196,8 +203,7 @@ void HelloWorld::update(float dt)
 void HelloWorld::initSprites()
 {
 	cocos2d::experimental::AudioEngine::play2d("bgm.mp3", true);
-	cocos2d::experimental::AudioEngine::preload("oRsound.mp3");
-
+	///<cocos2d::experimental::AudioEngine::preload("oRsound.mp3");>
 
 	DDOS = new Sedna::GameObject("DOS.jpg", cocos2d::Vec2(100, 300), 1, 1, 1);
 	this->addChild(DDOS->getBox()->getDrawNode());
@@ -206,16 +212,18 @@ void HelloWorld::initSprites()
 	/////////////////////////////////////
 
 
-	olReliable = new Sedna::Gun("olReliable",2, 4, 0.35f);
-	bloodyMary = new Sedna::Gun("bloodyMary",3, 6, 5, 0.85f);
+	olReliable = new Sedna::Gun("olReliable", 2, 4, 0.35f);
+	bloodyMary = new Sedna::Gun("bloodyMary", 3, 6, 5, 0.85f);
 	theBiggestIron = new Sedna::Gun("theBiggestIron", 3, 10, 0.05f);
 
 
-	playerOne = new Sedna::Player(1, 100, 100, managerR, olReliable);
+	playerOne = new Sedna::Player(1, 100, 100, managerR, theBiggestIron);
 	this->addChild(playerOne->getBox()->getDrawNode());
 	this->addChild(playerOne->getSprite(), 10);
+	this->addChild(playerOne->getUI()->getLabel());
+	this->addChild(playerOne->getUI()->getSprite());
 
-	playerTwo = new Sedna::Player(2, 300, 100, managerR,olReliable);
+	playerTwo = new Sedna::Player(2, 300, 100, managerR, olReliable);
 	this->addChild(playerTwo->getBox()->getDrawNode());
 	this->addChild(playerTwo->getSprite(), 10);
 

@@ -15,6 +15,7 @@
     <ClCompile Include="..\Classes\baseObjectManager.cpp" />
     <ClCompile Include="..\Classes\SpawnManager.cpp" />
     <ClCompile Include="..\Classes\Guns.cpp" />
+    <ClCompile Include="..\Classes\UserInterface.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Classes\AppDelegate.h" />
@@ -33,6 +34,8 @@
     <ClInclude Include="..\Classes\SpawnManager.h" />
     <ClInclude Include="..\Classes\SpawnObject.h" />
     <ClInclude Include="..\Classes\Guns.h" />
+    <ClInclude Include="..\Classes\UserInterface.h" />
+    <ClInclude Include="menuScene.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc" />

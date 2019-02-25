@@ -3,7 +3,7 @@
 namespace Sedna {
 
 
-	Player::Player(int wPlayer, float x, float y, XinputManager MANAGER, Gun* CURRENTGUN)//take in a gun
+	Player::Player(int wPlayer, float x, float y, XinputManager MANAGER, Gun* CURRENTGUN)
 	{
 		sprite = cocos2d::Sprite::create("player1.png");
 		sprite->setScale(0.85f);
@@ -12,7 +12,6 @@ namespace Sedna {
 			hitBox->getDrawNode()->setVisible(false);
 
 			this->pController = MANAGER.getController(0);
-
 
 		}
 		else {
@@ -24,7 +23,7 @@ namespace Sedna {
 
 		}
 		currentGun = CURRENTGUN;
-
+		playerUI = new UI("DOS.jpg", "yes");
 
 	}
 
@@ -117,7 +116,7 @@ namespace Sedna {
 				}
 				else {
 
-					
+
 					if (currentGun->getName() == "olReliable" || currentGun->getName() == "theBiggestIron") {
 						Projectile* playerProjectile = new Sedna::Projectile(-1000, 0, Sedna::Ally);
 						s->addChild(playerProjectile->getBox()->getDrawNode());
@@ -167,9 +166,9 @@ namespace Sedna {
 						pProjectiles.push_back(new Sedna::Projectile(*playerProjectile2));
 						pProjectiles.push_back(new Sedna::Projectile(*playerProjectile3));
 
-							pProjectiles[0]->getBox()->setLocation(this->getBox()->getLocation());
-							pProjectiles[1]->getBox()->setLocation(this->getBox()->getLocation());
-							pProjectiles[2]->getBox()->setLocation(this->getBox()->getLocation());
+						pProjectiles[0]->getBox()->setLocation(this->getBox()->getLocation());
+						pProjectiles[1]->getBox()->setLocation(this->getBox()->getLocation());
+						pProjectiles[2]->getBox()->setLocation(this->getBox()->getLocation());
 
 
 
@@ -215,7 +214,7 @@ namespace Sedna {
 			BaseObjectManager::pProjectileBObjects.erase(BaseObjectManager::pProjectileBObjects.begin());
 
 		}
-		 
+
 
 		for (int i = 0; i < pProjectiles.size(); i++)
 			pProjectiles[i]->updateGameObject();
@@ -317,6 +316,11 @@ namespace Sedna {
 				this->getBox()->addForce(((distanceVector.x * 2) / 2), (distanceVector.y * 2) / 2);
 			}
 		}
+	}
+
+	UI * Player::getUI() const
+	{
+		return playerUI;
 	}
 
 	void Player::setGun(Gun * g)
