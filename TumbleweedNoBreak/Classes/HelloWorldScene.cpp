@@ -187,8 +187,8 @@ void HelloWorld::update(float dt)
 
 	playerOne->updateGameObject();
 	playerTwo->updateGameObject();
-	//baseTable->updateGameObject();
-	bounceFunct();
+	bounceFunc();
+	
 }
 
 void HelloWorld::initSprites()
@@ -224,12 +224,20 @@ void HelloWorld::initSprites()
 	bg = cocos2d::Sprite::create("bg1.png");
 	this->addChild(bg, -1000);
 	bg->setScale(0.85f);
-	bg->setPosition(483 / 2.0f, 315 / 2.0f);
+	bg->setAnchorPoint(cocos2d::Vec2(0, 0));
+	bg->setPosition(0, 0);
 
 	bg2 = cocos2d::Sprite::create("bgPlain.png");
 	this->addChild(bg2, -1000);
 	bg2->setScale(0.85f);
-	bg2->setPosition(bg->getPosition() + cocos2d::Vec2(0, 270));
+	bg2->setAnchorPoint(cocos2d::Vec2(0, 0));
+	bg2->setPosition(cocos2d::Vec2(0, bg->getContentSize().height * 0.85f));
+	
+	bg3 = cocos2d::Sprite::create("gay.png");
+	this->addChild(bg3, -1000);
+	bg3->setScale(0.85f);
+	bg3->setAnchorPoint(cocos2d::Vec2(0, 0));
+	bg3->setPosition(cocos2d::Vec2(0, (bg2->getContentSize().height * 0.85f)*2));
 
 	//replace this with a base table that can be copied later
 	for (unsigned int i = 0; i < 4; i++) {
@@ -373,7 +381,7 @@ void HelloWorld::menuCloseCallback(Ref* pSender)
 
 }
 
-void HelloWorld::bounceFunct()
+void HelloWorld::bounceFunc()
 {
 	if ((int)playerOne->getBox()->getLocation().x >= barRightMax)
 	{
