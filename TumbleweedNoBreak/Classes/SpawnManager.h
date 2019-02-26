@@ -1,5 +1,6 @@
 #pragma once
 #include "cocos2d.h"
+#include "SpawnObject.h"
 namespace Sedna {
 	class SpawnManager//TODO
 	{
