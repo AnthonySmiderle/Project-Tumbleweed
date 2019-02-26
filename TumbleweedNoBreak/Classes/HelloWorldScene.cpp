@@ -97,8 +97,7 @@ bool HelloWorld::init()
 	p2Controller->updateSticks(p2Sticks);
 	p2Controller->getTriggers(p2Triggers);
 	initSprites();
-
-
+	cocos2d::experimental::AudioEngine::play2d("bgm.mp3",true);
 
 	this->scheduleUpdate();
 
@@ -193,7 +192,7 @@ void HelloWorld::update(float dt)
 
 void HelloWorld::initSprites()
 {
-	cocos2d::experimental::AudioEngine::play2d("bgm.mp3", true);
+	cocos2d::experimental::AudioEngine::preload("bgm.mp3");
 	///<cocos2d::experimental::AudioEngine::preload("oRsound.mp3");>
 
 	DDOS = new Sedna::GameObject("DOS.jpg", cocos2d::Vec2(100, 300), 1, 1, 1);
@@ -208,7 +207,7 @@ void HelloWorld::initSprites()
 	theBiggestIron = new Sedna::Gun("theBiggestIron", 3, 10, 0.05f);
 
 
-	playerOne = new Sedna::Player(1, 100, 100, managerR, theBiggestIron);
+	playerOne = new Sedna::Player(1, 100, 100, managerR, bloodyMary);
 	this->addChild(playerOne->getBox()->getDrawNode());
 	this->addChild(playerOne->getSprite(), 10);
 	this->addChild(playerOne->getUI()->getLabel());
@@ -238,6 +237,7 @@ void HelloWorld::initSprites()
 	bg3->setScale(0.85f);
 	bg3->setAnchorPoint(cocos2d::Vec2(0, 0));
 	bg3->setPosition(cocos2d::Vec2(0, (bg2->getContentSize().height * 0.85f)*2));
+
 
 	//replace this with a base table that can be copied later
 	for (unsigned int i = 0; i < 4; i++) {

@@ -15,7 +15,6 @@ namespace Sedna {
 
 		}
 		else {
-
 			hitBox = new CirclePrimitive(cocos2d::Vec2(x, y), 24, 5, 30);
 			hitBox->getDrawNode()->setVisible(false);
 
@@ -32,7 +31,7 @@ namespace Sedna {
 	{
 		//delete this;
 	}
-
+	
 	void Player::checkInput(float dt)
 	{
 		pController->updateSticks(pSticks);
