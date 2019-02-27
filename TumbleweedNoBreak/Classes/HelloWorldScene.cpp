@@ -185,12 +185,12 @@ void HelloWorld::update(float dt)
 	//std::cout << bg2->getPosition().y << " " << cameraShit->getPosition().y << "\n";
 	static int last;
 
-	if (last < (int)fmodf(1080, cameraShit->getPosition().y))
-	{
-		printf("fmod result: %.4f\n", fmodf(1080, cameraShit->getPosition().y));
-		last = (int)fmodf(1080, cameraShit->getPosition().y)//director glview;
-		puts("yes");
-	}
+	//if (last < (int)fmodf(1080, cameraShit->getPosition().y))
+	//{
+	//	printf("fmod result: %.4f\n", fmodf(1080, cameraShit->getPosition().y));
+	//	last = (int)fmodf(1080, cameraShit->getPosition().y);//director glview;
+	//	puts("yes");
+	//}
 	playerOne->updateGameObject();
 	playerTwo->updateGameObject();
 	bounceFunc();
