@@ -99,6 +99,7 @@ bool HelloWorld::init()
 	initSprites();
 	cocos2d::experimental::AudioEngine::play2d("bgm.mp3", true);
 
+	director = cocos2d::Director::getInstance();
 	this->scheduleUpdate();
 
 	initPauseMenu();
@@ -183,7 +184,7 @@ void HelloWorld::update(float dt)
 	bigCheckList();
 
 	//std::cout << bg2->getPosition().y << " " << cameraShit->getPosition().y << "\n";
-	static int last;
+	//static int last;
 
 	//if (last < (int)fmodf(1080, cameraShit->getPosition().y))
 	//{
@@ -191,6 +192,15 @@ void HelloWorld::update(float dt)
 	//	last = (int)fmodf(1080, cameraShit->getPosition().y);//director glview;
 	//	puts("yes");
 	//}
+	
+
+	if (DDOS->getSprite()->getPosition().y- bg2->getPosition().y >= 588.8f) {
+		bg2->setPosition(cocos2d::Vec2(bg2->getPosition().x, bg2->getPosition().y + 588.8f));
+	}
+	if (DDOS->getSprite()->getPosition().y - bg3->getPosition().y >= 588.8f) {
+		bg3->setPosition(cocos2d::Vec2(bg3->getPosition().x, bg3->getPosition().y + 588.8f));
+	}
+
 	playerOne->updateGameObject();
 	playerTwo->updateGameObject();
 	bounceFunc();
@@ -227,7 +237,7 @@ void HelloWorld::initSprites()
 
 
 	bg = cocos2d::Sprite::create("bg1.png");
-	this->addChild(bg, 1000);
+	this->addChild(bg, -1000);
 	bg->setScale(0.85f,0.92f);
 	bg->setAnchorPoint(cocos2d::Vec2(0, 0));
 	bg->setPosition(0, 0);
@@ -240,15 +250,15 @@ void HelloWorld::initSprites()
 
 	bg2 = cocos2d::Sprite::create("bgPlain.png");
 	this->addChild(bg2, -1000);
-	bg2->setScale(0.85f);
+	bg2->setScale(0.85f, 0.92f);
 	bg2->setAnchorPoint(cocos2d::Vec2(0, 0));
-	bg2->setPosition(cocos2d::Vec2(0, bg->getContentSize().height * 0.85f));
+	bg2->setPosition(cocos2d::Vec2(0, bg->getContentSize().height * 0.92f));
 
-	bg3 = cocos2d::Sprite::create("gay.png");
+	bg3 = cocos2d::Sprite::create("test.png");
 	this->addChild(bg3, -1000);
-	bg3->setScale(0.85f);
+	bg3->setScale(0.85f, 0.92f);
 	bg3->setAnchorPoint(cocos2d::Vec2(0, 0));
-	bg3->setPosition(cocos2d::Vec2(0, (bg2->getContentSize().height * 0.85f) * 2));
+	bg3->setPosition(cocos2d::Vec2(0, (bg2->getContentSize().height * 0.92f) * 2));
 
 
 	//replace this with a base table that can be copied later
