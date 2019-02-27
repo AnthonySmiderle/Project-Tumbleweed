@@ -281,6 +281,7 @@ namespace Sedna {
 					tableList[j]->getBox()->getDrawNode()->removeFromParent();
 					tableList[j]->getSprite()->removeFromParent();
 					tableList.erase(tableList.begin() + j);
+					BaseObjectManager::tableBObjects.erase(BaseObjectManager::tableBObjects.begin() + j);
 					j--;
 				}
 

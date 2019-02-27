@@ -77,8 +77,7 @@ private:
 	cocos2d::Sprite* rsr;
 	cocos2d::Sprite* rt;
 
-	Sedna::Table* baseTable;
-	std::vector <Sedna::Table*> tableList;
+	
 
 	Sedna::Player* playerOne;
 	Sedna::Player* playerTwo;

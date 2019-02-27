@@ -1,6 +1,11 @@
 #include "SpawnObject.h"
 
-int Sedna::SpawnObject::update(float dt)
+Sedna::SpawnObject::SpawnObject()
+{
+	//is handled
+}
+
+int Sedna::SpawnObject::update(float dt, int amount)
 {
 	counter += dt;
 	if (amount<=maxType)
