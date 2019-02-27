@@ -97,8 +97,7 @@ bool HelloWorld::init()
 	p2Controller->updateSticks(p2Sticks);
 	p2Controller->getTriggers(p2Triggers);
 	initSprites();
-
-
+	cocos2d::experimental::AudioEngine::play2d("bgm.mp3", true);
 
 	this->scheduleUpdate();
 
@@ -119,16 +118,16 @@ void HelloWorld::update(float dt)
 	checkInput(dt);
 	getCollisions();
 
-	
 
 
 #ifdef _DEBUG
 	if (p1Controller->isButtonPressed(Sedna::Y))
 	{
-		playerOne->getUI()->getLabel()->setPosition(cocos2d::Vec2(playerOne->getUI()->getLabel()->getPosition().x, 
+		cameraShit->setPosition(cameraShit->getPosition() + cocos2d::Vec2(0, 1));
+		playerOne->getUI()->getLabel()->setPosition(cocos2d::Vec2(playerOne->getUI()->getLabel()->getPosition().x,
 			playerOne->getUI()->getLabel()->getPosition().y + 1));
 
-		playerOne->getUI()->getSprite()->setPosition(cocos2d::Vec2(playerOne->getUI()->getSprite()->getPosition().x, 
+		playerOne->getUI()->getSprite()->setPosition(cocos2d::Vec2(playerOne->getUI()->getSprite()->getPosition().x,
 			playerOne->getUI()->getSprite()->getPosition().y + 1));
 
 
@@ -163,7 +162,7 @@ void HelloWorld::update(float dt)
 		enemyTimer = 0.0f;
 		hasSpawn = false;
 	}
-	if (!enemyTimer)
+	if (enemyTimer == 0)
 	{
 		hasSpawn = true;
 		int x = 100 + (rand() % 300);
@@ -183,26 +182,24 @@ void HelloWorld::update(float dt)
 	}
 	bigCheckList();
 
-	a->setPosition(cocos2d::Vec2(450,
-		this->getDefaultCamera()->getPosition().y));
-	b->setPosition(cocos2d::Vec2(450,
-		this->getDefaultCamera()->getPosition().y + 30));
-	rsl->setPosition(cocos2d::Vec2(450,
-		this->getDefaultCamera()->getPosition().y + 60));
-	rsr->setPosition(cocos2d::Vec2(450,
-		this->getDefaultCamera()->getPosition().y + 90));
-	rt->setPosition(cocos2d::Vec2(450,
-		this->getDefaultCamera()->getPosition().y + 120));
+	//std::cout << bg2->getPosition().y << " " << cameraShit->getPosition().y << "\n";
+	static int last;
 
+	//if (last < (int)fmodf(1080, cameraShit->getPosition().y))
+	//{
+	//	printf("fmod result: %.4f\n", fmodf(1080, cameraShit->getPosition().y));
+	//	last = (int)fmodf(1080, cameraShit->getPosition().y);//director glview;
+	//	puts("yes");
+	//}
 	playerOne->updateGameObject();
 	playerTwo->updateGameObject();
-	//baseTable->updateGameObject();
-	bounceFunct();
+	bounceFunc();
+
 }
 
 void HelloWorld::initSprites()
 {
-	cocos2d::experimental::AudioEngine::play2d("bgm.mp3", true);
+	cocos2d::experimental::AudioEngine::preload("bgm.mp3");
 	///<cocos2d::experimental::AudioEngine::preload("oRsound.mp3");>
 
 	DDOS = new Sedna::GameObject("DOS.jpg", cocos2d::Vec2(100, 300), 1, 1, 1);
@@ -217,7 +214,7 @@ void HelloWorld::initSprites()
 	theBiggestIron = new Sedna::Gun("theBiggestIron", 3, 10, 0.05f);
 
 
-	playerOne = new Sedna::Player(1, 100, 100, managerR, theBiggestIron);
+	playerOne = new Sedna::Player(1, 100, 100, managerR, bloodyMary);
 	this->addChild(playerOne->getBox()->getDrawNode());
 	this->addChild(playerOne->getSprite(), 10);
 	this->addChild(playerOne->getUI()->getLabel());
@@ -229,42 +226,30 @@ void HelloWorld::initSprites()
 
 
 
-
-
-	a = cocos2d::Sprite::create("a.png");
-	b = cocos2d::Sprite::create("b.png");
-	rsl = cocos2d::Sprite::create("rsl.png");
-	rsr = cocos2d::Sprite::create("rsr.png");
-	rt = cocos2d::Sprite::create("rt.png");
-
-	this->addChild(a, 1);
-	this->addChild(b, 1);
-	this->addChild(rsl, 1);
-	this->addChild(rsr, 1);
-	this->addChild(rt, 1);
-
-	a->setPosition(cocos2d::Vec2(450,
-		this->getDefaultCamera()->getPosition().y));
-	b->setPosition(cocos2d::Vec2(450,
-		this->getDefaultCamera()->getPosition().y + 30));
-	rsl->setPosition(cocos2d::Vec2(450,
-		this->getDefaultCamera()->getPosition().y + 60));
-	rsr->setPosition(cocos2d::Vec2(450,
-		this->getDefaultCamera()->getPosition().y + 90));
-	rt->setPosition(cocos2d::Vec2(450,
-		this->getDefaultCamera()->getPosition().y + 120));
-
-
-
 	bg = cocos2d::Sprite::create("bg1.png");
-	this->addChild(bg, -1000);
-	bg->setScale(0.85f);
-	bg->setPosition(483 / 2.0f, 315 / 2.0f);
+	this->addChild(bg, 1000);
+	bg->setScale(0.85f,0.92f);
+	bg->setAnchorPoint(cocos2d::Vec2(0, 0));
+	bg->setPosition(0, 0);
+
+	cameraShit = cocos2d::Sprite::create();
+	this->addChild(cameraShit);
+	cameraShit->setAnchorPoint(cocos2d::Vec2(0, 0));
+	cameraShit->setPosition(bg->getPosition());
+
 
 	bg2 = cocos2d::Sprite::create("bgPlain.png");
 	this->addChild(bg2, -1000);
 	bg2->setScale(0.85f);
-	bg2->setPosition(bg->getPosition() + cocos2d::Vec2(0, 270));
+	bg2->setAnchorPoint(cocos2d::Vec2(0, 0));
+	bg2->setPosition(cocos2d::Vec2(0, bg->getContentSize().height * 0.85f));
+
+	bg3 = cocos2d::Sprite::create("gay.png");
+	this->addChild(bg3, -1000);
+	bg3->setScale(0.85f);
+	bg3->setAnchorPoint(cocos2d::Vec2(0, 0));
+	bg3->setPosition(cocos2d::Vec2(0, (bg2->getContentSize().height * 0.85f) * 2));
+
 
 	//replace this with a base table that can be copied later
 	for (unsigned int i = 0; i < 4; i++) {
@@ -338,7 +323,6 @@ void HelloWorld::bigCheckList()
 
 void HelloWorld::recursiveFunction(std::vector<Sedna::Outlaw*>& outlawList)
 {
-restart:
 	for (unsigned int i = 0; i < outlawList.size(); i++) {
 		for (unsigned int j = 0; j < outlawList.size(); j++) {
 			if (i == j)
@@ -346,7 +330,7 @@ restart:
 			if (outlawList[i]->getBox()->checkCollision(*outlawList[j]->getBox())) {
 				outlawList[i]->getBox()->setLocation(cocos2d::Vec2(100 + (rand() % 300),
 					outlawList[i]->getBox()->getLocation().y));
-				goto restart;
+				recursiveFunction(outlawList);
 			}
 
 		}
@@ -354,7 +338,6 @@ restart:
 }
 void HelloWorld::recursiveFunction(std::vector<Sedna::Table*>& tableList)
 {
-restart:
 	for (unsigned int i = 0; i < tableList.size(); i++) {
 		for (unsigned int j = 0; j < tableList.size(); j++) {
 			if (i == j)
@@ -362,7 +345,7 @@ restart:
 			if (tableList[i]->getBox()->checkCollision(*tableList[j]->getBox())) {
 				tableList[i]->getBox()->setLocation(cocos2d::Vec2(rand() % 100 + 1 + (rand() % 200 + 1),
 					tableList[i]->getBox()->getLocation().y));
-				goto restart;
+				recursiveFunction(tableList);
 			}
 
 		}
@@ -410,7 +393,7 @@ void HelloWorld::menuCloseCallback(Ref* pSender)
 
 }
 
-void HelloWorld::bounceFunct()
+void HelloWorld::bounceFunc()
 {
 	if ((int)playerOne->getBox()->getLocation().x >= barRightMax)
 	{
