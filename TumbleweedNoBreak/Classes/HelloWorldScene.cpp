@@ -99,6 +99,7 @@ bool HelloWorld::init()
 	initSprites();
 	cocos2d::experimental::AudioEngine::play2d("bgm.mp3", true);
 
+	director = cocos2d::Director::getInstance();
 	this->scheduleUpdate();
 
 	initPauseMenu();
@@ -191,6 +192,15 @@ void HelloWorld::update(float dt)
 	//	last = (int)fmodf(1080, cameraShit->getPosition().y);//director glview;
 	//	puts("yes");
 	//}
+	
+
+	if (DDOS->getSprite()->getPosition().y- bg2->getPosition().y >= 588.8f) {
+		bg2->setPosition(cocos2d::Vec2(bg2->getPosition().x, bg2->getPosition().y + 588.8f));
+	}
+	if (DDOS->getSprite()->getPosition().y - bg3->getPosition().y >= 588.8f) {
+		bg3->setPosition(cocos2d::Vec2(bg3->getPosition().x, bg3->getPosition().y + 588.8f));
+	}
+
 	playerOne->updateGameObject();
 	playerTwo->updateGameObject();
 	bounceFunc();

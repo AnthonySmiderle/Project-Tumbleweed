@@ -58,6 +58,7 @@ public:
 	// implement the "static create()" method manually
 	CREATE_FUNC(HelloWorld);
 private:
+	cocos2d::Director* director;
 	cocos2d::Sprite* cameraShit;
 
 	void bounceFunc();
