@@ -16,6 +16,7 @@
     <ClCompile Include="..\Classes\SpawnManager.cpp" />
     <ClCompile Include="..\Classes\Guns.cpp" />
     <ClCompile Include="..\Classes\UserInterface.cpp" />
+    <ClCompile Include="..\Classes\SpawnObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Classes\AppDelegate.h" />

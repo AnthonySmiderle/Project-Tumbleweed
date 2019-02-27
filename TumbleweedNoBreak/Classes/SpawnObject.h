@@ -1,4 +1,6 @@
 #pragma once
+#include <time.h>
+#include <stdlib.h>
 namespace Sedna
 {
 	class SpawnObject
@@ -6,11 +8,12 @@ namespace Sedna
 	public:
 		SpawnObject(float timerMax, float max, float timerDiff = 0.0f, int maxDiff = 0) 
 			:spawnTimer(timerMax), maxType(max), spawnVariance(timerDiff), amountVariance(maxDiff) {}
-		void update(float dt);
+		int update(float dt);
 	private:
 		bool hasSpawned = false;
 		float spawnTimer=0.0f;
 		float spawnTimerMax=0.0f;
+		float spawnTimerCurrentVariance = 0.0f;
 		float spawnVariance = 0.0f;
 		unsigned int amount = 0;
 		unsigned int maxType=0;

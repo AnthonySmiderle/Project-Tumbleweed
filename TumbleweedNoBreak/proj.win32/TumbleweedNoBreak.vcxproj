@@ -160,6 +160,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Primitive.cpp" />
     <ClCompile Include="..\Classes\Projectile.cpp" />
     <ClCompile Include="..\Classes\SpawnManager.cpp" />
+    <ClCompile Include="..\Classes\SpawnObject.cpp" />
     <ClCompile Include="..\Classes\Table.cpp" />
     <ClCompile Include="..\Classes\UserInterface.cpp" />
     <ClCompile Include="..\Classes\XinputManager.cpp" />
