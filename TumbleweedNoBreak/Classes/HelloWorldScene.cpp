@@ -97,7 +97,7 @@ bool HelloWorld::init()
 	p2Controller->updateSticks(p2Sticks);
 	p2Controller->getTriggers(p2Triggers);
 	initSprites();
-	cocos2d::experimental::AudioEngine::play2d("bgm.mp3",true);
+	cocos2d::experimental::AudioEngine::play2d("bgm.mp3", true);
 
 	this->scheduleUpdate();
 
@@ -118,16 +118,16 @@ void HelloWorld::update(float dt)
 	checkInput(dt);
 	getCollisions();
 
-	
 
 
 #ifdef _DEBUG
 	if (p1Controller->isButtonPressed(Sedna::Y))
 	{
-		playerOne->getUI()->getLabel()->setPosition(cocos2d::Vec2(playerOne->getUI()->getLabel()->getPosition().x, 
+		cameraShit->setPosition(cameraShit->getPosition() + cocos2d::Vec2(0, 1));
+		playerOne->getUI()->getLabel()->setPosition(cocos2d::Vec2(playerOne->getUI()->getLabel()->getPosition().x,
 			playerOne->getUI()->getLabel()->getPosition().y + 1));
 
-		playerOne->getUI()->getSprite()->setPosition(cocos2d::Vec2(playerOne->getUI()->getSprite()->getPosition().x, 
+		playerOne->getUI()->getSprite()->setPosition(cocos2d::Vec2(playerOne->getUI()->getSprite()->getPosition().x,
 			playerOne->getUI()->getSprite()->getPosition().y + 1));
 
 
@@ -182,12 +182,19 @@ void HelloWorld::update(float dt)
 	}
 	bigCheckList();
 
-	
+	//std::cout << bg2->getPosition().y << " " << cameraShit->getPosition().y << "\n";
+	static int last;
 
+	if (last < (int)fmodf(1080, cameraShit->getPosition().y))
+	{
+		printf("fmod result: %.4f\n", fmodf(1080, cameraShit->getPosition().y));
+		last = (int)fmodf(1080, cameraShit->getPosition().y)//director glview;
+		puts("yes");
+	}
 	playerOne->updateGameObject();
 	playerTwo->updateGameObject();
 	bounceFunc();
-	
+
 }
 
 void HelloWorld::initSprites()
@@ -219,24 +226,29 @@ void HelloWorld::initSprites()
 
 
 
-
 	bg = cocos2d::Sprite::create("bg1.png");
-	this->addChild(bg, -1000);
-	bg->setScale(0.85f);
+	this->addChild(bg, 1000);
+	bg->setScale(0.85f,0.92f);
 	bg->setAnchorPoint(cocos2d::Vec2(0, 0));
 	bg->setPosition(0, 0);
+
+	cameraShit = cocos2d::Sprite::create();
+	this->addChild(cameraShit);
+	cameraShit->setAnchorPoint(cocos2d::Vec2(0, 0));
+	cameraShit->setPosition(bg->getPosition());
+
 
 	bg2 = cocos2d::Sprite::create("bgPlain.png");
 	this->addChild(bg2, -1000);
 	bg2->setScale(0.85f);
 	bg2->setAnchorPoint(cocos2d::Vec2(0, 0));
 	bg2->setPosition(cocos2d::Vec2(0, bg->getContentSize().height * 0.85f));
-	
+
 	bg3 = cocos2d::Sprite::create("gay.png");
 	this->addChild(bg3, -1000);
 	bg3->setScale(0.85f);
 	bg3->setAnchorPoint(cocos2d::Vec2(0, 0));
-	bg3->setPosition(cocos2d::Vec2(0, (bg2->getContentSize().height * 0.85f)*2));
+	bg3->setPosition(cocos2d::Vec2(0, (bg2->getContentSize().height * 0.85f) * 2));
 
 
 	//replace this with a base table that can be copied later

@@ -58,6 +58,8 @@ public:
 	// implement the "static create()" method manually
 	CREATE_FUNC(HelloWorld);
 private:
+	cocos2d::Sprite* cameraShit;
+
 	void bounceFunc();
 	Sedna::SpawnManager sManager = Sedna::SpawnManager(this);
 	Sedna::XinputManager managerR;
@@ -100,6 +102,7 @@ private:
 	cocos2d::Sprite* bg;
 	cocos2d::Sprite* bg2;
 	cocos2d::Sprite* bg3;
+
 
 	int barRightMax = 430;
 	int barLeftMax = 90;
