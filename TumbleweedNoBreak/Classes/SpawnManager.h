@@ -23,7 +23,7 @@ namespace Sedna {
 		void outlawSpawn(int DDOS);
 		
 
-		SpawnObject tables = SpawnObject(100.0f,5,1.0f);
+		SpawnObject tables = SpawnObject(5.0f,5,3.0f);
 		SpawnObject outlaws = SpawnObject(5.0f,6,2.0f);
 	};
 
