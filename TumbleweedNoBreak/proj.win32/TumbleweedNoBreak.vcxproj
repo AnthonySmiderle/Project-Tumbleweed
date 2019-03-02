@@ -14,7 +14,7 @@
     <ProjectGuid>{76A39BB2-9B84-4C65-98A5-654D86B86F2A}</ProjectGuid>
     <RootNamespace>test_win32</RootNamespace>
     <Keyword>Win32Proj</Keyword>
-    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -155,11 +155,13 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\GameObject.cpp" />
     <ClCompile Include="..\Classes\Guns.cpp" />
     <ClCompile Include="..\Classes\HelloWorldScene.cpp" />
+    <ClCompile Include="..\Classes\menuScene.cpp" />
     <ClCompile Include="..\Classes\Player.cpp" />
     <ClCompile Include="..\Classes\Potion.cpp" />
     <ClCompile Include="..\Classes\Primitive.cpp" />
     <ClCompile Include="..\Classes\Projectile.cpp" />
     <ClCompile Include="..\Classes\SpawnManager.cpp" />
+    <ClCompile Include="..\Classes\SpawnObject.cpp" />
     <ClCompile Include="..\Classes\Table.cpp" />
     <ClCompile Include="..\Classes\UserInterface.cpp" />
     <ClCompile Include="..\Classes\XinputManager.cpp" />
@@ -173,6 +175,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\GameObject.h" />
     <ClInclude Include="..\Classes\Guns.h" />
     <ClInclude Include="..\Classes\HelloWorldScene.h" />
+    <ClInclude Include="..\Classes\menuScene.h" />
     <ClInclude Include="..\Classes\Player.h" />
     <ClInclude Include="..\Classes\Potion.h" />
     <ClInclude Include="..\Classes\Primitive.h" />
@@ -183,7 +186,6 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\UserInterface.h" />
     <ClInclude Include="..\Classes\XinputManager.h" />
     <ClInclude Include="main.h" />
-    <ClInclude Include="menuScene.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc" />

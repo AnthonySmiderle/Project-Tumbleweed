@@ -115,16 +115,15 @@ void HelloWorld::update(float dt)
 	p2Controller->updateSticks(p2Sticks);
 	p2Controller->getTriggers(p2Triggers);
 
+	
 	srand(time(0));
 	checkInput(dt);
 	getCollisions();
 
 
-
 #ifdef _DEBUG
 	if (p1Controller->isButtonPressed(Sedna::Y))
 	{
-		cameraShit->setPosition(cameraShit->getPosition() + cocos2d::Vec2(0, 1));
 		playerOne->getUI()->getLabel()->setPosition(cocos2d::Vec2(playerOne->getUI()->getLabel()->getPosition().x,
 			playerOne->getUI()->getLabel()->getPosition().y + 1));
 
@@ -141,16 +140,16 @@ void HelloWorld::update(float dt)
 	if (p1Controller->isButtonPressed(Sedna::X)) {
 		for (unsigned int i = 0; i < outlawList.size(); i++)
 			outlawList[i]->getBox()->getDrawNode()->setVisible(true);
-		for (unsigned int i = 0; i < tableList.size(); i++)
-			tableList[i]->getBox()->getDrawNode()->setVisible(true);
+		for (unsigned int i = 0; i < sManager.tableList.size(); i++)
+			sManager.tableList[i]->getBox()->getDrawNode()->setVisible(true);
 		playerOne->getBox()->getDrawNode()->setVisible(true);
 		playerTwo->getBox()->getDrawNode()->setVisible(true);
 	}
 	else {
 		for (unsigned int i = 0; i < outlawList.size(); i++)
 			outlawList[i]->getBox()->getDrawNode()->setVisible(false);
-		for (unsigned int i = 0; i < tableList.size(); i++)
-			tableList[i]->getBox()->getDrawNode()->setVisible(false);
+		for (unsigned int i = 0; i < sManager.tableList.size(); i++)
+			sManager.tableList[i]->getBox()->getDrawNode()->setVisible(false);
 		playerOne->getBox()->getDrawNode()->setVisible(false);
 		playerTwo->getBox()->getDrawNode()->setVisible(false);
 	}
@@ -224,7 +223,7 @@ void HelloWorld::initSprites()
 	theBiggestIron = new Sedna::Gun("theBiggestIron", 3, 10, 0.05f);
 
 
-	playerOne = new Sedna::Player(1, 100, 100, managerR, bloodyMary);
+	playerOne = new Sedna::Player(1, 100, 100, managerR, theBiggestIron);
 	this->addChild(playerOne->getBox()->getDrawNode());
 	this->addChild(playerOne->getSprite(), 10);
 	this->addChild(playerOne->getUI()->getLabel());
@@ -242,10 +241,6 @@ void HelloWorld::initSprites()
 	bg->setAnchorPoint(cocos2d::Vec2(0, 0));
 	bg->setPosition(0, 0);
 
-	cameraShit = cocos2d::Sprite::create();
-	this->addChild(cameraShit);
-	cameraShit->setAnchorPoint(cocos2d::Vec2(0, 0));
-	cameraShit->setPosition(bg->getPosition());
 
 
 	bg2 = cocos2d::Sprite::create("bgPlain.png");
@@ -262,15 +257,15 @@ void HelloWorld::initSprites()
 
 
 	//replace this with a base table that can be copied later
-	for (unsigned int i = 0; i < 4; i++) {
-		baseTable = new Sedna::Table(100 + rand() % 300, DDOS->getSprite()->getPosition().y - 10 - rand() % 150);
-		this->addChild(baseTable->getBox()->getDrawNode());
-		this->addChild(baseTable->getSprite());
-		tableList.push_back(new Sedna::Table(*baseTable));
-		Sedna::BaseObjectManager::tableBObjects.push_back(baseTable);
-
-	}
-	recursiveFunction(tableList);
+	//for (unsigned int i = 0; i < 4; i++) {
+	//	baseTable = new Sedna::Table(100 + rand() % 300, DDOS->getSprite()->getPosition().y - 10 - rand() % 150);
+	//	this->addChild(baseTable->getBox()->getDrawNode());
+	//	this->addChild(baseTable->getSprite());
+	//	tableList.push_back(new Sedna::Table(*baseTable));
+	//	Sedna::BaseObjectManager::tableBObjects.push_back(baseTable);
+	//
+	//}
+	//recursiveFunction(tableList);
 }
 
 void HelloWorld::checkInput(float dt)
@@ -283,13 +278,13 @@ void HelloWorld::checkInput(float dt)
 
 void HelloWorld::getCollisions()
 {
-	playerOne->checkTableStuff(tableList);
-	playerTwo->checkTableStuff(tableList);
+	playerOne->checkTableStuff(sManager.tableList);
+	playerTwo->checkTableStuff(sManager.tableList);
 }
 
 void HelloWorld::bigCheckList()
 {
-
+	checkPosAll();
 	if (outlawList.size() > 4) {
 		outlawList.front()->removeProjectiles();
 		outlawList.front()->getBox()->getDrawNode()->removeFromParent();
@@ -303,27 +298,27 @@ void HelloWorld::bigCheckList()
 
 	playerOne->checkBCollision(outlawList);
 	playerTwo->checkBCollision(outlawList);
-	playerOne->checkBCollision(tableList);
-	playerTwo->checkBCollision(tableList);
+	playerOne->checkBCollision(sManager.tableList);
+	playerTwo->checkBCollision(sManager.tableList);
 	playerOne->checkList();
 	playerTwo->checkList();
-	for (unsigned int i = 0; i < tableList.size(); i++)
-		tableList[i]->updateGameObject();
+	for (unsigned int i = 0; i < sManager.tableList.size(); i++)
+		sManager.tableList[i]->updateGameObject();
 
 	for (unsigned int i = 0; i < outlawList.size(); i++) {
 
-		outlawList[i]->checkBCollision(tableList);
+		outlawList[i]->checkBCollision(sManager.tableList);
 		outlawList[i]->checkBCollision(playerOne);
 		outlawList[i]->checkBCollision(playerTwo);
 		outlawList[i]->checkList();
 		outlawList[i]->updateGameObject();
 
 	}
-	for (unsigned int i = 0; i < tableList.size(); i++) {
-		for (unsigned int j = 0; j < tableList.size(); j++) {
+	for (unsigned int i = 0; i < sManager.tableList.size(); i++) {
+		for (unsigned int j = 0; j < sManager.tableList.size(); j++) {
 			if (i == j)
 				continue;
-			tableList[i]->collideTable(tableList[j]);
+			sManager.tableList[i]->collideTable(sManager.tableList[j]);
 		}
 	}
 
@@ -376,13 +371,13 @@ void HelloWorld::checkPosAll()
 			i--;
 		}
 	}
-	for (unsigned int i = 0; i < tableList.size(); i++)
+	for (unsigned int i = 0; i < sManager.tableList.size(); i++)
 	{
-		if (tableList[i]->getBox()->getLocation().y < DDOS->getSprite()->getPosition().y - 400)
+		if (sManager.tableList[i]->getBox()->getLocation().y < DDOS->getSprite()->getPosition().y - 400)
 		{
-			tableList[i]->getBox()->getDrawNode()->removeFromParent();
-			tableList[i]->getSprite()->removeFromParent();
-			tableList.erase(tableList.begin() + i);
+			sManager.tableList[i]->getBox()->getDrawNode()->removeFromParent();
+			sManager.tableList[i]->getSprite()->removeFromParent();
+			sManager.tableList.erase(sManager.tableList.begin() + i);
 			Sedna::BaseObjectManager::tableBObjects.erase(Sedna::BaseObjectManager::tableBObjects.begin() + i);
 			i--;
 		}
@@ -428,18 +423,18 @@ void HelloWorld::bounceFunc()
 		playerTwo->getBox()->addForce(25, 0);
 	}
 
-	for (unsigned int i = 0; i < tableList.size(); i++)
+	for (unsigned int i = 0; i < sManager.tableList.size(); i++)
 	{
-		if ((int)tableList[i]->getBox()->getLocation().x >= barRightMax)
+		if ((int)sManager.tableList[i]->getBox()->getLocation().x >= barRightMax)
 		{
-			tableList[i]->getBox()->setLocation(cocos2d::Vec2(430, tableList[i]->getBox()->getLocation().y));
-			tableList[i]->getBox()->addForce(-25, 0);
+			sManager.tableList[i]->getBox()->setLocation(cocos2d::Vec2(430, sManager.tableList[i]->getBox()->getLocation().y));
+			sManager.tableList[i]->getBox()->addForce(-25, 0);
 		}
 
-		if ((int)tableList[i]->getBox()->getLocation().x <= barLeftMax)
+		if ((int)sManager.tableList[i]->getBox()->getLocation().x <= barLeftMax)
 		{
-			tableList[i]->getBox()->setLocation(cocos2d::Vec2(90, tableList[i]->getBox()->getLocation().y));
-			tableList[i]->getBox()->addForce(25, 0);
+			sManager.tableList[i]->getBox()->setLocation(cocos2d::Vec2(90, sManager.tableList[i]->getBox()->getLocation().y));
+			sManager.tableList[i]->getBox()->addForce(25, 0);
 		}
 	}
 }

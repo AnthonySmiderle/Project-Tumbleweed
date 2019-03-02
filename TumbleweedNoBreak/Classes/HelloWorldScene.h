@@ -59,7 +59,6 @@ public:
 	CREATE_FUNC(HelloWorld);
 private:
 	cocos2d::Director* director;
-	cocos2d::Sprite* cameraShit;
 
 	void bounceFunc();
 	Sedna::SpawnManager sManager = Sedna::SpawnManager(this);
@@ -77,8 +76,7 @@ private:
 	cocos2d::Sprite* rsr;
 	cocos2d::Sprite* rt;
 
-	Sedna::Table* baseTable;
-	std::vector <Sedna::Table*> tableList;
+	
 
 	Sedna::Player* playerOne;
 	Sedna::Player* playerTwo;
