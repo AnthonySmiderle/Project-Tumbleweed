@@ -92,8 +92,7 @@ private:
 	Sedna::Projectile* eBaseProjectile;
 	std::vector<Sedna::Projectile*>eProjectiles;
 
-	Sedna::Outlaw* outlaw;
-	std::vector<Sedna::Outlaw*>outlawList;
+	
 
 	Sedna::GameObject* DDOS;
 	std::vector <Sedna::Potion> potionList;
@@ -102,19 +101,19 @@ private:
 	cocos2d::Sprite* bg2;
 	cocos2d::Sprite* bg3;
 
-
 	int barRightMax = 430;
 	int barLeftMax = 90;
-	
-	float enemyTimer = 0.0f;
-	bool hasSpawn = false;
 
-	float eShootTimer = 0.0f;
-	bool eHasShot = false;
+	bool TRUEPAUSE = false;
+	bool TEMPPAUSE = false;
 	bool paused = false;
 	void togglePause();
-	cocos2d::Menu* pauseMenu;
-	void initPauseMenu();	
+	float pauseTimer = 0.0f;
+	float bulletTimeTimer = 0.0f;
+	float bulletTimeWait = 0.0f;
+	float bulletTimeMiniWait = 0.0f;
+	bool bulletTime = false;
+	bool bulletTimeAgain = false;
 };
 
 #endif // __HELLOWORLD_SCENE_H__

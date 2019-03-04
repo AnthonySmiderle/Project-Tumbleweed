@@ -3,6 +3,7 @@
 #include "SpawnObject.h"
 #include "Table.h"
 #include "baseObjectManager.h"
+#include "Enemy.h"
 namespace Sedna {
 	class SpawnManager//TODO
 	{
@@ -10,12 +11,13 @@ namespace Sedna {
 		SpawnManager(cocos2d::Scene* s) :scene(s) {}
 		void update(float dt, int DDOS);
 		std::vector <Sedna::Table*> tableList;
+		std::vector<Sedna::Outlaw*>outlawList;
 	private:
 		float totalTime = 0.0f;
 		cocos2d::Scene* scene;
 
 		Sedna::Table* baseTable;
-		
+		Sedna::Outlaw* outlaw;
 
 
 

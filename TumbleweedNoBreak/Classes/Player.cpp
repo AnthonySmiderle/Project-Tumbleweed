@@ -85,6 +85,7 @@ namespace Sedna {
 
 		if (pController->isButtonPressed(Sedna::START))
 			exit(0);
+			
 	}
 
 	void Player::shoot(float dt, cocos2d::Scene* s)

@@ -102,108 +102,151 @@ bool HelloWorld::init()
 	director = cocos2d::Director::getInstance();
 	this->scheduleUpdate();
 
-	initPauseMenu();
 	return true;
 }
 
 void HelloWorld::update(float dt)
 {
-	sManager.update(dt, DDOS->getSprite()->getPosition().y);
+
+
 	managerR.update();
 	p1Controller->updateSticks(p1Sticks);
 	p1Controller->getTriggers(p1Triggers);
 	p2Controller->updateSticks(p2Sticks);
 	p2Controller->getTriggers(p2Triggers);
 
-	
-	srand(time(0));
-	checkInput(dt);
-	getCollisions();
+	if (p1Controller->isButtonPressed(Sedna::SELECT))
+	{
+		if (!TEMPPAUSE)
+		{
+			TEMPPAUSE = true;
+			TRUEPAUSE ^= 1;
+		}
+		
+	}
+	if (p1Controller->isButtonReleased(Sedna::SELECT))
+		TEMPPAUSE = false;
+	if (TRUEPAUSE)
+		paused = true;
+	else
+		paused = false;
+
+	if (!TRUEPAUSE)
+	{
+
+		if (p1Triggers.LT > 0 && !bulletTime&&bulletTimeAgain)//triggers can be replaced by a power up boolean for a drink instead of a toggle thing
+		{
+			bulletTime = true;
+			bulletTimeAgain = false;
+			std::cout << "Bullet Time Init\n";
+		}
+
+		if (bulletTime)
+		{
+			std::cout << "It's Bullet Time\n";
+			if (bulletTimeMiniWait > 1.0f)
+			{
+				togglePause();
+				bulletTimeMiniWait = 0.0f;
+			}
+			bulletTimeMiniWait += dt;
+			bulletTimeTimer += dt;
+
+			if (bulletTimeTimer > 3.0f)//time between bullet end start and next bullet time
+			{
+				std::cout << "End of Bullet Time\n";
+				bulletTime = false;
+				bulletTimeWait = 0.0f;
+			}
+
+		}
+		else
+		{
+			std::cout << "It's not Bullet Time :(\n";
+			paused = false;
+			bulletTimeWait += dt;
+			if (bulletTimeWait > 3.0f)//time between bullet end start and next bullet time
+			{
+				std::cout << "You can Bullet Time Again\n";
+				bulletTimeAgain = true;
+				bulletTimeTimer = 0.0f;
+			}
+
+		}
+		if (p1Triggers.LT == 0 && p2Triggers.LT == 0)
+		{
+			std::cout << "Nobody wants to bullet time ;P\n";
+			paused = false;
+		}
+			
+	}
+
+	if (!paused)
+	{
+
+
+		sManager.update(dt, DDOS->getSprite()->getPosition().y);
+
+		srand(time(0));
+		checkInput(dt);
+		getCollisions();
 
 
 #ifdef _DEBUG
-	if (p1Controller->isButtonPressed(Sedna::Y))
-	{
-		playerOne->getUI()->getLabel()->setPosition(cocos2d::Vec2(playerOne->getUI()->getLabel()->getPosition().x,
-			playerOne->getUI()->getLabel()->getPosition().y + 1));
+		if (p1Controller->isButtonPressed(Sedna::Y))
+		{
+			playerOne->getUI()->getLabel()->setPosition(cocos2d::Vec2(playerOne->getUI()->getLabel()->getPosition().x,
+				playerOne->getUI()->getLabel()->getPosition().y + 1));
 
-		playerOne->getUI()->getSprite()->setPosition(cocos2d::Vec2(playerOne->getUI()->getSprite()->getPosition().x,
-			playerOne->getUI()->getSprite()->getPosition().y + 1));
+			playerOne->getUI()->getSprite()->setPosition(cocos2d::Vec2(playerOne->getUI()->getSprite()->getPosition().x,
+				playerOne->getUI()->getSprite()->getPosition().y + 1));
 
 
 
-		this->getDefaultCamera()->setPosition(cocos2d::Vec2(this->getDefaultCamera()->getPosition().x,
-			this->getDefaultCamera()->getPosition().y + 1));
-		DDOS->getSprite()->setPosition(cocos2d::Vec2(100, (DDOS->getSprite()->getPosition().y + 1)));
+			this->getDefaultCamera()->setPosition(cocos2d::Vec2(this->getDefaultCamera()->getPosition().x,
+				this->getDefaultCamera()->getPosition().y + 1));
+			DDOS->getSprite()->setPosition(cocos2d::Vec2(100, (DDOS->getSprite()->getPosition().y + 1)));
 
-	}
-	if (p1Controller->isButtonPressed(Sedna::X)) {
-		for (unsigned int i = 0; i < outlawList.size(); i++)
-			outlawList[i]->getBox()->getDrawNode()->setVisible(true);
-		for (unsigned int i = 0; i < sManager.tableList.size(); i++)
-			sManager.tableList[i]->getBox()->getDrawNode()->setVisible(true);
-		playerOne->getBox()->getDrawNode()->setVisible(true);
-		playerTwo->getBox()->getDrawNode()->setVisible(true);
-	}
-	else {
-		for (unsigned int i = 0; i < outlawList.size(); i++)
-			outlawList[i]->getBox()->getDrawNode()->setVisible(false);
-		for (unsigned int i = 0; i < sManager.tableList.size(); i++)
-			sManager.tableList[i]->getBox()->getDrawNode()->setVisible(false);
-		playerOne->getBox()->getDrawNode()->setVisible(false);
-		playerTwo->getBox()->getDrawNode()->setVisible(false);
-	}
+		}
+		if (p1Controller->isButtonPressed(Sedna::X)) {
+			for (unsigned int i = 0; i < sManager.outlawList.size(); i++)
+				sManager.outlawList[i]->getBox()->getDrawNode()->setVisible(true);
+			for (unsigned int i = 0; i < sManager.tableList.size(); i++)
+				sManager.tableList[i]->getBox()->getDrawNode()->setVisible(true);
+			playerOne->getBox()->getDrawNode()->setVisible(true);
+			playerTwo->getBox()->getDrawNode()->setVisible(true);
+		}
+		else {
+			for (unsigned int i = 0; i < sManager.outlawList.size(); i++)
+				sManager.outlawList[i]->getBox()->getDrawNode()->setVisible(false);
+			for (unsigned int i = 0; i < sManager.tableList.size(); i++)
+				sManager.tableList[i]->getBox()->getDrawNode()->setVisible(false);
+			playerOne->getBox()->getDrawNode()->setVisible(false);
+			playerTwo->getBox()->getDrawNode()->setVisible(false);
+		}//show hitboxes
 #endif
 
 
 
-	if (enemyTimer > 4.0f)
-	{
-		enemyTimer = 0.0f;
-		hasSpawn = false;
+
+		for (int i = 0; i < sManager.outlawList.size(); i++) {
+			sManager.outlawList[i]->shoot(dt, this);
+		}
+		bigCheckList();
+
+
+
+		if (DDOS->getSprite()->getPosition().y - bg2->getPosition().y >= 588.8f) {
+			bg2->setPosition(cocos2d::Vec2(bg2->getPosition().x, bg2->getPosition().y + 588.8f));
+		}
+		if (DDOS->getSprite()->getPosition().y - bg3->getPosition().y >= 588.8f) {
+			bg3->setPosition(cocos2d::Vec2(bg3->getPosition().x, bg3->getPosition().y + 588.8f));
+		}
+
+		playerOne->updateGameObject();
+		playerTwo->updateGameObject();
+		bounceFunc();
 	}
-	if (enemyTimer == 0)
-	{
-		hasSpawn = true;
-		int x = 100 + (rand() % 300);
-		int y = DDOS->getSprite()->getPosition().y - 50 - (rand() % 50);
-		outlaw = new Sedna::Outlaw(x, y);
-		Sedna::BaseObjectManager::outlawBObjects.push_back(outlaw);
-		this->addChild(outlaw->getBox()->getDrawNode());
-		this->addChild(outlaw->getSprite());
-		outlawList.push_back(new Sedna::Outlaw(*outlaw));
-
-	}
-	if (hasSpawn)
-		enemyTimer += dt;
-
-	for (int i = 0; i < outlawList.size(); i++) {
-		outlawList[i]->shoot(dt, this);
-	}
-	bigCheckList();
-
-	//std::cout << bg2->getPosition().y << " " << cameraShit->getPosition().y << "\n";
-	//static int last;
-
-	//if (last < (int)fmodf(1080, cameraShit->getPosition().y))
-	//{
-	//	printf("fmod result: %.4f\n", fmodf(1080, cameraShit->getPosition().y));
-	//	last = (int)fmodf(1080, cameraShit->getPosition().y);//director glview;
-	//	puts("yes");
-	//}
-	
-
-	if (DDOS->getSprite()->getPosition().y- bg2->getPosition().y >= 588.8f) {
-		bg2->setPosition(cocos2d::Vec2(bg2->getPosition().x, bg2->getPosition().y + 588.8f));
-	}
-	if (DDOS->getSprite()->getPosition().y - bg3->getPosition().y >= 588.8f) {
-		bg3->setPosition(cocos2d::Vec2(bg3->getPosition().x, bg3->getPosition().y + 588.8f));
-	}
-
-	playerOne->updateGameObject();
-	playerTwo->updateGameObject();
-	bounceFunc();
-
 }
 
 void HelloWorld::initSprites()
@@ -254,26 +297,16 @@ void HelloWorld::initSprites()
 	bg3->setScale(0.85f, 0.92f);
 	bg3->setAnchorPoint(cocos2d::Vec2(0, 0));
 	bg3->setPosition(cocos2d::Vec2(0, (bg2->getContentSize().height * 0.92f) * 2));
-
-
-	//replace this with a base table that can be copied later
-	//for (unsigned int i = 0; i < 4; i++) {
-	//	baseTable = new Sedna::Table(100 + rand() % 300, DDOS->getSprite()->getPosition().y - 10 - rand() % 150);
-	//	this->addChild(baseTable->getBox()->getDrawNode());
-	//	this->addChild(baseTable->getSprite());
-	//	tableList.push_back(new Sedna::Table(*baseTable));
-	//	Sedna::BaseObjectManager::tableBObjects.push_back(baseTable);
-	//
-	//}
-	//recursiveFunction(tableList);
 }
 
 void HelloWorld::checkInput(float dt)
 {
 	playerOne->checkInput(dt);
 	playerTwo->checkInput(dt);
-	playerOne->shoot(dt, this);
-	playerTwo->shoot(dt, this);
+	if (!paused) {
+		playerOne->shoot(dt, this);
+		playerTwo->shoot(dt, this);
+	}
 }
 
 void HelloWorld::getCollisions()
@@ -285,19 +318,19 @@ void HelloWorld::getCollisions()
 void HelloWorld::bigCheckList()
 {
 	checkPosAll();
-	if (outlawList.size() > 4) {
-		outlawList.front()->removeProjectiles();
-		outlawList.front()->getBox()->getDrawNode()->removeFromParent();
-		outlawList.front()->getSprite()->removeFromParent();
-		outlawList.erase(outlawList.begin());
+	if (sManager.outlawList.size() > 4) {
+		sManager.outlawList.front()->removeProjectiles();
+		sManager.outlawList.front()->getBox()->getDrawNode()->removeFromParent();
+		sManager.outlawList.front()->getSprite()->removeFromParent();
+		sManager.outlawList.erase(sManager.outlawList.begin());
 		Sedna::BaseObjectManager::outlawBObjects.erase(Sedna::BaseObjectManager::outlawBObjects.begin());
 	}
 
 
-	recursiveFunction(outlawList);
+	recursiveFunction(sManager.outlawList);
 
-	playerOne->checkBCollision(outlawList);
-	playerTwo->checkBCollision(outlawList);
+	playerOne->checkBCollision(sManager.outlawList);
+	playerTwo->checkBCollision(sManager.outlawList);
 	playerOne->checkBCollision(sManager.tableList);
 	playerTwo->checkBCollision(sManager.tableList);
 	playerOne->checkList();
@@ -305,13 +338,13 @@ void HelloWorld::bigCheckList()
 	for (unsigned int i = 0; i < sManager.tableList.size(); i++)
 		sManager.tableList[i]->updateGameObject();
 
-	for (unsigned int i = 0; i < outlawList.size(); i++) {
+	for (unsigned int i = 0; i < sManager.outlawList.size(); i++) {
 
-		outlawList[i]->checkBCollision(sManager.tableList);
-		outlawList[i]->checkBCollision(playerOne);
-		outlawList[i]->checkBCollision(playerTwo);
-		outlawList[i]->checkList();
-		outlawList[i]->updateGameObject();
+		sManager.outlawList[i]->checkBCollision(sManager.tableList);
+		sManager.outlawList[i]->checkBCollision(playerOne);
+		sManager.outlawList[i]->checkBCollision(playerTwo);
+		sManager.outlawList[i]->checkList();
+		sManager.outlawList[i]->updateGameObject();
 
 	}
 	for (unsigned int i = 0; i < sManager.tableList.size(); i++) {
@@ -328,14 +361,14 @@ void HelloWorld::bigCheckList()
 
 void HelloWorld::recursiveFunction(std::vector<Sedna::Outlaw*>& outlawList)
 {
-	for (unsigned int i = 0; i < outlawList.size(); i++) {
-		for (unsigned int j = 0; j < outlawList.size(); j++) {
+	for (unsigned int i = 0; i < sManager.outlawList.size(); i++) {
+		for (unsigned int j = 0; j < sManager.outlawList.size(); j++) {
 			if (i == j)
 				continue;
-			if (outlawList[i]->getBox()->checkCollision(*outlawList[j]->getBox())) {
-				outlawList[i]->getBox()->setLocation(cocos2d::Vec2(100 + (rand() % 300),
-					outlawList[i]->getBox()->getLocation().y));
-				recursiveFunction(outlawList);
+			if (sManager.outlawList[i]->getBox()->checkCollision(*sManager.outlawList[j]->getBox())) {
+				sManager.outlawList[i]->getBox()->setLocation(cocos2d::Vec2(100 + (rand() % 300),
+					sManager.outlawList[i]->getBox()->getLocation().y));
+				recursiveFunction(sManager.outlawList);
 			}
 
 		}
@@ -357,16 +390,16 @@ void HelloWorld::recursiveFunction(std::vector<Sedna::Table*>& tableList)
 	}
 }
 
-void HelloWorld::checkPosAll()
+void HelloWorld::checkPosAll()//this function will remove and objects that go to far below the screen
 {
-	for (unsigned int i = 0; i < outlawList.size(); i++)
+	for (unsigned int i = 0; i < sManager.outlawList.size(); i++)
 	{
-		if (outlawList[i]->getBox()->getLocation().y < DDOS->getSprite()->getPosition().y - 400)
+		if (sManager.outlawList[i]->getBox()->getLocation().y < DDOS->getSprite()->getPosition().y - 400)
 		{
-			outlawList[i]->removeProjectiles();
-			outlawList[i]->getBox()->getDrawNode()->removeFromParent();
-			outlawList[i]->getSprite()->removeFromParent();
-			outlawList.erase(outlawList.begin() + i);
+			sManager.outlawList[i]->removeProjectiles();
+			sManager.outlawList[i]->getBox()->getDrawNode()->removeFromParent();
+			sManager.outlawList[i]->getSprite()->removeFromParent();
+			sManager.outlawList.erase(sManager.outlawList.begin() + i);
 			Sedna::BaseObjectManager::outlawBObjects.erase(Sedna::BaseObjectManager::outlawBObjects.begin() + i);
 			i--;
 		}
@@ -398,7 +431,7 @@ void HelloWorld::menuCloseCallback(Ref* pSender)
 
 }
 
-void HelloWorld::bounceFunc()
+void HelloWorld::bounceFunc()//this function stops the player from leaving th screen on the left and right
 {
 	if ((int)playerOne->getBox()->getLocation().x >= barRightMax)
 	{
@@ -441,32 +474,7 @@ void HelloWorld::bounceFunc()
 
 
 
-void HelloWorld::initPauseMenu() {
-	Label* pausedLabel = Label::create("PAUSED", "fonts/Roboto/Roboto-Regular.ttf", 48, Size::ZERO, TextHAlignment::CENTER, TextVAlignment::CENTER);
-	pausedLabel->enableShadow();
-
-	Label* resumeLabel = Label::create("Resume Game", "fonts/Roboto/Roboto-Regular.ttf", 24, Size::ZERO, TextHAlignment::LEFT, TextVAlignment::BOTTOM);
-	resumeLabel->enableShadow();
-
-	MenuItem* pausedItem = MenuItemLabel::create(pausedLabel, NULL);
-	MenuItem* resumeButton = MenuItemLabel::create(resumeLabel, [&](Ref* sender) { togglePause(); });
-
-	pausedItem->setPosition(0, 100);
-	resumeButton->setPosition(0, -200);
-
-	pauseMenu = Menu::create(pausedItem, resumeButton, NULL);
-
-	this->addChild(pauseMenu, 100);
-	pauseMenu->setVisible(false);
-}
 
 void HelloWorld::togglePause() {
 	paused ^= 1;
-
-	if (paused) {
-		pauseMenu->setVisible(true);
-	}
-	else {
-		pauseMenu->setVisible(false);
-	}
 }
