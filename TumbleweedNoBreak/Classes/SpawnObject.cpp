@@ -14,7 +14,7 @@ int Sedna::SpawnObject::update(float dt, int amount)
 		{
 			spawnTimer += dt;
 			spawnTimerCurrentVariance = spawnVariance * ((rand() % 3));
-			if (spawnTimer >= spawnTimerMax + spawnTimerCurrentVariance)
+			if (spawnTimer >= spawnTimerMax + spawnTimerCurrentVariance)	
 			{
 				hasSpawned = false;
 				spawnTimer = 0.0f;
