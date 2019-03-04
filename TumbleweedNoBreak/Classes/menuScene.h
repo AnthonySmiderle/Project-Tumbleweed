@@ -41,8 +41,7 @@ public:
 
 	CREATE_FUNC(MenuScene);
 private:
-	bool temp = false;
-	bool temp2 = false;
+	bool end = false;
 	cocos2d::Director* director;
 
 	cocos2d::Sprite* background;
