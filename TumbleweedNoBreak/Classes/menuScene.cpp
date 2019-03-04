@@ -77,6 +77,10 @@ namespace Sedna {
 
 
 
+
+
+
+
 bool MenuScene::init() {
 	if (!Scene::init())
 	{
@@ -131,6 +135,8 @@ bool MenuScene::init() {
 
 	menuE->select(1);
 
+
+	cocos2d::experimental::AudioEngine::play2d("bgm2.mp3",true);
 	this->scheduleUpdate();
 
 	return true;
@@ -157,6 +163,7 @@ void MenuScene::update(float dt)
 	if (menuE->getIndexOfSelected() == 1 && p1Controller->isButtonPressed(Sedna::A)) {
 		auto game = HelloWorld::createScene();
 		//play a sound here
+		cocos2d::experimental::AudioEngine::stop(0);
 		director->replaceScene(TransitionFade::create(2.0f, game));
 
 	}
