@@ -124,7 +124,6 @@ void HelloWorld::update(float dt)
 #ifdef _DEBUG
 	if (p1Controller->isButtonPressed(Sedna::Y))
 	{
-		cameraShit->setPosition(cameraShit->getPosition() + cocos2d::Vec2(0, 1));
 		playerOne->getUI()->getLabel()->setPosition(cocos2d::Vec2(playerOne->getUI()->getLabel()->getPosition().x,
 			playerOne->getUI()->getLabel()->getPosition().y + 1));
 
@@ -242,10 +241,6 @@ void HelloWorld::initSprites()
 	bg->setAnchorPoint(cocos2d::Vec2(0, 0));
 	bg->setPosition(0, 0);
 
-	cameraShit = cocos2d::Sprite::create();
-	this->addChild(cameraShit);
-	cameraShit->setAnchorPoint(cocos2d::Vec2(0, 0));
-	cameraShit->setPosition(bg->getPosition());
 
 
 	bg2 = cocos2d::Sprite::create("bgPlain.png");

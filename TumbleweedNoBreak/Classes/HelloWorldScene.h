@@ -59,7 +59,6 @@ public:
 	CREATE_FUNC(HelloWorld);
 private:
 	cocos2d::Director* director;
-	cocos2d::Sprite* cameraShit;
 
 	void bounceFunc();
 	Sedna::SpawnManager sManager = Sedna::SpawnManager(this);

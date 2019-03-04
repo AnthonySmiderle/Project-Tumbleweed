@@ -16,6 +16,10 @@
     <ClCompile Include="..\Classes\SpawnManager.cpp" />
     <ClCompile Include="..\Classes\Guns.cpp" />
     <ClCompile Include="..\Classes\UserInterface.cpp" />
+<<<<<<< HEAD
+=======
+    <ClCompile Include="..\Classes\menuScene.cpp" />
+>>>>>>> Anthony
     <ClCompile Include="..\Classes\SpawnObject.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -36,7 +40,7 @@
     <ClInclude Include="..\Classes\SpawnObject.h" />
     <ClInclude Include="..\Classes\Guns.h" />
     <ClInclude Include="..\Classes\UserInterface.h" />
-    <ClInclude Include="menuScene.h" />
+    <ClInclude Include="..\Classes\menuScene.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc" />
