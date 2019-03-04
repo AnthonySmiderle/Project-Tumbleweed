@@ -18,16 +18,15 @@ static void problemLoading(const char* filename)
 
 namespace Sedna {
 
-	SednaMenu::SednaMenu(XinputController *c, Stick s, int args, ...)
-		:menuController(c)
+	SednaMenu::SednaMenu(int args, ...)
+
 	{
 #ifdef _DEBUG
 		if (args <= 0)
 			exit(std::stoi("excuse me what the fuck"));
 #endif
 		//*menuSticks = *s;
-		menuStick = s;
-		menuStick = s;
+
 		va_list LIST;
 		va_start(LIST, args);
 		for (int i = 0; i < args; i++) {
@@ -35,43 +34,43 @@ namespace Sedna {
 		}
 		va_end(LIST);
 
-		createdWithVA = true;
 	}
 
-	SednaMenu::SednaMenu(XinputController *c, Stick s, cocos2d::Label * l1, cocos2d::Label * l2)
-	{
-		menuController = c;
-		menuStick = s;
-		label1 = l1;
-		label2 = l2;
-		createdWithVA = false;
 
-	}
 
-	void SednaMenu::hover(unsigned int index)
+	void SednaMenu::select(unsigned int index)
 	{
-		if (createdWithVA) {
 #ifdef _DEBUG
-			if (index < 0 || index > labelList.size() - 1)
-				exit(std::stoi("oi what the fuck"));
+		if (index < 0 || index > labelList.size() - 1)
+			exit(std::stoi("oi what the fuck"));
 #endif
-			labelList[index]->enableUnderline();
+		for (int i = 0; i < labelList.size(); i++) {
+			labelList[i]->disableEffect();
+			labelList[i]->enableWrap(false);
 		}
+		for (int i = 0; i < labelList.size(); i++)
+			labelList[i]->enableShadow();
+
+		labelList[index]->enableUnderline();
+		labelList[index]->enableWrap(true);
+
+
+
 	}
+
+	unsigned int SednaMenu::getIndexOfSelected() const
+	{
+		for (int i = 0; i < labelList.size(); i++) {
+			if (labelList[i]->isWrapEnabled())
+				return i;
+		}
+		return 0;
+	}
+
 
 	std::vector<cocos2d::Label*> SednaMenu::getLabelList() const
 	{
 		return labelList;
-	}
-
-	cocos2d::Label * SednaMenu::getLabel1() const
-	{
-		return label1;
-	}
-
-	cocos2d::Label * SednaMenu::getLabel2() const
-	{
-		return label2;
 	}
 
 }
@@ -116,29 +115,57 @@ bool MenuScene::init() {
 	this->addChild(menu, 1);
 
 	director = Director::getInstance();
+	//p2Controller = manager.getController(1);
 
 	p1Controller = manager.getController(0);
 	p1Controller->updateSticks(p1Sticks);
-	p2Controller = manager.getController(1);
 
 	manager.update();
 
 	label = Label::create("Toaster Bath", "fonts/Roboto/Roboto-Regular.ttf", 25);
 	label2 = Label::create("Time to Commit", "fonts/Roboto/Roboto-Regular.ttf", 25);
 
-	menuE = new Sedna::SednaMenu(p1Controller, p1Sticks[0], 2, label, label2);
+	menuE = new Sedna::SednaMenu(2, label, label2);
 
 	initMenu();
 
-	menuE->hover(0);
+	menuE->select(1);
+
+	this->scheduleUpdate();
 
 	return true;
 }
 
+void MenuScene::update(float dt)
+{
+	manager.update();
+	p1Controller->updateSticks(p1Sticks);
 
+	if (p1Sticks[0].y < -0.3f && menuE->getIndexOfSelected() != 0) {
+
+		menuE->select(menuE->getIndexOfSelected() - 1);
+	}
+	if (p1Sticks[0].y > 0.3f) {
+		if (menuE->getIndexOfSelected() + 1 > menuE->getLabelList().size() - 1) {
+			//do some other shit i dont wanna figure out right now
+		}
+		else
+			menuE->select(menuE->getIndexOfSelected() + 1);
+
+	}
+
+	if (menuE->getIndexOfSelected() == 1 && p1Controller->isButtonPressed(Sedna::A)) {
+		auto game = HelloWorld::createScene();
+		//play a sound here
+		director->replaceScene(TransitionFade::create(2.0f, game));
+
+	}
+
+}
 
 void MenuScene::initMenu()
 {
+	cocos2d::experimental::AudioEngine::preload("bgm2.mp3");
 	Vec2 windowSize = director->getWinSizeInPixels();
 
 	background = Sprite::create("DOS.jpg");
@@ -151,31 +178,13 @@ void MenuScene::initMenu()
 	title->setPosition(Vec2(140, 250));
 	title->enableShadow();
 
-	//auto playLabel = Label::create("Start Game", "fonts/arial.ttf", 24);
-	//auto exitLabel = Label::create("Exit Game", "fonts/arial.ttf", 24);
-	//exitLabel->enableShadow();
-	//playLabel->enableShadow();
-	//
-	//auto playButton = MenuItemLabel::create(playLabel, [&](Ref* sender) {
-	//	auto gameScene = HelloWorld::createScene();
-	//	director->replaceScene(TransitionFade::create(2.0f, gameScene));
-	//});
-	//auto exitButton = MenuItemLabel::create(exitLabel, [&](Ref* sender) {
-	//	director->end();
-	//});
-	//
-	//playButton->setPosition(140, 250);
-	//exitButton->setPosition(140, 200);
-	//
-	//menu = Menu::create(playButton, exitButton, NULL);
-	//menu->setPosition(140, 250);
-	//this->addChild(menu);
+
 	for (int i = 0; i < menuE->getLabelList().size(); i++) {
 		this->addChild(menuE->getLabelList()[i]);
 		menuE->getLabelList()[i]->enableShadow();
 		menuE->getLabelList()[i]->setAnchorPoint(cocos2d::Vec2(0, 0));
 		if (i == 0)
-			menuE->getLabelList()[i]->setPosition(140, 100);
+			menuE->getLabelList()[i]->setPosition(140, 50);
 		else {
 			menuE->getLabelList()[i]->setPosition(140, menuE->getLabelList()[i - 1]->getPosition().y + 30);
 
@@ -190,6 +199,8 @@ void MenuScene::onEnter()
 {
 	Scene::onEnter();
 }
+
+
 
 void MenuScene::menuCloseCallback(Ref* pSender)
 {

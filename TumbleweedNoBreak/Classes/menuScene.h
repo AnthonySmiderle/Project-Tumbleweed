@@ -3,28 +3,23 @@
 #include "XinputManager.h"
 namespace Sedna {
 
+	
+
 	class SednaMenu {
 	public:
-		SednaMenu(XinputController* c, Stick s, int args, ...);
-		SednaMenu(XinputController *c, Stick s, cocos2d::Label* l1, cocos2d::Label* l2);
-
-		void hover(unsigned int index);
-
-		//a menu has a...
-		//label(s)
-		//controller input
-		//functions to highlight text when you're hovering over it
+		//pass in however many labels you want
+		SednaMenu(int args, ...);
+	
+		//select a place in the list
+		void select(unsigned int index);
+	
+		//does what it says on the tin
+		unsigned int getIndexOfSelected() const;
+		//get the currently selected label out of the list
 		std::vector<cocos2d::Label*> getLabelList() const;
-		cocos2d::Label* getLabel1() const;
-		cocos2d::Label* getLabel2() const;
 	private:
-		bool createdWithVA = false;
-		cocos2d::Label* label1;
-		cocos2d::Label* label2;
 
 		std::vector<cocos2d::Label*> labelList;
-		XinputController *menuController;
-		Stick menuStick;
 	};
 
 
@@ -40,10 +35,14 @@ public:
 	void initMenu();
 	void onEnter();
 
+	void update(float dt);
+
 	void menuCloseCallback(cocos2d::Ref* pSender);
 
 	CREATE_FUNC(MenuScene);
 private:
+	bool temp = false;
+	bool temp2 = false;
 	cocos2d::Director* director;
 
 	cocos2d::Sprite* background;
