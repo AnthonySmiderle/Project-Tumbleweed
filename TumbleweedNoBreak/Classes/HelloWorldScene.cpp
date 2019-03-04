@@ -134,18 +134,19 @@ void HelloWorld::update(float dt)
 	if (!TRUEPAUSE)
 	{
 
-		if (p1Triggers.LT > 0 && !bulletTime&&bulletTimeAgain)//triggers can be replaced by a power up boolean for a drink instead of a toggle thing
+		if (p1Triggers.LT > 0 && !bulletTime/*&&bulletTimeAgain*/)//triggers can be replaced by a power up boolean for a drink instead of a toggle thing
 		{
 			bulletTime = true;
-			bulletTimeAgain = false;
-			std::cout << "Bullet Time Init\n";
+			//bulletTimeAgain = false;
+			//std::cout << "Bullet Time Init\n";
 		}
-
+		/*
 		if (bulletTime)
 		{
-			std::cout << "It's Bullet Time\n";
-			if (bulletTimeMiniWait > 1.0f)
+			
+			if (bulletTimeMiniWait > 0.1f)
 			{
+				std::cout << "It's Bullet Time\n";
 				togglePause();
 				bulletTimeMiniWait = 0.0f;
 			}
@@ -154,7 +155,7 @@ void HelloWorld::update(float dt)
 
 			if (bulletTimeTimer > 3.0f)//time between bullet end start and next bullet time
 			{
-				std::cout << "End of Bullet Time\n";
+				//std::cout << "End of Bullet Time\n";
 				bulletTime = false;
 				bulletTimeWait = 0.0f;
 			}
@@ -162,12 +163,12 @@ void HelloWorld::update(float dt)
 		}
 		else
 		{
-			std::cout << "It's not Bullet Time :(\n";
+			//std::cout << "It's not Bullet Time :(\n";
 			paused = false;
 			bulletTimeWait += dt;
 			if (bulletTimeWait > 3.0f)//time between bullet end start and next bullet time
 			{
-				std::cout << "You can Bullet Time Again\n";
+				//std::cout << "You can Bullet Time Again\n";
 				bulletTimeAgain = true;
 				bulletTimeTimer = 0.0f;
 			}
@@ -175,15 +176,15 @@ void HelloWorld::update(float dt)
 		}
 		if (p1Triggers.LT == 0 && p2Triggers.LT == 0)
 		{
-			std::cout << "Nobody wants to bullet time ;P\n";
+			//std::cout << "Nobody wants to bullet time ;P\n";
 			paused = false;
-		}
+		}*/
 			
 	}
 
 	if (!paused)
 	{
-
+		std::cout << "RIP\n";
 
 		sManager.update(dt, DDOS->getSprite()->getPosition().y);
 
