@@ -5,6 +5,8 @@
 
 USING_NS_CC;
 
+bool MenuScene::end = false;
+
 Scene* MenuScene::createScene() {
 	return MenuScene::create();
 }
@@ -44,18 +46,23 @@ namespace Sedna {
 		if (index < 0 || index > labelList.size() - 1)
 			exit(std::stoi("oi what the fuck"));
 #endif
-		for (int i = 0; i < labelList.size(); i++) {
-			labelList[i]->disableEffect();
-			labelList[i]->enableWrap(false);
-		}
-		for (int i = 0; i < labelList.size(); i++)
-			labelList[i]->enableShadow();
+		
+		//for (int i = 0; i < labelList.size(); i++) {
+		//	labelList[i]->disableEffect();
+		//	labelList[i]->enableWrap(false);
+		//}
+		//
+		//for (int i = 0; i < labelList.size(); i++)
+		//	labelList[i]->enableShadow();
 
+		labelList[lastIndex]->enableWrap(false);
+		labelList[index]->enableWrap(false);
+		labelList[lastIndex]->disableEffect(LabelEffect::UNDERLINE);
 		labelList[index]->enableUnderline();
+
 		labelList[index]->enableWrap(true);
 
-
-
+		lastIndex = index;
 	}
 
 	unsigned int SednaMenu::getIndexOfSelected() const
@@ -126,8 +133,8 @@ bool MenuScene::init() {
 
 	manager.update();
 
-	label = Label::create("Toaster Bath", "fonts/Roboto/Roboto-Regular.ttf", 25);
-	label2 = Label::create("Time to Commit", "fonts/Roboto/Roboto-Regular.ttf", 25);
+	label = Label::create("Toaster Bath", "fonts/arial.ttf", 25);
+	label2 = Label::create("Time to Commit", "fonts/arial.ttf", 25);
 
 	menuE = new Sedna::SednaMenu(2, label, label2);
 
@@ -136,7 +143,7 @@ bool MenuScene::init() {
 	menuE->select(1);
 
 
-	cocos2d::experimental::AudioEngine::play2d("bgm2.mp3",true);
+	cocos2d::experimental::AudioEngine::play2d("bgm2.mp3", true);
 	this->scheduleUpdate();
 
 	return true;
@@ -144,35 +151,47 @@ bool MenuScene::init() {
 
 void MenuScene::update(float dt)
 {
-	manager.update();
-	p1Controller->updateSticks(p1Sticks);
+	if (!end) {
 
-	if (p1Sticks[0].y < -0.3f && menuE->getIndexOfSelected() != 0) {
+		manager.update();
+		p1Controller->updateSticks(p1Sticks);
 
-		menuE->select(menuE->getIndexOfSelected() - 1);
-	}
-	if (p1Sticks[0].y > 0.3f) {
-		if (menuE->getIndexOfSelected() + 1 > menuE->getLabelList().size() - 1) {
-			//do some other shit i dont wanna figure out right now
+		if (p1Sticks[0].y < -0.3f && menuE->getIndexOfSelected() != 0) {
+
+			menuE->select(menuE->getIndexOfSelected() - 1);
 		}
-		else
-			menuE->select(menuE->getIndexOfSelected() + 1);
+		if (p1Sticks[0].y > 0.3f) {
+			if (menuE->getIndexOfSelected() + 1 > menuE->getLabelList().size() - 1) {
+				//do some other shit i dont wanna figure out right now
+			}
+			else
+				menuE->select(menuE->getIndexOfSelected() + 1);
 
+		}
+
+		if (menuE->getIndexOfSelected() == 1 && p1Controller->isButtonPressed(Sedna::A)) {
+			auto game = HelloWorld::createScene();
+			cocos2d::experimental::AudioEngine::play2d("cha ching.mp3", false);
+
+			cocos2d::experimental::AudioEngine::stop(0);
+			end = true;
+			HelloWorld::setEnd(false);
+			//this->onExit();
+			director->replaceScene(TransitionFade::create(2.0f, game));
+		}
+		if (menuE->getIndexOfSelected() == 0 && p1Controller->isButtonPressed(Sedna::A)) {
+			cocos2d::experimental::AudioEngine::play2d("cha ching.mp3", false);
+
+			exit(0);
+
+		}
 	}
-
-	if (menuE->getIndexOfSelected() == 1 && p1Controller->isButtonPressed(Sedna::A)) {
-		auto game = HelloWorld::createScene();
-		//play a sound here
-		cocos2d::experimental::AudioEngine::stop(0);
-		director->replaceScene(TransitionFade::create(2.0f, game));
-
-	}
-
 }
 
 void MenuScene::initMenu()
 {
 	cocos2d::experimental::AudioEngine::preload("bgm2.mp3");
+	cocos2d::experimental::AudioEngine::preload("cha ching.mp3");
 	Vec2 windowSize = director->getWinSizeInPixels();
 
 	background = Sprite::create("DOS.jpg");
@@ -180,7 +199,7 @@ void MenuScene::initMenu()
 	background->setScale(10.85f, 10.92f);
 	background->setPosition(0, 0);
 
-	title = Label::create("Goldman's Saloon", "fonts/Roboto/Roboto-Regular.ttf", 25);
+	title = Label::create("Goldman's Saloon", "fonts/arial.ttf", 25);
 	title->setAnchorPoint(Vec2(0.0f, 0.0f));
 	title->setPosition(Vec2(140, 250));
 	title->enableShadow();
@@ -202,10 +221,7 @@ void MenuScene::initMenu()
 	this->addChild(title);
 }
 
-void MenuScene::onEnter()
-{
-	Scene::onEnter();
-}
+
 
 
 

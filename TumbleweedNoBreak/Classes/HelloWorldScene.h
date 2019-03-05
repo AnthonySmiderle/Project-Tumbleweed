@@ -35,7 +35,9 @@
 #include "Projectile.h"
 #include "Enemy.h"
 #include "SpawnManager.h"
-
+namespace Sedna {
+	class SednaMenu;
+}
 class HelloWorld : public cocos2d::Scene
 {
 public:
@@ -51,6 +53,7 @@ public:
 	void recursiveFunction(std::vector<Sedna::Outlaw*>& outlawList);
 	void recursiveFunction(std::vector<Sedna::Table*>& tableList);
 	void checkPosAll();
+	static void setEnd(bool yn) { end = yn; }
 
 	// a selector callback
 	void menuCloseCallback(cocos2d::Ref* pSender);
@@ -58,6 +61,11 @@ public:
 	// implement the "static create()" method manually
 	CREATE_FUNC(HelloWorld);
 private:
+
+	static bool end;
+	cocos2d::Label* pausedLabel;
+	Sedna::SednaMenu* pauseMenu;
+
 	cocos2d::Director* director;
 
 	void bounceFunc();
@@ -108,12 +116,7 @@ private:
 	bool TEMPPAUSE = false;
 	bool paused = false;
 	void togglePause();
-	float pauseTimer = 0.0f;
-	float bulletTimeTimer = 0.0f;
-	float bulletTimeWait = 0.0f;
-	float bulletTimeMiniWait = 0.0f;
 	bool bulletTime = false;
-	bool bulletTimeAgain = false;
 };
 
 #endif // __HELLOWORLD_SCENE_H__

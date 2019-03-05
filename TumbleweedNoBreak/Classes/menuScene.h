@@ -18,7 +18,7 @@ namespace Sedna {
 		//get the currently selected label out of the list
 		std::vector<cocos2d::Label*> getLabelList() const;
 	private:
-
+		unsigned lastIndex = 0;
 		std::vector<cocos2d::Label*> labelList;
 	};
 
@@ -33,16 +33,16 @@ public:
 	//void update(float dt);
 
 	void initMenu();
-	void onEnter();
+	
 
 	void update(float dt);
+	static void setEnd(bool yn) { end = yn; }
 
 	void menuCloseCallback(cocos2d::Ref* pSender);
 
 	CREATE_FUNC(MenuScene);
 private:
-	bool temp = false;
-	bool temp2 = false;
+	static bool end;
 	cocos2d::Director* director;
 
 	cocos2d::Sprite* background;

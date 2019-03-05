@@ -26,8 +26,12 @@
 #include "SimpleAudioEngine.h"
 #include <iostream>
 #include "AudioEngine.h"
+#include "menuScene.h"
+
 
 USING_NS_CC;
+
+bool HelloWorld::end = false;
 
 Scene* HelloWorld::createScene()
 {
@@ -84,6 +88,11 @@ bool HelloWorld::init()
 	menu->setPosition(Vec2::ZERO);
 	this->addChild(menu, 1);
 
+	//bottom label
+
+	auto localL1 = cocos2d::Label::create("Exit to Main Menu", "fonts/arial.ttf", 25);
+	auto localL2 = cocos2d::Label::create("Resume", "fonts/arial.ttf", 25);
+	pauseMenu = new Sedna::SednaMenu(2, localL1, localL2);
 
 
 
@@ -107,144 +116,167 @@ bool HelloWorld::init()
 
 void HelloWorld::update(float dt)
 {
+	if (!end) {
 
 
-	managerR.update();
-	p1Controller->updateSticks(p1Sticks);
-	p1Controller->getTriggers(p1Triggers);
-	p2Controller->updateSticks(p2Sticks);
-	p2Controller->getTriggers(p2Triggers);
+		managerR.update();
+		p1Controller->updateSticks(p1Sticks);
+		p1Controller->getTriggers(p1Triggers);
+		p2Controller->updateSticks(p2Sticks);
+		p2Controller->getTriggers(p2Triggers);
 
-	if (p1Controller->isButtonPressed(Sedna::SELECT))
-	{
-		if (!TEMPPAUSE)
+
+		//////////////////////////////////////////////////////////////////////////////////////////////
+
+		//////////////////////////////////////////////////////////////////////////////////////////////
+
+
+		if (p1Controller->isButtonPressed(Sedna::SELECT))
 		{
-			TEMPPAUSE = true;
-			TRUEPAUSE ^= 1;
-		}
-		
-	}
-	if (p1Controller->isButtonReleased(Sedna::SELECT))
-		TEMPPAUSE = false;
-	if (TRUEPAUSE)
-		paused = true;
-	else
-		paused = false;
-
-	if (!TRUEPAUSE)
-	{
-
-		if (p1Triggers.LT > 0 && !bulletTime/*&&bulletTimeAgain*/)//triggers can be replaced by a power up boolean for a drink instead of a toggle thing
-		{
-			bulletTime = true;
-			//bulletTimeAgain = false;
-		}
-		else
-		{
-			bulletTime = false;
-		}
-		
-		if (bulletTime)
-		{
-			togglePause();
-		}/*
-			bulletTimeTimer += dt;
-
-			if (bulletTimeTimer > 3.0f)//time between bullet end start and next bullet time
+			if (!TEMPPAUSE)
 			{
-				//std::cout << "End of Bullet Time\n";
+				for (int i = 0; i < pauseMenu->getLabelList().size(); i++) {
+					pausedLabel->setVisible(true);
+					pauseMenu->getLabelList()[i]->setVisible(true);
+				}
+				TEMPPAUSE = true;
+				TRUEPAUSE ^= 1;
+			}
+		}
+		if (p1Controller->isButtonReleased(Sedna::SELECT))
+			TEMPPAUSE = false;
+		
+		if (TRUEPAUSE) 
+		{
+			paused = true;
+			for (int i = 0; i < pauseMenu->getLabelList().size(); i++) {
+				pausedLabel->setVisible(true);
+				pauseMenu->getLabelList()[i]->setVisible(true);
+			}
+
+			if (p1Sticks[0].y < -0.3f && pauseMenu->getIndexOfSelected() != 0) {
+
+				pauseMenu->select(pauseMenu->getIndexOfSelected() - 1);
+			}
+			if (p1Sticks[0].y > 0.3f) {
+				if (pauseMenu->getIndexOfSelected() + 1 > pauseMenu->getLabelList().size() - 1) {
+					//do some other shit i dont wanna figure out right now
+				}
+				else
+					pauseMenu->select(pauseMenu->getIndexOfSelected() + 1);
+
+			}
+
+			if (pauseMenu->getIndexOfSelected() == 1 && p1Controller->isButtonPressed(Sedna::A)) {
+				TRUEPAUSE = false;
+			}
+			if (pauseMenu->getIndexOfSelected() == 0 && p1Controller->isButtonPressed(Sedna::A)) {
+				auto mMenu = MenuScene::create();
+				cocos2d::experimental::AudioEngine::stopAll();
+				cocos2d::experimental::AudioEngine::play2d("cha ching.mp3", false);
+				end = true;
+				MenuScene::setEnd(false);
+				//this->onExit();
+				director->replaceScene(TransitionFade::create(2.0f, mMenu));
+			}
+		}
+		else {
+			for (int i = 0; i < pauseMenu->getLabelList().size(); i++) {
+				pausedLabel->setVisible(false);
+				pauseMenu->getLabelList()[i]->setVisible(false);
+			}
+		}
+		
+		if (!TRUEPAUSE)
+		{
+			if (p1Triggers.LT > 0 && !bulletTime)//triggers can be replaced by a power up boolean for a drink instead of a toggle thing
+			{
+				bulletTime = true;
+			}
+			if (bulletTime)
+			{
+				togglePause();
+			}
+			if (p1Triggers.LT == 0 && p2Triggers.LT == 0)
+			{
 				bulletTime = false;
-				bulletTimeWait = 0.0f;
+				paused = false;
 			}
 
 		}
-		else
+
+		if (!paused)
 		{
-			//std::cout << "It's not Bullet Time :(\n";
-			paused = false;
-			bulletTimeWait += dt;
-			if (bulletTimeWait > 3.0f)//time between bullet end start and next bullet time
-			{
-				//std::cout << "You can Bullet Time Again\n";
-				bulletTimeAgain = true;
-				bulletTimeTimer = 0.0f;
-			}
+			sManager.update(dt, DDOS->getSprite()->getPosition().y);
 
-		}
-		if (p1Triggers.LT == 0 && p2Triggers.LT == 0)
-		{
-			//std::cout << "Nobody wants to bullet time ;P\n";
-			paused = false;
-		}*/
-			
-	}
-
-	if (!paused)
-	{
-		std::cout << "RIP\n";
-
-		sManager.update(dt, DDOS->getSprite()->getPosition().y);
-
-		srand(time(0));
-		checkInput(dt);
-		getCollisions();
+			srand(time(0));
+			checkInput(dt);
+			getCollisions();
 
 
 #ifdef _DEBUG
-		if (p1Controller->isButtonPressed(Sedna::Y))
-		{
-			playerOne->getUI()->getLabel()->setPosition(cocos2d::Vec2(playerOne->getUI()->getLabel()->getPosition().x,
-				playerOne->getUI()->getLabel()->getPosition().y + 1));
+			if (p1Controller->isButtonPressed(Sedna::Y))
+			{
+				for (int i = 0; i < pauseMenu->getLabelList().size(); i++) {
+					pauseMenu->getLabelList()[i]->setPosition(cocos2d::Vec2(pauseMenu->getLabelList()[i]->getPosition().x,
+						pauseMenu->getLabelList()[i]->getPosition().y + 1));
+				}
+				pausedLabel->setPosition(pausedLabel->getPosition() + cocos2d::Vec2(0, 1));
 
-			playerOne->getUI()->getSprite()->setPosition(cocos2d::Vec2(playerOne->getUI()->getSprite()->getPosition().x,
-				playerOne->getUI()->getSprite()->getPosition().y + 1));
+				playerOne->getUI()->getLabel()->setPosition(cocos2d::Vec2(playerOne->getUI()->getLabel()->getPosition().x,
+					playerOne->getUI()->getLabel()->getPosition().y + 1));
+
+				playerOne->getUI()->getSprite()->setPosition(cocos2d::Vec2(playerOne->getUI()->getSprite()->getPosition().x,
+					playerOne->getUI()->getSprite()->getPosition().y + 1));
 
 
 
-			this->getDefaultCamera()->setPosition(cocos2d::Vec2(this->getDefaultCamera()->getPosition().x,
-				this->getDefaultCamera()->getPosition().y + 1));
-			DDOS->getSprite()->setPosition(cocos2d::Vec2(100, (DDOS->getSprite()->getPosition().y + 1)));
+				this->getDefaultCamera()->setPosition(cocos2d::Vec2(this->getDefaultCamera()->getPosition().x,
+					this->getDefaultCamera()->getPosition().y + 1));
+				DDOS->getSprite()->setPosition(cocos2d::Vec2(100, (DDOS->getSprite()->getPosition().y + 1)));
 
-		}
-		if (p1Controller->isButtonPressed(Sedna::X)) {
-			for (unsigned int i = 0; i < sManager.outlawList.size(); i++)
-				sManager.outlawList[i]->getBox()->getDrawNode()->setVisible(true);
-			for (unsigned int i = 0; i < sManager.tableList.size(); i++)
-				sManager.tableList[i]->getBox()->getDrawNode()->setVisible(true);
-			playerOne->getBox()->getDrawNode()->setVisible(true);
-			playerTwo->getBox()->getDrawNode()->setVisible(true);
-		}
-		else {
-			for (unsigned int i = 0; i < sManager.outlawList.size(); i++)
-				sManager.outlawList[i]->getBox()->getDrawNode()->setVisible(false);
-			for (unsigned int i = 0; i < sManager.tableList.size(); i++)
-				sManager.tableList[i]->getBox()->getDrawNode()->setVisible(false);
-			playerOne->getBox()->getDrawNode()->setVisible(false);
-			playerTwo->getBox()->getDrawNode()->setVisible(false);
-		}//show hitboxes
+			}
+			if (p1Controller->isButtonPressed(Sedna::X)) {
+				for (unsigned int i = 0; i < sManager.outlawList.size(); i++)
+					sManager.outlawList[i]->getBox()->getDrawNode()->setVisible(true);
+				for (unsigned int i = 0; i < sManager.tableList.size(); i++)
+					sManager.tableList[i]->getBox()->getDrawNode()->setVisible(true);
+				playerOne->getBox()->getDrawNode()->setVisible(true);
+				playerTwo->getBox()->getDrawNode()->setVisible(true);
+			}
+			else {
+				for (unsigned int i = 0; i < sManager.outlawList.size(); i++)
+					sManager.outlawList[i]->getBox()->getDrawNode()->setVisible(false);
+				for (unsigned int i = 0; i < sManager.tableList.size(); i++)
+					sManager.tableList[i]->getBox()->getDrawNode()->setVisible(false);
+				playerOne->getBox()->getDrawNode()->setVisible(false);
+				playerTwo->getBox()->getDrawNode()->setVisible(false);
+			}//show hitboxes
 #endif
 
 
 
 
-		for (int i = 0; i < sManager.outlawList.size(); i++) {
-			sManager.outlawList[i]->shoot(dt, this);
+			for (int i = 0; i < sManager.outlawList.size(); i++) {
+				sManager.outlawList[i]->shoot(dt, this);
+			}
+			bigCheckList();
+
+
+
+			if (DDOS->getSprite()->getPosition().y - bg2->getPosition().y >= 588.8f) {
+				bg2->setPosition(cocos2d::Vec2(bg2->getPosition().x, bg2->getPosition().y + 588.8f));
+			}
+			if (DDOS->getSprite()->getPosition().y - bg3->getPosition().y >= 588.8f) {
+				bg3->setPosition(cocos2d::Vec2(bg3->getPosition().x, bg3->getPosition().y + 588.8f));
+			}
+
+			playerOne->updateGameObject();
+			playerTwo->updateGameObject();
+			bounceFunc();
 		}
-		bigCheckList();
-
-
-
-		if (DDOS->getSprite()->getPosition().y - bg2->getPosition().y >= 588.8f) {
-			bg2->setPosition(cocos2d::Vec2(bg2->getPosition().x, bg2->getPosition().y + 588.8f));
-		}
-		if (DDOS->getSprite()->getPosition().y - bg3->getPosition().y >= 588.8f) {
-			bg3->setPosition(cocos2d::Vec2(bg3->getPosition().x, bg3->getPosition().y + 588.8f));
-		}
-
-		playerOne->updateGameObject();
-		playerTwo->updateGameObject();
-		bounceFunc();
 	}
+
 }
 
 void HelloWorld::initSprites()
@@ -278,7 +310,7 @@ void HelloWorld::initSprites()
 
 	bg = cocos2d::Sprite::create("bg1.png");
 	this->addChild(bg, -1000);
-	bg->setScale(0.85f,0.92f);
+	bg->setScale(0.85f, 0.92f);
 	bg->setAnchorPoint(cocos2d::Vec2(0, 0));
 	bg->setPosition(0, 0);
 
@@ -295,6 +327,33 @@ void HelloWorld::initSprites()
 	bg3->setScale(0.85f, 0.92f);
 	bg3->setAnchorPoint(cocos2d::Vec2(0, 0));
 	bg3->setPosition(cocos2d::Vec2(0, (bg2->getContentSize().height * 0.92f) * 2));
+
+
+	///menu shit
+
+	pausedLabel = Label::create("Paused", "fonts/arial.ttf", 25);
+	pausedLabel->setAnchorPoint(Vec2(0.0f, 0.0f));
+	pausedLabel->setPosition(Vec2(140, 250));
+	pausedLabel->enableShadow();
+	this->addChild(pausedLabel, 100);
+	pausedLabel->setVisible(false);
+
+	for (int i = 0; i < pauseMenu->getLabelList().size(); i++) {
+		this->addChild(pauseMenu->getLabelList()[i], 100);
+		pauseMenu->getLabelList()[i]->enableShadow();
+		pauseMenu->getLabelList()[i]->setAnchorPoint(cocos2d::Vec2(0, 0));
+		if (i == 0)
+			pauseMenu->getLabelList()[i]->setPosition(140, 50);
+		else {
+			pauseMenu->getLabelList()[i]->setPosition(140, pauseMenu->getLabelList()[i - 1]->getPosition().y + 30);
+
+		}
+	}
+
+	for (int i = 0; i < pauseMenu->getLabelList().size(); i++) {
+		pauseMenu->getLabelList()[i]->setVisible(false);
+	}
+	pauseMenu->select(1);
 }
 
 void HelloWorld::checkInput(float dt)
@@ -473,6 +532,6 @@ void HelloWorld::bounceFunc()//this function stops the player from leaving th sc
 
 
 
-void HelloWorld::togglePause() {
+void HelloWorld::togglePause() {//this actually has many applications
 	paused ^= 1;
 }
