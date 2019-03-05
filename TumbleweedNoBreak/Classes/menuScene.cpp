@@ -5,6 +5,8 @@
 
 USING_NS_CC;
 
+bool MenuScene::end = false;
+
 Scene* MenuScene::createScene() {
 	return MenuScene::create();
 }
@@ -44,8 +46,7 @@ namespace Sedna {
 		if (index < 0 || index > labelList.size() - 1)
 			exit(std::stoi("oi what the fuck"));
 #endif
-		static unsigned lastindex = 0;
-
+		
 		//for (int i = 0; i < labelList.size(); i++) {
 		//	labelList[i]->disableEffect();
 		//	labelList[i]->enableWrap(false);
@@ -54,13 +55,14 @@ namespace Sedna {
 		//for (int i = 0; i < labelList.size(); i++)
 		//	labelList[i]->enableShadow();
 
-		labelList[lastindex]->enableWrap(false);
+		labelList[lastIndex]->enableWrap(false);
 		labelList[index]->enableWrap(false);
-		labelList[lastindex]->disableEffect(LabelEffect::UNDERLINE);
+		labelList[lastIndex]->disableEffect(LabelEffect::UNDERLINE);
 		labelList[index]->enableUnderline();
+
 		labelList[index]->enableWrap(true);
 
-		lastindex = index;
+		lastIndex = index;
 	}
 
 	unsigned int SednaMenu::getIndexOfSelected() const
@@ -131,10 +133,8 @@ bool MenuScene::init() {
 
 	manager.update();
 
-	label = Label::create("Toaster Bath", "fonts/Roboto/Roboto-Regular.ttf", 25);
-	label->enableWrap(true);
-	label2 = Label::create("Time to Commit", "fonts/Roboto/Roboto-Regular.ttf", 25);
-	label2->enableWrap(true);
+	label = Label::create("Toaster Bath", "fonts/arial.ttf", 25);
+	label2 = Label::create("Time to Commit", "fonts/arial.ttf", 25);
 
 	menuE = new Sedna::SednaMenu(2, label, label2);
 
@@ -171,12 +171,13 @@ void MenuScene::update(float dt)
 
 		if (menuE->getIndexOfSelected() == 1 && p1Controller->isButtonPressed(Sedna::A)) {
 			auto game = HelloWorld::createScene();
-			//play a sound here
 			cocos2d::experimental::AudioEngine::play2d("cha ching.mp3", false);
 
 			cocos2d::experimental::AudioEngine::stop(0);
-			director->replaceScene(TransitionFade::create(2.0f, game));
 			end = true;
+			HelloWorld::setEnd(false);
+			//this->onExit();
+			director->replaceScene(TransitionFade::create(2.0f, game));
 		}
 		if (menuE->getIndexOfSelected() == 0 && p1Controller->isButtonPressed(Sedna::A)) {
 			cocos2d::experimental::AudioEngine::play2d("cha ching.mp3", false);
@@ -198,7 +199,7 @@ void MenuScene::initMenu()
 	background->setScale(10.85f, 10.92f);
 	background->setPosition(0, 0);
 
-	title = Label::create("Goldman's Saloon", "fonts/Roboto/Roboto-Regular.ttf", 25);
+	title = Label::create("Goldman's Saloon", "fonts/arial.ttf", 25);
 	title->setAnchorPoint(Vec2(0.0f, 0.0f));
 	title->setPosition(Vec2(140, 250));
 	title->enableShadow();
@@ -220,10 +221,7 @@ void MenuScene::initMenu()
 	this->addChild(title);
 }
 
-void MenuScene::onEnter()
-{
-	Scene::onEnter();
-}
+
 
 
 
