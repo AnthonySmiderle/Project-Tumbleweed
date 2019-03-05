@@ -138,19 +138,16 @@ void HelloWorld::update(float dt)
 		{
 			bulletTime = true;
 			//bulletTimeAgain = false;
-			//std::cout << "Bullet Time Init\n";
 		}
-		/*
+		else
+		{
+			bulletTime = false;
+		}
+		
 		if (bulletTime)
 		{
-			
-			if (bulletTimeMiniWait > 0.1f)
-			{
-				std::cout << "It's Bullet Time\n";
-				togglePause();
-				bulletTimeMiniWait = 0.0f;
-			}
-			bulletTimeMiniWait += dt;
+			togglePause();
+		}/*
 			bulletTimeTimer += dt;
 
 			if (bulletTimeTimer > 3.0f)//time between bullet end start and next bullet time
