@@ -164,7 +164,6 @@ void HelloWorld::update(float dt)
 				}
 				else
 					pauseMenu->select(pauseMenu->getIndexOfSelected() + 1);
-
 			}
 
 			if (pauseMenu->getIndexOfSelected() == 1 && p1Controller->isButtonPressed(Sedna::A)) {
@@ -202,7 +201,6 @@ void HelloWorld::update(float dt)
 				bulletTime = false;
 				paused = false;
 			}
-
 		}
 
 		if (!paused)
@@ -216,6 +214,8 @@ void HelloWorld::update(float dt)
 
 #ifdef _DEBUG
 			if (p1Controller->isButtonPressed(Sedna::Y))
+				moveScreen ^= 1;
+			if (moveScreen)
 			{
 				for (int i = 0; i < pauseMenu->getLabelList().size(); i++) {
 					pauseMenu->getLabelList()[i]->setPosition(cocos2d::Vec2(pauseMenu->getLabelList()[i]->getPosition().x,
@@ -232,8 +232,8 @@ void HelloWorld::update(float dt)
 
 
 				this->getDefaultCamera()->setPosition(cocos2d::Vec2(this->getDefaultCamera()->getPosition().x,
-					this->getDefaultCamera()->getPosition().y + 1));
-				DDOS->getSprite()->setPosition(cocos2d::Vec2(100, (DDOS->getSprite()->getPosition().y + 1)));
+					this->getDefaultCamera()->getPosition().y + 2));
+				DDOS->getSprite()->setPosition(cocos2d::Vec2(100, (DDOS->getSprite()->getPosition().y + 2)));
 
 			}
 			if (p1Controller->isButtonPressed(Sedna::X)) {

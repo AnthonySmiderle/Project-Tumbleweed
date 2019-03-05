@@ -133,8 +133,8 @@ bool MenuScene::init() {
 
 	manager.update();
 
-	label = Label::create("Toaster Bath", "fonts/arial.ttf", 25);
-	label2 = Label::create("Time to Commit", "fonts/arial.ttf", 25);
+	label = Label::create("Exit", "fonts/Montague.ttf", 25);
+	label2 = Label::create("Start Game", "fonts/Montague.ttf", 25);
 
 	menuE = new Sedna::SednaMenu(2, label, label2);
 
@@ -199,7 +199,7 @@ void MenuScene::initMenu()
 	background->setScale(10.85f, 10.92f);
 	background->setPosition(0, 0);
 
-	title = Label::create("Goldman's Saloon", "fonts/arial.ttf", 25);
+	title = Label::create("Goldman's Saloon", "fonts/Montague.ttf", 25);
 	title->setAnchorPoint(Vec2(0.0f, 0.0f));
 	title->setPosition(Vec2(140, 250));
 	title->enableShadow();

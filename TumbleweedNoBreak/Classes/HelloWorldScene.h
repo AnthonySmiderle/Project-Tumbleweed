@@ -112,6 +112,8 @@ private:
 	int barRightMax = 430;
 	int barLeftMax = 90;
 
+	bool moveScreen = true;
+
 	bool TRUEPAUSE = false;
 	bool TEMPPAUSE = false;
 	bool paused = false;
