@@ -247,11 +247,11 @@ void HelloWorld::update(float dt)
 				}
 				pausedLabel->setPosition(pausedLabel->getPosition() + cocos2d::Vec2(0, 2));
 
-				playerOne->getUI()->getLabel()->setPosition(cocos2d::Vec2(playerOne->getUI()->getLabel()->getPosition().x,
-					playerOne->getUI()->getLabel()->getPosition().y + 2));
-
-				playerOne->getUI()->getSprite()->setPosition(cocos2d::Vec2(playerOne->getUI()->getSprite()->getPosition().x,
-					playerOne->getUI()->getSprite()->getPosition().y + 2));
+				//playerOne->getUI()->getLabel()->setPosition(cocos2d::Vec2(playerOne->getUI()->getLabel()->getPosition().x,
+				//	playerOne->getUI()->getLabel()->getPosition().y + 2));
+				//
+				//playerOne->getUI()->getSprite()->setPosition(cocos2d::Vec2(playerOne->getUI()->getSprite()->getPosition().x,
+				//	playerOne->getUI()->getSprite()->getPosition().y + 2));
 
 
 				this->getDefaultCamera()->setPosition(cocos2d::Vec2(this->getDefaultCamera()->getPosition().x,

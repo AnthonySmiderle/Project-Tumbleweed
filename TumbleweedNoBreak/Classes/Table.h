@@ -7,10 +7,10 @@ namespace Sedna {
 	class Table : public GameObject  {
 	public:
 		Table(float x, float y);// : hasDrink(false) {};
-		Potion beer;
+		
 		void spriteSwitch();
 		void collideTable(Table* table);
 	private:
-		
+		Potion beer;
 	};
 }
