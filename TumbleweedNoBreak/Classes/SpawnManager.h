@@ -26,7 +26,8 @@ namespace Sedna {
 		
 
 		SpawnObject tables = SpawnObject(5.0f,5,3.0f);
-		SpawnObject outlaws = SpawnObject(1.0f,6,0.5f);
+		SpawnObject outlaws = SpawnObject(2.0f,6,2.0f);
+		SpawnObject outlawChain = SpawnObject(20.0f,10.0f,10.0f,5,true);
 	};
 
 

@@ -1,4 +1,5 @@
 #include "Table.h"
+#include "Potion.h"
 namespace Sedna {
 
 	Sedna::Table::Table(float x, float y) {
@@ -7,14 +8,14 @@ namespace Sedna {
 		this->hitBox = new CirclePrimitive(cocos2d::Vec2(x, y), 28, 5, 50);
 		hitBox->getDrawNode()->setVisible(false);
 		this->objectHp = 5;
-		//if (rand() % 10 == 0)
-		//	beer = Potion(health);
-		//else if (rand() % 10 == 0)
-		//	beer = Potion(rapid);
-		//else if (rand() % 10 == 0)
-		//	beer = Potion(invinc);
-		//else
-		//	beer = Potion(blank);
+		if (rand() % 10 == 0)
+			beer = new Potion(health);
+		else if (rand() % 10 == 0)
+			beer = new Potion(rapid);
+		else if (rand() % 10 == 0)
+			beer = new Potion(invinc);
+		else
+			beer = new Potion(blank);
 	}
 	void Sedna::Table::spriteSwitch()
 	{
