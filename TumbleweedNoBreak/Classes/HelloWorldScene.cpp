@@ -223,8 +223,8 @@ void HelloWorld::update(float dt)
 				}
 				pausedLabel->setPosition(pausedLabel->getPosition() + cocos2d::Vec2(0, 2));
 
-				
-
+				playerOne->getUI()->getLabelList()[0]->setPosition(playerOne->getUI()->getLabelList()[0]->getPosition() + cocos2d::Vec2(0, 2));
+				playerOne->getUI()->getUIGunSprite()->setPosition(playerOne->getUI()->getUIGunSprite()->getPosition() + cocos2d::Vec2(0, 2));
 
 
 				this->getDefaultCamera()->setPosition(cocos2d::Vec2(this->getDefaultCamera()->getPosition().x,
@@ -288,11 +288,11 @@ void HelloWorld::initSprites()
 
 
 	olReliable = new Sedna::Gun("olReliable", 2, 4, 0.35f);
-	bloodyMary = new Sedna::Gun("bloodyMary", 3, 6, 5, 0.85f);
+	bloodyMary = new Sedna::Gun("bloodyMary", 3, 10, 5, 0.85f);
 	theBiggestIron = new Sedna::Gun("theBiggestIron", 3, 10, 0.05f);
 
 
-	playerOne = new Sedna::Player(1, 100, 100, managerR, olReliable);
+	playerOne = new Sedna::Player(1, 100, 100, managerR, bloodyMary);
 	this->addChild(playerOne->getBox()->getDrawNode());
 	this->addChild(playerOne->getSprite(), 10);
 	this->addChild(playerOne->getUI()->getUIGunSprite(),20);
