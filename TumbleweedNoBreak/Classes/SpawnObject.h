@@ -8,8 +8,8 @@ namespace Sedna
 	{
 	public:
 		SpawnObject();
-		SpawnObject(float timerMax, float max, float timerDiff = 0.0f, int maxDiff = 0) //timer max, max, timer diff, maxdiff
-			:spawnTimerMax(timerMax), maxType(max), spawnVariance(timerDiff), amountVariance(maxDiff) {}
+		SpawnObject(float timerMax, float max, float timerDiff = 0.0f, int maxDiff = 0, bool chain = false)
+			:spawnTimerMax(timerMax), maxType(max), spawnVariance(timerDiff), amountVariance(maxDiff),chainType(chain) {}
 		int update(float dt,int amount);
 	private:
 		bool hasSpawned = true;

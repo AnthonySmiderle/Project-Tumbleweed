@@ -7,13 +7,13 @@ namespace Sedna {
 	class Gun;
 	class BaseObjectManager {
 	public:
-		BaseObjectManager();
 		static std::vector<Gun*>gunBObjects;
 		static std::vector<Table*>tableBObjects;
 		static std::vector<Projectile*>eProjectileBObjects;
 		static std::vector<Projectile*> pProjectileBObjects;
 		static std::vector<Outlaw*> outlawBObjects;
-
+	private:
+		BaseObjectManager();
 
 	};
 	

@@ -454,7 +454,7 @@ void HelloWorld::recursiveFunction(std::vector<Sedna::Outlaw*>& outlawList)
 				continue;
 			if (sManager.outlawList[i]->getBox()->checkCollision(*sManager.outlawList[j]->getBox())) {
 				sManager.outlawList[i]->getBox()->setLocation(cocos2d::Vec2(100 + (rand() % 300),
-					sManager.outlawList[i]->getBox()->getLocation().y));
+					sManager.outlawList[i]->getBox()->getLocation().y+50));
 				recursiveFunction(sManager.outlawList);
 			}
 
