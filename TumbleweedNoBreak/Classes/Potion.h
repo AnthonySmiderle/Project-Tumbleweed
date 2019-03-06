@@ -1,21 +1,16 @@
 #pragma once
 #include "GameObject.h"
 #include "Player.h"
+#include "Enums and Typdefs.h"
 namespace Sedna {
-	enum potionType
-	{
-		health,
-		rapid,
-		invinc
-	};
-	class Potion : public GameObject{
+	class Potion{
 	public:
-		Potion(potionType t, cocos2d::Vec2 pos);
+		Potion() : type(blank){}
+		Potion(potionType t) : type(t) {}
 		void pickUp(Player* p);
 		~Potion();
 		
 	private:
-		const std::string potionNameList[3] = {"healthPotion.png","rapidPotion.png","invinciblePotion.png"};
 		potionType type;
 	};
 

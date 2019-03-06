@@ -15,7 +15,12 @@ namespace Sedna {
 		playerTwo
 
 	};
-
-
+	enum potionType
+	{
+		blank,
+		health,
+		rapid,
+		invinc
+	};
 
 }
