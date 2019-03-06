@@ -179,9 +179,9 @@ void MenuScene::initMenu()
 	cocos2d::experimental::AudioEngine::preload("cha ching.mp3");
 	Vec2 windowSize = director->getWinSizeInPixels();
 
-	background = Sprite::create("DOS.jpg");
+	background = Sprite::create("Menu.png");
 	background->setAnchorPoint(Vec2(0.0f, 0.0f));
-	background->setScale(10.85f, 10.92f);
+	background->setScale(0.85f, 0.92f);
 	background->setPosition(0, 0);
 
 	title = Label::create("Goldman's Saloon", "fonts/Montague.ttf", 25);

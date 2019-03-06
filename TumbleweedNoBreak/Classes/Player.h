@@ -42,6 +42,8 @@ namespace Sedna {
 
 		//extend member functions here
 
+		void setCurrnetGun(Gun* g);
+		Gun* getCurrentGun() const { return currentGun; }
 		void checkInput(float dt);
 		void shoot(float dt, cocos2d::Scene* s);
 		void checkList();

@@ -39,6 +39,16 @@ namespace Sedna {
 		//delete this;
 	}
 
+	void Player::setCurrnetGun(Gun * g)
+	{
+		currentGun = g;
+		if (g->getName() == "olReliable") {
+			playerUI->getUIGunSprite()->setTexture("gun1.png");
+			playerUI->getLabelList()[0]->setString(" ");
+		}
+			
+	}
+
 	void Player::checkInput(float dt)
 	{
 		pController->updateSticks(pSticks);
