@@ -15,6 +15,7 @@ namespace Sedna {
 		float getGunTimer() const;
 		bool getHasShot() const;
 		void setHasShot(bool YN);
+		void setAmmo(unsigned int AMMO);
 		unsigned int getAmmo() const;
 		unsigned int getDamage() const;
 		unsigned int getProjLimit() const;

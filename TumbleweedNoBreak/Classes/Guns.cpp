@@ -41,6 +41,11 @@ namespace Sedna {
 		hasShot = YN;
 	}
 
+	void Gun::setAmmo(unsigned int AMMO)
+	{
+		ammo = AMMO;
+	}
+
 	unsigned int Gun::getAmmo() const
 	{
 		return ammo;
