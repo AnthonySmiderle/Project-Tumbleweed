@@ -21,14 +21,7 @@ static void problemLoading(const char* filename)
 namespace Sedna {
 
 	SednaMenu::SednaMenu(int args, ...)
-
 	{
-#ifdef _DEBUG
-		if (args <= 0)
-			exit(std::stoi("excuse me what the fuck"));
-#endif
-		//*menuSticks = *s;
-
 		va_list LIST;
 		va_start(LIST, args);
 		for (int i = 0; i < args; i++) {
@@ -46,14 +39,6 @@ namespace Sedna {
 		if (index < 0 || index > labelList.size() - 1)
 			exit(std::stoi("oi what the fuck"));
 #endif
-		
-		//for (int i = 0; i < labelList.size(); i++) {
-		//	labelList[i]->disableEffect();
-		//	labelList[i]->enableWrap(false);
-		//}
-		//
-		//for (int i = 0; i < labelList.size(); i++)
-		//	labelList[i]->enableShadow();
 
 		labelList[lastIndex]->enableWrap(false);
 		labelList[index]->enableWrap(false);

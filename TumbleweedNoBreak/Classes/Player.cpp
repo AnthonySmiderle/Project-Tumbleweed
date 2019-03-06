@@ -5,6 +5,8 @@ namespace Sedna {
 
 	Player::Player(int wPlayer, float x, float y, XinputManager MANAGER, Gun* CURRENTGUN)
 	{
+		auto localL1 = cocos2d::Label::create(std::to_string(CURRENTGUN->getAmmo()), "fonts/arial.ttf", 25);
+		playerUI = new SednaUI(CURRENTGUN, 1,localL1);
 		sprite = cocos2d::Sprite::create("player1.png");
 		sprite->setScale(0.85f);
 		if (wPlayer == playerOne) {
@@ -12,7 +14,7 @@ namespace Sedna {
 			hitBox->getDrawNode()->setVisible(false);
 
 			this->pController = MANAGER.getController(0);
-
+			playerUI->getLabelList()[0]->setPosition(cocos2d::Vec2(100, 100));
 		}
 		else {
 			hitBox = new CirclePrimitive(cocos2d::Vec2(x, y), 24, 5, 30);
@@ -22,7 +24,8 @@ namespace Sedna {
 
 		}
 		currentGun = CURRENTGUN;
-		playerUI = new UI("DOS.jpg", "yes");
+
+		
 
 	}
 
@@ -319,10 +322,11 @@ namespace Sedna {
 		}
 	}
 
-	UI * Player::getUI() const
+	SednaUI * Player::getUI() const
 	{
 		return playerUI;
 	}
+
 
 	void Player::setGun(Gun * g)
 	{
@@ -335,5 +339,62 @@ namespace Sedna {
 	}
 
 
+
+	////////////////////////////////////////
+	////////////////////////////////////////
+	/////////ui ui ui ui ui ui ui///////////
+	/////////ui ui ui ui ui ui ui///////////
+	/////////ui ui ui ui ui ui ui///////////
+	/////////ui ui ui ui ui ui ui///////////
+	/////////ui ui ui ui ui ui ui///////////
+	////////////////////////////////////////
+	////////////////////////////////////////
+
+
+
+
+
+
+	SednaUI::SednaUI(Gun * CurrentGun, int args, ...)
+	{
+		va_list LIST;
+		va_start(LIST, args);
+		for (int i = 0; i < args; i++) {
+			labelList.push_back(va_arg(LIST, cocos2d::Label*));
+		}
+		va_end(LIST);
+
+
+		this->currentGun = CurrentGun;
+
+		if (this->currentGun->getName() == "olReliable") {
+			uiGunSprite = cocos2d::Sprite::create("gun1.png");
+		}
+		else if(this->currentGun->getName() == "bloodyMary")
+			uiGunSprite = cocos2d::Sprite::create("gun2.png");
+		else if (this->currentGun->getName() == "theBiggestIron")
+			uiGunSprite = cocos2d::Sprite::create("gun3.png");
+		//else make the other guns work
+#ifdef _DEBUG
+		else
+			uiGunSprite = nullptr;
+#endif
+
+	}
+
+	std::vector<cocos2d::Label*> SednaUI::getLabelList() const
+	{
+		return labelList;
+	}
+
+	cocos2d::Sprite * SednaUI::getUIGunSprite() const
+	{
+		return uiGunSprite;
+	}
+
+	void SednaUI::updateList()
+	{
+		//write code for updating numbers
+	}
 
 }
