@@ -239,7 +239,7 @@ void HelloWorld::update(float dt)
 #ifdef _DEBUG
 			if (p1Controller->isButtonPressed(Sedna::Y))
 				moveScreen ^= 1;
-			if (moveScreen)
+			if (!moveScreen)
 			{
 				for (int i = 0; i < pauseMenu->getLabelList().size(); i++) {
 					pauseMenu->getLabelList()[i]->setPosition(cocos2d::Vec2(pauseMenu->getLabelList()[i]->getPosition().x,
@@ -252,7 +252,6 @@ void HelloWorld::update(float dt)
 
 				playerOne->getUI()->getSprite()->setPosition(cocos2d::Vec2(playerOne->getUI()->getSprite()->getPosition().x,
 					playerOne->getUI()->getSprite()->getPosition().y + 2));
-
 
 
 				this->getDefaultCamera()->setPosition(cocos2d::Vec2(this->getDefaultCamera()->getPosition().x,
@@ -320,11 +319,14 @@ void HelloWorld::initSprites()
 	theBiggestIron = new Sedna::Gun("theBiggestIron", 3, 10, 0.05f);
 
 
-	playerOne = new Sedna::Player(1, 100, 100, managerR, theBiggestIron);
+	playerOne = new Sedna::Player(1, 100, 100, managerR, olReliable);
 	this->addChild(playerOne->getBox()->getDrawNode());
 	this->addChild(playerOne->getSprite(), 10);
-	this->addChild(playerOne->getUI()->getLabel());
-	this->addChild(playerOne->getUI()->getSprite());
+	this->addChild(playerOne->getUI()->getUIGunSprite());
+	for (int i = 0; i < playerOne->getUI()->getLabelList().size(); i++) {
+		this->addChild(playerOne->getUI()->getLabelList()[i]);
+	}
+	
 
 	playerTwo = new Sedna::Player(2, 300, 100, managerR, olReliable);
 	this->addChild(playerTwo->getBox()->getDrawNode());

@@ -30,7 +30,7 @@ void Outlaw::shoot(float dt,cocos2d::Scene* s)
 		eProjectiles.push_back(new Sedna::Projectile(*eBaseProjectile));
 		BaseObjectManager::eProjectileBObjects.push_back(eBaseProjectile);
 
-		eProjectiles.back()->getBox()->setLocation(this->getBox()->getLocation());
+		eProjectiles.back()->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-16,0));
 		eProjectiles.back()->getBox()->setForce(cocos2d::Vec2(0, -5));
 	}
 	if (eHasShot)

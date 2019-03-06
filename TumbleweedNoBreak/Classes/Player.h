@@ -6,12 +6,33 @@
 #include "Guns.h"
 #include "baseObjectManager.h"
 #include "Table.h"
-#include "UserInterface.h"
 #include <vector>
 namespace Sedna {
 
 
 	
+	class SednaUI {
+	public:
+		SednaUI(Gun* currentGun, int args, ...);
+		//a ui has
+		//a sprite
+		//labels
+		//bars - make bar class later
+
+		std::vector<cocos2d::Label*> getLabelList() const;
+		///Gun* getGun() const { return currentGun; }
+		cocos2d::Sprite* getUIGunSprite() const;
+
+		///void update();
+		void updateList();
+	private:
+		std::vector<cocos2d::Label*> labelList;
+		Gun* currentGun;
+		cocos2d::Sprite* uiGunSprite;
+
+
+	};
+
 	class Player : public GameObject
 	{
 	public:
@@ -28,12 +49,13 @@ namespace Sedna {
 		void checkBCollision(std::vector<Table*>& tableList);
 		void checkTableStuff(std::vector<Table*>& tableList);
 		
-		UI* getUI()const;
+		SednaUI* getUI() const;
 
 		void setGun(Gun* g);
 	
 		std::vector<Projectile*> getpProjectile() const;
 	private:
+		SednaUI* playerUI;
 		XinputController* pController;
 		Stick pSticks[2];
 		Triggers pTriggers;
@@ -42,7 +64,6 @@ namespace Sedna {
 		float tumbleTimer = 0.0f;
 		bool isTumbling = false;
 
-		UI* playerUI;
 
 		std::vector<Projectile*> pProjectiles;
 
