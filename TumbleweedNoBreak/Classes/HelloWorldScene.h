@@ -64,6 +64,7 @@ private:
 
 	static bool end;
 	cocos2d::Label* pausedLabel;
+	cocos2d::Label* startLabel;
 	Sedna::SednaMenu* pauseMenu;
 
 	cocos2d::Director* director;
@@ -112,6 +113,8 @@ private:
 	int barRightMax = 430;
 	int barLeftMax = 90;
 
+
+	float gameStart = 0.0f;
 	bool moveScreen = true;
 
 	bool TRUEPAUSE = false;

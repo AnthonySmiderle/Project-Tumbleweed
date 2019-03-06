@@ -90,8 +90,8 @@ bool HelloWorld::init()
 
 	//bottom label
 
-	auto localL1 = cocos2d::Label::create("Exit to Main Menu", "fonts/arial.ttf", 25);
-	auto localL2 = cocos2d::Label::create("Resume", "fonts/arial.ttf", 25);
+	auto localL1 = cocos2d::Label::create("Exit to Main Menu", "fonts/Montague.ttf", 25);
+	auto localL2 = cocos2d::Label::create("Resume", "fonts/Montague.ttf", 25);
 	pauseMenu = new Sedna::SednaMenu(2, localL1, localL2);
 
 
@@ -129,6 +129,7 @@ void HelloWorld::update(float dt)
 		//////////////////////////////////////////////////////////////////////////////////////////////
 
 		//////////////////////////////////////////////////////////////////////////////////////////////
+
 
 
 		if (p1Controller->isButtonPressed(Sedna::SELECT))
@@ -201,6 +202,29 @@ void HelloWorld::update(float dt)
 				bulletTime = false;
 				paused = false;
 			}
+			if (gameStart < 5)
+			{
+				gameStart += dt;
+				paused = true;
+				startLabel->setVisible(true);
+				if (gameStart > 2 && gameStart < 3)
+				{
+					startLabel->setString("3");
+				}
+				else if (gameStart > 3 && gameStart < 4)
+				{
+					startLabel->setString("2");
+				}
+				else if (gameStart > 4 && gameStart < 5)
+				{
+					startLabel->setString("1");
+				}
+				else
+				{
+					startLabel->setVisible(false);
+				}
+			}
+
 		}
 
 		if (!paused)
@@ -330,12 +354,19 @@ void HelloWorld::initSprites()
 
 	///menu shit
 
-	pausedLabel = Label::create("Paused", "fonts/arial.ttf", 25);
+	pausedLabel = Label::create("Paused", "fonts/Montague.ttf", 25);
 	pausedLabel->setAnchorPoint(Vec2(0.0f, 0.0f));
 	pausedLabel->setPosition(Vec2(140, 250));
 	pausedLabel->enableShadow();
 	this->addChild(pausedLabel, 100);
 	pausedLabel->setVisible(false);
+
+	startLabel = Label::create("3", "fonts/Montague.ttf", 125);
+	startLabel->setAnchorPoint(Vec2(0.0f, 0.0f));
+	startLabel->setPosition(Vec2(200, 150));
+	startLabel->enableShadow();
+	this->addChild(startLabel, 100);
+	startLabel->setVisible(false);
 
 	for (int i = 0; i < pauseMenu->getLabelList().size(); i++) {
 		this->addChild(pauseMenu->getLabelList()[i], 100);
