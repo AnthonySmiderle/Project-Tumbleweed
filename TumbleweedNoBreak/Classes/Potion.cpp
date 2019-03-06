@@ -2,13 +2,13 @@
 namespace Sedna {
 
 
-void Sedna::Potion::pickUp(Player * p)
-{
-	
-}
+	void Sedna::Potion::pickUp(Player * p)
+	{
 
-Sedna::Potion::~Potion()
-{
+	}
 
-}
+	Sedna::Potion::~Potion()
+	{
+
+	}
 }
