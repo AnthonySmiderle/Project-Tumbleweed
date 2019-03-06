@@ -14,13 +14,16 @@ namespace Sedna {
 			hitBox->getDrawNode()->setVisible(false);
 
 			this->pController = MANAGER.getController(0);
-			playerUI->getLabelList()[0]->setPosition(cocos2d::Vec2(100, 100));
+			playerUI->getUIGunSprite()->setPosition(cocos2d::Vec2(100, 130));
+;			playerUI->getLabelList()[0]->setPosition(cocos2d::Vec2(100, 100));
 		}
 		else {
 			hitBox = new CirclePrimitive(cocos2d::Vec2(x, y), 24, 5, 30);
 			hitBox->getDrawNode()->setVisible(false);
 
 			this->pController = MANAGER.getController(1);
+			//playerUI->getLabelList()[0]->setPosition(cocos2d::Vec2(100, 100));
+
 
 		}
 		currentGun = CURRENTGUN;
@@ -375,10 +378,7 @@ namespace Sedna {
 		else if (this->currentGun->getName() == "theBiggestIron")
 			uiGunSprite = cocos2d::Sprite::create("gun3.png");
 		//else make the other guns work
-#ifdef _DEBUG
-		else
-			uiGunSprite = nullptr;
-#endif
+
 
 	}
 

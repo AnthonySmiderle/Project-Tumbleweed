@@ -295,9 +295,9 @@ void HelloWorld::initSprites()
 	playerOne = new Sedna::Player(1, 100, 100, managerR, olReliable);
 	this->addChild(playerOne->getBox()->getDrawNode());
 	this->addChild(playerOne->getSprite(), 10);
-	this->addChild(playerOne->getUI()->getUIGunSprite());
+	this->addChild(playerOne->getUI()->getUIGunSprite(),20);
 	for (int i = 0; i < playerOne->getUI()->getLabelList().size(); i++) {
-		this->addChild(playerOne->getUI()->getLabelList()[i]);
+		this->addChild(playerOne->getUI()->getLabelList()[i],20);
 	}
 	
 
