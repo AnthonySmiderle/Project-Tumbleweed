@@ -1,7 +1,6 @@
 #pragma once
 #include "GameObject.h"
 #include "Enums and Typdefs.h"
-#include "Potion.h"
 
 namespace Sedna {
 	class Table : public GameObject  {
@@ -11,6 +10,5 @@ namespace Sedna {
 		void spriteSwitch();
 		void collideTable(Table* table);
 	private:
-		Potion beer;
 	};
 }

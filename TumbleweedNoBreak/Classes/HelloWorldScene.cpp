@@ -130,7 +130,9 @@ void HelloWorld::update(float dt)
 
 		//////////////////////////////////////////////////////////////////////////////////////////////
 
-
+		if (playerOne->getCurrentGun()->getAmmo() <= 0) 
+			playerOne->setCurrnetGun(olReliable);
+		
 
 		if (p1Controller->isButtonPressed(Sedna::SELECT))
 		{
@@ -312,7 +314,7 @@ void HelloWorld::initSprites()
 
 
 	olReliable = new Sedna::Gun("olReliable", 2, 4, 0.35f);
-	bloodyMary = new Sedna::Gun("bloodyMary", 3, 10, 5, 0.85f);
+	bloodyMary = new Sedna::Gun("bloodyMary", 3, 10, 10, 0.85f);
 	theBiggestIron = new Sedna::Gun("theBiggestIron", 3, 10, 0.05f);
 
 
