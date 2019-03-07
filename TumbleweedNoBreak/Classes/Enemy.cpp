@@ -65,19 +65,36 @@ namespace Sedna {
 
 
 			if (eProjectiles[i]->getBox()->checkCollision(*p->getBox())) {
-				if(p->getController()->isButtonReleased(Sedna::LB))
-				for (int j = 0; j < p->getUI()->getHPSprites().size(); j++) {
-					if (p->getUI()->getHPSprites()[j]->getZOrder() == 21) {
-						p->getUI()->getHPSprites()[j]->setZOrder(20);
-						p->getUI()->getHPSprites()[j]->setTexture("brokenHeart.png");
-						break;
+#ifdef _DEBUG
+				if (p->getController()->isButtonReleased(Sedna::LB)) {
+
+					p->setHP(p->getHP() - 1);
+
+					for (int j = 0; j < p->getUI()->getHPSprites().size(); j++) {
+						if (p->getUI()->getHPSprites()[j]->getZOrder() == 21) {
+							p->getUI()->getHPSprites()[j]->setZOrder(20);
+							p->getUI()->getHPSprites()[j]->setTexture("brokenHeart.png");
+							break;
+						}
 					}
 				}
+#endif
+#ifdef _RELEASE
+
+					p->setHP(p->getHP() - 1);
+
+					for (int j = 0; j < p->getUI()->getHPSprites().size(); j++) {
+						if (p->getUI()->getHPSprites()[j]->getZOrder() == 21) {
+							p->getUI()->getHPSprites()[j]->setZOrder(20);
+							p->getUI()->getHPSprites()[j]->setTexture("brokenHeart.png");
+							break;
+						}
+					}
+#endif
 				eProjectiles[i]->getBox()->getDrawNode()->removeFromParent();
 				eProjectiles[i]->getSprite()->removeFromParent();
 				eProjectiles.erase(eProjectiles.begin() + i);
 				BaseObjectManager::eProjectileBObjects.erase(BaseObjectManager::eProjectileBObjects.begin() + i);
-				p->setHP(p->getHP() - 1);
 				if (p->getHP() <= 0)
 					p->die();
 			}
