@@ -10,6 +10,8 @@ namespace Sedna {
 		
 		void spriteSwitch();
 		void collideTable(Table* table);
+		potionType getBeer();
+		void setBeer(potionType a);
 	private:
 		Potion* beer;
 	};

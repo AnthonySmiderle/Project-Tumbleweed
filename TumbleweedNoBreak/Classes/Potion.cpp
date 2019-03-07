@@ -11,4 +11,12 @@ namespace Sedna {
 	{
 
 	}
+	potionType Potion::getType()
+	{
+		return type;
+	}
+	void Potion::setType(potionType a)
+	{
+		type = a;
+	}
 }

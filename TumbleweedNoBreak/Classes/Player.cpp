@@ -359,7 +359,6 @@ namespace Sedna {
 				if (pProjectiles.empty())
 					break;
 				if (pProjectiles[i]->getBox()->checkCollision(*tableList[j]->getBox())) {
-
 					tableList[j]->setHP(tableList[j]->getHP() - 1);
 					pProjectiles[i]->getBox()->getDrawNode()->removeFromParent();
 					pProjectiles[i]->getSprite()->removeFromParent();
@@ -394,7 +393,25 @@ namespace Sedna {
 				cocos2d::Vec2 distanceVector((tableList[i]->getBox()->getLocation().x - this->getBox()->getLocation().x),
 					(tableList[i]->getBox()->getLocation().y - this->getBox()->getLocation().y));
 				//POWERUP CODE
-
+				if (tableList[i]->getBeer()!=blank)
+				{
+					if (tableList[i]->getBeer() == health)
+					{
+						for (int j = this->getUI()->getHPSprites().size()-1; j > 0 ; j--) {
+							if (this->getUI()->getHPSprites()[j]->getZOrder() == 20) {
+								this->getUI()->getHPSprites()[j]->setZOrder(21);
+								this->getUI()->getHPSprites()[j]->setTexture("fullHeart.png");
+								break;
+							}
+						}
+						if(this->getHP()>=3)
+							this->setHP(this->getHP() + 1);
+					}
+					//if (tableList[i]->getBeer() == rapid)
+					//
+					//if (tableList[i]->getBeer() == invinc)
+					tableList[i]->setBeer(blank);
+				}
 
 
 				tableList[i]->spriteSwitch();

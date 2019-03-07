@@ -2,6 +2,7 @@
 #include "SimpleAudioEngine.h"
 #include "AudioEngine.h"
 #include "HelloWorldScene.h"
+#include "MusicList.h"
 
 USING_NS_CC;
 
@@ -128,7 +129,7 @@ bool MenuScene::init() {
 	menuE->select(1);
 
 
-	cocos2d::experimental::AudioEngine::play2d("bgm2.mp3", true);
+	cocos2d::experimental::AudioEngine::play2d(Music::menuMusic[Music::MusicType], true);
 	this->scheduleUpdate();
 
 	return true;
@@ -156,7 +157,7 @@ void MenuScene::update(float dt)
 
 		if (menuE->getIndexOfSelected() == 1 && p1Controller->isButtonPressed(Sedna::A)) {
 			auto game = HelloWorld::createScene();
-			cocos2d::experimental::AudioEngine::play2d("cha ching.mp3", false);
+			cocos2d::experimental::AudioEngine::play2d(Music::menuSound[Music::MusicType], false);
 
 			cocos2d::experimental::AudioEngine::stop(0);
 			end = true;
@@ -165,7 +166,7 @@ void MenuScene::update(float dt)
 			director->replaceScene(TransitionFade::create(2.0f, game));
 		}
 		if (menuE->getIndexOfSelected() == 0 && p1Controller->isButtonPressed(Sedna::A)) {
-			cocos2d::experimental::AudioEngine::play2d("cha ching.mp3", false);
+			cocos2d::experimental::AudioEngine::play2d(Music::menuSound[Music::MusicType], false);
 
 			exit(0);
 
@@ -175,8 +176,8 @@ void MenuScene::update(float dt)
 
 void MenuScene::initMenu()
 {
-	cocos2d::experimental::AudioEngine::preload("bgm2.mp3");
 	cocos2d::experimental::AudioEngine::preload("cha ching.mp3");
+	cocos2d::experimental::AudioEngine::preload("bgm2.mp3");
 	Vec2 windowSize = director->getWinSizeInPixels();
 
 	background = Sprite::create("Menu.png");

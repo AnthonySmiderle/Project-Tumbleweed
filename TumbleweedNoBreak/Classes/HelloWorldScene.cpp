@@ -27,6 +27,7 @@
 #include <iostream>
 #include "AudioEngine.h"
 #include "menuScene.h"
+#include "MusicList.h"
 
 
 USING_NS_CC;
@@ -174,7 +175,7 @@ void HelloWorld::update(float dt)
 			if (pauseMenu->getIndexOfSelected() == 0 && p1Controller->isButtonPressed(Sedna::A)) {
 				auto mMenu = MenuScene::create();
 				cocos2d::experimental::AudioEngine::stopAll();
-				cocos2d::experimental::AudioEngine::play2d("cha ching.mp3", false);
+				cocos2d::experimental::AudioEngine::play2d(Music::menuSound[Music::MusicType], false);
 				end = true;
 				MenuScene::setEnd(false);
 				//this->onExit();
@@ -220,7 +221,7 @@ void HelloWorld::update(float dt)
 				else if (gameStart > 2 && gameStart < 3)
 				{
 					if (!playMusic) {
-						cocos2d::experimental::AudioEngine::play2d("bgmy.mp3", true);
+						cocos2d::experimental::AudioEngine::play2d(Music::gameMusic[Music::MusicType], true);
 						playMusic = true;
 					}
 

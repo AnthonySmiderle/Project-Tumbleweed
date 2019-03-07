@@ -22,7 +22,7 @@ namespace Sedna {
 		}
 		else
 		{
-			beer = new Potion(blank);
+			beer = new Potion(health);
 			tableImage = "Table.png";
 		}
 		
@@ -56,5 +56,13 @@ namespace Sedna {
 					table->getBox()->getVelocity().y * -1);
 			}
 
+	}
+	potionType Table::getBeer()
+	{
+		return beer->getType();
+	}
+	void Table::setBeer(potionType a)
+	{
+		beer->setType(a);
 	}
 }

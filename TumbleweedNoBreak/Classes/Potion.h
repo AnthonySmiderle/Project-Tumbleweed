@@ -9,6 +9,8 @@ namespace Sedna {
 		Potion(potionType t) : type(t) {}
 		void pickUp(Player* p);
 		~Potion();
+		potionType getType();
+		void setType(potionType a);
 		
 	private:
 		potionType type;
