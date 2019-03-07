@@ -355,6 +355,10 @@ namespace Sedna {
 			if (pController->isButtonPressed(Sedna::A) && this->getBox()->checkCollision(*tableList[i]->getBox())) {
 				cocos2d::Vec2 distanceVector((tableList[i]->getBox()->getLocation().x - this->getBox()->getLocation().x),
 					(tableList[i]->getBox()->getLocation().y - this->getBox()->getLocation().y));
+				//POWERUP CODE
+
+
+
 				tableList[i]->spriteSwitch();
 				//times 2 to give a better feel to kicking the table
 				tableList[i]->getBox()->addForce(distanceVector.x * 2, distanceVector.y * 2);
