@@ -7,6 +7,8 @@
 namespace Sedna {
 	class Player;
 	class Table;
+
+
 	class Outlaw : public GameObject {
 	public:
 		Outlaw(float x, float y);
@@ -16,6 +18,7 @@ namespace Sedna {
 		void removeProjectiles();
 		void checkBCollision(Player* p);
 		void checkBCollision(std::vector<Table*>& tableList);
+		unsigned int points = 100;//this is public because there really isn't a reason to keep it private
 	private:
 		std::vector<Projectile*> eProjectiles;
 		float eShootTimer = 0.0f;

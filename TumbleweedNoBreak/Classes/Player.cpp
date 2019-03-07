@@ -1,12 +1,19 @@
 #include "Player.h"
 #include <iostream>
+#define BULLETSPEED 1.5
+#define UIDISPOSITION 360
+
 namespace Sedna {
 
 
 	Player::Player(int wPlayer, float x, float y, XinputManager MANAGER, Gun* CURRENTGUN)
 	{
-		auto localL1 = cocos2d::Label::create(std::to_string(CURRENTGUN->getAmmo()), "fonts/arial.ttf", 15);
-		playerUI = new SednaUI(CURRENTGUN, 1, localL1);
+		this->setHP(3);
+		auto localL1 = cocos2d::Label::create(CURRENTGUN->getName() == "olReliable" ? "" : std::to_string(CURRENTGUN->getAmmo()), "fonts/Montague.ttf", 15);
+		auto localL2 = cocos2d::Label::create(std::to_string(score), "fonts/Montague.ttf", 15);
+		playerUI = new SednaUI(CURRENTGUN, 2, localL1,localL2);
+
+
 		sprite = cocos2d::Sprite::create("player1.png");
 		sprite->setScale(0.85f);
 		if (wPlayer == playerOne) {
@@ -14,9 +21,17 @@ namespace Sedna {
 			hitBox->getDrawNode()->setVisible(false);
 
 			this->pController = MANAGER.getController(0);
-			playerUI->getUIGunSprite()->setPosition(cocos2d::Vec2(100, 130 - 70));
-			playerUI->getLabelList()[0]->setAnchorPoint(cocos2d::Vec2(0,0));
-			playerUI->getLabelList()[0]->setPosition(cocos2d::Vec2(112, 116 - 70));
+			playerUI->getUIGunSprite()->setPosition(cocos2d::Vec2(100 - 40, 130 - 70));
+			playerUI->getLabelList()[0]->setAnchorPoint(cocos2d::Vec2(0, 0));
+			playerUI->getLabelList()[0]->setPosition(cocos2d::Vec2(112 - 40, 116 - 70));
+			playerUI->getLabelList()[1]->setAnchorPoint(cocos2d::Vec2(0, 0));
+			playerUI->getLabelList()[1]->setPosition(cocos2d::Vec2(112 - 40, 116 - 80));
+
+
+			playerUI->getHPSprites()[0]->setPosition(cocos2d::Vec2(60 - 40, 116 - 70));
+			playerUI->getHPSprites()[1]->setPosition(cocos2d::Vec2(60 - 40, playerUI->getHPSprites()[0]->getPosition().y + 20));
+			playerUI->getHPSprites()[2]->setPosition(cocos2d::Vec2(60 - 40, playerUI->getHPSprites()[1]->getPosition().y + 20));
+
 		}
 		else {
 			hitBox = new CirclePrimitive(cocos2d::Vec2(x, y), 24, 5, 30);
@@ -24,6 +39,15 @@ namespace Sedna {
 
 			this->pController = MANAGER.getController(1);
 			//playerUI->getLabelList()[0]->setPosition(cocos2d::Vec2(100, 100));
+
+			playerUI->getUIGunSprite()->setPosition(cocos2d::Vec2(60 + UIDISPOSITION, 130 - 70));
+			playerUI->getLabelList()[0]->setAnchorPoint(cocos2d::Vec2(0, 0));
+			playerUI->getLabelList()[0]->setPosition(cocos2d::Vec2(72 + UIDISPOSITION, 116 - 70));
+
+
+			playerUI->getHPSprites()[0]->setPosition(cocos2d::Vec2(100 + UIDISPOSITION, 116 - 70));
+			playerUI->getHPSprites()[1]->setPosition(cocos2d::Vec2(100 + UIDISPOSITION, playerUI->getHPSprites()[0]->getPosition().y + 20));
+			playerUI->getHPSprites()[2]->setPosition(cocos2d::Vec2(100 + UIDISPOSITION, playerUI->getHPSprites()[1]->getPosition().y + 20));
 
 
 		}
@@ -39,6 +63,14 @@ namespace Sedna {
 		//delete this;
 	}
 
+	void Player::die()
+	{
+		takeInputs = false;
+		this->getBox()->setForce(cocos2d::Vec2(0, 0));
+		/*this->sprite->setAnchorPoint(cocos2d::Vec2(this->getBox()->getRadius(), this->getBox()->getRadius()));*/
+		this->sprite->setRotation(90);
+	}
+
 	void Player::setCurrnetGun(Gun * g)
 	{
 		currentGun = g;
@@ -46,220 +78,225 @@ namespace Sedna {
 			playerUI->getUIGunSprite()->setTexture("gun1.png");
 			playerUI->getLabelList()[0]->setString(" ");
 		}
-			
+
 	}
 
 	void Player::checkInput(float dt)
 	{
-		pController->updateSticks(pSticks);
-		if (pSticks[0].x > 0.3f)
-			this->getBox()->addForce(3, 0);
+		if (takeInputs) {
+			pController->updateSticks(pSticks);
+			if (pSticks[0].x > 0.3f)
+				this->getBox()->addForce(3, 0);
 
-		else if (pSticks[0].x < -0.3f)
-			this->getBox()->addForce(-3, 0);
+			else if (pSticks[0].x < -0.3f)
+				this->getBox()->addForce(-3, 0);
 
-		if (pSticks[0].y > 0.3f)
-			this->getBox()->addForce(0, 3);
+			if (pSticks[0].y > 0.3f)
+				this->getBox()->addForce(0, 3);
 
-		else if (pSticks[0].y < -0.3f)
-			this->getBox()->addForce(0, -3);
+			else if (pSticks[0].y < -0.3f)
+				this->getBox()->addForce(0, -3);
 
-		if (pSticks[0].x > -0.3f && pSticks[0].x < 0.3f && pSticks[0].y > -0.3f && pSticks[0].y < 0.3f)
-			this->getBox()->addForce(this->getBox()->getVelocity().x *-2.0f, this->getBox()->getVelocity().y*-2.0f);
+			if (pSticks[0].x > -0.3f && pSticks[0].x < 0.3f && pSticks[0].y > -0.3f && pSticks[0].y < 0.3f)
+				this->getBox()->addForce(this->getBox()->getVelocity().x *-2.0f, this->getBox()->getVelocity().y*-2.0f);
 
-		if (pController->isButtonPressed(Sedna::B)) {
-			//std::cout << tumbleTimer <<std::endl;
-			if (tumbleTimer > 1.5)
-			{
-				tumbleTimer = 0;
-				isTumbling = false;
+			if (pController->isButtonPressed(Sedna::B)) {
+				//std::cout << tumbleTimer <<std::endl;
+				if (tumbleTimer > 1.5)
+				{
+					tumbleTimer = 0;
+					isTumbling = false;
+				}
+
+
+				if (!tumbleTimer)
+				{
+					isTumbling = true;
+					this->getBox()->setTumbling(true);
+					if (pSticks[0].x < -0.3f)
+						this->getBox()->addForce(-500, 0);
+					else if (pSticks[0].x > 0.3f)
+						this->getBox()->addForce(500, 0);
+					if (pSticks[0].y < -0.3f)
+						this->getBox()->addForce(0, -500);
+					else if (pSticks[0].y > 0.3f)
+						this->getBox()->addForce(0, 500);
+					//sprite->setTexture("p1T.png");
+
+				}
+			}
+			else {
+				//sprite->setTexture("player1.png");
+				this->getBox()->setTumbling(false);
 			}
 
+			if (isTumbling)
+				tumbleTimer += dt;
 
-			if (!tumbleTimer)
-			{
-				isTumbling = true;
-				this->getBox()->setTumbling(true);
-				if (pSticks[0].x < -0.3f)
-					this->getBox()->addForce(-500, 0);
-				else if (pSticks[0].x > 0.3f)
-					this->getBox()->addForce(500, 0);
-				if (pSticks[0].y < -0.3f)
-					this->getBox()->addForce(0, -500);
-				else if (pSticks[0].y > 0.3f)
-					this->getBox()->addForce(0, 500);
-				//sprite->setTexture("p1T.png");
+			if (pController->isButtonPressed(Sedna::START))
+				exit(0);
 
-			}
 		}
-		else {
-			//sprite->setTexture("player1.png");
-			this->getBox()->setTumbling(false);
-		}
-
-		if (isTumbling)
-			tumbleTimer += dt;
-
-		if (pController->isButtonPressed(Sedna::START))
-			exit(0);
-
 	}
-
 	void Player::shoot(float dt, cocos2d::Scene* s)
 	{
-		if (pSticks[1].y < 0.3f && pSticks[1].y > -0.3f && pSticks[1].x < 0.3f && pSticks[1].x > -0.3f ||
-			pSticks[1].y > 0.3f && pSticks[1].x < 0.3f && pSticks[1].x > -0.3f) {
-			sprite->setTexture("player1.png");
-		}
-		if (pSticks[1].x < -0.3f && pSticks[1].y > 0.3f)
-			sprite->setTexture("p1L.png");
-		if (pSticks[1].x > 0.3f && pSticks[1].y > 0.3f)
-			sprite->setTexture("p1R.png");
-
-		pController->getTriggers(pTriggers);
-		if (pTriggers.RT > 0) {
-			
-
-
-			if (currentGun->getGunTimer() > currentGun->getRateOfFire())
-			{
-				currentGun->setGunTimer(0.0f);
-				currentGun->setHasShot(false);
+		if (takeInputs) {
+			if (pSticks[1].y < 0.3f && pSticks[1].y > -0.3f && pSticks[1].x < 0.3f && pSticks[1].x > -0.3f ||
+				pSticks[1].y > 0.3f && pSticks[1].x < 0.3f && pSticks[1].x > -0.3f) {
+				sprite->setTexture("player1.png");
 			}
-			if (currentGun->getGunTimer() == 0)
-			{
-				currentGun->setAmmo(currentGun->getAmmo() - 1);
-				playerUI->updateList();
-				currentGun->setHasShot(true);
-				if (pSticks[1].y < 0.3f && pSticks[1].y > -0.3f && pSticks[1].x > 0.3f ||
-					pSticks[1].y < 0.3f && pSticks[1].y > -0.3f && pSticks[1].x < -0.3f ||
-					pSticks[1].y < -0.3f) {
+			if (pSticks[1].x < -0.3f)
+				sprite->setTexture("p1L.png");
+			if (pSticks[1].x > 0.3f)
+				sprite->setTexture("p1R.png");
+
+			pController->getTriggers(pTriggers);
+			if (pTriggers.RT > 0) {
+
+				if (currentGun->getGunTimer() > currentGun->getRateOfFire())
+				{
+					currentGun->setGunTimer(0.0f);
+					currentGun->setHasShot(false);
 				}
-				else {
+				if (currentGun->getGunTimer() == 0)
+				{
 
-
-					if (currentGun->getName() == "olReliable" || currentGun->getName() == "theBiggestIron") {
-						Projectile* playerProjectile = new Sedna::Projectile(-1000, 0, Sedna::Ally);
-						s->addChild(playerProjectile->getBox()->getDrawNode());
-						s->addChild(playerProjectile->getSprite());
-						BaseObjectManager::pProjectileBObjects.push_back(playerProjectile);
-
-
-						pProjectiles.push_back(new Sedna::Projectile(*playerProjectile));
-
-						pProjectiles.back()->getBox()->setLocation(this->getBox()->getLocation());
-
-						if (pSticks[1].x < -0.3f && pSticks[1].y > 0.3f)
-							pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(-3.5, 3.5));
-
-						if (pSticks[1].x > 0.3f && pSticks[1].y > 0.3f)
-							pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(3.5, 3.5));
-
-						if (pSticks[1].y > 0.3f && pSticks[1].x < 0.3f && pSticks[1].x > -0.3f ||
-							pSticks[1].y < 0.3f && pSticks[1].y > -0.3f && pSticks[1].x < 0.3f && pSticks[1].x > -0.3f)
-							pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(0, 5));
-
+					if (pSticks[1].y < -0.3f) {
 
 					}
-					else if (currentGun->getName() == "bloodyMary") {
-						for (int i = 0; i < pProjectiles.size(); i++) {
-							pProjectiles[i]->getBox()->getDrawNode()->removeFromParent();
-							pProjectiles[i]->getSprite()->removeFromParent();
-							pProjectiles.erase(pProjectiles.begin() + i);
-							BaseObjectManager::pProjectileBObjects.erase(BaseObjectManager::pProjectileBObjects.begin() + i);
-						}
-						Projectile* playerProjectile1 = new Sedna::Projectile(-1000, 0, Sedna::Ally);
-						s->addChild(playerProjectile1->getBox()->getDrawNode());
-						s->addChild(playerProjectile1->getSprite());
-						BaseObjectManager::pProjectileBObjects.push_back(playerProjectile1);
+					else {
+						currentGun->setAmmo(currentGun->getAmmo() - 1);
+						playerUI->updateList();
+						currentGun->setHasShot(true);
 
-						Projectile* playerProjectile2 = new Sedna::Projectile(-1000, 0, Sedna::Ally);
-						s->addChild(playerProjectile2->getBox()->getDrawNode());
-						s->addChild(playerProjectile2->getSprite());
-						BaseObjectManager::pProjectileBObjects.push_back(playerProjectile2);
+						if (currentGun->getName() == "olReliable" || currentGun->getName() == "theBiggestIron") {
+							Projectile* playerProjectile = new Sedna::Projectile(-1000, 0, Sedna::Ally);
+							s->addChild(playerProjectile->getBox()->getDrawNode());
+							s->addChild(playerProjectile->getSprite());
+							BaseObjectManager::pProjectileBObjects.push_back(playerProjectile);
 
-						Projectile* playerProjectile3 = new Sedna::Projectile(-1000, 0, Sedna::Ally);
-						s->addChild(playerProjectile3->getBox()->getDrawNode());
-						s->addChild(playerProjectile3->getSprite());
-						BaseObjectManager::pProjectileBObjects.push_back(playerProjectile3);
 
-						Projectile* playerProjectile4 = new Sedna::Projectile(-1000, 0, Sedna::Ally);
-						s->addChild(playerProjectile4->getBox()->getDrawNode());
-						s->addChild(playerProjectile4->getSprite());
-						BaseObjectManager::pProjectileBObjects.push_back(playerProjectile4);
+							pProjectiles.push_back(new Sedna::Projectile(*playerProjectile));
 
-						Projectile* playerProjectile5 = new Sedna::Projectile(-1000, 0, Sedna::Ally);
-						s->addChild(playerProjectile5->getBox()->getDrawNode());
-						s->addChild(playerProjectile5->getSprite());
-						BaseObjectManager::pProjectileBObjects.push_back(playerProjectile5);
+							pProjectiles.back()->getBox()->setLocation(this->getBox()->getLocation());
 
-						pProjectiles.push_back(new Sedna::Projectile(*playerProjectile1));
-						pProjectiles.push_back(new Sedna::Projectile(*playerProjectile2));
-						pProjectiles.push_back(new Sedna::Projectile(*playerProjectile3));
-						pProjectiles.push_back(new Sedna::Projectile(*playerProjectile4));
-						pProjectiles.push_back(new Sedna::Projectile(*playerProjectile5));
+							if (pSticks[1].x < -0.3f) {
+								pProjectiles.back()->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-16, 0));
 
-						pProjectiles[0]->getBox()->setLocation(this->getBox()->getLocation());
-						pProjectiles[1]->getBox()->setLocation(this->getBox()->getLocation());
-						pProjectiles[2]->getBox()->setLocation(this->getBox()->getLocation());
-						pProjectiles[3]->getBox()->setLocation(this->getBox()->getLocation());
-						pProjectiles[4]->getBox()->setLocation(this->getBox()->getLocation());
 
-#define BULLETSPEED 1.5
+								pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(-3.5, 3.5)*BULLETSPEED);
+							}
 
-						if (pSticks[1].y > 0.3f && pSticks[1].x < 0.3f && pSticks[1].x > -0.3f ||
-							pSticks[1].y < 0.3f && pSticks[1].y > -0.3f && pSticks[1].x < 0.3f && pSticks[1].x > -0.3f) {
-							pProjectiles[0]->getBox()->setForce(cocos2d::Vec2(-3.25, 3.25)*BULLETSPEED);//projectile on the left
-							pProjectiles[1]->getBox()->setForce(cocos2d::Vec2(-1.75, 4.5)*BULLETSPEED);
-							pProjectiles[2]->getBox()->setForce(cocos2d::Vec2(0, 5.06)*BULLETSPEED);//projectiles in the middle
-							pProjectiles[3]->getBox()->setForce(cocos2d::Vec2(1.75, 4.5)*BULLETSPEED);
-							pProjectiles[4]->getBox()->setForce(cocos2d::Vec2(3.25, 3.25)*BULLETSPEED);//projectile on the right
+							if (pSticks[1].x > 0.3f) {
+								pProjectiles.back()->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(16, 0));
+
+
+								pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(3.5, 3.5)*BULLETSPEED);
+							}
+
+							if (pSticks[1].y > 0.3f && pSticks[1].x < 0.3f && pSticks[1].x > -0.3f ||
+								pSticks[1].y < 0.3f && pSticks[1].y > -0.3f && pSticks[1].x < 0.3f && pSticks[1].x > -0.3f)
+								pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(0, 5)*BULLETSPEED);
+
 
 						}
-						if (pSticks[1].x < -0.3f && pSticks[1].y > 0.3f) {
+						else if (currentGun->getName() == "bloodyMary") {
+							for (int i = 0; i < pProjectiles.size(); i++) {
+								pProjectiles[i]->getBox()->getDrawNode()->removeFromParent();
+								pProjectiles[i]->getSprite()->removeFromParent();
+								pProjectiles.erase(pProjectiles.begin() + i);
+								BaseObjectManager::pProjectileBObjects.erase(BaseObjectManager::pProjectileBObjects.begin() + i);
+							}
+							Projectile* playerProjectile1 = new Sedna::Projectile(-1000, 0, Sedna::Ally);
+							s->addChild(playerProjectile1->getBox()->getDrawNode());
+							s->addChild(playerProjectile1->getSprite());
+							BaseObjectManager::pProjectileBObjects.push_back(playerProjectile1);
 
-							pProjectiles[0]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-16, 0));
-							pProjectiles[1]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-16, 0));
-							pProjectiles[2]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-16, 0));
-							pProjectiles[3]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-16, 0));
-							pProjectiles[4]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-16, 0));
+							Projectile* playerProjectile2 = new Sedna::Projectile(-1000, 0, Sedna::Ally);
+							s->addChild(playerProjectile2->getBox()->getDrawNode());
+							s->addChild(playerProjectile2->getSprite());
+							BaseObjectManager::pProjectileBObjects.push_back(playerProjectile2);
 
-							pProjectiles[0]->getBox()->setForce(cocos2d::Vec2(-5.06, 0)*BULLETSPEED);//projectile on the left
-							pProjectiles[1]->getBox()->setForce(cocos2d::Vec2(-4.5, 1.75)*BULLETSPEED);
-							pProjectiles[2]->getBox()->setForce(cocos2d::Vec2(-3.35, 3.35)*BULLETSPEED);//projectiles in the middle
-							pProjectiles[3]->getBox()->setForce(cocos2d::Vec2(-1.75, 4.5)*BULLETSPEED);
-							pProjectiles[4]->getBox()->setForce(cocos2d::Vec2(0, 5.06)*BULLETSPEED);//projectile on the right
+							Projectile* playerProjectile3 = new Sedna::Projectile(-1000, 0, Sedna::Ally);
+							s->addChild(playerProjectile3->getBox()->getDrawNode());
+							s->addChild(playerProjectile3->getSprite());
+							BaseObjectManager::pProjectileBObjects.push_back(playerProjectile3);
 
-						}
-						if (pSticks[1].x > 0.3f && pSticks[1].y > 0.3f) {
+							Projectile* playerProjectile4 = new Sedna::Projectile(-1000, 0, Sedna::Ally);
+							s->addChild(playerProjectile4->getBox()->getDrawNode());
+							s->addChild(playerProjectile4->getSprite());
+							BaseObjectManager::pProjectileBObjects.push_back(playerProjectile4);
 
-							pProjectiles[0]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(16, 0));
-							pProjectiles[1]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(16, 0));
-							pProjectiles[2]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(16, 0));
-							pProjectiles[3]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(16, 0));
-							pProjectiles[4]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(16, 0));
+							Projectile* playerProjectile5 = new Sedna::Projectile(-1000, 0, Sedna::Ally);
+							s->addChild(playerProjectile5->getBox()->getDrawNode());
+							s->addChild(playerProjectile5->getSprite());
+							BaseObjectManager::pProjectileBObjects.push_back(playerProjectile5);
 
-							pProjectiles[0]->getBox()->setForce(cocos2d::Vec2(0, 5.06)*BULLETSPEED);//projectile on the left
-							pProjectiles[1]->getBox()->setForce(cocos2d::Vec2(1.75, 4.5)*BULLETSPEED);
-							pProjectiles[2]->getBox()->setForce(cocos2d::Vec2(3.35, 3.35)*BULLETSPEED);//projectiles in the middle
-							pProjectiles[3]->getBox()->setForce(cocos2d::Vec2(4.5, 1.75)*BULLETSPEED);
-							pProjectiles[4]->getBox()->setForce(cocos2d::Vec2(5.06, 0)*BULLETSPEED);//projectile on the right
+							pProjectiles.push_back(new Sedna::Projectile(*playerProjectile1));
+							pProjectiles.push_back(new Sedna::Projectile(*playerProjectile2));
+							pProjectiles.push_back(new Sedna::Projectile(*playerProjectile3));
+							pProjectiles.push_back(new Sedna::Projectile(*playerProjectile4));
+							pProjectiles.push_back(new Sedna::Projectile(*playerProjectile5));
+
+							pProjectiles[0]->getBox()->setLocation(this->getBox()->getLocation());
+							pProjectiles[1]->getBox()->setLocation(this->getBox()->getLocation());
+							pProjectiles[2]->getBox()->setLocation(this->getBox()->getLocation());
+							pProjectiles[3]->getBox()->setLocation(this->getBox()->getLocation());
+							pProjectiles[4]->getBox()->setLocation(this->getBox()->getLocation());
 
 
+							if (pSticks[1].y > 0.3f && pSticks[1].x < 0.3f && pSticks[1].x > -0.3f ||
+								pSticks[1].y < 0.3f && pSticks[1].y > -0.3f && pSticks[1].x < 0.3f && pSticks[1].x > -0.3f) {
+								pProjectiles[0]->getBox()->setForce(cocos2d::Vec2(-3.25, 3.25)*BULLETSPEED);//projectile on the left
+								pProjectiles[1]->getBox()->setForce(cocos2d::Vec2(-1.75, 4.5)*BULLETSPEED);
+								pProjectiles[2]->getBox()->setForce(cocos2d::Vec2(0, 5.06)*BULLETSPEED);//projectiles in the middle
+								pProjectiles[3]->getBox()->setForce(cocos2d::Vec2(1.75, 4.5)*BULLETSPEED);
+								pProjectiles[4]->getBox()->setForce(cocos2d::Vec2(3.25, 3.25)*BULLETSPEED);//projectile on the right
+
+							}
+							if (pSticks[1].x < -0.3f) {
+
+								pProjectiles[0]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-16, 0));
+								pProjectiles[1]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-16, 0));
+								pProjectiles[2]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-16, 0));
+								pProjectiles[3]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-16, 0));
+								pProjectiles[4]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-16, 0));
+
+								pProjectiles[0]->getBox()->setForce(cocos2d::Vec2(-5.06, 0)*BULLETSPEED);//projectile on the left
+								pProjectiles[1]->getBox()->setForce(cocos2d::Vec2(-4.5, 1.75)*BULLETSPEED);
+								pProjectiles[2]->getBox()->setForce(cocos2d::Vec2(-3.35, 3.35)*BULLETSPEED);//projectiles in the middle
+								pProjectiles[3]->getBox()->setForce(cocos2d::Vec2(-1.75, 4.5)*BULLETSPEED);
+								pProjectiles[4]->getBox()->setForce(cocos2d::Vec2(0, 5.06)*BULLETSPEED);//projectile on the right
+
+							}
+							if (pSticks[1].x > 0.3f) {
+
+								pProjectiles[0]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(16, 0));
+								pProjectiles[1]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(16, 0));
+								pProjectiles[2]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(16, 0));
+								pProjectiles[3]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(16, 0));
+								pProjectiles[4]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(16, 0));
+
+								pProjectiles[0]->getBox()->setForce(cocos2d::Vec2(0, 5.06)*BULLETSPEED);//projectile on the left
+								pProjectiles[1]->getBox()->setForce(cocos2d::Vec2(1.75, 4.5)*BULLETSPEED);
+								pProjectiles[2]->getBox()->setForce(cocos2d::Vec2(3.35, 3.35)*BULLETSPEED);//projectiles in the middle
+								pProjectiles[3]->getBox()->setForce(cocos2d::Vec2(4.5, 1.75)*BULLETSPEED);
+								pProjectiles[4]->getBox()->setForce(cocos2d::Vec2(5.06, 0)*BULLETSPEED);//projectile on the right
+
+
+							}
 						}
 					}
-
-
 				}
 			}
 
 
-		}
-		if (currentGun->getHasShot())
-			currentGun->setGunTimer(currentGun->getGunTimer() + dt);
 
+			if (currentGun->getHasShot())
+				currentGun->setGunTimer(currentGun->getGunTimer() + dt);
+
+		}
 	}
-
 	void Player::checkList()
 	{
 		if (pProjectiles.size() > currentGun->getProjLimit()) {
@@ -298,6 +335,7 @@ namespace Sedna {
 				else
 					check = false;
 				if (outlawList[j]->getHP() <= 0) {
+
 					outlawList[j]->removeProjectiles();
 					outlawList[j]->getBox()->getDrawNode()->removeFromParent();
 					outlawList[j]->getSprite()->removeFromParent();
@@ -421,6 +459,18 @@ namespace Sedna {
 		va_end(LIST);
 
 
+		hp1 = cocos2d::Sprite::create("fullHeart.png");
+		hp2 = cocos2d::Sprite::create("fullHeart.png");
+		hp3 = cocos2d::Sprite::create("fullHeart.png");
+
+		hpSprites.push_back(hp1);
+		hpSprites.push_back(hp2);
+		hpSprites.push_back(hp3);
+
+		hpSprites[0]->setZOrder(21);
+		hpSprites[1]->setZOrder(21);
+		hpSprites[2]->setZOrder(21);
+
 		this->currentGun = CurrentGun;
 
 		if (this->currentGun->getName() == "olReliable") {
@@ -446,11 +496,31 @@ namespace Sedna {
 		return uiGunSprite;
 	}
 
+	std::vector<cocos2d::Sprite*> SednaUI::getHPSprites() const
+	{
+		return hpSprites;
+	}
+
+	void SednaUI::updatePosition(cocos2d::Vec2 p)
+	{
+		for (int i = 0; i < labelList.size(); i++) 
+			labelList[i]->setPosition(labelList[i]->getPosition() + p);
+		
+			uiGunSprite->setPosition(uiGunSprite->getPosition() + p);
+			for (int i = 0; i < hpSprites.size(); i++)
+				hpSprites[i]->setPosition(hpSprites[i]->getPosition() + p);
+	}
+
+	void SednaUI::updateHP()
+	{
+
+	}
+
 	void SednaUI::updateList()
 	{
 		auto last = std::to_string(currentGun->getAmmo());
 		for (int i = 0; i < labelList.size(); i++) {
-				labelList[i]->setString(std::to_string(currentGun->getAmmo()));
+			labelList[i]->setString(std::to_string(currentGun->getAmmo()));
 		}
 	}
 

@@ -20,16 +20,21 @@ namespace Sedna {
 		//bars - make bar class later
 
 		std::vector<cocos2d::Label*> getLabelList() const;
-		///Gun* getGun() const { return currentGun; }
 		cocos2d::Sprite* getUIGunSprite() const;
+		std::vector<cocos2d::Sprite*> getHPSprites() const;
 
-		///void update();
+		void updatePosition(cocos2d::Vec2 p);
+		void updateHP();
 		void updateList();
 	private:
+		cocos2d::Sprite* hp1;
+		cocos2d::Sprite* hp2;
+		cocos2d::Sprite* hp3;
+		std::vector<cocos2d::Sprite*> hpSprites;
 		std::vector<cocos2d::Label*> labelList;
 		Gun* currentGun;
 		cocos2d::Sprite* uiGunSprite;
-
+		
 
 	};
 
@@ -42,8 +47,11 @@ namespace Sedna {
 
 		//extend member functions here
 
-		void setCurrnetGun(Gun* g);
+		XinputController* getController() const { return pController; }
 		Gun* getCurrentGun() const { return currentGun; }
+		
+		void die();
+		void setCurrnetGun(Gun* g);
 		void checkInput(float dt);
 		void shoot(float dt, cocos2d::Scene* s);
 		void checkList();
@@ -57,6 +65,8 @@ namespace Sedna {
 	
 		std::vector<Projectile*> getpProjectile() const;
 	private:
+		unsigned int score = 0;
+		bool takeInputs = true;
 		SednaUI* playerUI;
 		XinputController* pController;
 		Stick pSticks[2];
