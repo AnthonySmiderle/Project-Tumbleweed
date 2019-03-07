@@ -9,10 +9,10 @@ namespace Sedna {
 	Player::Player(int wPlayer, float x, float y, XinputManager MANAGER, Gun* CURRENTGUN)
 	{
 		this->setHP(3);
+		score = 0;
 		auto localL1 = cocos2d::Label::create(CURRENTGUN->getName() == "olReliable" ? "" : std::to_string(CURRENTGUN->getAmmo()), "fonts/Montague.ttf", 15);
 		auto localL2 = cocos2d::Label::create(std::to_string(score), "fonts/Montague.ttf", 15);
-		playerUI = new SednaUI(CURRENTGUN, 2, localL1,localL2);
-
+		playerUI = new SednaUI(CURRENTGUN,this, 2, localL1,localL2);
 
 		sprite = cocos2d::Sprite::create("player1.png");
 		sprite->setScale(0.85f);
@@ -61,6 +61,11 @@ namespace Sedna {
 	Player::~Player()
 	{
 		//delete this;
+	}
+
+	unsigned int Player::getScore() const
+	{
+		return score;
 	}
 
 	void Player::die()
@@ -335,7 +340,7 @@ namespace Sedna {
 				else
 					check = false;
 				if (outlawList[j]->getHP() <= 0) {
-
+					score += 100;
 					outlawList[j]->removeProjectiles();
 					outlawList[j]->getBox()->getDrawNode()->removeFromParent();
 					outlawList[j]->getSprite()->removeFromParent();
@@ -466,7 +471,7 @@ namespace Sedna {
 
 
 
-	SednaUI::SednaUI(Gun * CurrentGun, int args, ...)
+	SednaUI::SednaUI(Gun * CurrentGun,Player* p, int args, ...)
 	{
 		va_list LIST;
 		va_start(LIST, args);
@@ -474,7 +479,10 @@ namespace Sedna {
 			labelList.push_back(va_arg(LIST, cocos2d::Label*));
 		}
 		va_end(LIST);
+		
+		this->p = p;
 
+		labelList[1]->enableWrap(true);
 
 		hp1 = cocos2d::Sprite::create("fullHeart.png");
 		hp2 = cocos2d::Sprite::create("fullHeart.png");
@@ -535,9 +543,9 @@ namespace Sedna {
 
 	void SednaUI::updateList()
 	{
-		auto last = std::to_string(currentGun->getAmmo());
 		for (int i = 0; i < labelList.size(); i++) {
-			labelList[i]->setString(std::to_string(currentGun->getAmmo()));
+			labelList[0]->setString(std::to_string(currentGun->getAmmo()));
+			labelList[1]->setString(std::to_string(p->getScore()));
 		}
 	}
 

@@ -28,7 +28,7 @@
 #include "AudioEngine.h"
 #include "menuScene.h"
 #include "MusicList.h"
-
+#define CAMERASPEED 2
 
 USING_NS_CC;
 
@@ -212,10 +212,10 @@ void HelloWorld::update(float dt)
 				if (gameStart > 1 && gameStart < 2)
 				{
 					startLabel->setString("3");
-					///if (!playMusic) {
-					///	//cocos2d::experimental::AudioEngine::play2d("bgm.mp3", true);
-					///	playMusic = true;
-					///}
+					if (!playMusic) {
+						cocos2d::experimental::AudioEngine::play2d("bgm.mp3", true);
+						playMusic = true;
+					}
 
 				}
 				else if (gameStart > 2 && gameStart < 3)
@@ -259,9 +259,9 @@ void HelloWorld::update(float dt)
 			{
 				for (int i = 0; i < pauseMenu->getLabelList().size(); i++) {
 					pauseMenu->getLabelList()[i]->setPosition(cocos2d::Vec2(pauseMenu->getLabelList()[i]->getPosition().x,
-						pauseMenu->getLabelList()[i]->getPosition().y + 2));
+						pauseMenu->getLabelList()[i]->getPosition().y + CAMERASPEED));
 				}
-				pausedLabel->setPosition(pausedLabel->getPosition() + cocos2d::Vec2(0, 2));
+				pausedLabel->setPosition(pausedLabel->getPosition() + cocos2d::Vec2(0, CAMERASPEED));
 
 				//playerOne->getUI()->getLabelList()[0]->setPosition(playerOne->getUI()->getLabelList()[0]->getPosition() + cocos2d::Vec2(0, 2));
 				//playerOne->getUI()->getUIGunSprite()->setPosition(playerOne->getUI()->getUIGunSprite()->getPosition() + cocos2d::Vec2(0, 2));
@@ -273,13 +273,13 @@ void HelloWorld::update(float dt)
 				//for (int i = 0; i < playerTwo->getUI()->getHPSprites().size(); i++)
 				//	playerTwo->getUI()->getHPSprites()[i]->setPosition(playerTwo->getUI()->getHPSprites()[i]->getPosition() + cocos2d::Vec2(0, 2));
 
-				playerOne->getUI()->updatePosition(cocos2d::Vec2(0, 2));
-				playerTwo->getUI()->updatePosition(cocos2d::Vec2(0, 2));
+				playerOne->getUI()->updatePosition(cocos2d::Vec2(0, CAMERASPEED));
+				playerTwo->getUI()->updatePosition(cocos2d::Vec2(0, CAMERASPEED));
 
 
 				this->getDefaultCamera()->setPosition(cocos2d::Vec2(this->getDefaultCamera()->getPosition().x,
-					this->getDefaultCamera()->getPosition().y + 2));
-				DDOS->getSprite()->setPosition(cocos2d::Vec2(100, (DDOS->getSprite()->getPosition().y + 2)));
+					this->getDefaultCamera()->getPosition().y + CAMERASPEED));
+				DDOS->getSprite()->setPosition(cocos2d::Vec2(100, (DDOS->getSprite()->getPosition().y + CAMERASPEED)));
 
 			}
 			if (p1Controller->isButtonPressed(Sedna::X)) {

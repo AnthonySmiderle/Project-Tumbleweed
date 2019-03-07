@@ -13,7 +13,7 @@ namespace Sedna {
 	
 	class SednaUI {
 	public:
-		SednaUI(Gun* currentGun, int args, ...);
+		SednaUI(Gun* currentGun,Player* p, int args, ...);
 		//a ui has
 		//a sprite
 		//labels
@@ -27,6 +27,7 @@ namespace Sedna {
 		void updateHP();
 		void updateList();
 	private:
+		Player* p;
 		cocos2d::Sprite* hp1;
 		cocos2d::Sprite* hp2;
 		cocos2d::Sprite* hp3;
@@ -50,6 +51,7 @@ namespace Sedna {
 		XinputController* getController() const { return pController; }
 		Gun* getCurrentGun() const { return currentGun; }
 		
+		unsigned int getScore() const;
 		void die();
 		void setCurrnetGun(Gun* g);
 		void checkInput(float dt);
