@@ -213,18 +213,12 @@ void HelloWorld::update(float dt)
 				{
 					startLabel->setString("3");
 					if (!playMusic) {
-						cocos2d::experimental::AudioEngine::play2d("bgm.mp3", true);
-						playMusic = true;
-					}
-
-				}
-				else if (gameStart > 2 && gameStart < 3)
-				{
-					if (!playMusic) {
 						cocos2d::experimental::AudioEngine::play2d(Music::gameMusic[Music::MusicType], true);
 						playMusic = true;
 					}
-
+				}
+				else if (gameStart > 2 && gameStart < 3)
+				{
 					startLabel->setString("2");
 				}
 				else if (gameStart > 3 && gameStart < 4)

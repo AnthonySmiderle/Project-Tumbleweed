@@ -17,6 +17,7 @@
     <ClCompile Include="..\Classes\Table.cpp" />
     <ClCompile Include="..\Classes\XinputManager.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="..\Classes\MusicList.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Classes\AppDelegate.h" />
@@ -36,6 +37,7 @@
     <ClInclude Include="..\Classes\Table.h" />
     <ClInclude Include="..\Classes\XinputManager.h" />
     <ClInclude Include="main.h" />
+    <ClInclude Include="..\Classes\MusicList.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc" />
