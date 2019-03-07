@@ -16,6 +16,8 @@ namespace Sedna {
 		void updateGameObject();
 		HP getHP() const;
 		void setHP(HP hp);
+		virtual void die() {}
+		
 	protected:
 		HP objectHp;
 		cocos2d::Sprite *sprite;

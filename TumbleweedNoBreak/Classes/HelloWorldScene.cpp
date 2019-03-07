@@ -106,7 +106,6 @@ bool HelloWorld::init()
 	p2Controller->updateSticks(p2Sticks);
 	p2Controller->getTriggers(p2Triggers);
 	initSprites();
-	cocos2d::experimental::AudioEngine::play2d("bgm.mp3", true);
 
 	director = cocos2d::Director::getInstance();
 	this->scheduleUpdate();
@@ -209,17 +208,26 @@ void HelloWorld::update(float dt)
 				gameStart += dt;
 				paused = true;
 				startLabel->setVisible(true);
-				if (gameStart > 2 && gameStart < 3)
+				if (gameStart > 1 && gameStart < 2)
 				{
 					startLabel->setString("3");
+					if (!playMusic) {
+					cocos2d::experimental::AudioEngine::play2d("bgm.mp3", true);
+					playMusic = true;
+					}
+
 				}
-				else if (gameStart > 3 && gameStart < 4)
+				else if (gameStart > 2 && gameStart < 3)
 				{
 					startLabel->setString("2");
 				}
-				else if (gameStart > 4 && gameStart < 5)
+				else if (gameStart > 3 && gameStart < 4)
 				{
 					startLabel->setString("1");
+				}
+				else if (gameStart > 4 && gameStart < 5) {
+					startLabel->setString("0");
+
 				}
 				else
 				{
@@ -241,7 +249,7 @@ void HelloWorld::update(float dt)
 #ifdef _DEBUG
 			if (p1Controller->isButtonPressed(Sedna::Y))
 				moveScreen ^= 1;
-			if (!moveScreen)
+			if (moveScreen)
 			{
 				for (int i = 0; i < pauseMenu->getLabelList().size(); i++) {
 					pauseMenu->getLabelList()[i]->setPosition(cocos2d::Vec2(pauseMenu->getLabelList()[i]->getPosition().x,
@@ -249,8 +257,18 @@ void HelloWorld::update(float dt)
 				}
 				pausedLabel->setPosition(pausedLabel->getPosition() + cocos2d::Vec2(0, 2));
 
-				playerOne->getUI()->getLabelList()[0]->setPosition(playerOne->getUI()->getLabelList()[0]->getPosition() + cocos2d::Vec2(0, 2));
-				playerOne->getUI()->getUIGunSprite()->setPosition(playerOne->getUI()->getUIGunSprite()->getPosition() + cocos2d::Vec2(0, 2));
+				//playerOne->getUI()->getLabelList()[0]->setPosition(playerOne->getUI()->getLabelList()[0]->getPosition() + cocos2d::Vec2(0, 2));
+				//playerOne->getUI()->getUIGunSprite()->setPosition(playerOne->getUI()->getUIGunSprite()->getPosition() + cocos2d::Vec2(0, 2));
+				//for(int i = 0; i < playerOne->getUI()->getHPSprites().size();i++)
+				//playerOne->getUI()->getHPSprites()[i]->setPosition(playerOne->getUI()->getHPSprites()[i]->getPosition() + cocos2d::Vec2(0, 2));
+				//
+				//playerTwo->getUI()->getLabelList()[0]->setPosition(playerTwo->getUI()->getLabelList()[0]->getPosition() + cocos2d::Vec2(0, 2));
+				//playerTwo->getUI()->getUIGunSprite()->setPosition(playerTwo->getUI()->getUIGunSprite()->getPosition() + cocos2d::Vec2(0, 2));
+				//for (int i = 0; i < playerTwo->getUI()->getHPSprites().size(); i++)
+				//	playerTwo->getUI()->getHPSprites()[i]->setPosition(playerTwo->getUI()->getHPSprites()[i]->getPosition() + cocos2d::Vec2(0, 2));
+
+				playerOne->getUI()->updatePosition(cocos2d::Vec2(0, 2));
+				playerTwo->getUI()->updatePosition(cocos2d::Vec2(0, 2));
 
 
 				this->getDefaultCamera()->setPosition(cocos2d::Vec2(this->getDefaultCamera()->getPosition().x,
@@ -325,12 +343,19 @@ void HelloWorld::initSprites()
 	for (int i = 0; i < playerOne->getUI()->getLabelList().size(); i++) {
 		this->addChild(playerOne->getUI()->getLabelList()[i],20);
 	}
+	for (int i = 0; i < playerOne->getUI()->getHPSprites().size(); i++)
+		this->addChild(playerOne->getUI()->getHPSprites()[i]);
 	
 
 	playerTwo = new Sedna::Player(2, 300, 100, managerR, olReliable);
 	this->addChild(playerTwo->getBox()->getDrawNode());
 	this->addChild(playerTwo->getSprite(), 10);
-
+	this->addChild(playerTwo->getUI()->getUIGunSprite(), 20);
+	for (int i = 0; i < playerTwo->getUI()->getLabelList().size(); i++) {
+		this->addChild(playerTwo->getUI()->getLabelList()[i], 20);
+	}
+	for (int i = 0; i < playerTwo->getUI()->getHPSprites().size(); i++)
+		this->addChild(playerTwo->getUI()->getHPSprites()[i]);
 
 
 	bg = cocos2d::Sprite::create("bg1.png");
