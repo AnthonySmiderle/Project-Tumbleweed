@@ -24,7 +24,6 @@ namespace Sedna {
 		std::vector<cocos2d::Sprite*> getHPSprites() const;
 
 		void updatePosition(cocos2d::Vec2 p);
-		void updateHP();
 		void updateList();
 	private:
 		Player* p;
