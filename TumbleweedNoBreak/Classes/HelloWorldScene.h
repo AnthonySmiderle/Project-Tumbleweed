@@ -61,6 +61,8 @@ public:
 	// implement the "static create()" method manually
 	CREATE_FUNC(HelloWorld);
 private:
+	Sedna::ShotgunOutlaw* shotgunTest;
+
 	bool playMusic = false;
 	static bool end;
 	cocos2d::Label* pausedLabel;
