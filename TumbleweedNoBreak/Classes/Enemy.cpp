@@ -2,7 +2,7 @@
 #include "baseObjectManager.h"
 #include "Player.h"
 #include "Table.h"
-#include <iostream>
+#define BULLETSPEED 2
 namespace Sedna {
 
 	Sedna::Outlaw::Outlaw(float x, float y)
@@ -15,6 +15,10 @@ namespace Sedna {
 		hitBox->getDrawNode()->setVisible(false);
 
 		this->objectHp = 3;
+	}
+	Outlaw::~Outlaw()
+	{
+
 	}
 	void Outlaw::shoot(float dt, cocos2d::Scene* s)
 	{
@@ -80,15 +84,15 @@ namespace Sedna {
 #endif
 #ifdef _RELEASE
 
-					p->setHP(p->getHP() - 1);
+				p->setHP(p->getHP() - 1);
 
-					for (int j = 0; j < p->getUI()->getHPSprites().size(); j++) {
-						if (p->getUI()->getHPSprites()[j]->getZOrder() == 21) {
-							p->getUI()->getHPSprites()[j]->setZOrder(20);
-							p->getUI()->getHPSprites()[j]->setTexture("brokenHeart.png");
-							break;
-						}
+				for (int j = 0; j < p->getUI()->getHPSprites().size(); j++) {
+					if (p->getUI()->getHPSprites()[j]->getZOrder() == 21) {
+						p->getUI()->getHPSprites()[j]->setZOrder(20);
+						p->getUI()->getHPSprites()[j]->setTexture("brokenHeart.png");
+						break;
 					}
+				}
 #endif
 				eProjectiles[i]->getBox()->getDrawNode()->removeFromParent();
 				eProjectiles[i]->getSprite()->removeFromParent();
@@ -133,5 +137,70 @@ namespace Sedna {
 				}
 			}
 		}
+	}
+	ShotgunOutlaw::ShotgunOutlaw(float x, float y) :Outlaw(x, y)
+	{
+		this->getSprite()->setTexture("DOS.jpg");
+	}
+	void ShotgunOutlaw::shoot(float dt, cocos2d::Scene * s)
+	{
+		if (eShootTimer > 0.4f) {
+			eShootTimer = 0.0f;
+			eHasShot = false;
+		}
+		if (!eShootTimer) {
+			eHasShot = true;
+			Projectile* eBaseProjectile = new Sedna::Projectile(-1000, 10, Enemy);
+			s->addChild(eBaseProjectile->getBox()->getDrawNode());
+			s->addChild(eBaseProjectile->getSprite());
+
+			Projectile* eBaseProjectile2 = new Sedna::Projectile(-1000, 10, Enemy);
+			s->addChild(eBaseProjectile2->getBox()->getDrawNode());
+			s->addChild(eBaseProjectile2->getSprite());
+
+			Projectile* eBaseProjectile3 = new Sedna::Projectile(-1000, 10, Enemy);
+			s->addChild(eBaseProjectile3->getBox()->getDrawNode());
+			s->addChild(eBaseProjectile3->getSprite());
+
+			Projectile* eBaseProjectile4 = new Sedna::Projectile(-1000, 10, Enemy);
+			s->addChild(eBaseProjectile4->getBox()->getDrawNode());
+			s->addChild(eBaseProjectile4->getSprite());
+
+			Projectile* eBaseProjectile5 = new Sedna::Projectile(-1000, 10, Enemy);
+			s->addChild(eBaseProjectile5->getBox()->getDrawNode());
+			s->addChild(eBaseProjectile5->getSprite());
+
+
+			eProjectiles.push_back(new Sedna::Projectile(*eBaseProjectile));
+			BaseObjectManager::eProjectileBObjects.push_back(eBaseProjectile);
+
+			eProjectiles.push_back(new Sedna::Projectile(*eBaseProjectile2));
+			BaseObjectManager::eProjectileBObjects.push_back(eBaseProjectile2);
+
+			eProjectiles.push_back(new Sedna::Projectile(*eBaseProjectile3));
+			BaseObjectManager::eProjectileBObjects.push_back(eBaseProjectile3);
+
+			eProjectiles.push_back(new Sedna::Projectile(*eBaseProjectile4));
+			BaseObjectManager::eProjectileBObjects.push_back(eBaseProjectile4);
+
+			eProjectiles.push_back(new Sedna::Projectile(*eBaseProjectile5));
+			BaseObjectManager::eProjectileBObjects.push_back(eBaseProjectile5);
+
+			eProjectiles[0]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-16, 0));
+			eProjectiles[1]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-16, 0));
+			eProjectiles[2]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-16, 0));
+			eProjectiles[3]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-16, 0));
+			eProjectiles[4]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-16, 0));
+
+			eProjectiles[0]->getBox()->setForce(cocos2d::Vec2(-3.25, 3.25)*BULLETSPEED);
+			eProjectiles[1]->getBox()->setForce(cocos2d::Vec2(-1.75, 4.5)*BULLETSPEED);
+			eProjectiles[2]->getBox()->setForce(cocos2d::Vec2(0, 5.06)*BULLETSPEED);
+			eProjectiles[3]->getBox()->setForce(cocos2d::Vec2(1.75, 4.5)*BULLETSPEED);
+			eProjectiles[4]->getBox()->setForce(cocos2d::Vec2(3.25, 3.25)*BULLETSPEED);
+
+
+		}
+		if (eHasShot)
+			eShootTimer += dt;
 	}
 }

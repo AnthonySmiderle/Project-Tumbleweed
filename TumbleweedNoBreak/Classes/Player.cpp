@@ -370,8 +370,6 @@ namespace Sedna {
 					pProjectiles.erase(pProjectiles.begin() + i);
 					check = true;
 					break;
-
-
 				}
 				else
 					check = false;
@@ -412,12 +410,9 @@ namespace Sedna {
 						if(this->getHP()<3)
 							this->setHP(this->getHP() + 1);
 					}
-					//if (tableList[i]->getBeer() == rapid)
-					//
-					//if (tableList[i]->getBeer() == invinc)
+					
 					tableList[i]->setBeer(blank);
 				}
-
 
 				tableList[i]->spriteSwitch();
 				//times 2 to give a better feel to kicking the table
