@@ -31,6 +31,7 @@ namespace Sedna {
 	public:
 		ShotgunOutlaw(float x, float y);
 		void shoot(float dt, cocos2d::Scene* s) override;
+		void checkList() override;
 
 	};
 

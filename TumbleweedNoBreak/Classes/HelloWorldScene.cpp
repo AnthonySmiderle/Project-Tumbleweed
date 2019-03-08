@@ -298,6 +298,8 @@ void HelloWorld::update(float dt)
 
 
 			shotgunTest->updateGameObject();
+			shotgunTest->shoot(dt,this);
+			shotgunTest->checkList();
 			//shotgunTest->shoot(dt,this);
 
 			for (int i = 0; i < sManager.outlawList.size(); i++) {
