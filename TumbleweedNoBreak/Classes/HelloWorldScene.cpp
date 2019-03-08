@@ -283,24 +283,27 @@ void HelloWorld::update(float dt)
 					sManager.tableList[i]->getBox()->getDrawNode()->setVisible(true);
 				playerOne->getBox()->getDrawNode()->setVisible(true);
 				playerTwo->getBox()->getDrawNode()->setVisible(true);
-
-				shotgunTest->getBox()->getDrawNode()->setVisible(true);
+				for(unsigned int i=0;i<sManager.shotgunOutlawList.size();i++)
+					sManager.shotgunOutlawList[i]->getBox()->getDrawNode()->setVisible(true);
 			}
 			else {
 				for (unsigned int i = 0; i < sManager.outlawList.size(); i++)
 					sManager.outlawList[i]->getBox()->getDrawNode()->setVisible(false);
 				for (unsigned int i = 0; i < sManager.tableList.size(); i++)
 					sManager.tableList[i]->getBox()->getDrawNode()->setVisible(false);
+				for (unsigned int i = 0; i < sManager.shotgunOutlawList.size(); i++)
+					sManager.shotgunOutlawList[i]->getBox()->getDrawNode()->setVisible(false);
 				playerOne->getBox()->getDrawNode()->setVisible(false);
 				playerTwo->getBox()->getDrawNode()->setVisible(false);
 			}//show hitboxes
 #endif
 
-
-			shotgunTest->updateGameObject();
-			shotgunTest->shoot(dt,this);
-			shotgunTest->checkList();
-			//shotgunTest->shoot(dt,this);
+			for (unsigned int i = 0; i < sManager.shotgunOutlawList.size(); i++) {
+				sManager.shotgunOutlawList[i]->updateGameObject();
+				sManager.shotgunOutlawList[i]->shoot(dt, this);
+				sManager.shotgunOutlawList[i]->checkList();
+			}
+			
 
 			for (int i = 0; i < sManager.outlawList.size(); i++) {
 				sManager.outlawList[i]->shoot(dt, this);
@@ -335,9 +338,7 @@ void HelloWorld::initSprites()
 	DDOS->getSprite()->setVisible(true);
 	/////////////////////////////////////
 
-	shotgunTest = new Sedna::ShotgunOutlaw(150,260);
-	this->addChild(shotgunTest->getBox()->getDrawNode());
-	this->addChild(shotgunTest->getSprite(),10);
+	
 
 
 	olReliable = new Sedna::Gun("olReliable", 2, 4, 0.35f);
