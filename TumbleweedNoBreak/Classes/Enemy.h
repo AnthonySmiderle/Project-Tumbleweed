@@ -20,6 +20,7 @@ namespace Sedna {
 		virtual void checkBCollision(Player* p);
 		virtual void checkBCollision(std::vector<Table*>& tableList);
 		unsigned int points = 100;//this is public because there really isn't a reason to keep it private
+		
 	protected:
 		std::vector<Projectile*> eProjectiles;
 		float eShootTimer = 0.0f;
