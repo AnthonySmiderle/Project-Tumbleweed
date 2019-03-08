@@ -402,14 +402,14 @@ namespace Sedna {
 				{
 					if (tableList[i]->getBeer() == health)
 					{
-						for (int j = this->getUI()->getHPSprites().size(); j >= 0 ; j--) {
+						for (int j = this->getUI()->getHPSprites().size()-1; j >= 0 ; j--) {
 							if (this->getUI()->getHPSprites()[j]->getZOrder() == 20) {
 								this->getUI()->getHPSprites()[j]->setZOrder(21);
 								this->getUI()->getHPSprites()[j]->setTexture("fullHeart.png");
 								break;
 							}
 						}
-						if(this->getHP()>=3)
+						if(this->getHP()<3)
 							this->setHP(this->getHP() + 1);
 					}
 					//if (tableList[i]->getBeer() == rapid)
