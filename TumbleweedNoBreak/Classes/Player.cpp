@@ -75,7 +75,7 @@ namespace Sedna {
 		this->sprite->setRotation(90);
 	}
 
-	void Player::setCurrnetGun(Gun * g)
+	void Player::setCurrentGun(Gun * g)
 	{
 		currentGun = g;
 		if (g->getName() == "olReliable") {
@@ -409,6 +409,14 @@ namespace Sedna {
 						}
 						if(this->getHP()<3)
 							this->setHP(this->getHP() + 1);
+					}
+					if (tableList[i]->getBeer() == invinc)
+					{
+						invincTimer = 20.0f;
+					}
+					if (tableList[i]->getBeer() == rapid)
+					{
+
 					}
 					
 					tableList[i]->setBeer(blank);

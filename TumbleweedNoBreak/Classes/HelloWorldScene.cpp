@@ -131,7 +131,7 @@ void HelloWorld::update(float dt)
 		//////////////////////////////////////////////////////////////////////////////////////////////
 
 		if (playerOne->getCurrentGun()->getAmmo() <= 0)
-			playerOne->setCurrnetGun(olReliable);
+			playerOne->setCurrentGun(olReliable);
 
 
 		if (p1Controller->isButtonPressed(Sedna::SELECT))
@@ -213,7 +213,7 @@ void HelloWorld::update(float dt)
 				{
 					startLabel->setString("3");
 					if (!playMusic) {
-						//cocos2d::experimental::AudioEngine::play2d(Music::gameMusic[Music::MusicType], true);
+						cocos2d::experimental::AudioEngine::play2d(Music::gameMusic[Music::MusicType], true);
 						playMusic = true;
 					}
 				}

@@ -129,7 +129,7 @@ bool MenuScene::init() {
 	menuE->select(1);
 
 
-	//cocos2d::experimental::AudioEngine::play2d(Music::menuMusic[Music::MusicType], true);
+	cocos2d::experimental::AudioEngine::play2d(Music::menuMusic[Music::MusicType], true);
 	this->scheduleUpdate();
 
 	return true;
