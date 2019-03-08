@@ -22,7 +22,7 @@ namespace Sedna {
 		}
 		else
 		{
-			beer = new Potion(blank);
+			beer = new Potion(health);
 			tableImage = "Table.png";
 		}
 		

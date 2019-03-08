@@ -536,6 +536,10 @@ namespace Sedna {
 				hpSprites[i]->setPosition(hpSprites[i]->getPosition() + p);
 	}
 
+	void SednaUI::updateHP()
+	{
+
+	}
 
 	void SednaUI::updateList()
 	{

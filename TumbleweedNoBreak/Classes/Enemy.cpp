@@ -95,6 +95,7 @@ namespace Sedna {
 				eProjectiles[i]->getSprite()->removeFromParent();
 				eProjectiles.erase(eProjectiles.begin() + i);
 				BaseObjectManager::eProjectileBObjects.erase(BaseObjectManager::eProjectileBObjects.begin() + i);
+				p->setHP(p->getHP() - 1);
 				if (p->getHP() <= 0)
 					p->die();
 			}
