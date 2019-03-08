@@ -2,6 +2,7 @@
 #include "baseObjectManager.h"
 #include "Player.h"
 #include "Table.h"
+#include <iostream>
 #define BULLETSPEED 2
 namespace Sedna {
 
@@ -144,11 +145,18 @@ namespace Sedna {
 	}
 	void ShotgunOutlaw::shoot(float dt, cocos2d::Scene * s)
 	{
+		
 		if (eShootTimer > 0.4f) {
 			eShootTimer = 0.0f;
 			eHasShot = false;
 		}
 		if (!eShootTimer) {
+			for (int i = 0; i < eProjectiles.size(); i++) {
+				eProjectiles[i]->getBox()->getDrawNode()->removeFromParent();
+				eProjectiles[i]->getSprite()->removeFromParent();
+				eProjectiles.erase(eProjectiles.begin() + i);
+				BaseObjectManager::eProjectileBObjects.erase(BaseObjectManager::eProjectileBObjects.begin() + i);
+			}
 			eHasShot = true;
 			Projectile* eBaseProjectile = new Sedna::Projectile(-1000, 10, Enemy);
 			s->addChild(eBaseProjectile->getBox()->getDrawNode());
@@ -186,21 +194,32 @@ namespace Sedna {
 			eProjectiles.push_back(new Sedna::Projectile(*eBaseProjectile5));
 			BaseObjectManager::eProjectileBObjects.push_back(eBaseProjectile5);
 
+
 			eProjectiles[0]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-16, 0));
 			eProjectiles[1]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-16, 0));
 			eProjectiles[2]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-16, 0));
 			eProjectiles[3]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-16, 0));
 			eProjectiles[4]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-16, 0));
 
-			eProjectiles[0]->getBox()->setForce(cocos2d::Vec2(-3.25, 3.25)*BULLETSPEED);
-			eProjectiles[1]->getBox()->setForce(cocos2d::Vec2(-1.75, 4.5)*BULLETSPEED);
-			eProjectiles[2]->getBox()->setForce(cocos2d::Vec2(0, 5.06)*BULLETSPEED);
-			eProjectiles[3]->getBox()->setForce(cocos2d::Vec2(1.75, 4.5)*BULLETSPEED);
-			eProjectiles[4]->getBox()->setForce(cocos2d::Vec2(3.25, 3.25)*BULLETSPEED);
+			eProjectiles[0]->getBox()->setForce(cocos2d::Vec2(-3.25, -3.25)*BULLETSPEED);
+			eProjectiles[1]->getBox()->setForce(cocos2d::Vec2(-1.75, -4.5)*BULLETSPEED);
+			eProjectiles[2]->getBox()->setForce(cocos2d::Vec2(0, -5.06)*BULLETSPEED);
+			eProjectiles[3]->getBox()->setForce(cocos2d::Vec2(1.75, -4.5)*BULLETSPEED);
+			eProjectiles[4]->getBox()->setForce(cocos2d::Vec2(3.25, -3.25)*BULLETSPEED);
 
 
 		}
 		if (eHasShot)
 			eShootTimer += dt;
+	}
+	void ShotgunOutlaw::checkList()
+	{
+		if (eProjectiles.size() > 10) {
+			eProjectiles.front()->getBox()->getDrawNode()->removeFromParent();
+			eProjectiles.front()->getSprite()->removeFromParent();
+			eProjectiles.erase(eProjectiles.begin());
+		}
+		for (int i = 0; i < eProjectiles.size(); i++)
+			eProjectiles[i]->updateGameObject();
 	}
 }
