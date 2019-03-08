@@ -12,23 +12,27 @@ namespace Sedna {
 	class Outlaw : public GameObject {
 	public:
 		Outlaw(float x, float y);
-	
-		void shoot(float dt,cocos2d::Scene* s);
-		void checkList();
-		void removeProjectiles();
-		void checkBCollision(Player* p);
-		void checkBCollision(std::vector<Table*>& tableList);
+		virtual ~Outlaw();
+
+		virtual void shoot(float dt,cocos2d::Scene* s);
+		virtual void checkList();
+		virtual void removeProjectiles();
+		virtual void checkBCollision(Player* p);
+		virtual void checkBCollision(std::vector<Table*>& tableList);
 		unsigned int points = 100;//this is public because there really isn't a reason to keep it private
-	private:
+	protected:
 		std::vector<Projectile*> eProjectiles;
 		float eShootTimer = 0.0f;
 		bool eHasShot = false;
-	protected:
-		int x = 0;
 
 	};
 
+	class ShotgunOutlaw : public Outlaw {
+	public:
+		ShotgunOutlaw(float x, float y);
+		void shoot(float dt, cocos2d::Scene* s) override;
 
+	};
 
 
 

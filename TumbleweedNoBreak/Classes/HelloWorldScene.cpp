@@ -213,7 +213,7 @@ void HelloWorld::update(float dt)
 				{
 					startLabel->setString("3");
 					if (!playMusic) {
-						cocos2d::experimental::AudioEngine::play2d(Music::gameMusic[Music::MusicType], true);
+						//cocos2d::experimental::AudioEngine::play2d(Music::gameMusic[Music::MusicType], true);
 						playMusic = true;
 					}
 				}
@@ -249,7 +249,7 @@ void HelloWorld::update(float dt)
 #ifdef _DEBUG
 			if (p1Controller->isButtonPressed(Sedna::Y))
 				moveScreen ^= 1;
-			if (moveScreen)
+			if (!moveScreen)
 			{
 				for (int i = 0; i < pauseMenu->getLabelList().size(); i++) {
 					pauseMenu->getLabelList()[i]->setPosition(cocos2d::Vec2(pauseMenu->getLabelList()[i]->getPosition().x,
@@ -283,6 +283,8 @@ void HelloWorld::update(float dt)
 					sManager.tableList[i]->getBox()->getDrawNode()->setVisible(true);
 				playerOne->getBox()->getDrawNode()->setVisible(true);
 				playerTwo->getBox()->getDrawNode()->setVisible(true);
+
+				shotgunTest->getBox()->getDrawNode()->setVisible(true);
 			}
 			else {
 				for (unsigned int i = 0; i < sManager.outlawList.size(); i++)
@@ -295,7 +297,8 @@ void HelloWorld::update(float dt)
 #endif
 
 
-
+			shotgunTest->updateGameObject();
+			//shotgunTest->shoot(dt,this);
 
 			for (int i = 0; i < sManager.outlawList.size(); i++) {
 				sManager.outlawList[i]->shoot(dt, this);
@@ -329,6 +332,10 @@ void HelloWorld::initSprites()
 	this->addChild(DDOS->getSprite());
 	DDOS->getSprite()->setVisible(true);
 	/////////////////////////////////////
+
+	shotgunTest = new Sedna::ShotgunOutlaw(150,260);
+	this->addChild(shotgunTest->getBox()->getDrawNode());
+	this->addChild(shotgunTest->getSprite(),10);
 
 
 	olReliable = new Sedna::Gun("olReliable", 2, 4, 0.35f);
