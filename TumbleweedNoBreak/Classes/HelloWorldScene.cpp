@@ -342,10 +342,10 @@ void HelloWorld::initSprites()
 
 	olReliable = new Sedna::Gun("olReliable", 2, 4, 0.35f);
 	bloodyMary = new Sedna::Gun("bloodyMary", 3, 10, 10, 0.85f);
-	theBiggestIron = new Sedna::Gun("theBiggestIron", 3, 10, 0.05f);
+	theBiggestIron = new Sedna::Gun("theBiggestIron", 1, 10,100, 0.089f);
 
 
-	playerOne = new Sedna::Player(1, 100, 100, managerR, bloodyMary);
+	playerOne = new Sedna::Player(1, 100, 100, managerR, theBiggestIron);
 	this->addChild(playerOne->getBox()->getDrawNode());
 	this->addChild(playerOne->getSprite(), 10);
 	this->addChild(playerOne->getUI()->getUIGunSprite(), 20);
