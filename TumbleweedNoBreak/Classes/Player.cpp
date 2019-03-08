@@ -72,7 +72,6 @@ namespace Sedna {
 	{
 		takeInputs = false;
 		this->getBox()->setForce(cocos2d::Vec2(0, 0));
-		/*this->sprite->setAnchorPoint(cocos2d::Vec2(this->getBox()->getRadius(), this->getBox()->getRadius()));*/
 		this->sprite->setRotation(90);
 	}
 
@@ -341,6 +340,7 @@ namespace Sedna {
 					check = false;
 				if (outlawList[j]->getHP() <= 0) {
 					score += 100;
+					playerUI->updateList();
 					outlawList[j]->removeProjectiles();
 					outlawList[j]->getBox()->getDrawNode()->removeFromParent();
 					outlawList[j]->getSprite()->removeFromParent();
@@ -402,7 +402,7 @@ namespace Sedna {
 				{
 					if (tableList[i]->getBeer() == health)
 					{
-						for (int j = this->getUI()->getHPSprites().size()-1; j > 0 ; j--) {
+						for (int j = this->getUI()->getHPSprites().size(); j >= 0 ; j--) {
 							if (this->getUI()->getHPSprites()[j]->getZOrder() == 20) {
 								this->getUI()->getHPSprites()[j]->setZOrder(21);
 								this->getUI()->getHPSprites()[j]->setTexture("fullHeart.png");

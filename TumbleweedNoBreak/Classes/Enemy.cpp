@@ -2,6 +2,7 @@
 #include "baseObjectManager.h"
 #include "Player.h"
 #include "Table.h"
+#include <iostream>
 namespace Sedna {
 
 	Sedna::Outlaw::Outlaw(float x, float y)
@@ -69,7 +70,6 @@ namespace Sedna {
 				if (p->getController()->isButtonReleased(Sedna::LB)) {
 
 					p->setHP(p->getHP() - 1);
-
 					for (int j = 0; j < p->getUI()->getHPSprites().size(); j++) {
 						if (p->getUI()->getHPSprites()[j]->getZOrder() == 21) {
 							p->getUI()->getHPSprites()[j]->setZOrder(20);
