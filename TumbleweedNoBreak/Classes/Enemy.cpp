@@ -68,7 +68,6 @@ namespace Sedna {
 			if (eProjectiles[i]->getBox()->checkCollision(*p->getBox())) {
 #ifdef _DEBUG
 				if (p->getController()->isButtonReleased(Sedna::LB)) {
-
 					p->setHP(p->getHP() - 1);
 					for (int j = 0; j < p->getUI()->getHPSprites().size(); j++) {
 						if (p->getUI()->getHPSprites()[j]->getZOrder() == 21) {
