@@ -300,15 +300,14 @@ void HelloWorld::update(float dt)
 			//shotgunTest->updateGameObject();
 			//shotgunTest->shoot(dt,this);
 			//shotgunTest->checkList();
-			//shotgunTest->shoot(dt,this);
 
+			
 
 
 			for (int i = 0; i < sManager.outlawList.size(); i++) {
 				sManager.outlawList[i]->shoot(dt, this);
 			}
 			bigCheckList();
-
 
 
 			if (DDOS->getSprite()->getPosition().y - bg2->getPosition().y >= 588.8f) {
@@ -321,10 +320,11 @@ void HelloWorld::update(float dt)
 			playerOne->updateGameObject();
 			playerTwo->updateGameObject();
 			bounceFunc();
-			//rifleTest->updateGameObject();
-			//rifleTest->setTrack(playerOne);
-			//rifleTest->shoot(dt, this);
-			//rifleTest->checkList();
+
+			rifleTest->updateGameObject();
+			rifleTest->setTrack(playerOne);
+			rifleTest->shoot(dt, this);
+			rifleTest->checkList();
 		}
 	}
 
@@ -341,9 +341,9 @@ void HelloWorld::initSprites()
 	DDOS->getSprite()->setVisible(true);
 	/////////////////////////////////////
 
-	//shotgunTest = new Sedna::ShotgunOutlaw(150,260);
-	//this->addChild(shotgunTest->getBox()->getDrawNode());
-	//this->addChild(shotgunTest->getSprite(),10);
+	shotgunTest = new Sedna::ShotgunOutlaw(150,260);
+	this->addChild(shotgunTest->getBox()->getDrawNode());
+	this->addChild(shotgunTest->getSprite(),10);
 
 	rifleTest = new Sedna::RifleOutlaw(150, 260);
 	this->addChild(rifleTest->getBox()->getDrawNode());

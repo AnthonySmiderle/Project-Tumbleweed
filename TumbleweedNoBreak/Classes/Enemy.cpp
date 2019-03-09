@@ -142,6 +142,10 @@ namespace Sedna {
 		}
 	}
 	
+
+
+
+
 	ShotgunOutlaw::ShotgunOutlaw(float x, float y) :Outlaw(x, y)
 	{
 		this->getSprite()->setTexture("DOS.jpg");
@@ -226,14 +230,21 @@ namespace Sedna {
 			eProjectiles[i]->updateGameObject();
 	}
 
+
+
+
+
+
+
 	RifleOutlaw::RifleOutlaw(float x, float y) : Outlaw(x, y)
 	{
 		this->getSprite()->setRotation(10.0f);
+		track = cocos2d::Vec2(0, 0);
 	}
+
 	void Sedna::RifleOutlaw::shoot(float dt, cocos2d::Scene * s)
 	{
-		//if (track == nullptr)
-		//	return;
+		
 		if (eShootTimer > 0.4f) {
 			eShootTimer = 0.0f;
 			eHasShot = false;
@@ -248,22 +259,32 @@ namespace Sedna {
 			BaseObjectManager::eProjectileBObjects.push_back(eBaseProjectile);
 
 			eProjectiles.back()->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-16, 0));
-			eProjectiles.back()->getBox()->setForce(track);
+			eProjectiles.back()->getBox()->setForce(cocos2d::Vec2(track.UNIT_X.x,track.UNIT_Y.y)*5);
 		}
 		if (eHasShot)
 			eShootTimer += dt;
+
 	}
+	
 	void Sedna::RifleOutlaw::checkList()
 	{
-
+		if (eProjectiles.size() > 4) {
+			eProjectiles.front()->getBox()->getDrawNode()->removeFromParent();
+			eProjectiles.front()->getSprite()->removeFromParent();
+			eProjectiles.erase(eProjectiles.begin());
+		}
+		for (int i = 0; i < eProjectiles.size(); i++)
+			eProjectiles[i]->updateGameObject();
 	}
 	void Sedna::RifleOutlaw::setTrack(Player * p)
 	{
 		//if ((this->getBox()->getLocation() - p->getBox()->getLocation()) < 0) 
 		//	track =(this->getBox()->getLocation() - p->getBox()->getLocation()) * -1;
-		
+		//
 		//else
-			track = (this->getBox()->getLocation() - p->getBox()->getLocation());
+
+			track = (p->getBox()->getLocation() - this->getBox()->getLocation());
+			std::cout << track.x << " " << track.y<<"\n";
 	}
 	cocos2d::Vec2 Sedna::RifleOutlaw::getTrack() const
 	{
