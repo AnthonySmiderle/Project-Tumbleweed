@@ -67,6 +67,7 @@ namespace Sedna {
 	
 		std::vector<Projectile*> getpProjectile() const;
 	private:
+		int playerNumber;
 		unsigned int score = 0;
 		bool takeInputs = true;
 		SednaUI* playerUI;

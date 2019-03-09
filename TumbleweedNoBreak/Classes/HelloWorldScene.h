@@ -46,10 +46,12 @@ public:
 	virtual bool init();
 	void update(float dt);
 
+	void pause(float dt);
+	void play(float dt);
 	void initSprites();
 	void checkInput(float dt);
 	void getCollisions();
-	void bigCheckList();
+	void bigCheckList(float dt);
 	void recursiveFunction(std::vector<Sedna::Outlaw*>& outlawList);
 	void recursiveFunction(std::vector<Sedna::Table*>& tableList);
 	void checkPosAll();

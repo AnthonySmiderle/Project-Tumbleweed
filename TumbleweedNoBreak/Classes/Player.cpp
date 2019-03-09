@@ -9,16 +9,21 @@ namespace Sedna {
 
 	Player::Player(int wPlayer, float x, float y, XinputManager MANAGER, Gun* CURRENTGUN)
 	{
+		this->playerNumber = wPlayer;
 		this->setHP(3);
 		score = 0;
+
+
 		auto localL1 = cocos2d::Label::create(CURRENTGUN->getName() == "olReliable" ? "" : std::to_string(CURRENTGUN->getAmmo()), "fonts/Montague.ttf", 15);
 		auto localL2 = cocos2d::Label::create(std::to_string(score), "fonts/Montague.ttf", 15);
 		playerUI = new SednaUI(CURRENTGUN,this, 2, localL1,localL2);
 
-		sprite = cocos2d::Sprite::create("player1.png");
-		sprite->setScale(0.85f);
+
+
 		if (wPlayer == playerOne) {
-			hitBox = new CirclePrimitive(cocos2d::Vec2(x, y), 24, 5, 30);
+		sprite = cocos2d::Sprite::create("player1.png");
+		sprite->setScale(spriteScale);
+			hitBox = new CirclePrimitive(cocos2d::Vec2(x, y), 20, 5, 30);
 			hitBox->getDrawNode()->setVisible(false);
 
 			this->pController = MANAGER.getController(0);
@@ -35,7 +40,9 @@ namespace Sedna {
 
 		}
 		else {
-			hitBox = new CirclePrimitive(cocos2d::Vec2(x, y), 24, 5, 30);
+			sprite = cocos2d::Sprite::create("player2.png");
+			sprite->setScale(spriteScale);
+			hitBox = new CirclePrimitive(cocos2d::Vec2(x, y), 20, 5, 30);
 			hitBox->getDrawNode()->setVisible(false);
 
 			this->pController = MANAGER.getController(1);
@@ -148,11 +155,17 @@ namespace Sedna {
 		if (takeInputs) {
 			if (pSticks[1].y < 0.3f && pSticks[1].y > -0.3f && pSticks[1].x < 0.3f && pSticks[1].x > -0.3f ||
 				pSticks[1].y > 0.3f && pSticks[1].x < 0.3f && pSticks[1].x > -0.3f) {
+				if(playerNumber == 1)
 				sprite->setTexture("player1.png");
+				else
+					sprite->setTexture("player2.png");
+
 			}
 			if (pSticks[1].x < -0.3f)
+				if (playerNumber == 1)
 				sprite->setTexture("p1L.png");
 			if (pSticks[1].x > 0.3f)
+				if (playerNumber == 1)
 				sprite->setTexture("p1R.png");
 
 			pController->getTriggers(pTriggers);
@@ -166,10 +179,12 @@ namespace Sedna {
 				if (currentGun->getGunTimer() == 0)
 				{
 
-					//if (pSticks[1].y < -0.3f) {
+					//comment this if statement out for omnidirectional
+					if (pSticks[1].y < -0.3f) {
 
-					//}
-				//	else {
+					}
+					//comment this else statement out for omidirectional
+					else {
 						currentGun->setAmmo(currentGun->getAmmo() - 1);
 						playerUI->updateList();
 						currentGun->setHasShot(true);
@@ -185,31 +200,35 @@ namespace Sedna {
 							pProjectiles.push_back(new Sedna::Projectile(*playerProjectile));
 							
 							pProjectiles.back()->getBox()->setLocation(this->getBox()->getLocation());
-							pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(test2)*BULLETSPEED1 * 2.5);
+							//uncomment this for omnidirectional
+						///	pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(test2)*BULLETSPEED1 * 2.5);
 							
-							//if (pSticks[1].x < -0.3f) {
-							//	pProjectiles.back()->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-16, 0));
-							//
-							//	//pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(test2)*BULLETSPEED1*2);
-							//
-							//	pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(-3.5, 3.5)*BULLETSPEED);
-							//}
-							//
-							//if (pSticks[1].x > 0.3f) {
-							//	pProjectiles.back()->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(16, 0));
-							//
-							//	//pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(test2)*BULLETSPEED1*2);
-							//
-							//	pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(3.5, 3.5)*BULLETSPEED);
-							//}
-							//
-							//if (pSticks[1].y > 0.3f && pSticks[1].x < 0.3f && pSticks[1].x > -0.3f ||
-							//	pSticks[1].y < 0.3f && pSticks[1].y > -0.3f && pSticks[1].x < 0.3f && pSticks[1].x > -0.3f)
-							//	pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(0, 5)*BULLETSPEED);
-							//	//pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(test2)*BULLETSPEED1*2);
+							//comment out this region to enable omnidirectional shooting
+#pragma region 3DirectionShooting
+							if (pSticks[1].x < -0.3f) {
+								pProjectiles.back()->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-16, 0));
+							
+								//pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(test2)*BULLETSPEED1*2);
+							
+								pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(-4.5, 3.5)*BULLETSPEED);
+							}
+							
+							if (pSticks[1].x > 0.3f) {
+								pProjectiles.back()->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(16, 0));
+							
+								//pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(test2)*BULLETSPEED1*2);
+							
+								pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(4.5, 3.5)*BULLETSPEED);
+							}
+							
+							if (pSticks[1].y > 0.3f && pSticks[1].x < 0.3f && pSticks[1].x > -0.3f ||
+								pSticks[1].y < 0.3f && pSticks[1].y > -0.3f && pSticks[1].x < 0.3f && pSticks[1].x > -0.3f)
+								pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(0, 5)*BULLETSPEED);
+								//pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(test2)*BULLETSPEED1*2);
 
 
 						}
+#pragma endregion
 						else if (currentGun->getName() == "bloodyMary") {
 							for (int i = 0; i < pProjectiles.size(); i++) {
 								pProjectiles[i]->getBox()->getDrawNode()->removeFromParent();
@@ -255,13 +274,6 @@ namespace Sedna {
 							pProjectiles[4]->getBox()->setLocation(this->getBox()->getLocation());
 
 
-
-							//pProjectiles[0]->getBox()->setForce(cocos2d::Vec2(pSticks[1].x -3.25,pSticks[1].y + 3.25)*BULLETSPEED);//projectile on the left
-							//pProjectiles[1]->getBox()->setForce(cocos2d::Vec2(pSticks[1].x -1.75, pSticks[1].y + 4.5)*BULLETSPEED);
-							//pProjectiles[2]->getBox()->setForce(cocos2d::Vec2(pSticks[1].x + 0, pSticks[1].y + 5.06)*BULLETSPEED);//projectiles in the middle
-							//pProjectiles[3]->getBox()->setForce(cocos2d::Vec2(pSticks[1].x + 1.75, pSticks[1].y + 4.5)*BULLETSPEED);
-							//pProjectiles[4]->getBox()->setForce(cocos2d::Vec2(pSticks[1].x + 3.25, pSticks[1].y + 3.25)*BULLETSPEED);//projectile on the right
-
 							if (pSticks[1].y > 0.3f && pSticks[1].x < 0.3f && pSticks[1].x > -0.3f ||
 								pSticks[1].y < 0.3f && pSticks[1].y > -0.3f && pSticks[1].x < 0.3f && pSticks[1].x > -0.3f) {
 								pProjectiles[0]->getBox()->setForce(cocos2d::Vec2(-3.25, 3.25)*BULLETSPEED);//projectile on the left
@@ -303,7 +315,7 @@ namespace Sedna {
 							
 							}
 						}
-					//}
+					}
 				}
 			}
 

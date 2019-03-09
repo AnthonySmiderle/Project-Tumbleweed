@@ -3,16 +3,15 @@
 #include "Player.h"
 #include "Table.h"
 #include <iostream>
-#define BULLETSPEED 2
 namespace Sedna {
 
 	Sedna::Outlaw::Outlaw(float x, float y)
 	{
 
 		sprite = cocos2d::Sprite::create("enemy1.png");
-		sprite->setScale(0.85f);
+		sprite->setScale(spriteScale);
 
-		hitBox = new CirclePrimitive(cocos2d::Vec2(x, y), 24, 5, 30);
+		hitBox = new CirclePrimitive(cocos2d::Vec2(x, y), 20, 5, 30);
 		hitBox->getDrawNode()->setVisible(false);
 
 		this->objectHp = 3;

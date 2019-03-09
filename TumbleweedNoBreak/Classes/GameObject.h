@@ -3,6 +3,7 @@
 #include "Primitive.h"
 #include "Enums and Typdefs.h"
 #include <string>
+
 namespace Sedna {
 
 	class GameObject{
@@ -18,6 +19,7 @@ namespace Sedna {
 		void setHP(HP hp);
 		virtual void die() {}
 		
+		const float spriteScale = 0.75f;
 	protected:
 		HP objectHp;
 		cocos2d::Sprite *sprite;
