@@ -14,6 +14,7 @@ namespace Sedna {
 		Outlaw(float x, float y);
 		virtual ~Outlaw();
 
+		std::vector<Projectile*> getEProjectiles() const { return eProjectiles; }
 		virtual void shoot(float dt,cocos2d::Scene* s);
 		virtual void checkList();
 		virtual void removeProjectiles();
@@ -22,6 +23,8 @@ namespace Sedna {
 		unsigned int points = 100;//this is public because there really isn't a reason to keep it private
 		
 	protected:
+		bool yeee = false;
+
 		std::vector<Projectile*> eProjectiles;
 		float eShootTimer = 0.0f;
 		bool eHasShot = false;
