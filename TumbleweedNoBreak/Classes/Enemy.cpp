@@ -259,7 +259,8 @@ namespace Sedna {
 			BaseObjectManager::eProjectileBObjects.push_back(eBaseProjectile);
 
 			eProjectiles.back()->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-16, 0));
-			eProjectiles.back()->getBox()->setForce(cocos2d::Vec2(track.UNIT_X.x,track.UNIT_Y.y)*5);
+			auto direction = track / sqrt(track.x*track.x + track.y*track.y);
+			eProjectiles.back()->getBox()->setForce(cocos2d::Vec2(direction) * 5);
 		}
 		if (eHasShot)
 			eShootTimer += dt;
@@ -284,7 +285,7 @@ namespace Sedna {
 		//else
 
 			track = (p->getBox()->getLocation() - this->getBox()->getLocation());
-			std::cout << track.x << " " << track.y<<"\n";
+			
 	}
 	cocos2d::Vec2 Sedna::RifleOutlaw::getTrack() const
 	{

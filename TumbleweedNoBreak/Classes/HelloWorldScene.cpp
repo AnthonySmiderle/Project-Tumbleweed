@@ -213,7 +213,7 @@ void HelloWorld::update(float dt)
 				{
 					startLabel->setString("3");
 					if (!playMusic) {
-						//cocos2d::experimental::AudioEngine::play2d(Music::gameMusic[Music::MusicType], true);
+						cocos2d::experimental::AudioEngine::play2d("bgm.mp3", true);
 						playMusic = true;
 					}
 				}
@@ -249,7 +249,7 @@ void HelloWorld::update(float dt)
 #ifdef _DEBUG
 			if (p1Controller->isButtonPressed(Sedna::Y))
 				moveScreen ^= 1;
-			if (!moveScreen)
+			if (moveScreen)
 			{
 				for (int i = 0; i < pauseMenu->getLabelList().size(); i++) {
 					pauseMenu->getLabelList()[i]->setPosition(cocos2d::Vec2(pauseMenu->getLabelList()[i]->getPosition().x,
@@ -355,7 +355,7 @@ void HelloWorld::initSprites()
 	theBiggestIron = new Sedna::Gun("theBiggestIron", 1, 10,100, 0.089f);
 
 
-	playerOne = new Sedna::Player(1, 100, 100, managerR, theBiggestIron);
+	playerOne = new Sedna::Player(1, 100, 100, managerR, bloodyMary);
 	this->addChild(playerOne->getBox()->getDrawNode());
 	this->addChild(playerOne->getSprite(), 10);
 	this->addChild(playerOne->getUI()->getUIGunSprite(), 20);
