@@ -61,8 +61,7 @@ public:
 	// implement the "static create()" method manually
 	CREATE_FUNC(HelloWorld);
 private:
-	Sedna::ShotgunOutlaw* shotgunTest;
-	Sedna::RifleOutlaw* rifleTest;
+	
 
 
 	bool playMusic = false;

@@ -28,7 +28,7 @@
 #include "AudioEngine.h"
 #include "menuScene.h"
 #include "MusicList.h"
-#define CAMERASPEED 2
+#define CAMERASPEED 1.3f
 
 USING_NS_CC;
 
@@ -172,7 +172,7 @@ void HelloWorld::update(float dt)
 			if (pauseMenu->getIndexOfSelected() == 1 && p1Controller->isButtonPressed(Sedna::A)) {
 				TRUEPAUSE = false;
 			}
-			if (pauseMenu->getIndexOfSelected() == 0 && p1Controller->isButtonPressed(Sedna::A)) {
+			if (pauseMenu->getIndexOfSelected() == 0 && p1Controller->isButtonPressed(Sedna::A) && !end) {
 				auto mMenu = MenuScene::create();
 				cocos2d::experimental::AudioEngine::stopAll();
 				cocos2d::experimental::AudioEngine::play2d(Music::menuSound[Music::MusicType], false);
@@ -257,15 +257,7 @@ void HelloWorld::update(float dt)
 				}
 				pausedLabel->setPosition(pausedLabel->getPosition() + cocos2d::Vec2(0, CAMERASPEED));
 
-				//playerOne->getUI()->getLabelList()[0]->setPosition(playerOne->getUI()->getLabelList()[0]->getPosition() + cocos2d::Vec2(0, 2));
-				//playerOne->getUI()->getUIGunSprite()->setPosition(playerOne->getUI()->getUIGunSprite()->getPosition() + cocos2d::Vec2(0, 2));
-				//for(int i = 0; i < playerOne->getUI()->getHPSprites().size();i++)
-				//playerOne->getUI()->getHPSprites()[i]->setPosition(playerOne->getUI()->getHPSprites()[i]->getPosition() + cocos2d::Vec2(0, 2));
-				//
-				//playerTwo->getUI()->getLabelList()[0]->setPosition(playerTwo->getUI()->getLabelList()[0]->getPosition() + cocos2d::Vec2(0, 2));
-				//playerTwo->getUI()->getUIGunSprite()->setPosition(playerTwo->getUI()->getUIGunSprite()->getPosition() + cocos2d::Vec2(0, 2));
-				//for (int i = 0; i < playerTwo->getUI()->getHPSprites().size(); i++)
-				//	playerTwo->getUI()->getHPSprites()[i]->setPosition(playerTwo->getUI()->getHPSprites()[i]->getPosition() + cocos2d::Vec2(0, 2));
+				
 
 				playerOne->getUI()->updatePosition(cocos2d::Vec2(0, CAMERASPEED));
 				playerTwo->getUI()->updatePosition(cocos2d::Vec2(0, CAMERASPEED));
@@ -283,29 +275,27 @@ void HelloWorld::update(float dt)
 					sManager.tableList[i]->getBox()->getDrawNode()->setVisible(true);
 				playerOne->getBox()->getDrawNode()->setVisible(true);
 				playerTwo->getBox()->getDrawNode()->setVisible(true);
-				for(unsigned int i=0;i<sManager.shotgunOutlawList.size();i++)
-					sManager.shotgunOutlawList[i]->getBox()->getDrawNode()->setVisible(true);
+				
 			}
 			else {
 				for (unsigned int i = 0; i < sManager.outlawList.size(); i++)
 					sManager.outlawList[i]->getBox()->getDrawNode()->setVisible(false);
 				for (unsigned int i = 0; i < sManager.tableList.size(); i++)
 					sManager.tableList[i]->getBox()->getDrawNode()->setVisible(false);
-				for (unsigned int i = 0; i < sManager.shotgunOutlawList.size(); i++)
-					sManager.shotgunOutlawList[i]->getBox()->getDrawNode()->setVisible(false);
+				
 				playerOne->getBox()->getDrawNode()->setVisible(false);
 				playerTwo->getBox()->getDrawNode()->setVisible(false);
 			}//show hitboxes
 #endif
 
-			for (unsigned int i = 0; i < sManager.shotgunOutlawList.size(); i++) {
-				sManager.shotgunOutlawList[i]->updateGameObject();
-				sManager.shotgunOutlawList[i]->shoot(dt, this);
-				sManager.shotgunOutlawList[i]->checkList();
-			}
+			
 			
 
 			for (int i = 0; i < sManager.outlawList.size(); i++) {
+				if (sManager.outlawList[i]->points == 300)
+					((Sedna::RifleOutlaw*)sManager.outlawList[i])->setTrack
+					((playerOne->getBox()->getLocation() - sManager.outlawList[i]->getBox()->getLocation() <
+					playerTwo->getBox()->getLocation() - sManager.outlawList[i]->getBox()->getLocation()) ? playerOne : playerTwo);
 				sManager.outlawList[i]->shoot(dt, this);
 			}
 			bigCheckList();
@@ -322,10 +312,10 @@ void HelloWorld::update(float dt)
 			playerTwo->updateGameObject();
 			bounceFunc();
 
-			rifleTest->updateGameObject();
-			rifleTest->setTrack(playerOne);
-			rifleTest->shoot(dt, this);
-			rifleTest->checkList();
+			//rifleTest->updateGameObject();
+			//rifleTest->setTrack(playerOne);
+			//rifleTest->shoot(dt, this);
+			//rifleTest->checkList();
 		}
 	}
 
@@ -341,13 +331,6 @@ void HelloWorld::initSprites()
 	this->addChild(DDOS->getSprite());
 	DDOS->getSprite()->setVisible(true);
 	/////////////////////////////////////
-
-	
-
-	rifleTest = new Sedna::RifleOutlaw(150, 260);
-	this->addChild(rifleTest->getBox()->getDrawNode());
-	this->addChild(rifleTest->getSprite(), 10);
-
 
 	olReliable = new Sedna::Gun("olReliable", 2, 4, 0.35f);
 	bloodyMary = new Sedna::Gun("bloodyMary", 3, 10, 10, 0.85f);

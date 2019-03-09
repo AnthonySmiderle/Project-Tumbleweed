@@ -11,8 +11,10 @@ void Sedna::SpawnManager::update(float dt, int DDOS)
 	int outlawChainMax = outlawChain.update(dt, outlawList.size());
 	for (unsigned int i = 0; i < outlawChainMax; i++)
 		outlawSpawn(DDOS);
-	for (unsigned int i = 0; i < shotgunOutlaw.update(dt, shotgunOutlawList.size()); i++)
+	for (unsigned int i = 0; i < shotgunOutlaws.update(dt, outlawList.size()); i++)
 		shotgunOutlawSpawn(DDOS);
+	for (unsigned int i = 0; i < rifleOutlaws.update(dt, outlawList.size()); i++)
+		rifleOutlawSpawn(DDOS);
 }
 
 
@@ -38,8 +40,19 @@ void Sedna::SpawnManager::outlawSpawn(int DDOS)
 void Sedna::SpawnManager::shotgunOutlawSpawn(int DDOS)
 {
 	int x = 100 + (rand() % 300);
-	shotgunTest = new Sedna::ShotgunOutlaw(x, DDOS);
-	scene->addChild(shotgunTest->getBox()->getDrawNode());
-	scene->addChild(shotgunTest->getSprite(), 10);
-	shotgunOutlawList.push_back(new Sedna::ShotgunOutlaw(*shotgunTest));
+	shotgunOutlaw = new Sedna::ShotgunOutlaw(x, DDOS);
+	Sedna::BaseObjectManager::outlawBObjects.push_back(shotgunOutlaw);
+	scene->addChild(shotgunOutlaw->getBox()->getDrawNode());
+	scene->addChild(shotgunOutlaw->getSprite(), 10);
+	outlawList.push_back(new Sedna::ShotgunOutlaw(*shotgunOutlaw));
+}
+
+void Sedna::SpawnManager::rifleOutlawSpawn(int DDOS)
+{
+	int x = 100 + (rand() % 300);
+	rifleOutlaw = new Sedna::RifleOutlaw(x, DDOS);
+	Sedna::BaseObjectManager::outlawBObjects.push_back(rifleOutlaw);
+	scene->addChild(rifleOutlaw->getBox()->getDrawNode());
+	scene->addChild(rifleOutlaw->getSprite(), 10);
+	outlawList.push_back(new Sedna::RifleOutlaw(*rifleOutlaw));
 }

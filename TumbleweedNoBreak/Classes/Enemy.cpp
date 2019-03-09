@@ -148,6 +148,8 @@ namespace Sedna {
 
 	ShotgunOutlaw::ShotgunOutlaw(float x, float y) :Outlaw(x, y)
 	{
+		points = 200;
+
 		this->getSprite()->setTexture("DOS.jpg");
 	}
 	void ShotgunOutlaw::shoot(float dt, cocos2d::Scene * s)
@@ -208,11 +210,27 @@ namespace Sedna {
 			eProjectiles[3]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-16, 0));
 			eProjectiles[4]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-16, 0));
 
-			eProjectiles[0]->getBox()->setForce(cocos2d::Vec2(-3.25, -3.25));
-			eProjectiles[1]->getBox()->setForce(cocos2d::Vec2(-1.75, -4.5));
-			eProjectiles[2]->getBox()->setForce(cocos2d::Vec2(0, -5.06));
-			eProjectiles[3]->getBox()->setForce(cocos2d::Vec2(1.75, -4.5));
-			eProjectiles[4]->getBox()->setForce(cocos2d::Vec2(3.25, -3.25));
+			//eProjectiles[0]->getBox()->setForce(cocos2d::Vec2(-3.25, -3.25));
+			//eProjectiles[1]->getBox()->setForce(cocos2d::Vec2(-1.75, -4.5));
+			//eProjectiles[2]->getBox()->setForce(cocos2d::Vec2(0, -5.06));
+			//eProjectiles[3]->getBox()->setForce(cocos2d::Vec2(1.75, -4.5));
+			//eProjectiles[4]->getBox()->setForce(cocos2d::Vec2(3.25, -3.25));
+
+			if (this->getBox()->getLocation().x < 250) {
+
+			eProjectiles[0]->getBox()->setForce(cocos2d::Vec2(0, 5.06)   );//projectile on the left
+			eProjectiles[1]->getBox()->setForce(cocos2d::Vec2(1.75, -4.5) );
+			eProjectiles[2]->getBox()->setForce(cocos2d::Vec2(3.35, -3.35));//projectiles in the middle
+			eProjectiles[3]->getBox()->setForce(cocos2d::Vec2(4.5, -1.75) );
+			eProjectiles[4]->getBox()->setForce(cocos2d::Vec2(5.06, 0)   );//projectile on the right
+			}
+			else if (this->getBox()->getLocation().x > 250) {
+				eProjectiles[0]->getBox()->setForce(cocos2d::Vec2(-5.06, 0)   );//projectile on the left
+				eProjectiles[1]->getBox()->setForce(cocos2d::Vec2(-4.5, -1.75) );
+				eProjectiles[2]->getBox()->setForce(cocos2d::Vec2(-3.35,- 3.35));//projectiles in the middle
+				eProjectiles[3]->getBox()->setForce(cocos2d::Vec2(-1.75, -4.5) );
+				eProjectiles[4]->getBox()->setForce(cocos2d::Vec2(0, -5.06)    );//projectile on the right
+			}
 
 
 		}
@@ -238,6 +256,7 @@ namespace Sedna {
 
 	RifleOutlaw::RifleOutlaw(float x, float y) : Outlaw(x, y)
 	{
+		points = 300;
 		this->getSprite()->setRotation(10.0f);
 		track = cocos2d::Vec2(0, 0);
 	}
@@ -245,7 +264,7 @@ namespace Sedna {
 	void Sedna::RifleOutlaw::shoot(float dt, cocos2d::Scene * s)
 	{
 		
-		if (eShootTimer > 0.4f) {
+		if (eShootTimer > 0.9f) {
 			eShootTimer = 0.0f;
 			eHasShot = false;
 		}
@@ -260,7 +279,7 @@ namespace Sedna {
 
 			eProjectiles.back()->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-16, 0));
 			auto direction = track / sqrt(track.x*track.x + track.y*track.y);
-			eProjectiles.back()->getBox()->setForce(cocos2d::Vec2(direction) * 5);
+			eProjectiles.back()->getBox()->setForce(cocos2d::Vec2(direction) * 10);
 		}
 		if (eHasShot)
 			eShootTimer += dt;
@@ -279,13 +298,7 @@ namespace Sedna {
 	}
 	void Sedna::RifleOutlaw::setTrack(Player * p)
 	{
-		//if ((this->getBox()->getLocation() - p->getBox()->getLocation()) < 0) 
-		//	track =(this->getBox()->getLocation() - p->getBox()->getLocation()) * -1;
-		//
-		//else
-
-			track = (p->getBox()->getLocation() - this->getBox()->getLocation());
-			
+		track = (p->getBox()->getLocation() - this->getBox()->getLocation());
 	}
 	cocos2d::Vec2 Sedna::RifleOutlaw::getTrack() const
 	{

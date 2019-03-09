@@ -12,26 +12,29 @@ namespace Sedna {
 		void update(float dt, int DDOS);
 		std::vector <Sedna::Table*> tableList;
 		std::vector<Sedna::Outlaw*>outlawList;
-		std::vector<Sedna::ShotgunOutlaw*>shotgunOutlawList;
 	private:
 		float totalTime = 0.0f;
 		cocos2d::Scene* scene;
 
 		Sedna::Table* baseTable;
 		Sedna::Outlaw* outlaw;
-		Sedna::ShotgunOutlaw* shotgunTest;
+		Sedna::ShotgunOutlaw* shotgunOutlaw;
+		Sedna::RifleOutlaw* rifleOutlaw;
 
 
 
 		void tableSpawn(int DDOS);
 		void outlawSpawn(int DDOS);
 		void shotgunOutlawSpawn(int DDOS);
+		void rifleOutlawSpawn(int DDOS);
 		
 
-		SpawnObject tables = SpawnObject(5.0f,5,3.0f);
+		SpawnObject tables = SpawnObject(5.0f,5,1.0f,true);
 		SpawnObject outlaws = SpawnObject(2.0f,6,2.0f);
 		SpawnObject outlawChain = SpawnObject(20.0f,10.0f,10.0f,5,true);
-		SpawnObject shotgunOutlaw = SpawnObject(7.0f,4.0f,1.0f);
+		SpawnObject shotgunOutlaws = SpawnObject(7.0f,4.0f,1.0f);
+		SpawnObject rifleOutlaws = SpawnObject(14.0f, 7.0f, 1.0f);
+
 	};
 
 
