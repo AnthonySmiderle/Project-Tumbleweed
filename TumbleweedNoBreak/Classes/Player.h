@@ -52,13 +52,14 @@ namespace Sedna {
 		
 		unsigned int getScore() const;
 		void die();
-		void setCurrnetGun(Gun* g);
+		void setCurrentGun(Gun* g);
 		void checkInput(float dt);
 		void shoot(float dt, cocos2d::Scene* s);
 		void checkList();
 		void checkBCollision(std::vector<Outlaw*>& outlawList);
 		void checkBCollision(std::vector<Table*>& tableList);
 		void checkTableStuff(std::vector<Table*>& tableList);
+		void update(float dt);
 		
 		SednaUI* getUI() const;
 
@@ -76,7 +77,7 @@ namespace Sedna {
 
 		float tumbleTimer = 0.0f;
 		bool isTumbling = false;
-
+		float invincTimer = 0.0f;
 
 		std::vector<Projectile*> pProjectiles;
 
