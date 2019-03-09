@@ -36,7 +36,17 @@ namespace Sedna {
 
 	};
 
+	class RifleOutlaw : public Outlaw {
+	public:
+		RifleOutlaw(float x, float y);
+		void shoot(float dt, cocos2d::Scene* s) override;
+		void checkList() override;
+		cocos2d::Vec2 getTrack() const;///may be problematic
+		void setTrack(Player* p);
+	private:
+		cocos2d::Vec2 track;
 
+	};
 
 
 	class Pete : public GameObject

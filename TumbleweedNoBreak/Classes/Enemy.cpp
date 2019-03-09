@@ -104,6 +104,7 @@ namespace Sedna {
 					p->die();
 			}
 		}
+	
 	}
 	void Outlaw::checkBCollision(std::vector<Table*>& tableList)
 	{
@@ -223,5 +224,49 @@ namespace Sedna {
 		}
 		for (int i = 0; i < eProjectiles.size(); i++)
 			eProjectiles[i]->updateGameObject();
+	}
+
+	RifleOutlaw::RifleOutlaw(float x, float y) : Outlaw(x, y)
+	{
+		this->getSprite()->setRotation(10.0f);
+	}
+	void Sedna::RifleOutlaw::shoot(float dt, cocos2d::Scene * s)
+	{
+		//if (track == nullptr)
+		//	return;
+		if (eShootTimer > 0.4f) {
+			eShootTimer = 0.0f;
+			eHasShot = false;
+		}
+		if (!eShootTimer) {
+			eHasShot = true;
+			Projectile* eBaseProjectile = new Sedna::Projectile(-1000, 10, Enemy);
+			s->addChild(eBaseProjectile->getBox()->getDrawNode());
+			s->addChild(eBaseProjectile->getSprite());
+
+			eProjectiles.push_back(new Sedna::Projectile(*eBaseProjectile));
+			BaseObjectManager::eProjectileBObjects.push_back(eBaseProjectile);
+
+			eProjectiles.back()->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-16, 0));
+			eProjectiles.back()->getBox()->setForce(track);
+		}
+		if (eHasShot)
+			eShootTimer += dt;
+	}
+	void Sedna::RifleOutlaw::checkList()
+	{
+
+	}
+	void Sedna::RifleOutlaw::setTrack(Player * p)
+	{
+		//if ((this->getBox()->getLocation() - p->getBox()->getLocation()) < 0) 
+		//	track =(this->getBox()->getLocation() - p->getBox()->getLocation()) * -1;
+		
+		//else
+			track = (this->getBox()->getLocation() - p->getBox()->getLocation());
+	}
+	cocos2d::Vec2 Sedna::RifleOutlaw::getTrack() const
+	{
+		return track;
 	}
 }
