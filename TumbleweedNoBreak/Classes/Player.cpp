@@ -1,5 +1,6 @@
 #include "Player.h"
 #include <iostream>
+#include "Powerup.h"
 #define BULLETSPEED 1.5f
 #define BULLETSPEED1 3
 #define UIDISPOSITION 360
@@ -343,7 +344,7 @@ namespace Sedna {
 
 	}
 
-	void Player::checkBCollision(std::vector<Outlaw*>& outlawList)
+	void Player::checkBCollision(std::vector<Outlaw*>& outlawList, Powerup* power1,Powerup* power2)
 	{
 		bool check = false;
 		for (int i = 0; i < pProjectiles.size(); i++) {
@@ -364,7 +365,12 @@ namespace Sedna {
 				else
 					check = false;
 				if (outlawList[j]->getHP() <= 0) {
-					score += 100;
+					score += outlawList[j]->points;
+					
+					power1->getBox()->setLocation(outlawList[j]->getBox()->getLocation());
+					power1->updateGameObject();
+
+					
 					playerUI->updateList();
 					outlawList[j]->removeProjectiles();
 					outlawList[j]->getBox()->getDrawNode()->removeFromParent();
@@ -554,6 +560,11 @@ namespace Sedna {
 		return hpSprites;
 	}
 
+	void SednaUI::setUIGunSprite(cocos2d::Sprite * s)
+	{
+		this->uiGunSprite = s;
+	}
+
 	void SednaUI::updatePosition(cocos2d::Vec2 p)
 	{
 		for (int i = 0; i < labelList.size(); i++) 
@@ -567,6 +578,7 @@ namespace Sedna {
 
 	void SednaUI::updateList()
 	{
+		this->currentGun = p->getCurrentGun();
 		for (int i = 0; i < labelList.size(); i++) {
 			labelList[0]->setString(std::to_string(currentGun->getAmmo()));
 			labelList[1]->setString(std::to_string(p->getScore()));

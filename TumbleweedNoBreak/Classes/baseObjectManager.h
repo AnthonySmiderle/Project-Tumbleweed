@@ -5,6 +5,7 @@ namespace Sedna {
 	class Outlaw;
 	class Table;
 	class Gun;
+	class Powerup;
 	class BaseObjectManager {
 	public:
 		static std::vector<Gun*>gunBObjects;

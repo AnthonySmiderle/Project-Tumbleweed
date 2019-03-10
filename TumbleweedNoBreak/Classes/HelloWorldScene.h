@@ -35,6 +35,7 @@
 #include "Projectile.h"
 #include "Enemy.h"
 #include "SpawnManager.h"
+#include "Powerup.h"
 namespace Sedna {
 	class SednaMenu;
 }
@@ -64,7 +65,8 @@ public:
 	CREATE_FUNC(HelloWorld);
 private:
 	
-
+	Sedna::Powerup* bloodyMaryP_up;
+	Sedna::Powerup* theBiggestIronP_up;
 
 	bool playMusic = false;
 	static bool end;
@@ -97,9 +99,9 @@ private:
 
 
 	//guns
-	Sedna::Gun* olReliable;//base gun
-	Sedna::Gun* bloodyMary;//shotgun
-	Sedna::Gun* theBiggestIron;//gattling gun
+	//Sedna::Gun* olReliable;//base gun
+	//Sedna::Gun* bloodyMary;//shotgun
+	//Sedna::Gun* theBiggestIron;//gattling gun
 
 	Sedna::Projectile *baseProjectile;
 	std::vector<Sedna::Projectile*>pProjectiles;

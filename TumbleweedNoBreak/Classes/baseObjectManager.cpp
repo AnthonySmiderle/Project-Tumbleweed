@@ -2,6 +2,7 @@
 #include "Enemy.h"
 #include "Projectile.h"
 #include "Table.h"
+#include "Powerup.h"
 namespace Sedna {
 	std::vector<Gun*> BaseObjectManager::gunBObjects;
 	std::vector<Table*> BaseObjectManager::tableBObjects;

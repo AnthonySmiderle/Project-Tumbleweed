@@ -20,8 +20,11 @@ namespace Sedna {
 		unsigned int getDamage() const;
 		unsigned int getProjLimit() const;
 		float getRateOfFire() const;
+
+		unsigned int getOriginalAmmo() const;
 	protected:
 		const char* name;
+		unsigned int originalAmmo;
 		unsigned int ammo;
 		unsigned int damage;
 		unsigned int projLimit;
@@ -31,7 +34,12 @@ namespace Sedna {
 		bool hasShot = false;
 	};
 
-	
+	class Guns {
+	public:
+		static Gun* olReliable;
+		static Gun* bloodyMary;
+		static Gun* theBiggestIron;
+	};
 
 
 

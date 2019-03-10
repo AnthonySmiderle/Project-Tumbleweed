@@ -113,6 +113,108 @@ bool HelloWorld::init()
 
 	return true;
 }
+void HelloWorld::initSprites()
+{
+	cocos2d::experimental::AudioEngine::preload("bgm.mp3");
+	///<cocos2d::experimental::AudioEngine::preload("oRsound.mp3");>
+
+	DDOS = new Sedna::GameObject("DOS.jpg", cocos2d::Vec2(100, 300), 1, 1, 1);
+	this->addChild(DDOS->getBox()->getDrawNode());
+	this->addChild(DDOS->getSprite());
+	DDOS->getSprite()->setVisible(true);
+	/////////////////////////////////////
+
+
+	//olReliable = new Sedna::Gun("olReliable", 2, 4, 0.35f);
+	//bloodyMary = new Sedna::Gun("bloodyMary", 3, 10, 10, 0.85f);
+	//theBiggestIron = new Sedna::Gun("theBiggestIron", 1, 10,100, 0.089f);
+
+	bloodyMaryP_up = new Sedna::Powerup("gun2.png", Sedna::Guns::bloodyMary, -1000, 0);
+	theBiggestIronP_up = new Sedna::Powerup("gun3.png", Sedna::Guns::theBiggestIron, -1000, 0);
+
+	this->addChild(bloodyMaryP_up->getBox()->getDrawNode());
+	this->addChild(bloodyMaryP_up->getSprite());
+	this->addChild(theBiggestIronP_up->getBox()->getDrawNode());
+	this->addChild(theBiggestIronP_up->getSprite());
+
+
+
+	playerOne = new Sedna::Player(1, 100, 100, managerR, Sedna::Guns::olReliable);
+	this->addChild(playerOne->getBox()->getDrawNode());
+	this->addChild(playerOne->getSprite(), 10);
+	this->addChild(playerOne->getUI()->getUIGunSprite(), 20);
+	for (int i = 0; i < playerOne->getUI()->getLabelList().size(); i++) {
+		this->addChild(playerOne->getUI()->getLabelList()[i], 20);
+	}
+	for (int i = 0; i < playerOne->getUI()->getHPSprites().size(); i++)
+		this->addChild(playerOne->getUI()->getHPSprites()[i]);
+
+
+	playerTwo = new Sedna::Player(2, 300, 100, managerR, Sedna::Guns::olReliable);
+	this->addChild(playerTwo->getBox()->getDrawNode());
+	this->addChild(playerTwo->getSprite(), 10);
+	this->addChild(playerTwo->getUI()->getUIGunSprite(), 20);
+	for (int i = 0; i < playerTwo->getUI()->getLabelList().size(); i++) {
+		this->addChild(playerTwo->getUI()->getLabelList()[i], 20);
+	}
+	for (int i = 0; i < playerTwo->getUI()->getHPSprites().size(); i++)
+		this->addChild(playerTwo->getUI()->getHPSprites()[i]);
+
+
+	bg = cocos2d::Sprite::create("bg1.png");
+	this->addChild(bg, -1000);
+	bg->setScale(0.85f, 0.92f);
+	bg->setAnchorPoint(cocos2d::Vec2(0, 0));
+	bg->setPosition(0, 0);
+
+
+
+	bg2 = cocos2d::Sprite::create("bgPlain.png");
+	this->addChild(bg2, -1000);
+	bg2->setScale(0.85f, 0.92f);
+	bg2->setAnchorPoint(cocos2d::Vec2(0, 0));
+	bg2->setPosition(cocos2d::Vec2(0, bg->getContentSize().height * 0.92f));
+
+	bg3 = cocos2d::Sprite::create("bgPlain.png");
+	this->addChild(bg3, -1000);
+	bg3->setScale(0.85f, 0.92f);
+	bg3->setAnchorPoint(cocos2d::Vec2(0, 0));
+	bg3->setPosition(cocos2d::Vec2(0, (bg2->getContentSize().height * 0.92f) * 2));
+
+
+	///menu shit
+
+	pausedLabel = Label::create("Paused", "fonts/Montague.ttf", 25);
+	pausedLabel->setAnchorPoint(Vec2(0.0f, 0.0f));
+	pausedLabel->setPosition(Vec2(140, 250));
+	pausedLabel->enableShadow();
+	this->addChild(pausedLabel, 100);
+	pausedLabel->setVisible(false);
+
+	startLabel = Label::create("3", "fonts/Montague.ttf", 125);
+	startLabel->setAnchorPoint(Vec2(0.0f, 0.0f));
+	startLabel->setPosition(Vec2(200, 150));
+	startLabel->enableShadow();
+	this->addChild(startLabel, 100);
+	startLabel->setVisible(false);
+
+	for (int i = 0; i < pauseMenu->getLabelList().size(); i++) {
+		this->addChild(pauseMenu->getLabelList()[i], 100);
+		pauseMenu->getLabelList()[i]->enableShadow();
+		pauseMenu->getLabelList()[i]->setAnchorPoint(cocos2d::Vec2(0, 0));
+		if (i == 0)
+			pauseMenu->getLabelList()[i]->setPosition(140, 50);
+		else {
+			pauseMenu->getLabelList()[i]->setPosition(140, pauseMenu->getLabelList()[i - 1]->getPosition().y + 30);
+
+		}
+	}
+
+	for (int i = 0; i < pauseMenu->getLabelList().size(); i++) {
+		pauseMenu->getLabelList()[i]->setVisible(false);
+	}
+	pauseMenu->select(1);
+}
 
 void HelloWorld::update(float dt)
 {
@@ -126,14 +228,14 @@ void HelloWorld::update(float dt)
 
 
 		if (playerOne->getCurrentGun()->getAmmo() <= 0)
-			playerOne->setCurrentGun(olReliable);
+			playerOne->setCurrentGun(Sedna::Guns::olReliable);
 		if (playerTwo->getCurrentGun()->getAmmo() <= 0)
-			playerTwo->setCurrentGun(olReliable);
+			playerTwo->setCurrentGun(Sedna::Guns::olReliable);
 
 		this->pause(dt);
 		this->play(dt);
-		
-		
+
+
 	}
 
 }
@@ -249,6 +351,8 @@ void HelloWorld::play(float dt)
 {
 	if (!paused)
 	{
+		bloodyMaryP_up->updateGameObject();
+		theBiggestIronP_up->updateGameObject();
 		sManager.update(dt, DDOS->getSprite()->getPosition().y);
 
 		srand(time(0));
@@ -316,102 +420,14 @@ void HelloWorld::play(float dt)
 		playerTwo->updateGameObject();
 		bounceFunc();
 
+		bloodyMaryP_up->pickUp(playerOne);
+		bloodyMaryP_up->pickUp(playerTwo);
+		theBiggestIronP_up->pickUp(playerOne);
+		theBiggestIronP_up->pickUp(playerTwo);
 
 	}
 }
 
-void HelloWorld::initSprites()
-{
-	cocos2d::experimental::AudioEngine::preload("bgm.mp3");
-	///<cocos2d::experimental::AudioEngine::preload("oRsound.mp3");>
-
-	DDOS = new Sedna::GameObject("DOS.jpg", cocos2d::Vec2(100, 300), 1, 1, 1);
-	this->addChild(DDOS->getBox()->getDrawNode());
-	this->addChild(DDOS->getSprite());
-	DDOS->getSprite()->setVisible(true);
-	/////////////////////////////////////
-
-	olReliable = new Sedna::Gun("olReliable", 2, 4, 0.35f);
-	bloodyMary = new Sedna::Gun("bloodyMary", 3, 10, 10, 0.85f);
-	theBiggestIron = new Sedna::Gun("theBiggestIron", 1, 10,100, 0.089f);
-
-
-	playerOne = new Sedna::Player(1, 100, 100, managerR, olReliable);
-	this->addChild(playerOne->getBox()->getDrawNode());
-	this->addChild(playerOne->getSprite(), 10);
-	this->addChild(playerOne->getUI()->getUIGunSprite(), 20);
-	for (int i = 0; i < playerOne->getUI()->getLabelList().size(); i++) {
-		this->addChild(playerOne->getUI()->getLabelList()[i], 20);
-	}
-	for (int i = 0; i < playerOne->getUI()->getHPSprites().size(); i++)
-		this->addChild(playerOne->getUI()->getHPSprites()[i]);
-
-
-	playerTwo = new Sedna::Player(2, 300, 100, managerR, olReliable);
-	this->addChild(playerTwo->getBox()->getDrawNode());
-	this->addChild(playerTwo->getSprite(), 10);
-	this->addChild(playerTwo->getUI()->getUIGunSprite(), 20);
-	for (int i = 0; i < playerTwo->getUI()->getLabelList().size(); i++) {
-		this->addChild(playerTwo->getUI()->getLabelList()[i], 20);
-	}
-	for (int i = 0; i < playerTwo->getUI()->getHPSprites().size(); i++)
-		this->addChild(playerTwo->getUI()->getHPSprites()[i]);
-
-
-	bg = cocos2d::Sprite::create("bg1.png");
-	this->addChild(bg, -1000);
-	bg->setScale(0.85f, 0.92f);
-	bg->setAnchorPoint(cocos2d::Vec2(0, 0));
-	bg->setPosition(0, 0);
-
-
-
-	bg2 = cocos2d::Sprite::create("bgPlain.png");
-	this->addChild(bg2, -1000);
-	bg2->setScale(0.85f, 0.92f);
-	bg2->setAnchorPoint(cocos2d::Vec2(0, 0));
-	bg2->setPosition(cocos2d::Vec2(0, bg->getContentSize().height * 0.92f));
-
-	bg3 = cocos2d::Sprite::create("bgPlain.png");
-	this->addChild(bg3, -1000);
-	bg3->setScale(0.85f, 0.92f);
-	bg3->setAnchorPoint(cocos2d::Vec2(0, 0));
-	bg3->setPosition(cocos2d::Vec2(0, (bg2->getContentSize().height * 0.92f) * 2));
-
-
-	///menu shit
-
-	pausedLabel = Label::create("Paused", "fonts/Montague.ttf", 25);
-	pausedLabel->setAnchorPoint(Vec2(0.0f, 0.0f));
-	pausedLabel->setPosition(Vec2(140, 250));
-	pausedLabel->enableShadow();
-	this->addChild(pausedLabel, 100);
-	pausedLabel->setVisible(false);
-
-	startLabel = Label::create("3", "fonts/Montague.ttf", 125);
-	startLabel->setAnchorPoint(Vec2(0.0f, 0.0f));
-	startLabel->setPosition(Vec2(200, 150));
-	startLabel->enableShadow();
-	this->addChild(startLabel, 100);
-	startLabel->setVisible(false);
-
-	for (int i = 0; i < pauseMenu->getLabelList().size(); i++) {
-		this->addChild(pauseMenu->getLabelList()[i], 100);
-		pauseMenu->getLabelList()[i]->enableShadow();
-		pauseMenu->getLabelList()[i]->setAnchorPoint(cocos2d::Vec2(0, 0));
-		if (i == 0)
-			pauseMenu->getLabelList()[i]->setPosition(140, 50);
-		else {
-			pauseMenu->getLabelList()[i]->setPosition(140, pauseMenu->getLabelList()[i - 1]->getPosition().y + 30);
-
-		}
-	}
-
-	for (int i = 0; i < pauseMenu->getLabelList().size(); i++) {
-		pauseMenu->getLabelList()[i]->setVisible(false);
-	}
-	pauseMenu->select(1);
-}
 
 void HelloWorld::checkInput(float dt)
 {
@@ -438,6 +454,8 @@ void HelloWorld::bigCheckList(float dt)
 				playerTwo->getBox()->getLocation() - sManager.outlawList[i]->getBox()->getLocation()) ? playerOne : playerTwo);
 		sManager.outlawList[i]->shoot(dt, this);
 	}
+
+
 	checkPosAll();
 	if (sManager.outlawList.size() > 4) {
 		sManager.outlawList.front()->removeProjectiles();
@@ -450,8 +468,8 @@ void HelloWorld::bigCheckList(float dt)
 
 	recursiveFunction(sManager.outlawList);
 
-	playerOne->checkBCollision(sManager.outlawList);
-	playerTwo->checkBCollision(sManager.outlawList);
+	playerOne->checkBCollision(sManager.outlawList, bloodyMaryP_up,theBiggestIronP_up);
+	playerTwo->checkBCollision(sManager.outlawList, bloodyMaryP_up,theBiggestIronP_up);
 	playerOne->checkBCollision(sManager.tableList);
 	playerTwo->checkBCollision(sManager.tableList);
 	playerOne->checkList();

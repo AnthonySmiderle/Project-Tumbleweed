@@ -22,6 +22,8 @@ namespace Sedna {
 		std::vector<cocos2d::Label*> getLabelList() const;
 		cocos2d::Sprite* getUIGunSprite() const;
 		std::vector<cocos2d::Sprite*> getHPSprites() const;
+		void setUIGunSprite(cocos2d::Sprite* s);
+	
 
 		void updatePosition(cocos2d::Vec2 p);
 		void updateList();
@@ -56,7 +58,7 @@ namespace Sedna {
 		void checkInput(float dt);
 		void shoot(float dt, cocos2d::Scene* s);
 		void checkList();
-		void checkBCollision(std::vector<Outlaw*>& outlawList);
+		void checkBCollision(std::vector<Outlaw*>& outlawList,Powerup* power1,Powerup* power2);
 		void checkBCollision(std::vector<Table*>& tableList);
 		void checkTableStuff(std::vector<Table*>& tableList);
 		void update(float dt);
