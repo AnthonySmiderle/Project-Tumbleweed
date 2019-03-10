@@ -88,7 +88,7 @@ namespace Sedna {
 		return originalAmmo;
 	}
 
-	Gun* Guns::olReliable = new Gun("olReliable", 2, 4, 0.35f);
+	Gun* Guns::olReliable = new Gun("olReliable", 2, 4, 0.70f);
 	Gun* Guns::bloodyMary = new Gun("bloodyMary", 3, 10, 10, 0.85f);
 	Gun* Guns::theBiggestIron = new Gun("theBiggestIron", 1, 10, 100, 0.089f);
 

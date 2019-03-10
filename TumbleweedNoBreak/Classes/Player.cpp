@@ -1,5 +1,6 @@
 #include "Player.h"
 #include <iostream>
+#include "AudioEngine.h"
 #include "Powerup.h"
 #define BULLETSPEED 1.5f
 #define BULLETSPEED1 3
@@ -193,6 +194,8 @@ namespace Sedna {
 					}
 					//comment this else statement out for omidirectional
 					else {
+						if (this->currentGun->getName() == "olReliable")
+							cocos2d::experimental::AudioEngine::play2d("revolver.mp3",false,0.5f);
 						currentGun->setAmmo(currentGun->getAmmo() - 1);
 						playerUI->updateList();
 						currentGun->setHasShot(true);

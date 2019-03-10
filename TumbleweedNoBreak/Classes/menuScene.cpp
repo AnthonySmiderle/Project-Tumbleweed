@@ -130,6 +130,7 @@ bool MenuScene::init() {
 
 
 	cocos2d::experimental::AudioEngine::play2d("bgm2.mp3", true);
+	
 	this->scheduleUpdate();
 
 	return true;
