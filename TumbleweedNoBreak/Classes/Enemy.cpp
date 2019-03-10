@@ -11,7 +11,7 @@ namespace Sedna {
 		sprite = cocos2d::Sprite::create("enemy1.png");
 		sprite->setScale(spriteScale);
 
-		hitBox = new CirclePrimitive(cocos2d::Vec2(x, y), 20, 5, 30);
+		hitBox = new CirclePrimitive(cocos2d::Vec2(x, y), 23, 5, 30);
 		hitBox->getDrawNode()->setVisible(false);
 
 		this->objectHp = 3;
@@ -73,6 +73,7 @@ namespace Sedna {
 #ifdef _DEBUG
 				if (p->getController()->isButtonReleased(Sedna::LB)) {
 					p->setHP(p->getHP() - 1);
+					p->getController()->setVibration(1, 1);///some cheeky shit that might not work
 					for (int j = 0; j < p->getUI()->getHPSprites().size(); j++) {
 						if (p->getUI()->getHPSprites()[j]->getZOrder() == 21) {
 							p->getUI()->getHPSprites()[j]->setZOrder(20);
@@ -217,7 +218,7 @@ namespace Sedna {
 
 			if (this->getBox()->getLocation().x < 250) {
 
-			eProjectiles[0]->getBox()->setForce(cocos2d::Vec2(0, 5.06)   );//projectile on the left
+			eProjectiles[0]->getBox()->setForce(cocos2d::Vec2(0, -5.06)   );//projectile on the left
 			eProjectiles[1]->getBox()->setForce(cocos2d::Vec2(1.75, -4.5) );
 			eProjectiles[2]->getBox()->setForce(cocos2d::Vec2(3.35, -3.35));//projectiles in the middle
 			eProjectiles[3]->getBox()->setForce(cocos2d::Vec2(4.5, -1.75) );

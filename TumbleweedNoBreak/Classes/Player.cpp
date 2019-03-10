@@ -96,6 +96,13 @@ namespace Sedna {
 
 	void Player::checkInput(float dt)
 	{
+			if (pController->isVibrating()) {
+				vibrationTimer += dt;
+				if (vibrationTimer >= 0.2f) {
+					pController->setVibration(0, 0);
+					vibrationTimer = 0;
+				}
+			}
 		if (takeInputs) {
 			pController->updateSticks(pSticks);
 			if (pSticks[0].x > 0.3f)
@@ -211,7 +218,7 @@ namespace Sedna {
 							
 								//pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(test2)*BULLETSPEED1*2);
 							
-								pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(-4.5, 3.5)*BULLETSPEED);
+								pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(-3.5, 3.5)*BULLETSPEED);
 							}
 							
 							if (pSticks[1].x > 0.3f) {
@@ -219,7 +226,7 @@ namespace Sedna {
 							
 								//pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(test2)*BULLETSPEED1*2);
 							
-								pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(4.5, 3.5)*BULLETSPEED);
+								pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(3.5, 3.5)*BULLETSPEED);
 							}
 							
 							if (pSticks[1].y > 0.3f && pSticks[1].x < 0.3f && pSticks[1].x > -0.3f ||
@@ -366,9 +373,19 @@ namespace Sedna {
 					check = false;
 				if (outlawList[j]->getHP() <= 0) {
 					score += outlawList[j]->points;
+					srand(time(0));
+					if (rand() % 10 + 1 <= 2) {
+						if (rand() % 2 == 0) {
+							power1->getBox()->setLocation(outlawList[j]->getBox()->getLocation());
+							power1->updateGameObject();
+						}
+						else {
+							power2->getBox()->setLocation(outlawList[j]->getBox()->getLocation());
+							power2->updateGameObject();
+						}
+
+					}
 					
-					power1->getBox()->setLocation(outlawList[j]->getBox()->getLocation());
-					power1->updateGameObject();
 
 					
 					playerUI->updateList();

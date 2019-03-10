@@ -28,7 +28,6 @@
 #include "AudioEngine.h"
 #include "menuScene.h"
 #include "MusicList.h"
-#define CAMERASPEED 1.3f
 
 USING_NS_CC;
 
@@ -351,6 +350,8 @@ void HelloWorld::play(float dt)
 {
 	if (!paused)
 	{
+		CAMERASPEED += 0.0000999f;
+
 		bloodyMaryP_up->updateGameObject();
 		theBiggestIronP_up->updateGameObject();
 		sManager.update(dt, DDOS->getSprite()->getPosition().y);

@@ -100,10 +100,10 @@ namespace Sedna {
 			}
 			x = (float)state.Gamepad.sThumbRX / 32768,
 				y = (float)state.Gamepad.sThumbRX / 32767;
-			
-			
+
+
 			if (sqrt(x*x + y * y) > deadZoneStick) {
-			//RIGHT STICK
+				//RIGHT STICK
 				if (state.Gamepad.sThumbRX < 0)
 					sticks[1].x = (float)state.Gamepad.sThumbRX / 32768;//conver to a float from 1 -> 1;
 				else
@@ -133,7 +133,23 @@ namespace Sedna {
 		bool isButtonReleased(int button) {
 			return !isButtonPressed(button);
 		}
+		void setVibration(float left, float right) {
+			///https://lcmccauley.wordpress.com/tag/xinput-vibration/
+
+			ZeroMemory(&vibration, sizeof(XINPUT_VIBRATION));
+
+			vibration.wLeftMotorSpeed = int(left*65535.0f);
+			vibration.wRightMotorSpeed = int(right*65535.0f);
+
+			XInputSetState(index, &vibration);
+		}
+		bool isVibrating() {
+			if (vibration.wLeftMotorSpeed > 0.0f || vibration.wRightMotorSpeed > 0.0f)
+				return true;
+			return false;
+		}
 	private:
+		XINPUT_VIBRATION vibration;
 		//...
 		int index = -1;
 		XINPUT_STATE state;

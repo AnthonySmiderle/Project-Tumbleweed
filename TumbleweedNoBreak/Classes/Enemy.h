@@ -18,8 +18,8 @@ namespace Sedna {
 		virtual void shoot(float dt,cocos2d::Scene* s);
 		virtual void checkList();
 		virtual void removeProjectiles();
-		virtual void checkBCollision(Player* p);
-		virtual void checkBCollision(std::vector<Table*>& tableList);
+		void checkBCollision(Player* p);
+		void checkBCollision(std::vector<Table*>& tableList);
 		unsigned int points = 100;//this is public because there really isn't a reason to keep it private
 		
 	protected:
@@ -52,21 +52,25 @@ namespace Sedna {
 	};
 
 
-	class Pete : public GameObject
-	{
-	public:
-		Pete(float x, float y);
-		void spawnDyna(float dt, cocos2d::Scene* s);
-		void checkList();
-		void removeDyna();
-	private:
-		std::vector<Projectile*> eDyna;
-		float eDynaTimer = 0.0f;
-		bool ehasDynaPlace = false;
-	protected:
-		int x = 0;
+	class CrazyPete : public Outlaw {
 
 	};
+
+	//class Pete : public GameObject
+	//{
+	//public:
+	//	Pete(float x, float y);
+	//	void spawnDyna(float dt, cocos2d::Scene* s);
+	//	void checkList();
+	//	void removeDyna();
+	//private:
+	//	std::vector<Projectile*> eDyna;
+	//	float eDynaTimer = 0.0f;
+	//	bool ehasDynaPlace = false;
+	//protected:
+	//	int x = 0;
+	//
+	//};
 	
 
 
