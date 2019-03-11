@@ -210,6 +210,7 @@ namespace Sedna {
 
 							pProjectiles.push_back(new Sedna::Projectile(*playerProjectile));
 							
+							pProjectiles.back()->getSprite()->setTexture("pBullet.png");
 							pProjectiles.back()->getBox()->setLocation(this->getBox()->getLocation());
 							//uncomment this for omnidirectional
 						///	pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(test2)*BULLETSPEED1 * 2.5);
@@ -283,6 +284,13 @@ namespace Sedna {
 							pProjectiles[2]->getBox()->setLocation(this->getBox()->getLocation());
 							pProjectiles[3]->getBox()->setLocation(this->getBox()->getLocation());
 							pProjectiles[4]->getBox()->setLocation(this->getBox()->getLocation());
+
+							pProjectiles[0]->getSprite()->setTexture("pBullet.png");
+							pProjectiles[1]->getSprite()->setTexture("pBullet.png");
+							pProjectiles[2]->getSprite()->setTexture("pBullet.png");
+							pProjectiles[3]->getSprite()->setTexture("pBullet.png");
+							pProjectiles[4]->getSprite()->setTexture("pBullet.png");
+
 
 
 							if (pSticks[1].y > 0.3f && pSticks[1].x < 0.3f && pSticks[1].x > -0.3f ||
