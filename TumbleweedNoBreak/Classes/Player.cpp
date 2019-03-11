@@ -193,9 +193,15 @@ namespace Sedna {
 
 					}
 					//comment this else statement out for omidirectional
-					else {
+					else if(this->currentGun->getName() != "bloodyMary"){
 						if (this->currentGun->getName() == "olReliable")
 							cocos2d::experimental::AudioEngine::play2d("revolver.mp3",false,0.5f);
+						else if (this->currentGun->getName() == "theBiggestIron") {
+							static auto last = cocos2d::experimental::AudioEngine::play2d("gattling.mp3", false, 0.5f);
+							cocos2d::experimental::AudioEngine::stop(last);
+							cocos2d::experimental::AudioEngine::play2d("gattling.mp3", false, 0.5f);
+						}
+
 						currentGun->setAmmo(currentGun->getAmmo() - 1);
 						playerUI->updateList();
 						currentGun->setHasShot(true);
