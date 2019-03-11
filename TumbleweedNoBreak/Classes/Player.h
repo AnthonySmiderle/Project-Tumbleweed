@@ -52,6 +52,7 @@ namespace Sedna {
 		XinputController* getController() const { return pController; }
 		Gun* getCurrentGun() const { return currentGun; }
 		
+		int getPlayerNumber() const { return playerNumber; }
 		unsigned int getScore() const;
 		void die();
 		void setCurrentGun(Gun* g);
