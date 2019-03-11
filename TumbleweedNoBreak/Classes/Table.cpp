@@ -35,6 +35,7 @@ namespace Sedna {
 	void Sedna::Table::spriteSwitch()
 	{
 		sprite->setTexture("TableKnocked.png");
+		knocked = true;
 	}
 
 	void Table::collideTable(Table* table)

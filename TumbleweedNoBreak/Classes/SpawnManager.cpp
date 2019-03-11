@@ -6,6 +6,9 @@ void Sedna::SpawnManager::update(float dt, int DDOS)
 	DDOS += 25;
 	for (unsigned int i = 0; i < tables.update(dt,tableList.size()); i++)
 		tableSpawn(DDOS);
+	int tableChainMax = tableChain.update(dt, tableList.size());
+	for (unsigned int i = 0; i < tableChainMax; i++)
+		tableSpawn(DDOS);
 	for (unsigned int i = 0; i < outlaws.update(dt,outlawList.size()); i++)
 		outlawSpawn(DDOS);
 	int outlawChainMax = outlawChain.update(dt, outlawList.size());

@@ -189,11 +189,11 @@ namespace Sedna {
 				{
 
 					//comment this if statement out for omnidirectional
-					if (pSticks[1].y < -0.3f) {
-
-					}
-					//comment this else statement out for omidirectional
-					else {
+					//if (pSticks[1].y < -0.3f) {
+					//
+					//}
+					////comment this else statement out for omidirectional
+					//else {
 						if (this->currentGun->getName() == "olReliable")
 							cocos2d::experimental::AudioEngine::play2d("revolver.mp3",false,0.5f);
 						currentGun->setAmmo(currentGun->getAmmo() - 1);
@@ -212,34 +212,34 @@ namespace Sedna {
 							
 							pProjectiles.back()->getBox()->setLocation(this->getBox()->getLocation());
 							//uncomment this for omnidirectional
-						///	pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(test2)*BULLETSPEED1 * 2.5);
+							pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(test2)*BULLETSPEED1 * 2.5);
 							
 							//comment out this region to enable omnidirectional shooting
 #pragma region 3DirectionShooting
-							if (pSticks[1].x < -0.3f) {
-								pProjectiles.back()->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-16, 0));
-							
-								//pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(test2)*BULLETSPEED1*2);
-							
-								pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(-3.5, 3.5)*BULLETSPEED);
-							}
-							
-							if (pSticks[1].x > 0.3f) {
-								pProjectiles.back()->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(16, 0));
-							
-								//pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(test2)*BULLETSPEED1*2);
-							
-								pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(3.5, 3.5)*BULLETSPEED);
-							}
-							
-							if (pSticks[1].y > 0.3f && pSticks[1].x < 0.3f && pSticks[1].x > -0.3f ||
-								pSticks[1].y < 0.3f && pSticks[1].y > -0.3f && pSticks[1].x < 0.3f && pSticks[1].x > -0.3f)
-								pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(0, 5)*BULLETSPEED);
-								//pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(test2)*BULLETSPEED1*2);
+						//	if (pSticks[1].x < -0.3f) {
+						//		pProjectiles.back()->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-16, 0));
+						//	
+						//		//pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(test2)*BULLETSPEED1*2);
+						//	
+						//		pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(-3.5, 3.5)*BULLETSPEED);
+						//	}
+						//	
+						//	if (pSticks[1].x > 0.3f) {
+						//		pProjectiles.back()->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(16, 0));
+						//	
+						//		//pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(test2)*BULLETSPEED1*2);
+						//	
+						//		pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(3.5, 3.5)*BULLETSPEED);
+						//	}
+						//	
+						//	if (pSticks[1].y > 0.3f && pSticks[1].x < 0.3f && pSticks[1].x > -0.3f ||
+						//		pSticks[1].y < 0.3f && pSticks[1].y > -0.3f && pSticks[1].x < 0.3f && pSticks[1].x > -0.3f)
+						//		pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(0, 5)*BULLETSPEED);
+						//		//pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(test2)*BULLETSPEED1*2);
+						//
 
-
-						}
 #pragma endregion
+						}
 						else if (currentGun->getName() == "bloodyMary") {
 							for (int i = 0; i < pProjectiles.size(); i++) {
 								pProjectiles[i]->getBox()->getDrawNode()->removeFromParent();
@@ -324,7 +324,7 @@ namespace Sedna {
 								pProjectiles[4]->getBox()->setForce(cocos2d::Vec2(5.06, 0)*BULLETSPEED);//projectile on the right
 							
 							
-							}
+							//}
 						}
 					}
 				}

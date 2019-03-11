@@ -12,6 +12,7 @@ namespace Sedna {
 		void collideTable(Table* table);
 		potionType getBeer();
 		void setBeer(potionType a);
+		bool knocked = false;
 	private:
 		Potion* beer;
 	};

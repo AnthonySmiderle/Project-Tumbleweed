@@ -29,7 +29,8 @@ namespace Sedna {
 		void rifleOutlawSpawn(int DDOS);
 		
 
-		SpawnObject tables = SpawnObject(5.0f,5,1.0f);
+		SpawnObject tables = SpawnObject(3.0f,5,1.0f);
+		SpawnObject tableChain = SpawnObject(10.0f,10,51.0f,6,true);
 		SpawnObject outlaws = SpawnObject(2.0f,6,2.0f);
 		SpawnObject outlawChain = SpawnObject(20.0f,10.0f,10.0f,5,true);
 		SpawnObject shotgunOutlaws = SpawnObject(7.0f,4.0f,1.0f);

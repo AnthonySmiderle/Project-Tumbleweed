@@ -468,6 +468,7 @@ void HelloWorld::bigCheckList(float dt)
 
 
 	recursiveFunction(sManager.outlawList);
+	recursiveFunction(sManager.tableList);
 
 	playerOne->checkBCollision(sManager.outlawList, bloodyMaryP_up,theBiggestIronP_up);
 	playerTwo->checkBCollision(sManager.outlawList, bloodyMaryP_up,theBiggestIronP_up);
@@ -516,18 +517,23 @@ void HelloWorld::recursiveFunction(std::vector<Sedna::Outlaw*>& outlawList)
 }
 void HelloWorld::recursiveFunction(std::vector<Sedna::Table*>& tableList)
 {
-	for (unsigned int i = 0; i < tableList.size(); i++) {
-		for (unsigned int j = 0; j < tableList.size(); j++) {
-			if (i == j)
-				continue;
-			if (tableList[i]->getBox()->checkCollision(*tableList[j]->getBox())) {
-				tableList[i]->getBox()->setLocation(cocos2d::Vec2(rand() % 100 + 1 + (rand() % 200 + 1),
-					tableList[i]->getBox()->getLocation().y));
-				recursiveFunction(tableList);
-			}
+	for (unsigned int i = 0; i < sManager.tableList.size(); i++) {
+		if (sManager.tableList[i]->knocked!=true)
+		{
+			for (unsigned int j = 0; j < sManager.tableList.size(); j++) {
+				if (i == j)
+					continue;
+				if (sManager.tableList[i]->getBox()->checkCollision(*sManager.tableList[j]->getBox())) {
+					sManager.tableList[i]->getBox()->setLocation(cocos2d::Vec2(100 + (rand() % 300),
+						sManager.tableList[i]->getBox()->getLocation().y + 50));
+					recursiveFunction(sManager.tableList);
+				}
 
+			}
 		}
+		
 	}
+
 }
 
 void HelloWorld::checkPosAll()//this function will remove and objects that go to far below the screen
