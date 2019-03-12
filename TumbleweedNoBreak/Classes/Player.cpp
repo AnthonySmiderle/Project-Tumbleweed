@@ -115,18 +115,20 @@ namespace Sedna {
 				this->getBox()->addForce(-3, 0);
 
 			if (pSticks[0].y > 0.3f) {
+				std::cout << animationTimer<<std::endl;
 				this->getBox()->addForce(0, 3);
-				if (animationTimer > 1) {
+				if (animationTimer > 0.3) {
 					this->getSprite()->setTexture("player1walk2.png");
-
-					animationTimer = 0.0f;
 					hasAnimation = false;
+				}
+				if (animationTimer>0.6)
+				{
+					animationTimer = 0.0f;
 				}
 				if (!animationTimer) {
 					hasAnimation = true;
 					this->getSprite()->setTexture("player1walk1.png");
 				}
-				if (hasAnimation)
 					animationTimer += dt;
 			}
 
@@ -504,7 +506,7 @@ namespace Sedna {
 					{
 
 					}
-
+					score += 200;
 					tableList[i]->setBeer(blank);
 				}
 
