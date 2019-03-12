@@ -70,6 +70,8 @@ namespace Sedna {
 	
 		std::vector<Projectile*> getpProjectile() const;
 	private:
+		float animationTimer = 0.0f;
+		bool hasAnimation = false;
 		float vibrationTimer = 0.0f;
 		int playerNumber;
 		unsigned int score = 0;
