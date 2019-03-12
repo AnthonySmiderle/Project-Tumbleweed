@@ -30,8 +30,8 @@ namespace Sedna {
 		
 
 		SpawnObject tables = SpawnObject(3.0f,5,1.0f);
-		SpawnObject tableChain = SpawnObject(10.0f,10,51.0f,6,true);
-		SpawnObject outlaws = SpawnObject(2.0f,6,2.0f);
+		SpawnObject tableChain = SpawnObject(10.0f,7,51.0f,6,true);
+		SpawnObject outlaws = SpawnObject(1.5f,6,2.0f);
 		SpawnObject outlawChain = SpawnObject(20.0f,10.0f,10.0f,5,true);
 		SpawnObject shotgunOutlaws = SpawnObject(7.0f,4.0f,1.0f);
 		SpawnObject rifleOutlaws = SpawnObject(14.0f, 7.0f, 1.0f);

@@ -21,46 +21,21 @@ namespace Sedna {
 		playerUI = new SednaUI(CURRENTGUN, this, 2, localL1, localL2);
 
 
-		//if (wPlayer == playerOne) {
-			sprite = cocos2d::Sprite::create(Sedna::Animations::playerImage[playerNumber-1]);//CHANGE THIS WITH ANIMATION STUFF
-			sprite->setScale(spriteScale);
-			hitBox = new CirclePrimitive(cocos2d::Vec2(x, y), 20, 5, 30);
-			hitBox->getDrawNode()->setVisible(false);
+		sprite = cocos2d::Sprite::create(Sedna::Animations::playerImage[playerNumber-1]);//CHANGE THIS WITH ANIMATION STUFF
+		sprite->setScale(spriteScale);
+		hitBox = new CirclePrimitive(cocos2d::Vec2(x, y), 20, 5, 30);
+		hitBox->getDrawNode()->setVisible(false);
 
-			this->pController = MANAGER.getController(playerNumber - 1);
-			playerUI->getUIGunSprite()->setPosition(cocos2d::Vec2(100 - 40 + (UIDISPOSITION*(playerNumber - 1)), 130 - 70));
-			playerUI->getLabelList()[0]->setAnchorPoint(cocos2d::Vec2(0, 0));
-			playerUI->getLabelList()[0]->setPosition(cocos2d::Vec2(112 - 40 + (UIDISPOSITION*(playerNumber - 1)), 116 - 70));
-			playerUI->getLabelList()[1]->setAnchorPoint(cocos2d::Vec2(0, 0));
-			playerUI->getLabelList()[1]->setPosition(cocos2d::Vec2(112 - 40 + (UIDISPOSITION*(playerNumber - 1)), 116 - 80));
+		this->pController = MANAGER.getController(playerNumber - 1);
+		playerUI->getUIGunSprite()->setPosition(cocos2d::Vec2(100 - 40 + (UIDISPOSITION*(playerNumber - 1)), 130 - 70));
+		playerUI->getLabelList()[0]->setAnchorPoint(cocos2d::Vec2(0, 0));
+		playerUI->getLabelList()[0]->setPosition(cocos2d::Vec2(112 - 40 + (UIDISPOSITION*(playerNumber - 1)), 116 - 70));
+		playerUI->getLabelList()[1]->setAnchorPoint(cocos2d::Vec2(0, 0));
+		playerUI->getLabelList()[1]->setPosition(cocos2d::Vec2(112 - 40 + (UIDISPOSITION*(playerNumber - 1)), 116 - 80));
 
-
-			playerUI->getHPSprites()[0]->setPosition(cocos2d::Vec2((60 - 40)+(80*(playerNumber - 1)) + (UIDISPOSITION*(playerNumber - 1)), 116 - 70));
-			playerUI->getHPSprites()[1]->setPosition(cocos2d::Vec2((60 - 40)+(80*(playerNumber - 1)) + (UIDISPOSITION*(playerNumber - 1)), playerUI->getHPSprites()[0]->getPosition().y + 20));
-			playerUI->getHPSprites()[2]->setPosition(cocos2d::Vec2((60 - 40)+(80*(playerNumber - 1)) + (UIDISPOSITION*(playerNumber - 1)), playerUI->getHPSprites()[1]->getPosition().y + 20));
-/*
-		//}
-		//else {
-			//sprite = cocos2d::Sprite::create("player2.png");
-			//sprite->setScale(spriteScale);
-			//hitBox = new CirclePrimitive(cocos2d::Vec2(x, y), 20, 5, 30);
-			//hitBox->getDrawNode()->setVisible(false);
-
-			//this->pController = MANAGER.getController(playerNumber - 1);
-			//playerUI->getLabelList()[0]->setPosition(cocos2d::Vec2(100, 100));//was not me
-
-			//playerUI->getUIGunSprite()->setPosition(cocos2d::Vec2(60 + (UIDISPOSITION*playerNumber-1), 130 - 70));
-			//playerUI->getLabelList()[0]->setAnchorPoint(cocos2d::Vec2(0, 0));
-			//playerUI->getLabelList()[0]->setPosition(cocos2d::Vec2(72 + (UIDISPOSITION*playerNumber - 1), 116 - 70));
-
-
-			//playerUI->getHPSprites()[0]->setPosition(cocos2d::Vec2(100, 116 - 70));
-			//playerUI->getHPSprites()[1]->setPosition(cocos2d::Vec2(100, playerUI->getHPSprites()[0]->getPosition().y + 20));
-			//playerUI->getHPSprites()[2]->setPosition(cocos2d::Vec2(100, playerUI->getHPSprites()[1]->getPosition().y + 20));
-
-
-		//}
-			*/
+		playerUI->getHPSprites()[0]->setPosition(cocos2d::Vec2((60 - 40)+(80*(playerNumber - 1)) + (UIDISPOSITION*(playerNumber - 1)), 116 - 70));
+		playerUI->getHPSprites()[1]->setPosition(cocos2d::Vec2((60 - 40)+(80*(playerNumber - 1)) + (UIDISPOSITION*(playerNumber - 1)), playerUI->getHPSprites()[0]->getPosition().y + 20));
+		playerUI->getHPSprites()[2]->setPosition(cocos2d::Vec2((60 - 40)+(80*(playerNumber - 1)) + (UIDISPOSITION*(playerNumber - 1)), playerUI->getHPSprites()[1]->getPosition().y + 20));
 		currentGun = CURRENTGUN;
 
 
@@ -114,7 +89,7 @@ namespace Sedna {
 					this->getSprite()->setTexture(Sedna::Animations::w2l[playerNumber - 1]);
 					hasAnimation = false;
 				}
-				 if (animationTimer > 0.3f && isAimingLeft) {///
+				 if (animationTimer > 0.3f && isAimingLeft) {
 					this->getSprite()->setTexture(Sedna::Animations::w2r[playerNumber - 1]);
 					hasAnimation = false;
 				}
@@ -132,7 +107,7 @@ namespace Sedna {
 					hasAnimation = true;
 					this->getSprite()->setTexture(Sedna::Animations::w1l[playerNumber - 1]);
 				}
-				 if (!animationTimer && isAimingLeft) {///
+				 if (!animationTimer && isAimingLeft) {
 					hasAnimation = true;
 					this->getSprite()->setTexture(Sedna::Animations::w1r[playerNumber - 1]);
 				}
@@ -172,18 +147,11 @@ namespace Sedna {
 				pSticks[1].y > 0.3f && pSticks[1].x < 0.3f && pSticks[1].x > -0.3f) {
 				isAimingLeft = false;
 				isAimingRight = false;
-				//if (playerNumber == 1)
-				//	sprite->setTexture("player1.png");
 			}
 			if (pSticks[1].x < -0.3f)
 				isAimingLeft = true;
 			if (pSticks[1].x > 0.3f)
 				isAimingRight = true;
-				//	if (playerNumber == 1)
-			//		sprite->setTexture("p1L.png");
-			//if (pSticks[1].x > 0.3f)
-			//	if (playerNumber == 1)
-			//		sprite->setTexture("p1R.png");
 
 			pController->getTriggers(pTriggers);
 			if (pTriggers.RT > 0) {
@@ -491,13 +459,14 @@ namespace Sedna {
 					}
 					if (tableList[i]->getBeer() == invinc)
 					{
-						invincTimer = 20.0f;
+						invincTimer = 10.0f;
 					}
 					if (tableList[i]->getBeer() == rapid)
 					{
 
 					}
 					score += 200;
+					playerUI->updateList();
 					tableList[i]->setBeer(blank);
 				}
 
