@@ -60,11 +60,6 @@ namespace Sedna {
 		cocos2d::Vec2 v = cocos2d::Vec2(vX, vY);
 		int maxVelocity = 4;
 		int minVelocity = -4;
-		if (isTumble) {
-
-			maxVelocity =  10;
-			minVelocity = -10;
-		}
 
 		velocity += v / 10;
 
@@ -122,10 +117,6 @@ namespace Sedna {
 	}
 
 
-	bool CirclePrimitive::isTumbling() const
-	{
-		return isTumble;
-	}
 
 	bool CirclePrimitive::checkCloseTouching(CirclePrimitive other)
 	{
@@ -137,11 +128,4 @@ namespace Sedna {
 		return false;
 	}
 	
-
-	void CirclePrimitive::setTumbling(bool YN)
-	{
-		isTumble = YN;
-
-
-	}
 }

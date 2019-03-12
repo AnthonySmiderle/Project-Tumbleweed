@@ -241,9 +241,10 @@ void HelloWorld::update(float dt)
 
 void HelloWorld::pause(float dt)
 {
-	if (p1Controller->isButtonPressed(Sedna::SELECT))
+	if (p1Controller->isButtonPressed(Sedna::SELECT)||p2Controller->isButtonPressed(Sedna::SELECT))
 	{
 		p1Controller->setVibration(0, 0);
+		p2Controller->setVibration(0, 0);
 		if (!TEMPPAUSE)
 		{
 			for (int i = 0; i < pauseMenu->getLabelList().size(); i++) {
@@ -254,7 +255,7 @@ void HelloWorld::pause(float dt)
 			TRUEPAUSE ^= 1;
 		}
 	}
-	if (p1Controller->isButtonReleased(Sedna::SELECT))
+	if (p1Controller->isButtonReleased(Sedna::SELECT)&& p2Controller->isButtonReleased(Sedna::SELECT))
 		TEMPPAUSE = false;
 
 	if (TRUEPAUSE)
@@ -265,11 +266,11 @@ void HelloWorld::pause(float dt)
 			pauseMenu->getLabelList()[i]->setVisible(true);
 		}
 
-		if (p1Sticks[0].y < -0.3f && pauseMenu->getIndexOfSelected() != 0) {
+		if ((p1Sticks[0].y < -0.3f || p2Sticks[0].y < -0.3f) && pauseMenu->getIndexOfSelected() != 0) {
 
 			pauseMenu->select(pauseMenu->getIndexOfSelected() - 1);
 		}
-		if (p1Sticks[0].y > 0.3f) {
+		if (p1Sticks[0].y > 0.3f || p2Sticks[0].y > 0.3f) {
 			if (pauseMenu->getIndexOfSelected() + 1 > pauseMenu->getLabelList().size() - 1) {
 				//do some other shit i dont wanna figure out right now
 			}
@@ -277,16 +278,15 @@ void HelloWorld::pause(float dt)
 				pauseMenu->select(pauseMenu->getIndexOfSelected() + 1);
 		}
 
-		if (pauseMenu->getIndexOfSelected() == 1 && p1Controller->isButtonPressed(Sedna::A)) {
+		if (pauseMenu->getIndexOfSelected() == 1 && (p1Controller->isButtonPressed(Sedna::A)|| p2Controller->isButtonPressed(Sedna::A))) {
 			TRUEPAUSE = false;
 		}
-		if (pauseMenu->getIndexOfSelected() == 0 && p1Controller->isButtonPressed(Sedna::A) && !end) {
+		if (pauseMenu->getIndexOfSelected() == 0 && (p1Controller->isButtonPressed(Sedna::A)|| p2Controller->isButtonPressed(Sedna::A)) && !end) {
 			auto mMenu = MenuScene::create();
 			cocos2d::experimental::AudioEngine::stopAll();
 			cocos2d::experimental::AudioEngine::play2d("cha ching.mp3", false);
 			end = true;
 			MenuScene::setEnd(false);
-			//this->onExit();
 			director->replaceScene(TransitionFade::create(2.0f, mMenu));
 		}
 	}
@@ -299,7 +299,7 @@ void HelloWorld::pause(float dt)
 
 	if (!TRUEPAUSE)
 	{
-		if (p1Triggers.LT > 0 && !bulletTime)//triggers can be replaced by a power up boolean for a drink instead of a toggle thing
+		if ((p1Triggers.LT > 0 || p2Triggers.LT > 0) && !bulletTime)//triggers can be replaced by a power up boolean for a drink instead of a toggle thing
 		{
 			bulletTime = true;
 		}
@@ -363,7 +363,7 @@ void HelloWorld::play(float dt)
 
 
 #ifdef _DEBUG
-		if (p1Controller->isButtonPressed(Sedna::Y))
+		if (p1Controller->isButtonPressed(Sedna::Y)|| p2Controller->isButtonPressed(Sedna::Y))
 			moveScreen ^= 1;
 		if (moveScreen)
 		{
@@ -384,7 +384,7 @@ void HelloWorld::play(float dt)
 			DDOS->getSprite()->setPosition(cocos2d::Vec2(100, (DDOS->getSprite()->getPosition().y + CAMERASPEED)));
 
 		}
-		if (p1Controller->isButtonPressed(Sedna::X)) {
+		if (p1Controller->isButtonPressed(Sedna::X)|| p2Controller->isButtonPressed(Sedna::X)) {
 			for (unsigned int i = 0; i < sManager.outlawList.size(); i++)
 				sManager.outlawList[i]->getBox()->getDrawNode()->setVisible(true);
 			for (unsigned int i = 0; i < sManager.tableList.size(); i++)
@@ -578,7 +578,7 @@ void HelloWorld::menuCloseCallback(Ref* pSender)
 
 }
 
-void HelloWorld::bounceFunc()//this function stops the player from leaving th screen on the left and right
+void HelloWorld::bounceFunc()//this function stops the player from leaving the screen on the left and right
 {
 	if ((int)playerOne->getBox()->getLocation().x >= barRightMax)
 	{
@@ -618,9 +618,6 @@ void HelloWorld::bounceFunc()//this function stops the player from leaving th sc
 		}
 	}
 }
-
-
-
 
 void HelloWorld::togglePause() {//this actually has many applications
 	paused ^= 1;

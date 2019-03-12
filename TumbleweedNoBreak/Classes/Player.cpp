@@ -22,45 +22,46 @@ namespace Sedna {
 
 
 
-		if (wPlayer == playerOne) {
-			sprite = cocos2d::Sprite::create("player1.png");
+		//if (wPlayer == playerOne) {
+			sprite = cocos2d::Sprite::create("player1.png");//CHANGE THIS WITH ANIMATION STUFF
 			sprite->setScale(spriteScale);
 			hitBox = new CirclePrimitive(cocos2d::Vec2(x, y), 20, 5, 30);
 			hitBox->getDrawNode()->setVisible(false);
 
-			this->pController = MANAGER.getController(0);
-			playerUI->getUIGunSprite()->setPosition(cocos2d::Vec2(100 - 40, 130 - 70));
+			this->pController = MANAGER.getController(playerNumber - 1);
+			playerUI->getUIGunSprite()->setPosition(cocos2d::Vec2(100 - 40 + (UIDISPOSITION*(playerNumber - 1)), 130 - 70));
 			playerUI->getLabelList()[0]->setAnchorPoint(cocos2d::Vec2(0, 0));
-			playerUI->getLabelList()[0]->setPosition(cocos2d::Vec2(112 - 40, 116 - 70));
+			playerUI->getLabelList()[0]->setPosition(cocos2d::Vec2(112 - 40 + (UIDISPOSITION*(playerNumber - 1)), 116 - 70));
 			playerUI->getLabelList()[1]->setAnchorPoint(cocos2d::Vec2(0, 0));
-			playerUI->getLabelList()[1]->setPosition(cocos2d::Vec2(112 - 40, 116 - 80));
+			playerUI->getLabelList()[1]->setPosition(cocos2d::Vec2(112 - 40 + (UIDISPOSITION*(playerNumber - 1)), 116 - 80));
 
 
-			playerUI->getHPSprites()[0]->setPosition(cocos2d::Vec2(60 - 40, 116 - 70));
-			playerUI->getHPSprites()[1]->setPosition(cocos2d::Vec2(60 - 40, playerUI->getHPSprites()[0]->getPosition().y + 20));
-			playerUI->getHPSprites()[2]->setPosition(cocos2d::Vec2(60 - 40, playerUI->getHPSprites()[1]->getPosition().y + 20));
+			playerUI->getHPSprites()[0]->setPosition(cocos2d::Vec2((60 - 40)+(80*(playerNumber - 1)) + (UIDISPOSITION*(playerNumber - 1)), 116 - 70));
+			playerUI->getHPSprites()[1]->setPosition(cocos2d::Vec2((60 - 40)+(80*(playerNumber - 1)) + (UIDISPOSITION*(playerNumber - 1)), playerUI->getHPSprites()[0]->getPosition().y + 20));
+			playerUI->getHPSprites()[2]->setPosition(cocos2d::Vec2((60 - 40)+(80*(playerNumber - 1)) + (UIDISPOSITION*(playerNumber - 1)), playerUI->getHPSprites()[1]->getPosition().y + 20));
+/*
+		//}
+		//else {
+			//sprite = cocos2d::Sprite::create("player2.png");
+			//sprite->setScale(spriteScale);
+			//hitBox = new CirclePrimitive(cocos2d::Vec2(x, y), 20, 5, 30);
+			//hitBox->getDrawNode()->setVisible(false);
 
-		}
-		else {
-			sprite = cocos2d::Sprite::create("player2.png");
-			sprite->setScale(spriteScale);
-			hitBox = new CirclePrimitive(cocos2d::Vec2(x, y), 20, 5, 30);
-			hitBox->getDrawNode()->setVisible(false);
+			//this->pController = MANAGER.getController(playerNumber - 1);
+			//playerUI->getLabelList()[0]->setPosition(cocos2d::Vec2(100, 100));//was not me
 
-			this->pController = MANAGER.getController(1);
-			//playerUI->getLabelList()[0]->setPosition(cocos2d::Vec2(100, 100));
-
-			playerUI->getUIGunSprite()->setPosition(cocos2d::Vec2(60 + UIDISPOSITION, 130 - 70));
-			playerUI->getLabelList()[0]->setAnchorPoint(cocos2d::Vec2(0, 0));
-			playerUI->getLabelList()[0]->setPosition(cocos2d::Vec2(72 + UIDISPOSITION, 116 - 70));
-
-
-			playerUI->getHPSprites()[0]->setPosition(cocos2d::Vec2(100 + UIDISPOSITION, 116 - 70));
-			playerUI->getHPSprites()[1]->setPosition(cocos2d::Vec2(100 + UIDISPOSITION, playerUI->getHPSprites()[0]->getPosition().y + 20));
-			playerUI->getHPSprites()[2]->setPosition(cocos2d::Vec2(100 + UIDISPOSITION, playerUI->getHPSprites()[1]->getPosition().y + 20));
+			//playerUI->getUIGunSprite()->setPosition(cocos2d::Vec2(60 + (UIDISPOSITION*playerNumber-1), 130 - 70));
+			//playerUI->getLabelList()[0]->setAnchorPoint(cocos2d::Vec2(0, 0));
+			//playerUI->getLabelList()[0]->setPosition(cocos2d::Vec2(72 + (UIDISPOSITION*playerNumber - 1), 116 - 70));
 
 
-		}
+			//playerUI->getHPSprites()[0]->setPosition(cocos2d::Vec2(100, 116 - 70));
+			//playerUI->getHPSprites()[1]->setPosition(cocos2d::Vec2(100, playerUI->getHPSprites()[0]->getPosition().y + 20));
+			//playerUI->getHPSprites()[2]->setPosition(cocos2d::Vec2(100, playerUI->getHPSprites()[1]->getPosition().y + 20));
+
+
+		//}
+			*/
 		currentGun = CURRENTGUN;
 
 
@@ -115,7 +116,6 @@ namespace Sedna {
 				this->getBox()->addForce(-3, 0);
 
 			if (pSticks[0].y > 0.3f) {
-				std::cout << animationTimer<<std::endl;
 				this->getBox()->addForce(0, 3);
 				if (animationTimer > 0.3) {
 					this->getSprite()->setTexture("player1walk2.png");
@@ -138,39 +138,6 @@ namespace Sedna {
 			if (pSticks[0].x > -0.3f && pSticks[0].x < 0.3f && pSticks[0].y > -0.3f && pSticks[0].y < 0.3f)
 				this->getBox()->addForce(this->getBox()->getVelocity().x *-2.0f, this->getBox()->getVelocity().y*-2.0f);
 
-			if (pController->isButtonPressed(Sedna::B)) {
-				//std::cout << tumbleTimer <<std::endl;
-				if (tumbleTimer > 1.5)
-				{
-					tumbleTimer = 0;
-					isTumbling = false;
-				}
-
-
-				if (!tumbleTimer)
-				{
-					isTumbling = true;
-					this->getBox()->setTumbling(true);
-					if (pSticks[0].x < -0.3f)
-						this->getBox()->addForce(-500, 0);
-					else if (pSticks[0].x > 0.3f)
-						this->getBox()->addForce(500, 0);
-					if (pSticks[0].y < -0.3f)
-						this->getBox()->addForce(0, -500);
-					else if (pSticks[0].y > 0.3f)
-						this->getBox()->addForce(0, 500);
-					//sprite->setTexture("p1T.png");
-
-				}
-			}
-			else {
-				//sprite->setTexture("player1.png");
-				this->getBox()->setTumbling(false);
-			}
-
-			if (isTumbling)
-				tumbleTimer += dt;
-
 			if (pController->isButtonPressed(Sedna::START))
 				exit(0);
 
@@ -181,11 +148,7 @@ namespace Sedna {
 		if (takeInputs) {
 			if (pSticks[1].y < 0.3f && pSticks[1].y > -0.3f && pSticks[1].x < 0.3f && pSticks[1].x > -0.3f ||
 				pSticks[1].y > 0.3f && pSticks[1].x < 0.3f && pSticks[1].x > -0.3f) {
-				//if (playerNumber == 1)
 				//	sprite->setTexture("player1.png");
-				//else
-				//	sprite->setTexture("player2.png");
-
 			}
 			//if (pSticks[1].x < -0.3f)
 			//	if (playerNumber == 1)

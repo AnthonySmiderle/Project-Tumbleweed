@@ -82,8 +82,6 @@ namespace Sedna {
 		Triggers pTriggers;
 		Gun* currentGun;
 
-		float tumbleTimer = 0.0f;
-		bool isTumbling = false;
 		float invincTimer = 0.0f;
 
 		std::vector<Projectile*> pProjectiles;

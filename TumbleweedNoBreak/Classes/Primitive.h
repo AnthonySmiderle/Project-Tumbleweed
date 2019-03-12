@@ -33,8 +33,6 @@ namespace Sedna {
 		cocos2d::Vec2 getLocation() const;
 		bool checkCollision(CirclePrimitive other);
 		bool checkTouching(CirclePrimitive other);
-		bool isTumbling() const;
-		void setTumbling(bool YN);
 
 		bool checkCloseTouching(CirclePrimitive other);
 
