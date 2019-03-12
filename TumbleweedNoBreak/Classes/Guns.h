@@ -39,6 +39,9 @@ namespace Sedna {
 		static Gun* olReliable;
 		static Gun* bloodyMary;
 		static Gun* theBiggestIron;
+		static Gun* olReliable2;
+		static Gun* bloodyMary2;
+		static Gun* theBiggestIron2;
 	};
 
 

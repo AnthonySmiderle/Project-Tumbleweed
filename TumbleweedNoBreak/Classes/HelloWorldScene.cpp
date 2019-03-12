@@ -149,7 +149,7 @@ void HelloWorld::initSprites()
 		this->addChild(playerOne->getUI()->getHPSprites()[i]);
 
 
-	playerTwo = new Sedna::Player(2, 300, 100, managerR, Sedna::Guns::olReliable);
+	playerTwo = new Sedna::Player(2, 300, 100, managerR, Sedna::Guns::olReliable2);
 	this->addChild(playerTwo->getBox()->getDrawNode());
 	this->addChild(playerTwo->getSprite(), 10);
 	this->addChild(playerTwo->getUI()->getUIGunSprite(), 20);
@@ -229,7 +229,7 @@ void HelloWorld::update(float dt)
 		if (playerOne->getCurrentGun()->getAmmo() <= 0)
 			playerOne->setCurrentGun(Sedna::Guns::olReliable);
 		if (playerTwo->getCurrentGun()->getAmmo() <= 0)
-			playerTwo->setCurrentGun(Sedna::Guns::olReliable);
+			playerTwo->setCurrentGun(Sedna::Guns::olReliable2);
 
 		this->pause(dt);
 		this->play(dt);
