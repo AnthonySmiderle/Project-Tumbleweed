@@ -105,6 +105,40 @@ namespace Sedna {
 			}
 		}
 		if (takeInputs) {
+			if (this->getBox()->getVelocity() != cocos2d::Vec2(0,0)) {
+				if (animationTimer > 0.3f && !isAimingLeft && !isAimingRight) {
+					this->getSprite()->setTexture("p1w2.png");
+					hasAnimation = false;
+				}
+				 if (animationTimer > 0.3f && isAimingRight) {
+					this->getSprite()->setTexture("p1wl2.png");
+					hasAnimation = false;
+				}
+				 if (animationTimer > 0.3f && isAimingLeft) {///
+					this->getSprite()->setTexture("p1wr2.png");
+					hasAnimation = false;
+				}
+
+				if (animationTimer > 0.6f)
+				{
+					animationTimer = 0.0f;
+				}
+
+				if (!animationTimer && !isAimingLeft && !isAimingRight) {
+					hasAnimation = true;
+					this->getSprite()->setTexture("p1w1.png");
+				}
+				 if (!animationTimer && isAimingRight) {
+					hasAnimation = true;
+					this->getSprite()->setTexture("p1wl1.png");
+				}
+				 if (!animationTimer && isAimingLeft) {///
+					hasAnimation = true;
+					this->getSprite()->setTexture("p1wr1.png");
+				}
+				animationTimer += dt;
+			}
+
 			pController->updateSticks(pSticks);
 			if (pSticks[0].x > 0.3f){
 				this->getBox()->addForce(3, 0);
@@ -115,21 +149,10 @@ namespace Sedna {
 				this->getBox()->addForce(-3, 0);
 
 			if (pSticks[0].y > 0.3f) {
-				std::cout << animationTimer<<std::endl;
+				//std::cout << animationTimer<<std::endl;
 				this->getBox()->addForce(0, 3);
-				if (animationTimer > 0.3) {
-					this->getSprite()->setTexture("player1walk2.png");
-					hasAnimation = false;
-				}
-				if (animationTimer>0.6)
-				{
-					animationTimer = 0.0f;
-				}
-				if (!animationTimer) {
-					hasAnimation = true;
-					this->getSprite()->setTexture("player1walk1.png");
-				}
-					animationTimer += dt;
+				
+					
 			}
 
 			else if (pSticks[0].y < -0.3f)
@@ -181,14 +204,19 @@ namespace Sedna {
 		if (takeInputs) {
 			if (pSticks[1].y < 0.3f && pSticks[1].y > -0.3f && pSticks[1].x < 0.3f && pSticks[1].x > -0.3f ||
 				pSticks[1].y > 0.3f && pSticks[1].x < 0.3f && pSticks[1].x > -0.3f) {
+				isAimingLeft = false;
+				isAimingRight = false;
 				//if (playerNumber == 1)
 				//	sprite->setTexture("player1.png");
 				//else
 				//	sprite->setTexture("player2.png");
 
 			}
-			//if (pSticks[1].x < -0.3f)
-			//	if (playerNumber == 1)
+			if (pSticks[1].x < -0.3f)
+				isAimingLeft = true;
+			if (pSticks[1].x > 0.3f)
+				isAimingRight = true;
+				//	if (playerNumber == 1)
 			//		sprite->setTexture("p1L.png");
 			//if (pSticks[1].x > 0.3f)
 			//	if (playerNumber == 1)

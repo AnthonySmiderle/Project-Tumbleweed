@@ -62,6 +62,22 @@ namespace Sedna {
 			i--;
 		}
 	}
+	void Outlaw::animate(float dt)
+	{
+		if (animationTimer > 0.3f) {
+			this->getSprite()->setTexture("outlawLl.png");
+
+			hasAnimation = false;
+		}
+		if (animationTimer > 0.6f) {
+			animationTimer = 0.0f;
+		}
+		if (!animationTimer) {
+			this->getSprite()->setTexture("outlawRl.png");
+			hasAnimation = true;
+		}
+		animationTimer += dt;
+	}
 	void Outlaw::checkBCollision(Player * p)
 	{
 
@@ -161,7 +177,11 @@ ShotgunOutlaw::ShotgunOutlaw(float x, float y) :Outlaw(x, y)
 {
 	points = 200;
 
-	this->getSprite()->setTexture("DOS.jpg");
+	this->getSprite()->setTexture("shotgunOutlaw.png");
+}
+void Sedna::ShotgunOutlaw::animate(float dt)
+{
+	
 }
 void ShotgunOutlaw::shoot(float dt, cocos2d::Scene * s)
 {
@@ -228,6 +248,7 @@ void ShotgunOutlaw::shoot(float dt, cocos2d::Scene * s)
 		//eProjectiles[4]->getBox()->setForce(cocos2d::Vec2(3.25, -3.25));
 
 		if (this->getBox()->getLocation().x < 250) {
+			this->getSprite()->setTexture("shotgunOutlaw1.png");
 
 			eProjectiles[0]->getBox()->setForce(cocos2d::Vec2(0, -5.06));//projectile on the left
 			eProjectiles[1]->getBox()->setForce(cocos2d::Vec2(1.75, -4.5));
@@ -236,6 +257,8 @@ void ShotgunOutlaw::shoot(float dt, cocos2d::Scene * s)
 			eProjectiles[4]->getBox()->setForce(cocos2d::Vec2(5.06, 0));//projectile on the right
 		}
 		else if (this->getBox()->getLocation().x > 250) {
+			this->getSprite()->setTexture("shotgunOutlaw.png");
+
 			eProjectiles[0]->getBox()->setForce(cocos2d::Vec2(-5.06, 0));//projectile on the left
 			eProjectiles[1]->getBox()->setForce(cocos2d::Vec2(-4.5, -1.75));
 			eProjectiles[2]->getBox()->setForce(cocos2d::Vec2(-3.35, -3.35));//projectiles in the middle
@@ -270,6 +293,23 @@ RifleOutlaw::RifleOutlaw(float x, float y) : Outlaw(x, y)
 	points = 300;
 	this->getSprite()->setRotation(10.0f);
 	track = cocos2d::Vec2(0, 0);
+}
+
+void Sedna::RifleOutlaw::animate(float dt)
+{
+	if (animationTimer > 0.3f) {
+		this->getSprite()->setTexture("rifleLl.png");
+
+		hasAnimation = false;
+	}
+	if (animationTimer > 0.6f) {
+		animationTimer = 0.0f;
+	}
+	if (!animationTimer) {
+		this->getSprite()->setTexture("rifleRl.png");
+		hasAnimation = true;
+	}
+	animationTimer += dt;
 }
 
 void Sedna::RifleOutlaw::shoot(float dt, cocos2d::Scene * s)

@@ -18,11 +18,14 @@ namespace Sedna {
 		virtual void shoot(float dt,cocos2d::Scene* s);
 		virtual void checkList();
 		virtual void removeProjectiles();
+		virtual void animate(float dt);
 		void checkBCollision(Player* p);
 		void checkBCollision(std::vector<Table*>& tableList);
 		unsigned int points = 100;//this is public because there really isn't a reason to keep it private
 		
 	protected:
+		float animationTimer = 0.0f;
+		bool hasAnimation = false;
 		bool yeee = false;
 
 		std::vector<Projectile*> eProjectiles;
@@ -34,6 +37,7 @@ namespace Sedna {
 	class ShotgunOutlaw : public Outlaw {
 	public:
 		ShotgunOutlaw(float x, float y);
+		void animate(float dt) override;
 		void shoot(float dt, cocos2d::Scene* s) override;
 		void checkList() override;
 
@@ -42,6 +46,7 @@ namespace Sedna {
 	class RifleOutlaw : public Outlaw {
 	public:
 		RifleOutlaw(float x, float y);
+		void animate(float dt) override;
 		void shoot(float dt, cocos2d::Scene* s) override;
 		void checkList() override;
 		cocos2d::Vec2 getTrack() const;///may be problematic

@@ -447,6 +447,8 @@ void HelloWorld::getCollisions()
 	playerTwo->checkTableStuff(sManager.tableList);
 }
 
+
+
 void HelloWorld::bigCheckList(float dt)
 {
 	for (int i = 0; i < sManager.outlawList.size(); i++) {
@@ -487,6 +489,7 @@ void HelloWorld::bigCheckList(float dt)
 		sManager.outlawList[i]->checkBCollision(playerTwo);
 		sManager.outlawList[i]->checkList();
 		sManager.outlawList[i]->updateGameObject();
+		sManager.outlawList[i]->animate(dt);
 
 	}
 	for (unsigned int i = 0; i < sManager.tableList.size(); i++) {
