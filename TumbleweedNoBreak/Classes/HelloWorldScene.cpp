@@ -243,6 +243,7 @@ void HelloWorld::pause(float dt)
 {
 	if (p1Controller->isButtonPressed(Sedna::SELECT))
 	{
+		p1Controller->setVibration(0, 0);
 		if (!TEMPPAUSE)
 		{
 			for (int i = 0; i < pauseMenu->getLabelList().size(); i++) {

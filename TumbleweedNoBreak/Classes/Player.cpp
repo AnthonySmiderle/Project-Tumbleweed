@@ -250,7 +250,7 @@ namespace Sedna {
 							}
 						}
 #pragma endregion
-						}
+						
 						else if (currentGun->getName() == "bloodyMary") {
 							cocos2d::experimental::AudioEngine::play2d("shotgun.mp3", false, 0.5f);
 
