@@ -106,14 +106,29 @@ namespace Sedna {
 		}
 		if (takeInputs) {
 			pController->updateSticks(pSticks);
-			if (pSticks[0].x > 0.3f)
+			if (pSticks[0].x > 0.3f){
 				this->getBox()->addForce(3, 0);
+				
+			}
 
 			else if (pSticks[0].x < -0.3f)
 				this->getBox()->addForce(-3, 0);
 
-			if (pSticks[0].y > 0.3f)
+			if (pSticks[0].y > 0.3f) {
 				this->getBox()->addForce(0, 3);
+				if (animationTimer > 1) {
+					this->getSprite()->setTexture("player1walk2.png");
+
+					animationTimer = 0.0f;
+					hasAnimation = false;
+				}
+				if (!animationTimer) {
+					hasAnimation = true;
+					this->getSprite()->setTexture("player1walk1.png");
+				}
+				if (hasAnimation)
+					animationTimer += dt;
+			}
 
 			else if (pSticks[0].y < -0.3f)
 				this->getBox()->addForce(0, -3);
@@ -164,18 +179,18 @@ namespace Sedna {
 		if (takeInputs) {
 			if (pSticks[1].y < 0.3f && pSticks[1].y > -0.3f && pSticks[1].x < 0.3f && pSticks[1].x > -0.3f ||
 				pSticks[1].y > 0.3f && pSticks[1].x < 0.3f && pSticks[1].x > -0.3f) {
-				if (playerNumber == 1)
-					sprite->setTexture("player1.png");
-				else
-					sprite->setTexture("player2.png");
+				//if (playerNumber == 1)
+				//	sprite->setTexture("player1.png");
+				//else
+				//	sprite->setTexture("player2.png");
 
 			}
-			if (pSticks[1].x < -0.3f)
-				if (playerNumber == 1)
-					sprite->setTexture("p1L.png");
-			if (pSticks[1].x > 0.3f)
-				if (playerNumber == 1)
-					sprite->setTexture("p1R.png");
+			//if (pSticks[1].x < -0.3f)
+			//	if (playerNumber == 1)
+			//		sprite->setTexture("p1L.png");
+			//if (pSticks[1].x > 0.3f)
+			//	if (playerNumber == 1)
+			//		sprite->setTexture("p1R.png");
 
 			pController->getTriggers(pTriggers);
 			if (pTriggers.RT > 0) {

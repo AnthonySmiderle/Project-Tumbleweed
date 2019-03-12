@@ -73,7 +73,7 @@ namespace Sedna {
 			if (eProjectiles[i]->getBox()->checkCollision(*p->getBox())) {
 #ifdef _DEBUG
 				if (p->getController()->isButtonReleased(Sedna::LB)) {
-				//	p->setHP(p->getHP() - 1);
+					p->setHP(p->getHP() - 1);
 					srand(rand() % time(0));
 					int random = (rand() %  3) + 1;
 					if (p->getPlayerNumber() == 1) {
