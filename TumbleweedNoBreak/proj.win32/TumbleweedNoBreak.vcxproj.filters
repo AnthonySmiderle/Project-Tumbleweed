@@ -19,6 +19,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="..\Classes\MusicList.cpp" />
     <ClCompile Include="..\Classes\Powerup.cpp" />
+    <ClCompile Include="..\Classes\Animations.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Classes\AppDelegate.h" />
@@ -40,6 +41,7 @@
     <ClInclude Include="main.h" />
     <ClInclude Include="..\Classes\MusicList.h" />
     <ClInclude Include="..\Classes\Powerup.h" />
+    <ClInclude Include="..\Classes\Animations.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc" />

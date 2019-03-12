@@ -7,6 +7,7 @@
 #include "baseObjectManager.h"
 #include "Table.h"
 #include <vector>
+#include "Animations.h"
 namespace Sedna {
 
 

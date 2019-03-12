@@ -21,9 +21,8 @@ namespace Sedna {
 		playerUI = new SednaUI(CURRENTGUN, this, 2, localL1, localL2);
 
 
-
 		//if (wPlayer == playerOne) {
-			sprite = cocos2d::Sprite::create("player1.png");//CHANGE THIS WITH ANIMATION STUFF
+			sprite = cocos2d::Sprite::create(Sedna::Animations::playerImage[playerNumber-1]);//CHANGE THIS WITH ANIMATION STUFF
 			sprite->setScale(spriteScale);
 			hitBox = new CirclePrimitive(cocos2d::Vec2(x, y), 20, 5, 30);
 			hitBox->getDrawNode()->setVisible(false);
@@ -108,15 +107,15 @@ namespace Sedna {
 		if (takeInputs) {
 			if (this->getBox()->getVelocity() != cocos2d::Vec2(0,0)) {
 				if (animationTimer > 0.3f && !isAimingLeft && !isAimingRight) {
-					this->getSprite()->setTexture("p1w2.png");
+					this->getSprite()->setTexture(Sedna::Animations::w2[playerNumber - 1]);
 					hasAnimation = false;
 				}
 				 if (animationTimer > 0.3f && isAimingRight) {
-					this->getSprite()->setTexture("p1wl2.png");
+					this->getSprite()->setTexture(Sedna::Animations::w2l[playerNumber - 1]);
 					hasAnimation = false;
 				}
 				 if (animationTimer > 0.3f && isAimingLeft) {///
-					this->getSprite()->setTexture("p1wr2.png");
+					this->getSprite()->setTexture(Sedna::Animations::w2r[playerNumber - 1]);
 					hasAnimation = false;
 				}
 
@@ -127,15 +126,15 @@ namespace Sedna {
 
 				if (!animationTimer && !isAimingLeft && !isAimingRight) {
 					hasAnimation = true;
-					this->getSprite()->setTexture("p1w1.png");
+					this->getSprite()->setTexture(Sedna::Animations::w1[playerNumber - 1]);
 				}
 				 if (!animationTimer && isAimingRight) {
 					hasAnimation = true;
-					this->getSprite()->setTexture("p1wl1.png");
+					this->getSprite()->setTexture(Sedna::Animations::w1l[playerNumber - 1]);
 				}
 				 if (!animationTimer && isAimingLeft) {///
 					hasAnimation = true;
-					this->getSprite()->setTexture("p1wr1.png");
+					this->getSprite()->setTexture(Sedna::Animations::w1r[playerNumber - 1]);
 				}
 				animationTimer += dt;
 			}

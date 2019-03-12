@@ -114,7 +114,7 @@ bool HelloWorld::init()
 }
 void HelloWorld::initSprites()
 {
-	cocos2d::experimental::AudioEngine::preload("bgm.mp3");
+	cocos2d::experimental::AudioEngine::preload(Music::gameMusic[Music::MusicType]);
 	///<cocos2d::experimental::AudioEngine::preload("oRsound.mp3");>
 
 	DDOS = new Sedna::GameObject("DOS.jpg", cocos2d::Vec2(100, 300), 1, 1, 1);
@@ -484,14 +484,14 @@ void HelloWorld::bigCheckList(float dt)
 
 	for (unsigned int i = 0; i < sManager.outlawList.size(); i++) {
 
+		sManager.outlawList[i]->animate(dt);
 		sManager.outlawList[i]->checkBCollision(sManager.tableList);
 		sManager.outlawList[i]->checkBCollision(playerOne);
 		sManager.outlawList[i]->checkBCollision(playerTwo);
 		sManager.outlawList[i]->checkList();
 		sManager.outlawList[i]->updateGameObject();
-		sManager.outlawList[i]->animate(dt);
-
 	}
+
 	for (unsigned int i = 0; i < sManager.tableList.size(); i++) {
 		for (unsigned int j = 0; j < sManager.tableList.size(); j++) {
 			if (i == j)
