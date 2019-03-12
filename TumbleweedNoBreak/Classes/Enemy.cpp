@@ -249,6 +249,12 @@ void ShotgunOutlaw::shoot(float dt, cocos2d::Scene * s)
 
 		if (this->getBox()->getLocation().x < 250) {
 			this->getSprite()->setTexture("shotgunOutlaw1.png");
+			eProjectiles[0]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-22, 0));
+			eProjectiles[1]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-22, 0));
+			eProjectiles[2]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-22, 0));
+			eProjectiles[3]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-22, 0));
+			eProjectiles[4]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-22, 0));
+
 
 			eProjectiles[0]->getBox()->setForce(cocos2d::Vec2(0, -5.06));//projectile on the left
 			eProjectiles[1]->getBox()->setForce(cocos2d::Vec2(1.75, -4.5));
@@ -258,6 +264,11 @@ void ShotgunOutlaw::shoot(float dt, cocos2d::Scene * s)
 		}
 		else if (this->getBox()->getLocation().x > 250) {
 			this->getSprite()->setTexture("shotgunOutlaw.png");
+			eProjectiles[0]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(16, 0));
+			eProjectiles[1]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(16, 0));
+			eProjectiles[2]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(16, 0));
+			eProjectiles[3]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(16, 0));
+			eProjectiles[4]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(16, 0));
 
 			eProjectiles[0]->getBox()->setForce(cocos2d::Vec2(-5.06, 0));//projectile on the left
 			eProjectiles[1]->getBox()->setForce(cocos2d::Vec2(-4.5, -1.75));

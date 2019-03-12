@@ -95,7 +95,6 @@ bool HelloWorld::init()
 	pauseMenu = new Sedna::SednaMenu(2, localL1, localL2);
 
 
-
 	p1Controller = managerR.getController(0);
 	p2Controller = managerR.getController(1);
 
@@ -260,6 +259,7 @@ void HelloWorld::pause(float dt)
 
 	if (TRUEPAUSE)
 	{
+		
 		paused = true;
 		for (int i = 0; i < pauseMenu->getLabelList().size(); i++) {
 			pausedLabel->setVisible(true);

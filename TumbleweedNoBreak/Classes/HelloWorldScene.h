@@ -64,6 +64,7 @@ public:
 	// implement the "static create()" method manually
 	CREATE_FUNC(HelloWorld);
 private:
+
 	float CAMERASPEED = 1.3f;
 
 	Sedna::Powerup* bloodyMaryP_up;
