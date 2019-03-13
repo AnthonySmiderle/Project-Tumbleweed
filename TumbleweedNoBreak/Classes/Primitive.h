@@ -23,6 +23,7 @@ namespace Sedna {
 		~CirclePrimitive();
 
 
+		void setRadius(float r) { radius = r; }
 		float getRadius() const { return radius; }
 		cocos2d::DrawNode* getDrawNode() const;
 		void update();

@@ -101,6 +101,14 @@ namespace Sedna {
 						if (random == 3)
 							cocos2d::experimental::AudioEngine::play2d("p1Hurt3.mp3");
 					}
+					else {
+						if (random == 1)
+							cocos2d::experimental::AudioEngine::play2d("p2Hurt.mp3");
+						if (random == 2)
+							cocos2d::experimental::AudioEngine::play2d("p2Hurt2.mp3");
+						if (random == 3)
+							cocos2d::experimental::AudioEngine::play2d("p2Hurt3.mp3");
+					}
 					p->getController()->setVibration(1, 1);///some cheeky shit that might not work
 					p->wasHurt();
 					for (int j = 0; j < p->getUI()->getHPSprites().size(); j++) {

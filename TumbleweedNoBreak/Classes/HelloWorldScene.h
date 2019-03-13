@@ -64,6 +64,8 @@ public:
 	// implement the "static create()" method manually
 	CREATE_FUNC(HelloWorld);
 private:
+	bool decrimenting = false;
+	float bulletTimeMax = 0.0f;
 
 	float CAMERASPEED = 1.3f;
 

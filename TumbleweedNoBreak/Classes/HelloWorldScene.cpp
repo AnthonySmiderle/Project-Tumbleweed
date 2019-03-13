@@ -299,19 +299,32 @@ void HelloWorld::pause(float dt)
 
 	if (!TRUEPAUSE)
 	{
-		if ((p1Triggers.LT > 0 || p2Triggers.LT > 0) && !bulletTime)//triggers can be replaced by a power up boolean for a drink instead of a toggle thing
-		{
+		if ((p1Triggers.LT > 0.0f || p2Triggers.LT > 0.0f) && bulletTimeMax < 3.0f )//triggers can be replaced by a power up boolean for a drink instead of a toggle thing
 			bulletTime = true;
-		}
+				
 		if (bulletTime)
 		{
 			togglePause();
+			
+			playerOne->getBox()->setRadius(15);	///
+			playerTwo->getBox()->setRadius(15);	///
+			bulletTimeMax+= dt;
 		}
-		if (p1Triggers.LT == 0 && p2Triggers.LT == 0)
+		if (p1Triggers.LT == 0 && p2Triggers.LT == 0 || bulletTimeMax >= 3.0f)
 		{
+			
 			bulletTime = false;
 			paused = false;
+			bulletTimeMax -= dt;
+
+			playerOne->getBox()->setRadius(20);	 ///
+			playerTwo->getBox()->setRadius(20);	 ///
 		}
+		if (bulletTimeMax < 0.0f) {
+			bulletTimeMax = 0;
+			
+		}
+		
 		if (gameStart < 5)
 		{
 			gameStart += dt;
@@ -351,6 +364,10 @@ void HelloWorld::play(float dt)
 {
 	if (!paused)
 	{
+		CAMERASPEED += 0.005 * dt;
+		//CAMERASPEED += 0.0000999f;
+		//CAMERASPEED += 1;
+
 		CAMERASPEED += 0.0000999f;
 		playerOne->update(dt);
 		playerTwo->update(dt);
@@ -453,10 +470,16 @@ void HelloWorld::getCollisions()
 void HelloWorld::bigCheckList(float dt)
 {
 	for (int i = 0; i < sManager.outlawList.size(); i++) {
-		if (sManager.outlawList[i]->points == 300)
+		if (sManager.outlawList[i]->points == 300) {
+			auto first = playerOne->getBox()->getLocation() - sManager.outlawList[i]->getBox()->getLocation();
+			//auto firstMag = sqrt(first.x*first.x + first.y*first.y);
+			auto second = playerTwo->getBox()->getLocation() - sManager.outlawList[i]->getBox()->getLocation();
+
+			
 			((Sedna::RifleOutlaw*)sManager.outlawList[i])->setTrack
-			((playerOne->getBox()->getLocation() - sManager.outlawList[i]->getBox()->getLocation() <
-				playerTwo->getBox()->getLocation() - sManager.outlawList[i]->getBox()->getLocation()) ? playerOne : playerTwo);
+			((first.getLengthSq() < second.getLengthSq()) ? playerOne : playerTwo);
+
+		}
 		sManager.outlawList[i]->shoot(dt, this);
 	}
 

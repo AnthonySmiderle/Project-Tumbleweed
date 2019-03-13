@@ -73,6 +73,7 @@ namespace Sedna {
 	
 		std::vector<Projectile*> getpProjectile() const;
 	private:
+		
 		bool isAimingLeft = false;
 		bool isAimingRight = false;
 		float animationTimer = 0.0f;
