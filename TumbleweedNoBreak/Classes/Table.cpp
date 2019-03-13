@@ -4,18 +4,17 @@ namespace Sedna {
 
 	Sedna::Table::Table(float x, float y) {
 		std::string tableImage;
-		int tempInt = rand() % 10;
-		if (tempInt == 1)
+		if (rand() % 8 == 0)
 		{
 			beer = new Potion(health);
 			tableImage = "Table_HealthPot.png";
 		}
-		else if (tempInt == 2)
+		else if (rand() % 20 == 0)
 		{
 			beer = new Potion(revive);
 			tableImage = "Table_RFPot.png";
 		}
-		else if (tempInt == 0)
+		else if (rand() % 20 == 0)
 		{
 			beer = new Potion(invinc);
 			tableImage = "Table_invPot.png";

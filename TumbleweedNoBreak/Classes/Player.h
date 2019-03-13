@@ -62,7 +62,7 @@ namespace Sedna {
 		void checkList();
 		void checkBCollision(std::vector<Outlaw*>& outlawList,Powerup* power1,Powerup* power2);
 		void checkBCollision(std::vector<Table*>& tableList);
-		void checkTableStuff(std::vector<Table*>& tableList);
+		void checkTableStuff(std::vector<Table*>& tableList, Sedna::Player*);
 		void update(float dt);
 		bool getInvinc()const ;
 		void wasHurt();

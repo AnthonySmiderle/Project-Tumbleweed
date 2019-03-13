@@ -439,7 +439,7 @@ namespace Sedna {
 		}
 	}
 
-	void Player::checkTableStuff(std::vector<Table*>& tableList)
+	void Player::checkTableStuff(std::vector<Table*>& tableList,Sedna::Player* p)
 	{
 		for (int i = 0; i < tableList.size(); i++) {
 			if (pController->isButtonPressed(Sedna::A) && this->getBox()->checkCollision(*tableList[i]->getBox())) {
@@ -462,17 +462,18 @@ namespace Sedna {
 					}
 					if (tableList[i]->getBeer() == invinc)
 					{
-						invincTimer = 5.0f;
+						invincTimer = 3.0f;
 					}
-					if (tableList[i]->getBeer() == revive)
+					if (tableList[i]->getBeer() == revive && !p->takeInputs)
 					{
-						if (playerNumber - 1)
+						p->setHP(3);
+						p->sprite->setRotation(0);
+						p->takeInputs=true;
+						p->getBox()->setLocation(this->getBox()->getLocation());
+						for (int k = 0; k < this->getUI()->getHPSprites().size(); k++)
 						{
-							// revive player one
-						}
-						else//need to import the other player
-						{
-							// revive player two
+							p->getUI()->getHPSprites()[k]->setZOrder(21);
+							p->getUI()->getHPSprites()[k]->setTexture("fullHeart.png");
 						}
 					}
 					score += 200;
@@ -502,9 +503,28 @@ namespace Sedna {
 	void Player::update(float dt)
 	{
 		if (invincTimer)
+		{
 			invincTimer -= dt;
+			for (int j = this->getUI()->getHPSprites().size() - 1; j >= 0; j--) {
+				if (this->getUI()->getHPSprites()[j]->getZOrder() == 21) {
+					this->getUI()->getHPSprites()[j]->setZOrder(22);
+					this->getUI()->getHPSprites()[j]->setTexture("goldHeart.png");
+				}
+			}
+		}
+			
 		if (invincTimer < 0)
+		{
+
+			for (int j = this->getUI()->getHPSprites().size() - 1; j >= 0; j--) {
+				if (this->getUI()->getHPSprites()[j]->getZOrder() == 22) {
+					this->getUI()->getHPSprites()[j]->setZOrder(21);
+					this->getUI()->getHPSprites()[j]->setTexture("fullHeart.png");
+				}
+			}
 			invincTimer = 0;
+		}
+			
 	}
 
 	bool Player::getInvinc() const

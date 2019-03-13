@@ -368,7 +368,6 @@ void HelloWorld::play(float dt)
 		//CAMERASPEED += 0.0000999f;
 		//CAMERASPEED += 1;
 
-		CAMERASPEED += 0.0000999f;
 		playerOne->update(dt);
 		playerTwo->update(dt);
 		bloodyMaryP_up->updateGameObject();
@@ -461,8 +460,8 @@ void HelloWorld::checkInput(float dt)
 
 void HelloWorld::getCollisions()
 {
-	playerOne->checkTableStuff(sManager.tableList);
-	playerTwo->checkTableStuff(sManager.tableList);
+	playerOne->checkTableStuff(sManager.tableList,playerTwo);
+	playerTwo->checkTableStuff(sManager.tableList,playerOne);
 }
 
 
