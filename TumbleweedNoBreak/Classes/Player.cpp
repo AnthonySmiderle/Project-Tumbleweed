@@ -114,6 +114,9 @@ namespace Sedna {
 				animationTimer += dt;
 			}
 
+			
+
+
 			pController->updateSticks(pSticks);
 			if (pSticks[0].x > 0.3f){
 				this->getBox()->addForce(3, 0);
@@ -484,7 +487,7 @@ namespace Sedna {
 			if (this->getBox()->checkCloseTouching(*tableList[i]->getBox())) {
 				cocos2d::Vec2 distanceVector((this->getBox()->getLocation().x - tableList[i]->getBox()->getLocation().x),
 					(this->getBox()->getLocation().y - tableList[i]->getBox()->getLocation().y));
-				this->getBox()->addForce(((distanceVector.x * 2) / 2), (distanceVector.y * 2) / 2);
+				this->getBox()->addForce(((distanceVector.x) / 4), (distanceVector.y) / 4);
 			}
 		}
 	}
