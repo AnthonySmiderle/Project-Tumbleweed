@@ -364,8 +364,8 @@ void HelloWorld::play(float dt)
 {
 	if (!paused)
 	{
-		//CAMERASPEED += 0.0000999f;
-		CAMERASPEED += 1;
+		CAMERASPEED += 0.0000999f;
+		//CAMERASPEED += 1;
 
 		bloodyMaryP_up->updateGameObject();
 		theBiggestIronP_up->updateGameObject();
