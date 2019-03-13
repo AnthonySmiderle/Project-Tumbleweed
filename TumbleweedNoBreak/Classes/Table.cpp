@@ -12,7 +12,7 @@ namespace Sedna {
 		}
 		else if (tempInt == 2)
 		{
-			beer = new Potion(rapid);
+			beer = new Potion(revive);
 			tableImage = "Table_RFPot.png";
 		}
 		else if (tempInt == 0)

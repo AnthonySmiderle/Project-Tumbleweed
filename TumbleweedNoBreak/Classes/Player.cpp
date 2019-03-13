@@ -459,11 +459,18 @@ namespace Sedna {
 					}
 					if (tableList[i]->getBeer() == invinc)
 					{
-						invincTimer = 10.0f;
+						invincTimer = 5.0f;
 					}
-					if (tableList[i]->getBeer() == rapid)
+					if (tableList[i]->getBeer() == revive)
 					{
-
+						if (playerNumber - 1)
+						{
+							// revive player one
+						}
+						else//need to import the other player
+						{
+							// revive player two
+						}
 					}
 					score += 200;
 					playerUI->updateList();
@@ -487,6 +494,24 @@ namespace Sedna {
 				this->getBox()->addForce(((distanceVector.x * 2) / 2), (distanceVector.y * 2) / 2);
 			}
 		}
+	}
+
+	void Player::update(float dt)
+	{
+		if (invincTimer)
+			invincTimer -= dt;
+		if (invincTimer < 0)
+			invincTimer = 0;
+	}
+
+	bool Player::getInvinc() const
+	{
+		return (invincTimer);
+	}
+
+	void Player::wasHurt()
+	{
+		invincTimer = 1.0f;
 	}
 
 	SednaUI * Player::getUI() const

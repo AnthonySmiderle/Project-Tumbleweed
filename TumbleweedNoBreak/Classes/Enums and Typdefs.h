@@ -19,7 +19,7 @@ namespace Sedna {
 	{
 		blank,
 		health,
-		rapid,
+		revive,
 		invinc
 	};
 

@@ -88,7 +88,8 @@ namespace Sedna {
 
 			if (eProjectiles[i]->getBox()->checkCollision(*p->getBox())) {
 #ifdef _DEBUG
-				if (p->getController()->isButtonReleased(Sedna::LB)) {
+				if (p->getController()->isButtonReleased(Sedna::LB)&&!(p->getInvinc())) {
+
 					p->setHP(p->getHP() - 1);
 					srand(rand() % time(0));
 					int random = (rand() %  3) + 1;
@@ -101,6 +102,7 @@ namespace Sedna {
 							cocos2d::experimental::AudioEngine::play2d("p1Hurt3.mp3");
 					}
 					p->getController()->setVibration(1, 1);///some cheeky shit that might not work
+					p->wasHurt();
 					for (int j = 0; j < p->getUI()->getHPSprites().size(); j++) {
 						if (p->getUI()->getHPSprites()[j]->getZOrder() == 21) {
 							p->getUI()->getHPSprites()[j]->setZOrder(20);

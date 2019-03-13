@@ -64,7 +64,9 @@ namespace Sedna {
 		void checkBCollision(std::vector<Table*>& tableList);
 		void checkTableStuff(std::vector<Table*>& tableList);
 		void update(float dt);
-		
+		bool getInvinc()const ;
+		void wasHurt();
+
 		SednaUI* getUI() const;
 
 		void setGun(Gun* g);

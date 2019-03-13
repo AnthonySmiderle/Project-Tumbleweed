@@ -352,7 +352,8 @@ void HelloWorld::play(float dt)
 	if (!paused)
 	{
 		CAMERASPEED += 0.0000999f;
-
+		playerOne->update(dt);
+		playerTwo->update(dt);
 		bloodyMaryP_up->updateGameObject();
 		theBiggestIronP_up->updateGameObject();
 		sManager.update(dt, DDOS->getSprite()->getPosition().y);
