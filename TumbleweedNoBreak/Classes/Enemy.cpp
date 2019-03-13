@@ -102,7 +102,7 @@ namespace Sedna {
 					}
 					else {
 						if (random == 1)
-							cocos2d::experimental::AudioEngine::play2d("p2Hurt1.mp3");
+							cocos2d::experimental::AudioEngine::play2d("p2Hurt.mp3");
 						if (random == 2)
 							cocos2d::experimental::AudioEngine::play2d("p2Hurt2.mp3");
 						if (random == 3)

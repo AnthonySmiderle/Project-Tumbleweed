@@ -364,7 +364,8 @@ void HelloWorld::play(float dt)
 {
 	if (!paused)
 	{
-		CAMERASPEED += 0.0000999f;
+		CAMERASPEED += 0.005 * dt;
+		//CAMERASPEED += 0.0000999f;
 		//CAMERASPEED += 1;
 
 		bloodyMaryP_up->updateGameObject();
@@ -466,10 +467,16 @@ void HelloWorld::getCollisions()
 void HelloWorld::bigCheckList(float dt)
 {
 	for (int i = 0; i < sManager.outlawList.size(); i++) {
-		if (sManager.outlawList[i]->points == 300)
+		if (sManager.outlawList[i]->points == 300) {
+			auto first = playerOne->getBox()->getLocation() - sManager.outlawList[i]->getBox()->getLocation();
+			//auto firstMag = sqrt(first.x*first.x + first.y*first.y);
+			auto second = playerTwo->getBox()->getLocation() - sManager.outlawList[i]->getBox()->getLocation();
+
+			
 			((Sedna::RifleOutlaw*)sManager.outlawList[i])->setTrack
-			((playerOne->getBox()->getLocation() - sManager.outlawList[i]->getBox()->getLocation() <
-				playerTwo->getBox()->getLocation() - sManager.outlawList[i]->getBox()->getLocation()) ? playerOne : playerTwo);
+			((first.getLengthSq() < second.getLengthSq()) ? playerOne : playerTwo);
+
+		}
 		sManager.outlawList[i]->shoot(dt, this);
 	}
 
