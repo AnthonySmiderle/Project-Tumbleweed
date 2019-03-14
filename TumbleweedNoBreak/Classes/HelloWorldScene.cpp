@@ -113,10 +113,10 @@ bool HelloWorld::init()
 }
 void HelloWorld::initSprites()
 {
-	cocos2d::experimental::AudioEngine::preload(Music::gameMusic[Music::MusicType]);
+	cocos2d::experimental::AudioEngine::preload("bgm.mp3");
 	///<cocos2d::experimental::AudioEngine::preload("oRsound.mp3");>
 
-	DDOS = new Sedna::GameObject("DOS.jpg", cocos2d::Vec2(100, 300), 1, 1, 1);
+	DDOS = new Sedna::GameObject("a.png", cocos2d::Vec2(100, 300), 1, 1, 1);
 	this->addChild(DDOS->getBox()->getDrawNode());
 	this->addChild(DDOS->getSprite());
 	DDOS->getSprite()->setVisible(true);
@@ -180,7 +180,7 @@ void HelloWorld::initSprites()
 	bg3->setPosition(cocos2d::Vec2(0, (bg2->getContentSize().height * 0.92f) * 2));
 
 
-	///menu shit
+	///menu 
 
 	pausedLabel = Label::create("Paused", "fonts/Montague.ttf", 25);
 	pausedLabel->setAnchorPoint(Vec2(0.0f, 0.0f));
@@ -272,7 +272,6 @@ void HelloWorld::pause(float dt)
 		}
 		if (p1Sticks[0].y > 0.3f || p2Sticks[0].y > 0.3f) {
 			if (pauseMenu->getIndexOfSelected() + 1 > pauseMenu->getLabelList().size() - 1) {
-				//do some other shit i dont wanna figure out right now
 			}
 			else
 				pauseMenu->select(pauseMenu->getIndexOfSelected() + 1);

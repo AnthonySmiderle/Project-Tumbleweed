@@ -534,7 +534,7 @@ namespace Sedna {
 
 	void Player::wasHurt()
 	{
-		invincTimer = 1.0f;
+		invincTimer = 0.5f;
 	}
 
 	SednaUI * Player::getUI() const

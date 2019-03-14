@@ -9,7 +9,7 @@ namespace Sedna {
 	Sedna::Outlaw::Outlaw(float x, float y)
 	{
 
-		sprite = cocos2d::Sprite::create("enemy1.png");
+		sprite = cocos2d::Sprite::create("outlawLl.png");
 		sprite->setScale(spriteScale);
 
 		hitBox = new CirclePrimitive(cocos2d::Vec2(x, y), 24, 5, 30);
@@ -109,7 +109,7 @@ namespace Sedna {
 						if (random == 3)
 							cocos2d::experimental::AudioEngine::play2d("p2Hurt3.mp3");
 					}
-					p->getController()->setVibration(1, 1);///some cheeky shit that might not work
+					p->getController()->setVibration(1, 1);
 					p->wasHurt();
 					for (int j = 0; j < p->getUI()->getHPSprites().size(); j++) {
 						if (p->getUI()->getHPSprites()[j]->getZOrder() == 21) {

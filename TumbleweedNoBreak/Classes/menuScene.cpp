@@ -38,7 +38,7 @@ namespace Sedna {
 	{
 #ifdef _DEBUG
 		if (index < 0 || index > labelList.size() - 1)
-			exit(std::stoi("oi what the fuck"));
+			exit(std::stoi("exception"));
 #endif
 
 		labelList[lastIndex]->enableWrap(false);
@@ -149,7 +149,6 @@ void MenuScene::update(float dt)
 		}
 		if (p1Sticks[0].y > 0.3f) {
 			if (menuE->getIndexOfSelected() + 1 > menuE->getLabelList().size() - 1) {
-				//do some other shit i dont wanna figure out right now
 			}
 			else
 				menuE->select(menuE->getIndexOfSelected() + 1);
@@ -167,7 +166,7 @@ void MenuScene::update(float dt)
 			director->replaceScene(TransitionFade::create(2.0f, game));
 		}
 		if (menuE->getIndexOfSelected() == 0 && p1Controller->isButtonPressed(Sedna::A)) {
-			cocos2d::experimental::AudioEngine::play2d(Music::menuSound[Music::MusicType], false);
+			cocos2d::experimental::AudioEngine::play2d("cha ching.mp3", false);
 
 			exit(0);
 
