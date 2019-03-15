@@ -537,6 +537,11 @@ namespace Sedna {
 		invincTimer = 0.5f;
 	}
 
+	bool Player::isDead()
+	{
+		return !takeInputs;
+	}
+
 	SednaUI * Player::getUI() const
 	{
 		return playerUI;

@@ -189,7 +189,7 @@ void HelloWorld::initSprites()
 	this->addChild(pausedLabel, 100);
 	pausedLabel->setVisible(false);
 
-	startLabel = Label::create("3", "fonts/Montague.ttf", 125);
+	startLabel = Label::create("3", "fonts/Montague.ttf", 100);
 	startLabel->setAnchorPoint(Vec2(0.0f, 0.0f));
 	startLabel->setPosition(Vec2(200, 150));
 	startLabel->enableShadow();
@@ -349,7 +349,7 @@ void HelloWorld::pause(float dt)
 				startLabel->setString("0");
 
 			}
-			else
+			else if(!playerOne->isDead()&&!playerTwo->isDead())
 			{
 				startLabel->setVisible(false);
 			}
@@ -363,15 +363,34 @@ void HelloWorld::play(float dt)
 {
 	if (!paused)
 	{
-		CAMERASPEED += 0.005 * dt;
+		if (playerOne->isDead()&&playerTwo->isDead())//loss conditions
+		{
+			CAMERASPEED = 0;
+			startLabel->setString("You Lose");
+			startLabel->setVisible(true);
+			loseTimer += dt;
+			startLabel->setPosition(50,startLabel->getPosition().y);
+			if (loseTimer>=5.0f)
+			{
+				auto mMenu = MenuScene::create();
+				cocos2d::experimental::AudioEngine::stopAll();
+				end = true;
+				MenuScene::setEnd(false);
+				director->replaceScene(TransitionFade::create(2.0f, mMenu));
+			}
+			
+		}
+		else
+		{
+			CAMERASPEED += 0.005 * dt;
+			playerOne->update(dt);
+			playerTwo->update(dt);
+			bloodyMaryP_up->updateGameObject();
+			theBiggestIronP_up->updateGameObject();
+			sManager.update(dt, DDOS->getSprite()->getPosition().y);			
+		}
 		//CAMERASPEED += 0.0000999f;
 		//CAMERASPEED += 1;
-
-		playerOne->update(dt);
-		playerTwo->update(dt);
-		bloodyMaryP_up->updateGameObject();
-		theBiggestIronP_up->updateGameObject();
-		sManager.update(dt, DDOS->getSprite()->getPosition().y);
 
 		srand(time(0));
 		checkInput(dt);
@@ -388,6 +407,7 @@ void HelloWorld::play(float dt)
 					pauseMenu->getLabelList()[i]->getPosition().y + CAMERASPEED));
 			}
 			pausedLabel->setPosition(pausedLabel->getPosition() + cocos2d::Vec2(0, CAMERASPEED));
+			startLabel->setPosition(startLabel->getPosition() + cocos2d::Vec2(0, CAMERASPEED));
 
 
 
@@ -586,6 +606,16 @@ void HelloWorld::checkPosAll()//this function will remove and objects that go to
 			Sedna::BaseObjectManager::tableBObjects.erase(Sedna::BaseObjectManager::tableBObjects.begin() + i);
 			i--;
 		}
+	}
+	if (playerOne->getBox()->getLocation().y <= DDOS->getSprite()->getPosition().y - 400)//TODO change health sprites as well
+	{
+		playerOne->setHP(0);
+		playerOne->die();
+	}
+	if (playerTwo->getBox()->getLocation().y <= DDOS->getSprite()->getPosition().y - 400)
+	{
+		playerTwo->setHP(0);
+		playerTwo->die();
 	}
 }
 

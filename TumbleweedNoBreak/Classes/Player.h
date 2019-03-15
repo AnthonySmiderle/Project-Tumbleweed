@@ -66,6 +66,7 @@ namespace Sedna {
 		void update(float dt);
 		bool getInvinc()const ;
 		void wasHurt();
+		bool isDead();
 
 		SednaUI* getUI() const;
 

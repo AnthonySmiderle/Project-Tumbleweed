@@ -133,6 +133,8 @@ private:
 	bool paused = false;
 	void togglePause();
 	bool bulletTime = false;
+
+	float loseTimer = 0.0f;
 };
 
 #endif // __HELLOWORLD_SCENE_H__
