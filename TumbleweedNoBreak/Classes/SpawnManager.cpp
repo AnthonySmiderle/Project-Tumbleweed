@@ -6,18 +6,26 @@ void Sedna::SpawnManager::update(float dt, int DDOS)
 	DDOS += 25;
 	for (unsigned int i = 0; i < tables.update(dt,tableList.size()); i++)
 		tableSpawn(DDOS);
+
 	int tableChainMax = tableChain.update(dt, tableList.size());
 	for (unsigned int i = 0; i < tableChainMax; i++)
 		tableSpawn(DDOS);
+
 	for (unsigned int i = 0; i < outlaws.update(dt,outlawList.size()); i++)
 		outlawSpawn(DDOS);
+
 	int outlawChainMax = outlawChain.update(dt, outlawList.size());
 	for (unsigned int i = 0; i < outlawChainMax; i++)
 		outlawSpawn(DDOS);
+
 	for (unsigned int i = 0; i < shotgunOutlaws.update(dt, outlawList.size()); i++)
 		shotgunOutlawSpawn(DDOS);
+
 	for (unsigned int i = 0; i < rifleOutlaws.update(dt, outlawList.size()); i++)
 		rifleOutlawSpawn(DDOS);
+
+	for (unsigned int i = 0; i < CrazyPetes.update(dt, outlawList.size()); i++)
+		peteSpawn(DDOS);
 }
 
 
@@ -58,4 +66,16 @@ void Sedna::SpawnManager::rifleOutlawSpawn(int DDOS)
 	scene->addChild(rifleOutlaw->getBox()->getDrawNode());
 	scene->addChild(rifleOutlaw->getSprite(), 10);
 	outlawList.push_back(new Sedna::RifleOutlaw(*rifleOutlaw));
+}
+
+void Sedna::SpawnManager::peteSpawn(int DDOS)
+{
+	int x = 100 + (rand() % 300);
+	pete = new Sedna::CrazyPete(x, DDOS);
+	Sedna::BaseObjectManager::outlawBObjects.push_back(pete);
+	scene->addChild(pete->getBox()->getDrawNode());
+	scene->addChild(pete->getSprite(), 10);
+	scene->addChild(pete->getDyn()->getBox()->getDrawNode());
+	scene->addChild(pete->getDyn()->getSprite());
+	outlawList.push_back(new Sedna::CrazyPete(*pete));
 }

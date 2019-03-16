@@ -36,7 +36,6 @@ public:
 	
 
 	void update(float dt);
-	static void setEnd(bool yn) { end = yn; }
 
 	void menuCloseCallback(cocos2d::Ref* pSender);
 

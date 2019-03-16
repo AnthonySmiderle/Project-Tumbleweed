@@ -48,7 +48,7 @@ namespace Sedna {
 		RifleOutlaw(float x, float y);
 		void animate(float dt) override;
 		void shoot(float dt, cocos2d::Scene* s) override;
-		void checkList() override;
+		
 		cocos2d::Vec2 getTrack() const;///may be problematic
 		void setTrack(Player* p);
 	private:
@@ -58,7 +58,20 @@ namespace Sedna {
 
 
 	class CrazyPete : public Outlaw {
-
+	public:
+		CrazyPete(float x, float y);
+		~CrazyPete() { delete dynamite; }
+		void animate(float dt) override;
+		void removeProjectiles() override;
+		void shoot(float dt, cocos2d::Scene* s) override;
+		void checkList() override;
+		
+		void setTrack(Player* p);
+		void updateDyn(float dt, cocos2d::Scene* s);
+		Projectile* getDyn() const { return dynamite; }
+	private:
+		cocos2d::Vec2 track;
+		Projectile* dynamite;
 	};
 
 	//class Pete : public GameObject

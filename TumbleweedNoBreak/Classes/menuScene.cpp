@@ -130,7 +130,7 @@ bool MenuScene::init() {
 
 
 	cocos2d::experimental::AudioEngine::play2d("bgm2.mp3", true);
-	
+	end = false;
 	this->scheduleUpdate();
 
 	return true;
@@ -138,7 +138,8 @@ bool MenuScene::init() {
 
 void MenuScene::update(float dt)
 {
-	if (!end) {
+	if (director->getInstance()->getRunningScene()==this) {
+	
 
 		manager.update();
 		p1Controller->updateSticks(p1Sticks);
@@ -161,9 +162,8 @@ void MenuScene::update(float dt)
 
 			cocos2d::experimental::AudioEngine::stop(0);
 			end = true;
-			HelloWorld::setEnd(false);
 			//this->onExit();
-			director->replaceScene(TransitionFade::create(2.0f, game));
+			director->replaceScene(TransitionFade::create(1.0f, game));
 		}
 		if (menuE->getIndexOfSelected() == 0 && p1Controller->isButtonPressed(Sedna::A)) {
 			cocos2d::experimental::AudioEngine::play2d("cha ching.mp3", false);

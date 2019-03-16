@@ -52,11 +52,10 @@ public:
 	void initSprites();
 	void checkInput(float dt);
 	void getCollisions();
-	void bigCheckList(float dt);
+	void checkManyLists(float dt);
 	void recursiveFunction(std::vector<Sedna::Outlaw*>& outlawList);
 	void recursiveFunction(std::vector<Sedna::Table*>& tableList);
 	void checkPosAll();
-	static void setEnd(bool yn) { end = yn; }
 
 	// a selector callback
 	void menuCloseCallback(cocos2d::Ref* pSender);
@@ -64,6 +63,7 @@ public:
 	// implement the "static create()" method manually
 	CREATE_FUNC(HelloWorld);
 private:
+
 	bool decrimenting = false;
 	float bulletTimeMax = 0.0f;
 
@@ -96,23 +96,13 @@ private:
 	cocos2d::Sprite* rsr;
 	cocos2d::Sprite* rt;
 
-	
-
 	Sedna::Player* playerOne;
 	Sedna::Player* playerTwo;
-
-
-	//guns
-	//Sedna::Gun* olReliable;//base gun
-	//Sedna::Gun* bloodyMary;//shotgun
-	//Sedna::Gun* theBiggestIron;//gattling gun
 
 	Sedna::Projectile *baseProjectile;
 	std::vector<Sedna::Projectile*>pProjectiles;
 	Sedna::Projectile* eBaseProjectile;
 	std::vector<Sedna::Projectile*>eProjectiles;
-
-	
 
 	Sedna::GameObject* DDOS;
 	std::vector <Sedna::Potion> potionList;
@@ -123,7 +113,6 @@ private:
 
 	int barRightMax = 430;
 	int barLeftMax = 90;
-
 
 	float gameStart = 0.0f;
 	bool moveScreen = true;

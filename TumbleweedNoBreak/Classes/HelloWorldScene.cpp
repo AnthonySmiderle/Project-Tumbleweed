@@ -107,6 +107,7 @@ bool HelloWorld::init()
 	initSprites();
 
 	director = cocos2d::Director::getInstance();
+	end = false;
 	this->scheduleUpdate();
 
 	return true;
@@ -116,16 +117,14 @@ void HelloWorld::initSprites()
 	cocos2d::experimental::AudioEngine::preload("bgm.mp3");
 	///<cocos2d::experimental::AudioEngine::preload("oRsound.mp3");>
 
+
+
 	DDOS = new Sedna::GameObject("a.png", cocos2d::Vec2(100, 300), 1, 1, 1);
 	this->addChild(DDOS->getBox()->getDrawNode());
 	this->addChild(DDOS->getSprite());
 	DDOS->getSprite()->setVisible(true);
 	/////////////////////////////////////
 
-
-	//olReliable = new Sedna::Gun("olReliable", 2, 4, 0.35f);
-	//bloodyMary = new Sedna::Gun("bloodyMary", 3, 10, 10, 0.85f);
-	//theBiggestIron = new Sedna::Gun("theBiggestIron", 1, 10,100, 0.089f);
 
 	bloodyMaryP_up = new Sedna::Powerup("gun2.png", Sedna::Guns::bloodyMary, -1000, 0);
 	theBiggestIronP_up = new Sedna::Powerup("gun3.png", Sedna::Guns::theBiggestIron, -1000, 0);
@@ -196,6 +195,8 @@ void HelloWorld::initSprites()
 	this->addChild(startLabel, 100);
 	startLabel->setVisible(false);
 
+
+
 	for (int i = 0; i < pauseMenu->getLabelList().size(); i++) {
 		this->addChild(pauseMenu->getLabelList()[i], 100);
 		pauseMenu->getLabelList()[i]->enableShadow();
@@ -207,6 +208,8 @@ void HelloWorld::initSprites()
 
 		}
 	}
+
+
 
 	for (int i = 0; i < pauseMenu->getLabelList().size(); i++) {
 		pauseMenu->getLabelList()[i]->setVisible(false);
@@ -240,7 +243,7 @@ void HelloWorld::update(float dt)
 
 void HelloWorld::pause(float dt)
 {
-	if (p1Controller->isButtonPressed(Sedna::SELECT)||p2Controller->isButtonPressed(Sedna::SELECT))
+	if (p1Controller->isButtonPressed(Sedna::SELECT) || p2Controller->isButtonPressed(Sedna::SELECT))
 	{
 		p1Controller->setVibration(0, 0);
 		p2Controller->setVibration(0, 0);
@@ -254,22 +257,29 @@ void HelloWorld::pause(float dt)
 			TRUEPAUSE ^= 1;
 		}
 	}
-	if (p1Controller->isButtonReleased(Sedna::SELECT)&& p2Controller->isButtonReleased(Sedna::SELECT))
+
+
+	if (p1Controller->isButtonReleased(Sedna::SELECT) && p2Controller->isButtonReleased(Sedna::SELECT))
 		TEMPPAUSE = false;
+
 
 	if (TRUEPAUSE)
 	{
-		
+
 		paused = true;
 		for (int i = 0; i < pauseMenu->getLabelList().size(); i++) {
 			pausedLabel->setVisible(true);
 			pauseMenu->getLabelList()[i]->setVisible(true);
 		}
 
+
+
 		if ((p1Sticks[0].y < -0.3f || p2Sticks[0].y < -0.3f) && pauseMenu->getIndexOfSelected() != 0) {
 
 			pauseMenu->select(pauseMenu->getIndexOfSelected() - 1);
 		}
+
+
 		if (p1Sticks[0].y > 0.3f || p2Sticks[0].y > 0.3f) {
 			if (pauseMenu->getIndexOfSelected() + 1 > pauseMenu->getLabelList().size() - 1) {
 			}
@@ -277,18 +287,23 @@ void HelloWorld::pause(float dt)
 				pauseMenu->select(pauseMenu->getIndexOfSelected() + 1);
 		}
 
-		if (pauseMenu->getIndexOfSelected() == 1 && (p1Controller->isButtonPressed(Sedna::A)|| p2Controller->isButtonPressed(Sedna::A))) {
+
+
+		if (pauseMenu->getIndexOfSelected() == 1 && (p1Controller->isButtonPressed(Sedna::A) || p2Controller->isButtonPressed(Sedna::A))) {
 			TRUEPAUSE = false;
 		}
-		if (pauseMenu->getIndexOfSelected() == 0 && (p1Controller->isButtonPressed(Sedna::A)|| p2Controller->isButtonPressed(Sedna::A)) && !end) {
+
+
+		if (pauseMenu->getIndexOfSelected() == 0 && (p1Controller->isButtonPressed(Sedna::A) || p2Controller->isButtonPressed(Sedna::A)) && !end) {
 			auto mMenu = MenuScene::create();
 			cocos2d::experimental::AudioEngine::stopAll();
 			cocos2d::experimental::AudioEngine::play2d("cha ching.mp3", false);
 			end = true;
-			MenuScene::setEnd(false);
 			director->replaceScene(TransitionFade::create(2.0f, mMenu));
 		}
 	}
+
+
 	else {
 		for (int i = 0; i < pauseMenu->getLabelList().size(); i++) {
 			pausedLabel->setVisible(false);
@@ -296,22 +311,24 @@ void HelloWorld::pause(float dt)
 		}
 	}
 
+
+
 	if (!TRUEPAUSE)
 	{
-		if ((p1Triggers.LT > 0.0f || p2Triggers.LT > 0.0f) && bulletTimeMax < 3.0f )//triggers can be replaced by a power up boolean for a drink instead of a toggle thing
+		if ((p1Triggers.LT > 0.0f || p2Triggers.LT > 0.0f) && bulletTimeMax < 3.0f)//triggers can be replaced by a power up boolean for a drink instead of a toggle thing
 			bulletTime = true;
-				
+
 		if (bulletTime)
 		{
 			togglePause();
-			
+
 			playerOne->getBox()->setRadius(15);	///
 			playerTwo->getBox()->setRadius(15);	///
-			bulletTimeMax+= dt;
+			bulletTimeMax += dt;
 		}
 		if (p1Triggers.LT == 0 && p2Triggers.LT == 0 || bulletTimeMax >= 3.0f)
 		{
-			
+
 			bulletTime = false;
 			paused = false;
 			bulletTimeMax -= dt;
@@ -321,9 +338,9 @@ void HelloWorld::pause(float dt)
 		}
 		if (bulletTimeMax < 0.0f) {
 			bulletTimeMax = 0;
-			
+
 		}
-		
+
 		if (gameStart < 5)
 		{
 			gameStart += dt;
@@ -349,7 +366,7 @@ void HelloWorld::pause(float dt)
 				startLabel->setString("0");
 
 			}
-			else if(!playerOne->isDead()&&!playerTwo->isDead())
+			else if (!playerOne->isDead() && !playerTwo->isDead())
 			{
 				startLabel->setVisible(false);
 			}
@@ -363,22 +380,22 @@ void HelloWorld::play(float dt)
 {
 	if (!paused)
 	{
-		if (playerOne->isDead()&&playerTwo->isDead())//loss conditions
+		if (playerOne->isDead() && playerTwo->isDead())//is this loss
 		{
 			CAMERASPEED = 0;
 			startLabel->setString("You Lose");
 			startLabel->setVisible(true);
 			loseTimer += dt;
-			startLabel->setPosition(50,startLabel->getPosition().y);
-			if (loseTimer>=5.0f)
+			startLabel->setPosition(50, startLabel->getPosition().y);
+			if (loseTimer >= 5.0f)
 			{
 				auto mMenu = MenuScene::create();
 				cocos2d::experimental::AudioEngine::stopAll();
 				end = true;
-				MenuScene::setEnd(false);
+
 				director->replaceScene(TransitionFade::create(2.0f, mMenu));
 			}
-			
+
 		}
 		else
 		{
@@ -387,10 +404,8 @@ void HelloWorld::play(float dt)
 			playerTwo->update(dt);
 			bloodyMaryP_up->updateGameObject();
 			theBiggestIronP_up->updateGameObject();
-			sManager.update(dt, DDOS->getSprite()->getPosition().y);			
+			sManager.update(dt, DDOS->getSprite()->getPosition().y);
 		}
-		//CAMERASPEED += 0.0000999f;
-		//CAMERASPEED += 1;
 
 		srand(time(0));
 		checkInput(dt);
@@ -398,7 +413,7 @@ void HelloWorld::play(float dt)
 
 
 #ifdef _DEBUG
-		if (p1Controller->isButtonPressed(Sedna::Y)|| p2Controller->isButtonPressed(Sedna::Y))
+		if (p1Controller->isButtonPressed(Sedna::Y) || p2Controller->isButtonPressed(Sedna::Y))
 			moveScreen ^= 1;
 		if (moveScreen)
 		{
@@ -420,7 +435,7 @@ void HelloWorld::play(float dt)
 			DDOS->getSprite()->setPosition(cocos2d::Vec2(100, (DDOS->getSprite()->getPosition().y + CAMERASPEED)));
 
 		}
-		if (p1Controller->isButtonPressed(Sedna::X)|| p2Controller->isButtonPressed(Sedna::X)) {
+		if (p1Controller->isButtonPressed(Sedna::X) || p2Controller->isButtonPressed(Sedna::X)) {
 			for (unsigned int i = 0; i < sManager.outlawList.size(); i++)
 				sManager.outlawList[i]->getBox()->getDrawNode()->setVisible(true);
 			for (unsigned int i = 0; i < sManager.tableList.size(); i++)
@@ -441,10 +456,7 @@ void HelloWorld::play(float dt)
 #endif
 
 
-
-
-
-		bigCheckList(dt);
+		checkManyLists(dt);
 
 
 		if (DDOS->getSprite()->getPosition().y - bg2->getPosition().y >= 588.8f) {
@@ -479,26 +491,33 @@ void HelloWorld::checkInput(float dt)
 
 void HelloWorld::getCollisions()
 {
-	playerOne->checkTableStuff(sManager.tableList,playerTwo);
-	playerTwo->checkTableStuff(sManager.tableList,playerOne);
+	playerOne->checkTableStuff(sManager.tableList, playerTwo);
+	playerTwo->checkTableStuff(sManager.tableList, playerOne);
 }
 
 
 
-void HelloWorld::bigCheckList(float dt)
+void HelloWorld::checkManyLists(float dt)
 {
 	for (int i = 0; i < sManager.outlawList.size(); i++) {
-		if (sManager.outlawList[i]->points == 300) {
-			auto first = playerOne->getBox()->getLocation() - sManager.outlawList[i]->getBox()->getLocation();
-			//auto firstMag = sqrt(first.x*first.x + first.y*first.y);
-			auto second = playerTwo->getBox()->getLocation() - sManager.outlawList[i]->getBox()->getLocation();
+		auto first = playerOne->getBox()->getLocation() - sManager.outlawList[i]->getBox()->getLocation();
+		auto second = playerTwo->getBox()->getLocation() - sManager.outlawList[i]->getBox()->getLocation();
 
-			
+
+		if (sManager.outlawList[i]->points == 300) 
 			((Sedna::RifleOutlaw*)sManager.outlawList[i])->setTrack
 			((first.getLengthSq() < second.getLengthSq()) ? playerOne : playerTwo);
 
+		
+		if (sManager.outlawList[i]->points == 1000) {
+
+			//((Sedna::CrazyPete*)sManager.outlawList[i])->setTrack
+			//((first.getLengthSq() < second.getLengthSq()) ? playerOne : playerTwo);
+
+			((Sedna::CrazyPete*)sManager.outlawList[i])->updateDyn(dt, this);
 		}
-		sManager.outlawList[i]->shoot(dt, this);
+		else
+			sManager.outlawList[i]->shoot(dt, this);
 	}
 
 
@@ -515,8 +534,8 @@ void HelloWorld::bigCheckList(float dt)
 	recursiveFunction(sManager.outlawList);
 	recursiveFunction(sManager.tableList);
 
-	playerOne->checkBCollision(sManager.outlawList, bloodyMaryP_up,theBiggestIronP_up);
-	playerTwo->checkBCollision(sManager.outlawList, bloodyMaryP_up,theBiggestIronP_up);
+	playerOne->checkBCollision(sManager.outlawList, bloodyMaryP_up, theBiggestIronP_up);
+	playerTwo->checkBCollision(sManager.outlawList, bloodyMaryP_up, theBiggestIronP_up);
 	playerOne->checkBCollision(sManager.tableList);
 	playerTwo->checkBCollision(sManager.tableList);
 	playerOne->checkList();
@@ -564,7 +583,7 @@ void HelloWorld::recursiveFunction(std::vector<Sedna::Outlaw*>& outlawList)
 void HelloWorld::recursiveFunction(std::vector<Sedna::Table*>& tableList)
 {
 	for (unsigned int i = 0; i < sManager.tableList.size(); i++) {
-		if (sManager.tableList[i]->knocked!=true)
+		if (sManager.tableList[i]->knocked != true)
 		{
 			for (unsigned int j = 0; j < sManager.tableList.size(); j++) {
 				if (i == j)
@@ -577,7 +596,7 @@ void HelloWorld::recursiveFunction(std::vector<Sedna::Table*>& tableList)
 
 			}
 		}
-		
+
 	}
 
 }

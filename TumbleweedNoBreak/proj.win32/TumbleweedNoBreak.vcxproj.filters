@@ -1,49 +1,141 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="..\Classes\AppDelegate.cpp" />
-    <ClCompile Include="..\Classes\baseObjectManager.cpp" />
-    <ClCompile Include="..\Classes\Enemy.cpp" />
-    <ClCompile Include="..\Classes\GameObject.cpp" />
-    <ClCompile Include="..\Classes\Guns.cpp" />
-    <ClCompile Include="..\Classes\HelloWorldScene.cpp" />
-    <ClCompile Include="..\Classes\menuScene.cpp" />
-    <ClCompile Include="..\Classes\Player.cpp" />
-    <ClCompile Include="..\Classes\Potion.cpp" />
-    <ClCompile Include="..\Classes\Primitive.cpp" />
-    <ClCompile Include="..\Classes\Projectile.cpp" />
-    <ClCompile Include="..\Classes\SpawnManager.cpp" />
-    <ClCompile Include="..\Classes\SpawnObject.cpp" />
-    <ClCompile Include="..\Classes\Table.cpp" />
-    <ClCompile Include="..\Classes\XinputManager.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="..\Classes\MusicList.cpp" />
-    <ClCompile Include="..\Classes\Powerup.cpp" />
-    <ClCompile Include="..\Classes\Animations.cpp" />
+    <ClCompile Include="..\Classes\Animations.cpp">
+      <Filter>Animations</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\AppDelegate.cpp">
+      <Filter>Cocos Garbage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\baseObjectManager.cpp">
+      <Filter>Memory Management</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\SpawnManager.cpp">
+      <Filter>Memory Management</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\SpawnObject.cpp">
+      <Filter>Memory Management</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\MusicList.cpp">
+      <Filter>Memory Management</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Enemy.cpp">
+      <Filter>Game Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Cocos Garbage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\GameObject.cpp">
+      <Filter>Game Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Guns.cpp">
+      <Filter>Game Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\HelloWorldScene.cpp">
+      <Filter>Game Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\menuScene.cpp">
+      <Filter>Game Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Player.cpp">
+      <Filter>Game Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Potion.cpp">
+      <Filter>Game Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Powerup.cpp">
+      <Filter>Game Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Primitive.cpp">
+      <Filter>Game Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Projectile.cpp">
+      <Filter>Game Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Table.cpp">
+      <Filter>Game Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\XinputManager.cpp">
+      <Filter>Game Stuff</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Classes\AppDelegate.h" />
-    <ClInclude Include="..\Classes\baseObjectManager.h" />
-    <ClInclude Include="..\Classes\Enemy.h" />
-    <ClInclude Include="..\Classes\Enums and Typdefs.h" />
-    <ClInclude Include="..\Classes\GameObject.h" />
-    <ClInclude Include="..\Classes\Guns.h" />
-    <ClInclude Include="..\Classes\HelloWorldScene.h" />
-    <ClInclude Include="..\Classes\menuScene.h" />
-    <ClInclude Include="..\Classes\Player.h" />
-    <ClInclude Include="..\Classes\Potion.h" />
-    <ClInclude Include="..\Classes\Primitive.h" />
-    <ClInclude Include="..\Classes\Projectile.h" />
-    <ClInclude Include="..\Classes\SpawnManager.h" />
-    <ClInclude Include="..\Classes\SpawnObject.h" />
-    <ClInclude Include="..\Classes\Table.h" />
-    <ClInclude Include="..\Classes\XinputManager.h" />
-    <ClInclude Include="main.h" />
-    <ClInclude Include="..\Classes\MusicList.h" />
-    <ClInclude Include="..\Classes\Powerup.h" />
-    <ClInclude Include="..\Classes\Animations.h" />
+    <ClInclude Include="..\Classes\Animations.h">
+      <Filter>Animations</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\AppDelegate.h">
+      <Filter>Cocos Garbage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\baseObjectManager.h">
+      <Filter>Memory Management</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\SpawnObject.h">
+      <Filter>Memory Management</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\SpawnManager.h">
+      <Filter>Memory Management</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\MusicList.h">
+      <Filter>Memory Management</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Enemy.h">
+      <Filter>Game Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Enums and Typdefs.h">
+      <Filter>Game Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="main.h">
+      <Filter>Cocos Garbage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\XinputManager.h">
+      <Filter>Game Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GameObject.h">
+      <Filter>Game Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Guns.h">
+      <Filter>Game Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\HelloWorldScene.h">
+      <Filter>Game Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\menuScene.h">
+      <Filter>Game Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Player.h">
+      <Filter>Game Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Potion.h">
+      <Filter>Game Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Powerup.h">
+      <Filter>Game Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Primitive.h">
+      <Filter>Game Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Projectile.h">
+      <Filter>Game Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Table.h">
+      <Filter>Game Stuff</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Animations">
+      <UniqueIdentifier>{9957a5ef-ac67-4278-9e2c-6ccf0a2034c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Cocos Garbage">
+      <UniqueIdentifier>{cb261a1f-29f2-4fa9-a3d4-84946078fa39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Memory Management">
+      <UniqueIdentifier>{f5406646-e719-41f7-93db-860d61deea96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Stuff">
+      <UniqueIdentifier>{24b192d5-f1bb-461e-ab05-ef8b81029cde}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>
