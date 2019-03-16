@@ -300,6 +300,7 @@ void ShotgunOutlaw::checkList()
 		eProjectiles.front()->getBox()->getDrawNode()->removeFromParent();
 		eProjectiles.front()->getSprite()->removeFromParent();
 		eProjectiles.erase(eProjectiles.begin());
+
 	}
 	for (int i = 0; i < eProjectiles.size(); i++)
 		eProjectiles[i]->updateGameObject();
@@ -453,6 +454,22 @@ void Sedna::CrazyPete::shoot(float dt, cocos2d::Scene * s)
 		s->addChild(eBaseProjectile4->getBox()->getDrawNode());
 		s->addChild(eBaseProjectile4->getSprite());
 
+		Projectile* eBaseProjectile5 = new Sedna::Projectile(-1000, 10, Enemy);
+		s->addChild(eBaseProjectile5->getBox()->getDrawNode());
+		s->addChild(eBaseProjectile5->getSprite());
+
+		Projectile* eBaseProjectile6 = new Sedna::Projectile(-1000, 10, Enemy);
+		s->addChild(eBaseProjectile6->getBox()->getDrawNode());
+		s->addChild(eBaseProjectile6->getSprite());
+
+		Projectile* eBaseProjectile7 = new Sedna::Projectile(-1000, 10, Enemy);
+		s->addChild(eBaseProjectile7->getBox()->getDrawNode());
+		s->addChild(eBaseProjectile7->getSprite());
+
+		Projectile* eBaseProjectile8 = new Sedna::Projectile(-1000, 10, Enemy);
+		s->addChild(eBaseProjectile8->getBox()->getDrawNode());
+		s->addChild(eBaseProjectile8->getSprite());
+
 		eProjectiles.push_back(new Sedna::Projectile(*eBaseProjectile1));
 		BaseObjectManager::eProjectileBObjects.push_back(eBaseProjectile1);
 
@@ -465,17 +482,38 @@ void Sedna::CrazyPete::shoot(float dt, cocos2d::Scene * s)
 		eProjectiles.push_back(new Sedna::Projectile(*eBaseProjectile4));
 		BaseObjectManager::eProjectileBObjects.push_back(eBaseProjectile4);
 
+		eProjectiles.push_back(new Sedna::Projectile(*eBaseProjectile5));
+		BaseObjectManager::eProjectileBObjects.push_back(eBaseProjectile5);
+
+		eProjectiles.push_back(new Sedna::Projectile(*eBaseProjectile6));
+		BaseObjectManager::eProjectileBObjects.push_back(eBaseProjectile6);
+
+		eProjectiles.push_back(new Sedna::Projectile(*eBaseProjectile7));
+		BaseObjectManager::eProjectileBObjects.push_back(eBaseProjectile7);
+
+		eProjectiles.push_back(new Sedna::Projectile(*eBaseProjectile8));
+		BaseObjectManager::eProjectileBObjects.push_back(eBaseProjectile8);
+
 		eProjectiles[0]->getBox()->setLocation(dynamite->getBox()->getLocation());
 		eProjectiles[1]->getBox()->setLocation(dynamite->getBox()->getLocation());
 		eProjectiles[2]->getBox()->setLocation(dynamite->getBox()->getLocation());
 		eProjectiles[3]->getBox()->setLocation(dynamite->getBox()->getLocation());
+		eProjectiles[4]->getBox()->setLocation(dynamite->getBox()->getLocation());
+		eProjectiles[5]->getBox()->setLocation(dynamite->getBox()->getLocation());
+		eProjectiles[6]->getBox()->setLocation(dynamite->getBox()->getLocation());
+		eProjectiles[7]->getBox()->setLocation(dynamite->getBox()->getLocation());
 
-		
+		auto speed = 4;
 
-		eProjectiles[0]->getBox()->setForce(cocos2d::Vec2(-6,0));
-		eProjectiles[1]->getBox()->setForce(cocos2d::Vec2(6,0));
-		eProjectiles[2]->getBox()->setForce(cocos2d::Vec2(0,6));
-		eProjectiles[3]->getBox()->setForce(cocos2d::Vec2(0,-6));
+		eProjectiles[0]->getBox()->setForce(cocos2d::Vec2(-1,0)*speed);
+		eProjectiles[1]->getBox()->setForce(cocos2d::Vec2(1,0) *speed);
+		eProjectiles[2]->getBox()->setForce(cocos2d::Vec2(0,1) *speed);
+		eProjectiles[3]->getBox()->setForce(cocos2d::Vec2(0,-1)*speed);
+
+		eProjectiles[4]->getBox()->setForce(cocos2d::Vec2(-0.5f, -0.5f)*speed);
+		eProjectiles[5]->getBox()->setForce(cocos2d::Vec2(-0.5f, 0.5f) *speed);
+		eProjectiles[7]->getBox()->setForce(cocos2d::Vec2(0.5f, 0.5f)  *speed);
+		eProjectiles[6]->getBox()->setForce(cocos2d::Vec2(0.5f, -0.5f) *speed);
 
 		
 	
@@ -483,7 +521,7 @@ void Sedna::CrazyPete::shoot(float dt, cocos2d::Scene * s)
 
 void Sedna::CrazyPete::checkList()
 {
-	if (eProjectiles.size() > 8) {
+	if (eProjectiles.size() > 16) {
 		eProjectiles.front()->getBox()->getDrawNode()->removeFromParent();
 		eProjectiles.front()->getSprite()->removeFromParent();
 		eProjectiles.erase(eProjectiles.begin());

@@ -522,7 +522,7 @@ void HelloWorld::checkManyLists(float dt)
 
 
 	checkPosAll();
-	if (sManager.outlawList.size() > 4) {
+	if (sManager.outlawList.size() > 6) {
 		sManager.outlawList.front()->removeProjectiles();
 		sManager.outlawList.front()->getBox()->getDrawNode()->removeFromParent();
 		sManager.outlawList.front()->getSprite()->removeFromParent();
