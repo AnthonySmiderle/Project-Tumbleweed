@@ -410,6 +410,7 @@ void Sedna::CrazyPete::setTrack(Player * p)
 void Sedna::CrazyPete::updateDyn(float dt, cocos2d::Scene * s)
 {
 	//auto direction = track / sqrt(track.x*track.x + track.y*track.y);
+	this->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-1, 0));
 	if (eShootTimer > 1.0f) {
 		eShootTimer = 0.0f;
 		eHasShot = false;
@@ -419,14 +420,18 @@ void Sedna::CrazyPete::updateDyn(float dt, cocos2d::Scene * s)
 		dynamite->getBox()->setForce(cocos2d::Vec2(0,-5));
 
 	}
-	if (eHasShot)
+	
+	if (eHasShot) {
 		eShootTimer += dt;
-	if (this->getBox()->getLocation() - dynamite->getBox()->getLocation() == cocos2d::Vec2(0,100)) {
+		dynamite->getBox()->setForce(cocos2d::Vec2(0, -5));
+	}
+	if (this->getBox()->getLocation().y - dynamite->getBox()->getLocation().y == 100) {
 		shoot(dt, s);
 		dynamite->getBox()->setLocation(this->getBox()->getLocation());
 		dynamite->getBox()->setForce(cocos2d::Vec2(0, 0));
 		
 	}
+
 	
 }
 
@@ -512,8 +517,8 @@ void Sedna::CrazyPete::shoot(float dt, cocos2d::Scene * s)
 
 		eProjectiles[4]->getBox()->setForce(cocos2d::Vec2(-0.5f, -0.5f)*speed);
 		eProjectiles[5]->getBox()->setForce(cocos2d::Vec2(-0.5f, 0.5f) *speed);
-		eProjectiles[7]->getBox()->setForce(cocos2d::Vec2(0.5f, 0.5f)  *speed);
 		eProjectiles[6]->getBox()->setForce(cocos2d::Vec2(0.5f, -0.5f) *speed);
+		eProjectiles[7]->getBox()->setForce(cocos2d::Vec2(0.5f, 0.5f)  *speed);
 
 		
 	

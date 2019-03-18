@@ -15,10 +15,7 @@ namespace Sedna {
 	class SednaUI {
 	public:
 		SednaUI(Gun* currentGun,Player* p, int args, ...);
-		//a ui has
-		//a sprite
-		//labels
-		//bars - make bar class later
+		
 
 		std::vector<cocos2d::Label*> getLabelList() const;
 		cocos2d::Sprite* getUIGunSprite() const;
