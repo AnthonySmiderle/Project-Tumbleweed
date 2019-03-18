@@ -2,7 +2,6 @@
 #include "cocos2d.h"
 #include "SpawnObject.h"
 #include "Table.h"
-#include "baseObjectManager.h"
 #include "Enemy.h"
 namespace Sedna {
 
@@ -21,7 +20,6 @@ namespace Sedna {
 		void rifleOutlawSpawn(int DDOS);
 		void peteSpawn(int DDOS);
 
-		Sedna::Table* baseTable;
 		Sedna::Outlaw* outlaw;
 		Sedna::ShotgunOutlaw* shotgunOutlaw;
 		Sedna::RifleOutlaw* rifleOutlaw;

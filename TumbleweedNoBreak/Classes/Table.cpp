@@ -31,6 +31,7 @@ namespace Sedna {
 		hitBox->getDrawNode()->setVisible(false);
 		this->objectHp = 5;
 	}
+	
 	void Sedna::Table::spriteSwitch()
 	{
 		sprite->setTexture("TableKnocked.png");

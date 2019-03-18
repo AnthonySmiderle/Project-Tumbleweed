@@ -22,6 +22,13 @@ namespace Sedna {
 
 	}
 
+	Gun::~Gun()
+	{
+		delete name;
+		delete sprite;
+		delete hitBox;
+	}
+
 	Sedna::Gun::Gun(const char* NAME, unsigned int DAMAGE, unsigned int PROJLIMIT, float RATEOFFIRE) :
 		name(NAME),
 		damage(DAMAGE),

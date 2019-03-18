@@ -27,7 +27,6 @@
 
 #include "cocos2d.h"
 #include <vector>
-#include "baseObjectManager.h"
 #include "XinputManager.h"
 #include "Table.h"
 #include "Player.h"
@@ -49,6 +48,8 @@ public:
 
 	void pause(float dt);
 	void play(float dt);
+	void boss(float dt);
+
 	void initSprites();
 	void checkInput(float dt);
 	void getCollisions();
@@ -63,6 +64,7 @@ public:
 	// implement the "static create()" method manually
 	CREATE_FUNC(HelloWorld);
 private:
+	bool bossTime = false;
 
 	bool decrimenting = false;
 	float bulletTimeMax = 0.0f;

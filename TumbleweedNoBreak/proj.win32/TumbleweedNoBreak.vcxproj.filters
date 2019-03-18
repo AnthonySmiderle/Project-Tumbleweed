@@ -7,9 +7,6 @@
     <ClCompile Include="..\Classes\AppDelegate.cpp">
       <Filter>Cocos Garbage</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\baseObjectManager.cpp">
-      <Filter>Memory Management</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\SpawnManager.cpp">
       <Filter>Memory Management</Filter>
     </ClCompile>
@@ -65,9 +62,6 @@
     </ClInclude>
     <ClInclude Include="..\Classes\AppDelegate.h">
       <Filter>Cocos Garbage</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\baseObjectManager.h">
-      <Filter>Memory Management</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\SpawnObject.h">
       <Filter>Memory Management</Filter>

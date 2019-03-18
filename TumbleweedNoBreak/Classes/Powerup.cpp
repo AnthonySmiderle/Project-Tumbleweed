@@ -13,6 +13,8 @@ namespace Sedna {
 
 	Sedna::Powerup::~Powerup()
 	{
+		delete sprite;
+		delete hitBox;
 		delete gun;
 	}
 

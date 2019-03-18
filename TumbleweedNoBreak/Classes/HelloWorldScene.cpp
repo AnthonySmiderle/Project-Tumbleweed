@@ -140,9 +140,10 @@ void HelloWorld::initSprites()
 	this->addChild(playerOne->getBox()->getDrawNode());
 	this->addChild(playerOne->getSprite(), 10);
 	this->addChild(playerOne->getUI()->getUIGunSprite(), 20);
-	for (int i = 0; i < playerOne->getUI()->getLabelList().size(); i++) {
+
+	for (int i = 0; i < playerOne->getUI()->getLabelList().size(); i++)
 		this->addChild(playerOne->getUI()->getLabelList()[i], 20);
-	}
+
 	for (int i = 0; i < playerOne->getUI()->getHPSprites().size(); i++)
 		this->addChild(playerOne->getUI()->getHPSprites()[i]);
 
@@ -233,14 +234,24 @@ void HelloWorld::update(float dt)
 		if (playerTwo->getCurrentGun()->getAmmo() <= 0)
 			playerTwo->setCurrentGun(Sedna::Guns::olReliable2);
 
-		this->pause(dt);
-		this->play(dt);
+
+		if (bossTime)
+			this->boss(dt);
+		else {
+			this->pause(dt);
+			this->play(dt);
+		}
 
 
 	}
 
 }
+void HelloWorld::boss(float dt)
+{
 
+
+
+}
 void HelloWorld::pause(float dt)
 {
 	if (p1Controller->isButtonPressed(Sedna::SELECT) || p2Controller->isButtonPressed(Sedna::SELECT))
@@ -479,6 +490,8 @@ void HelloWorld::play(float dt)
 }
 
 
+
+
 void HelloWorld::checkInput(float dt)
 {
 	playerOne->checkInput(dt);
@@ -504,11 +517,11 @@ void HelloWorld::checkManyLists(float dt)
 		auto second = playerTwo->getBox()->getLocation() - sManager.outlawList[i]->getBox()->getLocation();
 
 
-		if (sManager.outlawList[i]->points == 300) 
+		if (sManager.outlawList[i]->points == 300)
 			((Sedna::RifleOutlaw*)sManager.outlawList[i])->setTrack
 			((first.getLengthSq() < second.getLengthSq()) ? playerOne : playerTwo);
 
-		
+
 		if (sManager.outlawList[i]->points == 1000) {
 
 			//((Sedna::CrazyPete*)sManager.outlawList[i])->setTrack
@@ -527,7 +540,6 @@ void HelloWorld::checkManyLists(float dt)
 		sManager.outlawList.front()->getBox()->getDrawNode()->removeFromParent();
 		sManager.outlawList.front()->getSprite()->removeFromParent();
 		sManager.outlawList.erase(sManager.outlawList.begin());
-		Sedna::BaseObjectManager::outlawBObjects.erase(Sedna::BaseObjectManager::outlawBObjects.begin());
 	}
 
 
@@ -535,7 +547,7 @@ void HelloWorld::checkManyLists(float dt)
 	recursiveFunction(sManager.tableList);
 
 	playerOne->checkBCollision(sManager.outlawList, bloodyMaryP_up, theBiggestIronP_up);
-	playerTwo->checkBCollision(sManager.outlawList, bloodyMaryP_up, theBiggestIronP_up);
+		playerTwo->checkBCollision(sManager.outlawList, bloodyMaryP_up, theBiggestIronP_up);
 	playerOne->checkBCollision(sManager.tableList);
 	playerTwo->checkBCollision(sManager.tableList);
 	playerOne->checkList();
@@ -611,7 +623,6 @@ void HelloWorld::checkPosAll()//this function will remove and objects that go to
 			sManager.outlawList[i]->getBox()->getDrawNode()->removeFromParent();
 			sManager.outlawList[i]->getSprite()->removeFromParent();
 			sManager.outlawList.erase(sManager.outlawList.begin() + i);
-			Sedna::BaseObjectManager::outlawBObjects.erase(Sedna::BaseObjectManager::outlawBObjects.begin() + i);
 			i--;
 		}
 	}
@@ -622,7 +633,6 @@ void HelloWorld::checkPosAll()//this function will remove and objects that go to
 			sManager.tableList[i]->getBox()->getDrawNode()->removeFromParent();
 			sManager.tableList[i]->getSprite()->removeFromParent();
 			sManager.tableList.erase(sManager.tableList.begin() + i);
-			Sedna::BaseObjectManager::tableBObjects.erase(Sedna::BaseObjectManager::tableBObjects.begin() + i);
 			i--;
 		}
 	}

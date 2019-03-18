@@ -7,7 +7,7 @@ namespace Sedna {
 	class Powerup : public GameObject {
 	public:
 		Powerup(const char* s,Gun* GUN, float x, float y);
-		~Powerup() override;
+		~Powerup();
 
 		void pickUp(Player* p);
 		Gun* getGun() const;

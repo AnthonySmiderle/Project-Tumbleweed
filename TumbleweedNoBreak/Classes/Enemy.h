@@ -15,14 +15,14 @@ namespace Sedna {
 		virtual ~Outlaw();
 
 		std::vector<Projectile*> getEProjectiles() const { return eProjectiles; }
-		virtual void shoot(float dt,cocos2d::Scene* s);
+		virtual void shoot(float dt, cocos2d::Scene* s);
 		virtual void checkList();
 		virtual void removeProjectiles();
 		virtual void animate(float dt);
 		void checkBCollision(Player* p);
 		void checkBCollision(std::vector<Table*>& tableList);
 		unsigned int points = 100;//this is public because there really isn't a reason to keep it private
-		
+
 	protected:
 		float animationTimer = 0.0f;
 		bool hasAnimation = false;
@@ -48,7 +48,7 @@ namespace Sedna {
 		RifleOutlaw(float x, float y);
 		void animate(float dt) override;
 		void shoot(float dt, cocos2d::Scene* s) override;
-		
+
 		cocos2d::Vec2 getTrack() const;///may be problematic
 		void setTrack(Player* p);
 	private:
@@ -60,37 +60,30 @@ namespace Sedna {
 	class CrazyPete : public Outlaw {
 	public:
 		CrazyPete(float x, float y);
-		~CrazyPete() { delete dynamite; }
+		~CrazyPete();
 		void animate(float dt) override;
 		void removeProjectiles() override;
 		void shoot(float dt, cocos2d::Scene* s) override;
 		void checkList() override;
-		
-		void setTrack(Player* p);
+
 		void updateDyn(float dt, cocos2d::Scene* s);
 		Projectile* getDyn() const { return dynamite; }
 	private:
-		cocos2d::Vec2 track;
 		Projectile* dynamite;
 	};
 
-	//class Pete : public GameObject
-	//{
-	//public:
-	//	Pete(float x, float y);
-	//	void spawnDyna(float dt, cocos2d::Scene* s);
-	//	void checkList();
-	//	void removeDyna();
-	//private:
-	//	std::vector<Projectile*> eDyna;
-	//	float eDynaTimer = 0.0f;
-	//	bool ehasDynaPlace = false;
-	//protected:
-	//	int x = 0;
-	//
-	//};
-	
 
+	class Goldman : public Outlaw {
+	public:
+		Goldman(float x, float y);
+		void shoot(float dt, cocos2d::Scene*s) override;
+		void animate(float dt) override;
+		void checkList() override;
+	private:
+		bool phase1 = true;
+		bool phase2 = false;
+		bool phase3 = false;
+	};
 
 
 

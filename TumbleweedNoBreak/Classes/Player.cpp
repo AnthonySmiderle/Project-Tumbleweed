@@ -186,13 +186,11 @@ namespace Sedna {
 						auto test = cocos2d::Vec2(pSticks[1].x, pSticks[1].y);
 						auto test2 = test / sqrt(test.x*test.x + test.y*test.y);
 						if (currentGun->getName() == "olReliable" || currentGun->getName() == "theBiggestIron") {
-							Projectile* playerProjectile = new Sedna::Projectile(-1000, 0, Sedna::Ally);
-							s->addChild(playerProjectile->getBox()->getDrawNode());
-							s->addChild(playerProjectile->getSprite());
-							BaseObjectManager::pProjectileBObjects.push_back(playerProjectile);
+							
 
-
-							pProjectiles.push_back(new Sedna::Projectile(*playerProjectile));
+							pProjectiles.push_back(new Sedna::Projectile(-1000, 0, Sedna::Ally));
+							s->addChild(pProjectiles.back()->getBox()->getDrawNode());
+							s->addChild(pProjectiles.back()->getSprite());
 
 							pProjectiles.back()->getSprite()->setTexture("pBullet.png");
 							pProjectiles.back()->getBox()->setLocation(this->getBox()->getLocation());
@@ -237,38 +235,16 @@ namespace Sedna {
 								pProjectiles[i]->getBox()->getDrawNode()->removeFromParent();
 								pProjectiles[i]->getSprite()->removeFromParent();
 								pProjectiles.erase(pProjectiles.begin() + i);
-								BaseObjectManager::pProjectileBObjects.erase(BaseObjectManager::pProjectileBObjects.begin() + i);
 							}
-							Projectile* playerProjectile1 = new Sedna::Projectile(-1000, 0, Sedna::Ally);
-							s->addChild(playerProjectile1->getBox()->getDrawNode());
-							s->addChild(playerProjectile1->getSprite());
-							BaseObjectManager::pProjectileBObjects.push_back(playerProjectile1);
+							
 
-							Projectile* playerProjectile2 = new Sedna::Projectile(-1000, 0, Sedna::Ally);
-							s->addChild(playerProjectile2->getBox()->getDrawNode());
-							s->addChild(playerProjectile2->getSprite());
-							BaseObjectManager::pProjectileBObjects.push_back(playerProjectile2);
+							for (int i = 0; i < 5; i++) {
+								pProjectiles.push_back(new Projectile(-1000, 0, Sedna::Ally));
+								s->addChild(pProjectiles.back()->getBox()->getDrawNode());
+								s->addChild(pProjectiles.back()->getSprite());
+							}
 
-							Projectile* playerProjectile3 = new Sedna::Projectile(-1000, 0, Sedna::Ally);
-							s->addChild(playerProjectile3->getBox()->getDrawNode());
-							s->addChild(playerProjectile3->getSprite());
-							BaseObjectManager::pProjectileBObjects.push_back(playerProjectile3);
-
-							Projectile* playerProjectile4 = new Sedna::Projectile(-1000, 0, Sedna::Ally);
-							s->addChild(playerProjectile4->getBox()->getDrawNode());
-							s->addChild(playerProjectile4->getSprite());
-							BaseObjectManager::pProjectileBObjects.push_back(playerProjectile4);
-
-							Projectile* playerProjectile5 = new Sedna::Projectile(-1000, 0, Sedna::Ally);
-							s->addChild(playerProjectile5->getBox()->getDrawNode());
-							s->addChild(playerProjectile5->getSprite());
-							BaseObjectManager::pProjectileBObjects.push_back(playerProjectile5);
-
-							pProjectiles.push_back(new Sedna::Projectile(*playerProjectile1));
-							pProjectiles.push_back(new Sedna::Projectile(*playerProjectile2));
-							pProjectiles.push_back(new Sedna::Projectile(*playerProjectile3));
-							pProjectiles.push_back(new Sedna::Projectile(*playerProjectile4));
-							pProjectiles.push_back(new Sedna::Projectile(*playerProjectile5));
+							
 
 							pProjectiles[0]->getBox()->setLocation(this->getBox()->getLocation());
 							pProjectiles[1]->getBox()->setLocation(this->getBox()->getLocation());
@@ -342,7 +318,6 @@ namespace Sedna {
 			pProjectiles.front()->getBox()->getDrawNode()->removeFromParent();
 			pProjectiles.front()->getSprite()->removeFromParent();
 			pProjectiles.erase(pProjectiles.begin());
-			BaseObjectManager::pProjectileBObjects.erase(BaseObjectManager::pProjectileBObjects.begin());
 
 		}
 
@@ -366,7 +341,6 @@ namespace Sedna {
 					pProjectiles[i]->getBox()->getDrawNode()->removeFromParent();
 					pProjectiles[i]->getSprite()->removeFromParent();
 					pProjectiles.erase(pProjectiles.begin() + i);
-					BaseObjectManager::pProjectileBObjects.erase(BaseObjectManager::pProjectileBObjects.begin() + i);
 					check = true;
 					break;
 
@@ -427,7 +401,6 @@ namespace Sedna {
 					tableList[j]->getBox()->getDrawNode()->removeFromParent();
 					tableList[j]->getSprite()->removeFromParent();
 					tableList.erase(tableList.begin() + j);
-					BaseObjectManager::tableBObjects.erase(BaseObjectManager::tableBObjects.begin() + j);
 					j--;
 				}
 

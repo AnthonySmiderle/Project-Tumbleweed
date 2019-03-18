@@ -9,6 +9,7 @@ namespace Sedna {
 		Gun(const char* NAME,unsigned int DAMAGE, unsigned int PROJLIMIT,float RATEOFFIRE);
 		Gun(const char* NAME, unsigned int DAMAGE, unsigned int PROJLIMIT, unsigned int AMMO,float RATEOFFIRE);
 
+		~Gun();
 
 		const char* getName() const;
 		void setGunTimer(float t);
@@ -36,6 +37,14 @@ namespace Sedna {
 
 	class Guns {
 	public:
+		~Guns() {
+			delete olReliable;
+			delete bloodyMary;
+			delete theBiggestIron;
+			delete olReliable2;
+			delete bloodyMary2;
+			delete theBiggestIron2;
+		}
 		static Gun* olReliable;
 		static Gun* bloodyMary;
 		static Gun* theBiggestIron;

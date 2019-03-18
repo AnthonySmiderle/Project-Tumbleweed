@@ -4,13 +4,12 @@
 #include "XinputManager.h"
 #include "Enemy.h"
 #include "Guns.h"
-#include "baseObjectManager.h"
 #include "Table.h"
 #include <vector>
 #include "Animations.h"
 namespace Sedna {
 
-
+	class Powerup;
 	
 	class SednaUI {
 	public:

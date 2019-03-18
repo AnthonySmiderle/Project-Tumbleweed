@@ -4,13 +4,13 @@
 namespace Sedna {
 
 
-///<projectiles>
+//inherited deconstrucotr...no memory leaks here!
 class Projectile : public GameObject {
 public:
 	Projectile(float x, float y, Team t);
 	Projectile();
 
-	unsigned int getDamage() const;
+	///unsigned int getDamage() const;
 
 protected:
 	unsigned int team;

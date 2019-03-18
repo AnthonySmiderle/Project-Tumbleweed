@@ -1,5 +1,7 @@
 #include "SpawnManager.h"
 
+
+
 void Sedna::SpawnManager::update(float dt, int DDOS)
 {
 	totalTime += dt;
@@ -31,51 +33,44 @@ void Sedna::SpawnManager::update(float dt, int DDOS)
 
 void Sedna::SpawnManager::tableSpawn(int DDOS)
 {
-	baseTable = new Sedna::Table(100 + rand() % 300, DDOS);
-	scene->addChild(baseTable->getBox()->getDrawNode());
-	scene->addChild(baseTable->getSprite());
-	tableList.push_back(new Sedna::Table(*baseTable));
-	Sedna::BaseObjectManager::tableBObjects.push_back(baseTable);
+	
+	tableList.push_back(new Sedna::Table(100 + rand() % 300, DDOS));
+	scene->addChild(tableList.back()->getBox()->getDrawNode());
+	scene->addChild(tableList.back()->getSprite());
 }
 
 void Sedna::SpawnManager::outlawSpawn(int DDOS)
 {
 	int x = 100 + (rand() % 300);
-	outlaw = new Sedna::Outlaw(x, DDOS);
-	Sedna::BaseObjectManager::outlawBObjects.push_back(outlaw);
-	scene->addChild(outlaw->getBox()->getDrawNode());
-	scene->addChild(outlaw->getSprite());
-	outlawList.push_back(new Sedna::Outlaw(*outlaw));
+	outlawList.push_back(new Sedna::Outlaw(x, DDOS));
+	scene->addChild(outlawList.back()->getBox()->getDrawNode());
+	scene->addChild(outlawList.back()->getSprite());
 }
 
 void Sedna::SpawnManager::shotgunOutlawSpawn(int DDOS)
 {
 	int x = 100 + (rand() % 300);
 	shotgunOutlaw = new Sedna::ShotgunOutlaw(x, DDOS);
-	Sedna::BaseObjectManager::outlawBObjects.push_back(shotgunOutlaw);
-	scene->addChild(shotgunOutlaw->getBox()->getDrawNode());
-	scene->addChild(shotgunOutlaw->getSprite(), 10);
-	outlawList.push_back(new Sedna::ShotgunOutlaw(*shotgunOutlaw));
+	outlawList.push_back(new Sedna::ShotgunOutlaw(x, DDOS));
+	scene->addChild(outlawList.back()->getBox()->getDrawNode());
+	scene->addChild(outlawList.back()->getSprite());
 }
 
 void Sedna::SpawnManager::rifleOutlawSpawn(int DDOS)
 {
 	int x = 100 + (rand() % 300);
-	rifleOutlaw = new Sedna::RifleOutlaw(x, DDOS);
-	Sedna::BaseObjectManager::outlawBObjects.push_back(rifleOutlaw);
-	scene->addChild(rifleOutlaw->getBox()->getDrawNode());
-	scene->addChild(rifleOutlaw->getSprite(), 10);
-	outlawList.push_back(new Sedna::RifleOutlaw(*rifleOutlaw));
+	outlawList.push_back(new Sedna::RifleOutlaw(x, DDOS));
+	scene->addChild(outlawList.back()->getBox()->getDrawNode());
+	scene->addChild(outlawList.back()->getSprite(), 10);
 }
 
 void Sedna::SpawnManager::peteSpawn(int DDOS)
 {
 	int x = 100 + (rand() % 300);
-	pete = new Sedna::CrazyPete(x, DDOS);
-	Sedna::BaseObjectManager::outlawBObjects.push_back(pete);
-	scene->addChild(pete->getBox()->getDrawNode());
-	scene->addChild(pete->getSprite(), 10);
-	scene->addChild(pete->getDyn()->getBox()->getDrawNode());
-	scene->addChild(pete->getDyn()->getSprite());
-	outlawList.push_back(new Sedna::CrazyPete(*pete));
+	outlawList.push_back(new Sedna::CrazyPete(x, DDOS));
+	scene->addChild(outlawList.back()->getBox()->getDrawNode());
+	scene->addChild(outlawList.back()->getSprite(), 10);
+	scene->addChild(((CrazyPete*)outlawList.back())->getDyn()->getBox()->getDrawNode());
+	scene->addChild(((CrazyPete*)outlawList.back())->getDyn()->getSprite());
+
 }
