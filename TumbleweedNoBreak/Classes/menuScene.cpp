@@ -3,6 +3,7 @@
 #include "AudioEngine.h"
 #include "HelloWorldScene.h"
 #include "MusicList.h"
+#include "Options.h"
 
 USING_NS_CC;
 
@@ -128,8 +129,8 @@ bool MenuScene::init() {
 
 	menuE->select(1);
 
-
-	cocos2d::experimental::AudioEngine::play2d("bgm2.mp3", true);
+	if(optionStuff::music)
+		cocos2d::experimental::AudioEngine::play2d("bgm2.mp3", true);
 	end = false;
 	this->scheduleUpdate();
 

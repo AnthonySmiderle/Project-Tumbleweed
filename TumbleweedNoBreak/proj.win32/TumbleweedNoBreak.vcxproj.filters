@@ -114,6 +114,9 @@
     <ClInclude Include="..\Classes\Table.h">
       <Filter>Game Stuff</Filter>
     </ClInclude>
+    <ClInclude Include="..\Classes\Options.h">
+      <Filter>Game Stuff</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc" />

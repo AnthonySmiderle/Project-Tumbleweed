@@ -28,6 +28,7 @@
 #include "AudioEngine.h"
 #include "menuScene.h"
 #include "MusicList.h"
+#include "Options.h"
 
 USING_NS_CC;
 
@@ -370,7 +371,8 @@ void HelloWorld::pause(float dt)
 			{
 				startLabel->setString("3");
 				if (!playMusic) {
-					cocos2d::experimental::AudioEngine::play2d("bgm.mp3", true);
+					if(optionStuff::music)
+						cocos2d::experimental::AudioEngine::play2d("bgm.mp3", true);
 					playMusic = true;
 				}
 			}
@@ -407,7 +409,7 @@ void HelloWorld::play(float dt)
 			startLabel->setVisible(true);
 			loseTimer += dt;
 			startLabel->setPosition(50, startLabel->getPosition().y);
-			if (loseTimer >= 5.0f)
+			if (loseTimer >= 4.0f)
 			{
 				auto mMenu = MenuScene::create();
 				cocos2d::experimental::AudioEngine::stopAll();
@@ -419,12 +421,42 @@ void HelloWorld::play(float dt)
 		}
 		else
 		{
-			CAMERASPEED += 0.005 * dt;
 			playerOne->update(dt);
 			playerTwo->update(dt);
 			bloodyMaryP_up->updateGameObject();
 			theBiggestIronP_up->updateGameObject();
-			sManager.update(dt, DDOS->getSprite()->getPosition().y);
+			if (!optionStuff::tutorial)
+			{
+				CAMERASPEED += 0.005 * dt;
+				sManager.update(dt, DDOS->getSprite()->getPosition().y);
+				if (moveScreen)
+				{
+					for (int i = 0; i < pauseMenu->getLabelList().size(); i++) {
+						pauseMenu->getLabelList()[i]->setPosition(cocos2d::Vec2(pauseMenu->getLabelList()[i]->getPosition().x,
+							pauseMenu->getLabelList()[i]->getPosition().y + CAMERASPEED));
+					}
+					pausedLabel->setPosition(pausedLabel->getPosition() + cocos2d::Vec2(0, CAMERASPEED));
+					startLabel->setPosition(startLabel->getPosition() + cocos2d::Vec2(0, CAMERASPEED));
+
+					playerOne->getUI()->updatePosition(cocos2d::Vec2(0, CAMERASPEED));
+					playerTwo->getUI()->updatePosition(cocos2d::Vec2(0, CAMERASPEED));
+					
+					this->getDefaultCamera()->setPosition(cocos2d::Vec2(this->getDefaultCamera()->getPosition().x,
+						this->getDefaultCamera()->getPosition().y + CAMERASPEED));
+					DDOS->getSprite()->setPosition(cocos2d::Vec2(100, (DDOS->getSprite()->getPosition().y + CAMERASPEED)));
+
+					if (DDOS->getSprite()->getPosition().y - bg2->getPosition().y >= 588.8f) {
+						bg2->setPosition(cocos2d::Vec2(bg2->getPosition().x, bg2->getPosition().y + 588.8f));
+					}
+					if (DDOS->getSprite()->getPosition().y - bg3->getPosition().y >= 588.8f) {
+						bg3->setPosition(cocos2d::Vec2(bg3->getPosition().x, bg3->getPosition().y + 588.8f));
+					}
+				}
+			}
+			else//if tutorial
+			{
+
+			}
 		}
 
 		srand(time(0));
@@ -435,26 +467,7 @@ void HelloWorld::play(float dt)
 #ifdef _DEBUG
 		if (p1Controller->isButtonPressed(Sedna::Y) || p2Controller->isButtonPressed(Sedna::Y))
 			moveScreen ^= 1;
-		if (moveScreen)
-		{
-			for (int i = 0; i < pauseMenu->getLabelList().size(); i++) {
-				pauseMenu->getLabelList()[i]->setPosition(cocos2d::Vec2(pauseMenu->getLabelList()[i]->getPosition().x,
-					pauseMenu->getLabelList()[i]->getPosition().y + CAMERASPEED));
-			}
-			pausedLabel->setPosition(pausedLabel->getPosition() + cocos2d::Vec2(0, CAMERASPEED));
-			startLabel->setPosition(startLabel->getPosition() + cocos2d::Vec2(0, CAMERASPEED));
-
-
-
-			playerOne->getUI()->updatePosition(cocos2d::Vec2(0, CAMERASPEED));
-			playerTwo->getUI()->updatePosition(cocos2d::Vec2(0, CAMERASPEED));
-
-
-			this->getDefaultCamera()->setPosition(cocos2d::Vec2(this->getDefaultCamera()->getPosition().x,
-				this->getDefaultCamera()->getPosition().y + CAMERASPEED));
-			DDOS->getSprite()->setPosition(cocos2d::Vec2(100, (DDOS->getSprite()->getPosition().y + CAMERASPEED)));
-
-		}
+		
 		if (p1Controller->isButtonPressed(Sedna::X) || p2Controller->isButtonPressed(Sedna::X)) {
 			for (unsigned int i = 0; i < sManager.outlawList.size(); i++)
 				sManager.outlawList[i]->getBox()->getDrawNode()->setVisible(true);
@@ -480,14 +493,7 @@ void HelloWorld::play(float dt)
 		else {
 			boss(dt);
 			bossCheckManyLists(dt);
-		}
-
-		if (DDOS->getSprite()->getPosition().y - bg2->getPosition().y >= 588.8f) {
-			bg2->setPosition(cocos2d::Vec2(bg2->getPosition().x, bg2->getPosition().y + 588.8f));
-		}
-		if (DDOS->getSprite()->getPosition().y - bg3->getPosition().y >= 588.8f) {
-			bg3->setPosition(cocos2d::Vec2(bg3->getPosition().x, bg3->getPosition().y + 588.8f));
-		}
+		}		
 
 		playerOne->updateGameObject();
 		playerTwo->updateGameObject();
