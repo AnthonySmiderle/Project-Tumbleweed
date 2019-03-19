@@ -232,7 +232,7 @@ void ShotgunOutlaw::shoot(float dt, cocos2d::Scene * s)
 		//eProjectiles[3]->getBox()->setForce(cocos2d::Vec2(1.75, -4.5));
 		//eProjectiles[4]->getBox()->setForce(cocos2d::Vec2(3.25, -3.25));
 
-		if (this->getBox()->getLocation().x < 250) {
+		if (/*this->getBox()->getLocation().x < 250*/ onLeft) {
 			this->getSprite()->setTexture("shotgunOutlaw1.png");
 			eProjectiles[0]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-22, 0));
 			eProjectiles[1]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-22, 0));
@@ -247,7 +247,7 @@ void ShotgunOutlaw::shoot(float dt, cocos2d::Scene * s)
 			eProjectiles[3]->getBox()->setForce(cocos2d::Vec2(4.5, -1.75));
 			eProjectiles[4]->getBox()->setForce(cocos2d::Vec2(5.06, 0));//projectile on the right
 		}
-		else if (this->getBox()->getLocation().x > 250) {
+		else if (/*this->getBox()->getLocation().x > 250*/!onLeft) {
 			this->getSprite()->setTexture("shotgunOutlaw.png");
 			eProjectiles[0]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(16, 0));
 			eProjectiles[1]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(16, 0));
@@ -277,6 +277,15 @@ void ShotgunOutlaw::checkList()
 	}
 	for (int i = 0; i < eProjectiles.size(); i++)
 		eProjectiles[i]->updateGameObject();
+}
+
+bool Sedna::ShotgunOutlaw::onLeftSideOf(Player * p)
+{
+	if (this->getBox()->getLocation().x - p->getBox()->getLocation().x < 0)
+		return (onLeft = true);
+	else if (this->getBox()->getLocation().x - p->getBox()->getLocation().x > 0)
+		return (onLeft = false);
+
 }
 
 

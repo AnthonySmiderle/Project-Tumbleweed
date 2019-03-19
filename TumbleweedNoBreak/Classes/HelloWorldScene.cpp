@@ -528,19 +528,16 @@ void HelloWorld::checkManyLists(float dt)
 		auto first = playerOne->getBox()->getLocation() - sManager.outlawList[i]->getBox()->getLocation();
 		auto second = playerTwo->getBox()->getLocation() - sManager.outlawList[i]->getBox()->getLocation();
 
+		if (sManager.outlawList[i]->points == 200)
+			((Sedna::ShotgunOutlaw*)sManager.outlawList[i])->onLeftSideOf
+			((first.getLengthSq() < second.getLengthSq()) ? playerOne : playerTwo);
 
 		if (sManager.outlawList[i]->points == 300)
 			((Sedna::RifleOutlaw*)sManager.outlawList[i])->setTrack
 			((first.getLengthSq() < second.getLengthSq()) ? playerOne : playerTwo);
 
-
-		if (sManager.outlawList[i]->points == 1000) {
-
-			//((Sedna::CrazyPete*)sManager.outlawList[i])->setTrack
-			//((first.getLengthSq() < second.getLengthSq()) ? playerOne : playerTwo);
-
+		if (sManager.outlawList[i]->points == 1000)
 			((Sedna::CrazyPete*)sManager.outlawList[i])->updateDyn(dt, this);
-		}
 		else
 			sManager.outlawList[i]->shoot(dt, this);
 	}
@@ -721,6 +718,8 @@ void HelloWorld::bounceFunc()//this function stops the player from leaving the s
 		playerOne->getBox()->setLocation(cocos2d::Vec2(90, playerOne->getBox()->getLocation().y));
 		playerOne->getBox()->addForce(25, 0);
 	}
+
+
 	if ((int)playerTwo->getBox()->getLocation().x >= barRightMax)
 	{
 		playerTwo->getBox()->setLocation(cocos2d::Vec2(430, playerTwo->getBox()->getLocation().y));
@@ -731,6 +730,17 @@ void HelloWorld::bounceFunc()//this function stops the player from leaving the s
 	{
 		playerTwo->getBox()->setLocation(cocos2d::Vec2(90, playerTwo->getBox()->getLocation().y));
 		playerTwo->getBox()->addForce(25, 0);
+	}
+
+
+	if (playerOne->getBox()->getLocation().y >= DDOS->getSprite()->getPosition().y) {
+		playerOne->getBox()->setLocation(cocos2d::Vec2(playerOne->getBox()->getLocation().x, DDOS->getSprite()->getPosition().y));
+		playerOne->getBox()->addForce(0, -25);
+	}
+
+	if (playerTwo->getBox()->getLocation().y >= DDOS->getSprite()->getPosition().y) {
+		playerTwo->getBox()->setLocation(cocos2d::Vec2(playerTwo->getBox()->getLocation().x, DDOS->getSprite()->getPosition().y));
+		playerTwo->getBox()->addForce(0, -25);
 	}
 
 	for (unsigned int i = 0; i < sManager.tableList.size(); i++)

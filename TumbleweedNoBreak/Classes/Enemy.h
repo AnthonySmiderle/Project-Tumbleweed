@@ -40,6 +40,9 @@ namespace Sedna {
 		void animate(float dt) override;
 		void shoot(float dt, cocos2d::Scene* s) override;
 		void checkList() override;
+		bool onLeftSideOf(Player*p);
+	private:
+		bool onLeft = false;
 
 	};
 
