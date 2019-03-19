@@ -54,6 +54,7 @@ public:
 	void checkInput(float dt);
 	void getCollisions();
 	void checkManyLists(float dt);
+	void bossCheckManyLists(float dt);
 	void recursiveFunction(std::vector<Sedna::Outlaw*>& outlawList);
 	void recursiveFunction(std::vector<Sedna::Table*>& tableList);
 	void checkPosAll();
@@ -64,7 +65,9 @@ public:
 	// implement the "static create()" method manually
 	CREATE_FUNC(HelloWorld);
 private:
-	bool bossTime = false;
+	bool bossTime = false;///
+	Sedna::Goldman* goldman;
+	std::vector<Sedna::Outlaw*>goldmans;
 
 	bool decrimenting = false;
 	float bulletTimeMax = 0.0f;

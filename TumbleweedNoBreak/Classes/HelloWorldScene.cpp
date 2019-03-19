@@ -126,6 +126,12 @@ void HelloWorld::initSprites()
 	/////////////////////////////////////
 
 
+	goldman = new Sedna::Goldman(250, 250);
+	this->addChild(goldman->getBox()->getDrawNode());
+	this->addChild(goldman->getSprite());
+	goldmans.push_back(goldman);
+
+
 	bloodyMaryP_up = new Sedna::Powerup("gun2.png", Sedna::Guns::bloodyMary, -1000, 0);
 	theBiggestIronP_up = new Sedna::Powerup("gun3.png", Sedna::Guns::theBiggestIron, -1000, 0);
 
@@ -235,12 +241,10 @@ void HelloWorld::update(float dt)
 			playerTwo->setCurrentGun(Sedna::Guns::olReliable2);
 
 
-		if (bossTime)
-			this->boss(dt);
-		else {
-			this->pause(dt);
-			this->play(dt);
-		}
+
+		this->pause(dt);
+		this->play(dt);
+
 
 
 	}
@@ -249,6 +253,11 @@ void HelloWorld::update(float dt)
 void HelloWorld::boss(float dt)
 {
 
+	goldman->shoot(dt, this);
+	goldman->checkList();
+	goldman->updateGameObject();
+	//goldman->checkBCollision(playerOne);
+	//goldman->checkBCollision(playerTwo);
 
 
 }
@@ -466,9 +475,12 @@ void HelloWorld::play(float dt)
 		}//show hitboxes
 #endif
 
-
-		checkManyLists(dt);
-
+		if (!bossTime)
+			checkManyLists(dt);
+		else {
+			boss(dt);
+			bossCheckManyLists(dt);
+		}
 
 		if (DDOS->getSprite()->getPosition().y - bg2->getPosition().y >= 588.8f) {
 			bg2->setPosition(cocos2d::Vec2(bg2->getPosition().x, bg2->getPosition().y + 588.8f));
@@ -547,7 +559,7 @@ void HelloWorld::checkManyLists(float dt)
 	recursiveFunction(sManager.tableList);
 
 	playerOne->checkBCollision(sManager.outlawList, bloodyMaryP_up, theBiggestIronP_up);
-		playerTwo->checkBCollision(sManager.outlawList, bloodyMaryP_up, theBiggestIronP_up);
+	playerTwo->checkBCollision(sManager.outlawList, bloodyMaryP_up, theBiggestIronP_up);
 	playerOne->checkBCollision(sManager.tableList);
 	playerTwo->checkBCollision(sManager.tableList);
 	playerOne->checkList();
@@ -575,6 +587,37 @@ void HelloWorld::checkManyLists(float dt)
 
 
 
+}
+
+void HelloWorld::bossCheckManyLists(float dt)
+{
+
+
+	checkPosAll();
+
+
+
+
+	recursiveFunction(sManager.tableList);
+
+	playerOne->checkBCollision(goldmans, bloodyMaryP_up, theBiggestIronP_up);
+	playerTwo->checkBCollision(goldmans, bloodyMaryP_up, theBiggestIronP_up);
+	playerOne->checkBCollision(sManager.tableList);
+	playerTwo->checkBCollision(sManager.tableList);
+	playerOne->checkList();
+	playerTwo->checkList();
+	for (unsigned int i = 0; i < sManager.tableList.size(); i++)
+		sManager.tableList[i]->updateGameObject();
+
+
+
+	for (unsigned int i = 0; i < sManager.tableList.size(); i++) {
+		for (unsigned int j = 0; j < sManager.tableList.size(); j++) {
+			if (i == j)
+				continue;
+			sManager.tableList[i]->collideTable(sManager.tableList[j]);
+		}
+	}
 }
 
 void HelloWorld::recursiveFunction(std::vector<Sedna::Outlaw*>& outlawList)
@@ -615,15 +658,18 @@ void HelloWorld::recursiveFunction(std::vector<Sedna::Table*>& tableList)
 
 void HelloWorld::checkPosAll()//this function will remove and objects that go to far below the screen
 {
-	for (unsigned int i = 0; i < sManager.outlawList.size(); i++)
-	{
-		if (sManager.outlawList[i]->getBox()->getLocation().y < DDOS->getSprite()->getPosition().y - 400)
+	if (!bossTime) {
+
+		for (unsigned int i = 0; i < sManager.outlawList.size(); i++)
 		{
-			sManager.outlawList[i]->removeProjectiles();
-			sManager.outlawList[i]->getBox()->getDrawNode()->removeFromParent();
-			sManager.outlawList[i]->getSprite()->removeFromParent();
-			sManager.outlawList.erase(sManager.outlawList.begin() + i);
-			i--;
+			if (sManager.outlawList[i]->getBox()->getLocation().y < DDOS->getSprite()->getPosition().y - 400)
+			{
+				sManager.outlawList[i]->removeProjectiles();
+				sManager.outlawList[i]->getBox()->getDrawNode()->removeFromParent();
+				sManager.outlawList[i]->getSprite()->removeFromParent();
+				sManager.outlawList.erase(sManager.outlawList.begin() + i);
+				i--;
+			}
 		}
 	}
 	for (unsigned int i = 0; i < sManager.tableList.size(); i++)
