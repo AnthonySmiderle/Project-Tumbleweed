@@ -580,14 +580,15 @@ void HelloWorld::checkManyLists(float dt)
 		sManager.outlawList.erase(sManager.outlawList.begin());
 	}
 
-
-	recursiveFunction(sManager.outlawList);
-	recursiveFunction(sManager.tableList);
+	recursiveFunctionTwo();
+	recursiveFunctionOne();
+	recursiveFunctionThree();
+	
 
 	playerOne->checkBCollision(sManager.outlawList, bloodyMaryP_up, theBiggestIronP_up);
 	playerTwo->checkBCollision(sManager.outlawList, bloodyMaryP_up, theBiggestIronP_up);
-	playerOne->checkBCollision(sManager.tableList);
-	playerTwo->checkBCollision(sManager.tableList);
+	//playerOne->checkBCollision(sManager.tableList);
+	//playerTwo->checkBCollision(sManager.tableList);
 	playerOne->checkList();
 	playerTwo->checkList();
 	for (unsigned int i = 0; i < sManager.tableList.size(); i++)
@@ -624,7 +625,7 @@ void HelloWorld::bossCheckManyLists(float dt)
 
 
 
-	recursiveFunction(sManager.tableList);
+	recursiveFunctionThree();
 
 	playerOne->checkBCollision(goldmans, bloodyMaryP_up, theBiggestIronP_up);
 	playerTwo->checkBCollision(goldmans, bloodyMaryP_up, theBiggestIronP_up);
@@ -646,7 +647,7 @@ void HelloWorld::bossCheckManyLists(float dt)
 	}
 }
 
-void HelloWorld::recursiveFunction(std::vector<Sedna::Outlaw*>& outlawList)
+void HelloWorld::recursiveFunctionOne()
 {
 	for (unsigned int i = 0; i < sManager.outlawList.size(); i++) {
 		for (unsigned int j = 0; j < sManager.outlawList.size(); j++) {
@@ -655,13 +656,13 @@ void HelloWorld::recursiveFunction(std::vector<Sedna::Outlaw*>& outlawList)
 			if (sManager.outlawList[i]->getBox()->checkCollision(*sManager.outlawList[j]->getBox())) {
 				sManager.outlawList[i]->getBox()->setLocation(cocos2d::Vec2(100 + (rand() % 300),
 					sManager.outlawList[i]->getBox()->getLocation().y + 50));
-				recursiveFunction(sManager.outlawList);
+				recursiveFunctionOne();
 			}
 
 		}
 	}
 }
-void HelloWorld::recursiveFunction(std::vector<Sedna::Table*>& tableList)
+void HelloWorld::recursiveFunctionThree()
 {
 	for (unsigned int i = 0; i < sManager.tableList.size(); i++) {
 		if (sManager.tableList[i]->knocked != true)
@@ -672,7 +673,25 @@ void HelloWorld::recursiveFunction(std::vector<Sedna::Table*>& tableList)
 				if (sManager.tableList[i]->getBox()->checkCollision(*sManager.tableList[j]->getBox())) {
 					sManager.tableList[i]->getBox()->setLocation(cocos2d::Vec2(100 + (rand() % 300),
 						sManager.tableList[i]->getBox()->getLocation().y + 50));
-					recursiveFunction(sManager.tableList);
+					recursiveFunctionThree();
+				}
+
+			}
+		}
+
+	}
+
+}
+void HelloWorld::recursiveFunctionTwo()
+{
+	for (unsigned int i = 0; i < sManager.tableList.size(); i++) {
+		if (sManager.tableList[i]->knocked != true)
+		{
+			for (unsigned int j = 0; j < sManager.outlawList.size(); j++) {
+				if (sManager.tableList[i]->getBox()->checkCollision(*sManager.outlawList[j]->getBox())) {
+					sManager.tableList[i]->getBox()->setLocation(cocos2d::Vec2(100 + (rand() % 300),
+						sManager.tableList[i]->getBox()->getLocation().y + 50));
+					recursiveFunctionTwo();
 				}
 
 			}

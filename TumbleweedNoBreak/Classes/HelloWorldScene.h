@@ -56,8 +56,9 @@ public:
 	void getCollisions();
 	void checkManyLists(float dt);
 	void bossCheckManyLists(float dt);
-	void recursiveFunction(std::vector<Sedna::Outlaw*>& outlawList);
-	void recursiveFunction(std::vector<Sedna::Table*>& tableList);
+	void recursiveFunctionOne();
+	void recursiveFunctionThree();
+	void recursiveFunctionTwo();
 	void checkPosAll();
 
 	// a selector callback
