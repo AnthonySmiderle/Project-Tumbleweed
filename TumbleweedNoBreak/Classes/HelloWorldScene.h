@@ -35,6 +35,7 @@
 #include "Enemy.h"
 #include "SpawnManager.h"
 #include "Powerup.h"
+#include "Sign.h"
 namespace Sedna {
 	class SednaMenu;
 }
@@ -64,6 +65,9 @@ public:
 
 	// implement the "static create()" method manually
 	CREATE_FUNC(HelloWorld);
+
+
+	Sedna::Sign* testSign;
 
 	cocos2d::Label* btLabel;
 	Sedna::SquarePrimitive btMeter;

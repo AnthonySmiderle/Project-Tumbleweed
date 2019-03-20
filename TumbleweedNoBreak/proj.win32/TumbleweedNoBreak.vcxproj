@@ -162,6 +162,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Powerup.cpp" />
     <ClCompile Include="..\Classes\Primitive.cpp" />
     <ClCompile Include="..\Classes\Projectile.cpp" />
+    <ClCompile Include="..\Classes\Sign.cpp" />
     <ClCompile Include="..\Classes\SpawnManager.cpp" />
     <ClCompile Include="..\Classes\SpawnObject.cpp" />
     <ClCompile Include="..\Classes\Table.cpp" />
@@ -184,6 +185,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Powerup.h" />
     <ClInclude Include="..\Classes\Primitive.h" />
     <ClInclude Include="..\Classes\Projectile.h" />
+    <ClInclude Include="..\Classes\Sign.h" />
     <ClInclude Include="..\Classes\SpawnManager.h" />
     <ClInclude Include="..\Classes\SpawnObject.h" />
     <ClInclude Include="..\Classes\Table.h" />
