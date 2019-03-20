@@ -120,10 +120,18 @@ void HelloWorld::initSprites()
 
 
 
+
 	DDOS = new Sedna::GameObject("a.png", cocos2d::Vec2(100, 300), 1, 1, 1);
 	this->addChild(DDOS->getBox()->getDrawNode());
 	this->addChild(DDOS->getSprite());
 	DDOS->getSprite()->setVisible(true);
+
+
+	btLabel = cocos2d::Label::create("Bullet Time", "fonts/Montague.ttf", 8);
+	btLabel->setPosition(cocos2d::Vec2(230, DDOS->getSprite()->getPosition().y - 15));
+	this->addChild(btLabel, 101);
+	btMeter = Sedna::SquarePrimitive(cocos2d::Vec2(190, DDOS->getSprite()->getPosition().y - 20), cocos2d::Vec2(280, DDOS->getSprite()->getPosition().y - 10));
+	this->addChild(btMeter.getDrawNode(), 100);
 	/////////////////////////////////////
 
 
@@ -148,13 +156,6 @@ void HelloWorld::initSprites()
 	this->addChild(playerOne->getUI()->getUIGunSprite(), 20);
 
 
-	btLabel = cocos2d::Label::create("Bullet Time", "fonts/Montague.ttf", 8);
-	//btLabel->setAnchorPoint(cocos2d::Vec2(0.5f, 0.5f));
-	btLabel->setPosition(cocos2d::Vec2(230, DDOS->getSprite()->getPosition().y - 15));
-	this->addChild(btLabel,101);
-	btMeter = Sedna::SquarePrimitive(cocos2d::Vec2(190, DDOS->getSprite()->getPosition().y - 20),cocos2d::Vec2(280, DDOS->getSprite()->getPosition().y - 10 ));
-	this->addChild(btMeter.getDrawNode(),100);
-
 	for (unsigned int i = 0; i < playerOne->getUI()->getLabelList().size(); i++)
 		this->addChild(playerOne->getUI()->getLabelList()[i], 20);
 
@@ -166,11 +167,11 @@ void HelloWorld::initSprites()
 	this->addChild(playerTwo->getBox()->getDrawNode());
 	this->addChild(playerTwo->getSprite(), 10);
 	this->addChild(playerTwo->getUI()->getUIGunSprite(), 20);
-	for (unsigned int i = 0; i < playerTwo->getUI()->getLabelList().size(); i++) {
+	for (unsigned int i = 0; i < playerTwo->getUI()->getLabelList().size(); i++)
 		this->addChild(playerTwo->getUI()->getLabelList()[i], 20);
-	}
 	for (unsigned int i = 0; i < playerTwo->getUI()->getHPSprites().size(); i++)
 		this->addChild(playerTwo->getUI()->getHPSprites()[i]);
+
 
 
 	bg = cocos2d::Sprite::create("bg1.png");
@@ -343,7 +344,7 @@ void HelloWorld::pause(float dt)
 
 	if (!TRUEPAUSE)
 	{
-		
+
 		if ((p1Triggers.LT > 0.0f || p2Triggers.LT > 0.0f) && bulletTimeMax < 3.0f)//triggers can be replaced by a power up boolean for a drink instead of a toggle thing
 			bulletTime = true;
 
@@ -379,7 +380,7 @@ void HelloWorld::pause(float dt)
 			{
 				startLabel->setString("3");
 				if (!playMusic) {
-					if(Sedna::optionStuff::music)
+					if (Sedna::optionStuff::music)
 						cocos2d::experimental::AudioEngine::play2d("bgm.mp3", true);
 					playMusic = true;
 				}
@@ -410,7 +411,7 @@ void HelloWorld::play(float dt)
 {
 	if (!paused)
 	{
-		btMeter.setP2x(280 - (bulletTimeMax*30));
+		btMeter.setP2x(280 - (bulletTimeMax * 30));
 		//btMeter.setP1y(btMeter.getP1().y + CAMERASPEED);
 		//btMeter.setP2y(btMeter.getP2().y + CAMERASPEED);
 		btMeter.update();
@@ -446,8 +447,8 @@ void HelloWorld::play(float dt)
 			{
 				CAMERASPEED += 0.005 * dt;
 				sManager.update(dt, DDOS->getSprite()->getPosition().y);
-				
-				 if (moveScreen)
+
+				if (moveScreen)
 				{
 					for (unsigned int i = 0; i < pauseMenu->getLabelList().size(); i++) {
 						pauseMenu->getLabelList()[i]->setPosition(cocos2d::Vec2(pauseMenu->getLabelList()[i]->getPosition().x,
@@ -458,7 +459,7 @@ void HelloWorld::play(float dt)
 
 					playerOne->getUI()->updatePosition(cocos2d::Vec2(0, CAMERASPEED));
 					playerTwo->getUI()->updatePosition(cocos2d::Vec2(0, CAMERASPEED));
-					
+
 					this->getDefaultCamera()->setPosition(cocos2d::Vec2(this->getDefaultCamera()->getPosition().x,
 						this->getDefaultCamera()->getPosition().y + CAMERASPEED));
 					DDOS->getSprite()->setPosition(cocos2d::Vec2(100, (DDOS->getSprite()->getPosition().y + CAMERASPEED)));
@@ -471,7 +472,7 @@ void HelloWorld::play(float dt)
 					}
 				}
 			}
-			
+
 			else//if tutorial//TODO
 			{//make stuff for player to interact with
 
@@ -489,7 +490,7 @@ void HelloWorld::play(float dt)
 #ifdef _DEBUG
 		if (p1Controller->isButtonPressed(Sedna::Y) || p2Controller->isButtonPressed(Sedna::Y))
 			moveScreen ^= 1;
-		
+
 		if (p1Controller->isButtonPressed(Sedna::X) || p2Controller->isButtonPressed(Sedna::X)) {
 			for (unsigned int i = 0; i < sManager.outlawList.size(); i++)
 				sManager.outlawList[i]->getBox()->getDrawNode()->setVisible(true);
@@ -515,7 +516,7 @@ void HelloWorld::play(float dt)
 		else {
 			boss(dt);
 			bossCheckManyLists(dt);
-		}		
+		}
 
 		playerOne->updateGameObject();
 		playerTwo->updateGameObject();
@@ -610,8 +611,8 @@ void HelloWorld::checkManyLists(float dt)
 		}
 	}
 
-	btMeter.getDrawNode()->setPosition(btMeter.getDrawNode()->getPosition().x,btMeter.getDrawNode()->getPosition().y+CAMERASPEED);
-	btLabel->setPosition(btLabel->getPosition().x, btLabel->getPosition().y+CAMERASPEED);
+	btMeter.getDrawNode()->setPosition(btMeter.getDrawNode()->getPosition().x, btMeter.getDrawNode()->getPosition().y + CAMERASPEED);
+	btLabel->setPosition(btLabel->getPosition().x, btLabel->getPosition().y + CAMERASPEED);
 }
 
 void HelloWorld::bossCheckManyLists(float dt)

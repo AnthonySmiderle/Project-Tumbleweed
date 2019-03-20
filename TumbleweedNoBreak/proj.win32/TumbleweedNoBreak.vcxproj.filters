@@ -55,7 +55,11 @@
     <ClCompile Include="..\Classes\XinputManager.cpp">
       <Filter>Game Stuff</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="..\Classes\TutorialScene.cpp">
+=======
+    <ClCompile Include="..\Classes\Sign.cpp">
+>>>>>>> Anthony
       <Filter>Game Stuff</Filter>
     </ClCompile>
   </ItemGroup>
@@ -120,7 +124,11 @@
     <ClInclude Include="..\Classes\Options.h">
       <Filter>Game Stuff</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="..\Classes\TutorialScene.h">
+=======
+    <ClInclude Include="..\Classes\Sign.h">
+>>>>>>> Anthony
       <Filter>Game Stuff</Filter>
     </ClInclude>
   </ItemGroup>
