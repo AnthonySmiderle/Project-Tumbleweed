@@ -31,6 +31,36 @@ namespace Sedna {
 		hitBox->getDrawNode()->setVisible(false);
 		this->objectHp = 5;
 	}
+
+	Table::Table(float x, float y, potionType p)
+	{
+		std::string tableImage;
+		if (p=health)
+		{
+			beer = new Potion(health);
+			tableImage = "Table_HealthPot.png";
+		}
+		else if (p=revive)
+		{
+			beer = new Potion(revive);
+			tableImage = "Table_RFPot.png";
+		}
+		else if (p=invinc)
+		{
+			beer = new Potion(invinc);
+			tableImage = "Table_invPot.png";
+		}
+		else
+		{
+			beer = new Potion(blank);
+			tableImage = "Table.png";
+		}
+		this->sprite = cocos2d::Sprite::create(tableImage);
+		sprite->setScale(spriteScale);
+		this->hitBox = new CirclePrimitive(cocos2d::Vec2(x, y), 28, 5, 50);
+		hitBox->getDrawNode()->setVisible(false);
+		this->objectHp = 5;
+	}
 	
 	void Sedna::Table::spriteSwitch()
 	{

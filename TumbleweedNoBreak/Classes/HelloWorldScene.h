@@ -146,6 +146,7 @@ public:
 	bool tutorialShotgun = false;
 	bool tutorialPete = false;
 	private:
+		
 };
 
 #endif // __HELLOWORLD_SCENE_H__

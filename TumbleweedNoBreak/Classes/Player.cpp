@@ -623,7 +623,11 @@ namespace Sedna {
 	{
 		this->currentGun = p->getCurrentGun();
 		for (int i = 0; i < labelList.size(); i++) {
-			labelList[0]->setString(std::to_string(currentGun->getAmmo()));
+			if(this->currentGun->getName()!="olReliable")
+
+				labelList[0]->setString(std::to_string(currentGun->getAmmo()));
+			else
+				labelList[0]->setString(" ");
 			labelList[1]->setString(std::to_string(p->getScore()));
 		}
 	}
