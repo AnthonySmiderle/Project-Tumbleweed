@@ -65,6 +65,8 @@ public:
 	// implement the "static create()" method manually
 	CREATE_FUNC(HelloWorld);
 private:
+	cocos2d::Label* btLabel;
+	Sedna::SquarePrimitive btMeter;
 	bool bossTime = false;///
 	Sedna::Goldman* goldman;
 	std::vector<Sedna::Outlaw*>goldmans;

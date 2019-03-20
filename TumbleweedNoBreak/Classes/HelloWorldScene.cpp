@@ -142,13 +142,20 @@ void HelloWorld::initSprites()
 	this->addChild(theBiggestIronP_up->getSprite());
 
 
-
 	playerOne = new Sedna::Player(1, 100, 100, managerR, Sedna::Guns::olReliable);
 	this->addChild(playerOne->getBox()->getDrawNode());
 	this->addChild(playerOne->getSprite(), 10);
 	this->addChild(playerOne->getUI()->getUIGunSprite(), 20);
 
-	for (unsigned int i = 0; i < playerOne->getUI()->getLabelList().size(); i++)
+
+	btLabel = cocos2d::Label::create("Bullet Time", "fonts/Montague.ttf", 8);
+	//btLabel->setAnchorPoint(cocos2d::Vec2(0.5f, 0.5f));
+	btLabel->setPosition(cocos2d::Vec2(230, DDOS->getSprite()->getPosition().y - 15));
+	this->addChild(btLabel,101);
+	btMeter = Sedna::SquarePrimitive(cocos2d::Vec2(190, DDOS->getSprite()->getPosition().y - 20),cocos2d::Vec2(280, DDOS->getSprite()->getPosition().y - 10 ));
+	this->addChild(btMeter.getDrawNode(),100);
+
+	for (int i = 0; i < playerOne->getUI()->getLabelList().size(); i++)
 		this->addChild(playerOne->getUI()->getLabelList()[i], 20);
 
 	for (unsigned int i = 0; i < playerOne->getUI()->getHPSprites().size(); i++)
@@ -336,6 +343,7 @@ void HelloWorld::pause(float dt)
 
 	if (!TRUEPAUSE)
 	{
+		
 		if ((p1Triggers.LT > 0.0f || p2Triggers.LT > 0.0f) && bulletTimeMax < 3.0f)//triggers can be replaced by a power up boolean for a drink instead of a toggle thing
 			bulletTime = true;
 
@@ -402,6 +410,10 @@ void HelloWorld::play(float dt)
 {
 	if (!paused)
 	{
+		btMeter.setP2x(280 - (bulletTimeMax*30));
+		//btMeter.setP1y(btMeter.getP1().y + CAMERASPEED);
+		//btMeter.setP2y(btMeter.getP2().y + CAMERASPEED);
+		btMeter.update();
 		if (playerOne->isDead() && playerTwo->isDead())//is this loss
 		{
 			CAMERASPEED = 0;
@@ -534,19 +546,16 @@ void HelloWorld::checkManyLists(float dt)
 		auto first = playerOne->getBox()->getLocation() - sManager.outlawList[i]->getBox()->getLocation();
 		auto second = playerTwo->getBox()->getLocation() - sManager.outlawList[i]->getBox()->getLocation();
 
+		if (sManager.outlawList[i]->points == 200)
+			((Sedna::ShotgunOutlaw*)sManager.outlawList[i])->onLeftSideOf
+			((first.getLengthSq() < second.getLengthSq()) ? playerOne : playerTwo);
 
 		if (sManager.outlawList[i]->points == 300)
 			((Sedna::RifleOutlaw*)sManager.outlawList[i])->setTrack
 			((first.getLengthSq() < second.getLengthSq()) ? playerOne : playerTwo);
 
-
-		if (sManager.outlawList[i]->points == 1000) {
-
-			//((Sedna::CrazyPete*)sManager.outlawList[i])->setTrack
-			//((first.getLengthSq() < second.getLengthSq()) ? playerOne : playerTwo);
-
+		if (sManager.outlawList[i]->points == 1000)
 			((Sedna::CrazyPete*)sManager.outlawList[i])->updateDyn(dt, this);
-		}
 		else
 			sManager.outlawList[i]->shoot(dt, this);
 	}
@@ -727,6 +736,8 @@ void HelloWorld::bounceFunc()//this function stops the player from leaving the s
 		playerOne->getBox()->setLocation(cocos2d::Vec2(90, playerOne->getBox()->getLocation().y));
 		playerOne->getBox()->addForce(25, 0);
 	}
+
+
 	if ((int)playerTwo->getBox()->getLocation().x >= barRightMax)
 	{
 		playerTwo->getBox()->setLocation(cocos2d::Vec2(430, playerTwo->getBox()->getLocation().y));
@@ -737,6 +748,17 @@ void HelloWorld::bounceFunc()//this function stops the player from leaving the s
 	{
 		playerTwo->getBox()->setLocation(cocos2d::Vec2(90, playerTwo->getBox()->getLocation().y));
 		playerTwo->getBox()->addForce(25, 0);
+	}
+
+
+	if (playerOne->getBox()->getLocation().y >= DDOS->getSprite()->getPosition().y) {
+		playerOne->getBox()->setLocation(cocos2d::Vec2(playerOne->getBox()->getLocation().x, DDOS->getSprite()->getPosition().y));
+		playerOne->getBox()->addForce(0, -25);
+	}
+
+	if (playerTwo->getBox()->getLocation().y >= DDOS->getSprite()->getPosition().y) {
+		playerTwo->getBox()->setLocation(cocos2d::Vec2(playerTwo->getBox()->getLocation().x, DDOS->getSprite()->getPosition().y));
+		playerTwo->getBox()->addForce(0, -25);
 	}
 
 	for (unsigned int i = 0; i < sManager.tableList.size(); i++)

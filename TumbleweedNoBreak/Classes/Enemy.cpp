@@ -232,7 +232,7 @@ void ShotgunOutlaw::shoot(float dt, cocos2d::Scene * s)
 		//eProjectiles[3]->getBox()->setForce(cocos2d::Vec2(1.75, -4.5));
 		//eProjectiles[4]->getBox()->setForce(cocos2d::Vec2(3.25, -3.25));
 
-		if (this->getBox()->getLocation().x < 250) {
+		if (/*this->getBox()->getLocation().x < 250*/ onLeft) {
 			this->getSprite()->setTexture("shotgunOutlaw1.png");
 			eProjectiles[0]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-22, 0));
 			eProjectiles[1]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-22, 0));
@@ -247,7 +247,7 @@ void ShotgunOutlaw::shoot(float dt, cocos2d::Scene * s)
 			eProjectiles[3]->getBox()->setForce(cocos2d::Vec2(4.5, -1.75));
 			eProjectiles[4]->getBox()->setForce(cocos2d::Vec2(5.06, 0));//projectile on the right
 		}
-		else if (this->getBox()->getLocation().x > 250) {
+		else if (/*this->getBox()->getLocation().x > 250*/!onLeft) {
 			this->getSprite()->setTexture("shotgunOutlaw.png");
 			eProjectiles[0]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(16, 0));
 			eProjectiles[1]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(16, 0));
@@ -277,6 +277,15 @@ void ShotgunOutlaw::checkList()
 	}
 	for (int i = 0; i < eProjectiles.size(); i++)
 		eProjectiles[i]->updateGameObject();
+}
+
+void Sedna::ShotgunOutlaw::onLeftSideOf(Player * p)
+{
+	if (this->getBox()->getLocation().x - p->getBox()->getLocation().x < 0)
+		onLeft = true;
+	else if (this->getBox()->getLocation().x - p->getBox()->getLocation().x > 0)
+		onLeft = false;
+
 }
 
 
@@ -328,7 +337,7 @@ void Sedna::RifleOutlaw::shoot(float dt, cocos2d::Scene * s)
 
 		eProjectiles.back()->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-16, 0));
 		auto direction = track / sqrt(track.x*track.x + track.y*track.y);
-		eProjectiles.back()->getBox()->setForce(direction * 10);
+		eProjectiles.back()->getBox()->setForce(direction * 8);
 	}
 	if (eHasShot)
 		eShootTimer += dt;
@@ -349,10 +358,10 @@ cocos2d::Vec2 Sedna::RifleOutlaw::getTrack() const
 
 
 
-CrazyPete::CrazyPete(float x, float y) :Outlaw(x, y)
+CrazyPete::CrazyPete(float x, float y) : Outlaw(x, y)
 {
 	points = 1000;
-	this->getSprite()->setTexture("Crazy.png");
+	this->getSprite()->setTexture("CrazyPete.png");
 	dynamite = new Projectile(getBox()->getLocation().x, getBox()->getLocation().y, Enemy);
 	dynamite->getSprite()->setTexture("a.png");
 }
@@ -394,14 +403,13 @@ void Sedna::CrazyPete::updateDyn(float dt, cocos2d::Scene * s)
 	if (!eShootTimer) {
 		eHasShot = true;
 		dynamite->getBox()->setForce(cocos2d::Vec2(0, -5));
-
 	}
 
 	if (eHasShot) {
 		eShootTimer += dt;
 		dynamite->getBox()->setForce(cocos2d::Vec2(0, -5));
 	}
-	if (this->getBox()->getLocation().y - dynamite->getBox()->getLocation().y == 150) {
+	if (this->getBox()->getLocation().y - dynamite->getBox()->getLocation().y >= 150) {
 		shoot(dt, s);
 		dynamite->getBox()->setLocation(this->getBox()->getLocation());
 		dynamite->getBox()->setForce(cocos2d::Vec2(0, 0));
@@ -428,7 +436,7 @@ void Sedna::CrazyPete::shoot(float dt, cocos2d::Scene * s)
 
 
 
-	auto speed = 4;
+	auto speed = 6;
 
 	eProjectiles[0]->getBox()->setForce(cocos2d::Vec2(-1, 0)*speed);
 	eProjectiles[1]->getBox()->setForce(cocos2d::Vec2(1, 0) *speed);
@@ -493,7 +501,7 @@ void Sedna::Goldman::shoot(float dt, cocos2d::Scene * s)
 
 
 		}
-		if (eHasShot) 
+		if (eHasShot)
 			eShootTimer += dt;
 
 	}

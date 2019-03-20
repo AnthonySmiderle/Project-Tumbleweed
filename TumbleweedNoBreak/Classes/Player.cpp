@@ -435,7 +435,7 @@ namespace Sedna {
 					}
 					if (tableList[i]->getBeer() == invinc)
 					{
-						invincTimer = 3.0f;
+						invincTimer = 6.0f;
 					}
 					if (tableList[i]->getBeer() == revive && !p->takeInputs)
 					{
@@ -507,7 +507,7 @@ namespace Sedna {
 
 	void Player::wasHurt()
 	{
-		invincTimer = 0.5f;
+		invincTimer = 0.8f;
 	}
 
 	bool Player::isDead()

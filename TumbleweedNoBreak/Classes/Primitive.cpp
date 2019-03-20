@@ -5,12 +5,66 @@
 
 namespace Sedna {
 
-	cocos2d::Color4F lerpdeColour(cocos2d::Color4F c1, cocos2d::Color4F c2,float dt) {
-		
+	cocos2d::Color4F lerpdeColour(cocos2d::Color4F c1, cocos2d::Color4F c2, float dt) {
+
 		cocos2d::Color4F temp;
 		temp = cocos2d::Color4F((1.0f - dt)*c1.r + dt * c2.r, (1.0f - dt)*c1.g + dt * c2.g, (1.0f - dt)*c1.b + dt * c2.b, 1.0f);
 		return temp;
 	}
+
+	 SquarePrimitive::SquarePrimitive(const cocos2d::Vec2 & startingPosition, const cocos2d::Vec2 & endPosition)
+		: Node(cocos2d::DrawNode::create())//initialize draw node
+	{
+		//draw a rectangle given dimensions
+		p1 = startingPosition;
+		p2 = endPosition;
+		
+		Node->drawSolidRect(p1, p2, cocos2d::Color4F(1.0f, 1.0f, 0.0f, 1.0f));
+
+		velocity = cocos2d::Vec2(0, 0);
+	}
+
+	 SquarePrimitive::SquarePrimitive()
+	{
+	}
+
+	 SquarePrimitive::~SquarePrimitive()
+	{
+		//Node->release();//destroy draw node
+	}
+	cocos2d::DrawNode *  SquarePrimitive::getDrawNode() const
+	{
+		return Node;
+	}
+
+	cocos2d::Vec2  SquarePrimitive::getCentre()
+	{
+		return cocos2d::Vec2(p1.x + p2.x / 2, p1.y + p2.y / 2);
+	}
+
+	void  SquarePrimitive::addForce(cocos2d::Vec2 v)
+	{
+		velocity += v / 10;
+
+		update();
+	}
+
+	void  SquarePrimitive::update()
+	{
+
+		//p1 += velocity;
+		//p2 += velocity;
+
+
+		p1 += velocity;
+		p2 += velocity;
+		this->Node->clear();
+		Node->drawSolidRect(p1, p2, cocos2d::Color4F(1.0f, 1.0f, 0.0f, 1.0f));
+	}
+
+
+
+	
 
 
 
