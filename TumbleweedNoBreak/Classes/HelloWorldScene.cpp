@@ -141,11 +141,18 @@ void HelloWorld::initSprites()
 	this->addChild(theBiggestIronP_up->getSprite());
 
 
-
 	playerOne = new Sedna::Player(1, 100, 100, managerR, Sedna::Guns::olReliable);
 	this->addChild(playerOne->getBox()->getDrawNode());
 	this->addChild(playerOne->getSprite(), 10);
 	this->addChild(playerOne->getUI()->getUIGunSprite(), 20);
+
+
+	btLabel = cocos2d::Label::create("Bullet Time", "fonts/Montague.ttf", 8);
+	//btLabel->setAnchorPoint(cocos2d::Vec2(0.5f, 0.5f));
+	btLabel->setPosition(cocos2d::Vec2(230, DDOS->getSprite()->getPosition().y - 15));
+	this->addChild(btLabel,101);
+	btMeter = Sedna::SquarePrimitive(cocos2d::Vec2(190, DDOS->getSprite()->getPosition().y - 20),cocos2d::Vec2(280, DDOS->getSprite()->getPosition().y - 10 ));
+	this->addChild(btMeter.getDrawNode(),100);
 
 	for (int i = 0; i < playerOne->getUI()->getLabelList().size(); i++)
 		this->addChild(playerOne->getUI()->getLabelList()[i], 20);
@@ -335,6 +342,7 @@ void HelloWorld::pause(float dt)
 
 	if (!TRUEPAUSE)
 	{
+		
 		if ((p1Triggers.LT > 0.0f || p2Triggers.LT > 0.0f) && bulletTimeMax < 3.0f)//triggers can be replaced by a power up boolean for a drink instead of a toggle thing
 			bulletTime = true;
 
@@ -400,6 +408,10 @@ void HelloWorld::play(float dt)
 {
 	if (!paused)
 	{
+		btMeter.setP2x(280 - (bulletTimeMax*30));
+		//btMeter.setP1y(btMeter.getP1().y + CAMERASPEED);
+		//btMeter.setP2y(btMeter.getP2().y + CAMERASPEED);
+		btMeter.update();
 		if (playerOne->isDead() && playerTwo->isDead())//is this loss
 		{
 			CAMERASPEED = 0;
@@ -435,7 +447,7 @@ void HelloWorld::play(float dt)
 #ifdef _DEBUG
 		if (p1Controller->isButtonPressed(Sedna::Y) || p2Controller->isButtonPressed(Sedna::Y))
 			moveScreen ^= 1;
-		if (moveScreen)
+		if (!moveScreen)
 		{
 			for (int i = 0; i < pauseMenu->getLabelList().size(); i++) {
 				pauseMenu->getLabelList()[i]->setPosition(cocos2d::Vec2(pauseMenu->getLabelList()[i]->getPosition().x,
@@ -444,8 +456,6 @@ void HelloWorld::play(float dt)
 			pausedLabel->setPosition(pausedLabel->getPosition() + cocos2d::Vec2(0, CAMERASPEED));
 			startLabel->setPosition(startLabel->getPosition() + cocos2d::Vec2(0, CAMERASPEED));
 
-
-
 			playerOne->getUI()->updatePosition(cocos2d::Vec2(0, CAMERASPEED));
 			playerTwo->getUI()->updatePosition(cocos2d::Vec2(0, CAMERASPEED));
 
@@ -453,6 +463,7 @@ void HelloWorld::play(float dt)
 			this->getDefaultCamera()->setPosition(cocos2d::Vec2(this->getDefaultCamera()->getPosition().x,
 				this->getDefaultCamera()->getPosition().y + CAMERASPEED));
 			DDOS->getSprite()->setPosition(cocos2d::Vec2(100, (DDOS->getSprite()->getPosition().y + CAMERASPEED)));
+
 
 		}
 		if (p1Controller->isButtonPressed(Sedna::X) || p2Controller->isButtonPressed(Sedna::X)) {

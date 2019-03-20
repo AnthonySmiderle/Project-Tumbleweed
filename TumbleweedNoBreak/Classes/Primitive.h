@@ -14,7 +14,36 @@
 		
 
 namespace Sedna {
+	class SquarePrimitive {
 
+	public:
+		//using reference operator to denote a pointer, otherwise it won't work. Vec2 &name literally means an integer in the computer's memory
+		SquarePrimitive(const cocos2d::Vec2 &startingPosition, const cocos2d::Vec2 &endPosition);
+		SquarePrimitive();
+		~SquarePrimitive();
+
+
+		//bool isColliding(SquarePrimitive s);
+		cocos2d::DrawNode* getDrawNode() const;
+		cocos2d::Vec2 getP1() const { return p1; }
+		void setP1x(float X) { p1.x = X; }
+		void setP2x(float X) { p2.x = X; }
+		void setP1y(float Y) { p1.y = Y; }
+		void setP2y(float Y) { p2.y = Y; }
+		cocos2d::Vec2 getP2() const { return p2; }
+		cocos2d::Vec2 getCentre();
+		void addForce(cocos2d::Vec2 v);
+		void update();
+	private:
+		cocos2d::DrawNode *Node;
+		cocos2d::Vec2 velocity;
+		cocos2d::Vec2 location;
+		cocos2d::Vec2 p1;
+		cocos2d::Vec2 p2;
+
+
+
+	};
 	//the actually useful one
 	class CirclePrimitive {
 	public:
