@@ -155,7 +155,7 @@ void HelloWorld::initSprites()
 	btMeter = Sedna::SquarePrimitive(cocos2d::Vec2(190, DDOS->getSprite()->getPosition().y - 20),cocos2d::Vec2(280, DDOS->getSprite()->getPosition().y - 10 ));
 	this->addChild(btMeter.getDrawNode(),100);
 
-	for (int i = 0; i < playerOne->getUI()->getLabelList().size(); i++)
+	for (unsigned int i = 0; i < playerOne->getUI()->getLabelList().size(); i++)
 		this->addChild(playerOne->getUI()->getLabelList()[i], 20);
 
 	for (unsigned int i = 0; i < playerOne->getUI()->getHPSprites().size(); i++)
@@ -600,8 +600,8 @@ void HelloWorld::checkManyLists(float dt)
 		}
 	}
 
-
-
+	btMeter.getDrawNode()->setPosition(btMeter.getDrawNode()->getPosition().x,btMeter.getDrawNode()->getPosition().y+CAMERASPEED);
+	btLabel->setPosition(btLabel->getPosition().x, btLabel->getPosition().y+CAMERASPEED);
 }
 
 void HelloWorld::bossCheckManyLists(float dt)
