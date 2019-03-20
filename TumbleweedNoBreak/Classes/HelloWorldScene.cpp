@@ -148,10 +148,10 @@ void HelloWorld::initSprites()
 	this->addChild(playerOne->getSprite(), 10);
 	this->addChild(playerOne->getUI()->getUIGunSprite(), 20);
 
-	for (int i = 0; i < playerOne->getUI()->getLabelList().size(); i++)
+	for (unsigned int i = 0; i < playerOne->getUI()->getLabelList().size(); i++)
 		this->addChild(playerOne->getUI()->getLabelList()[i], 20);
 
-	for (int i = 0; i < playerOne->getUI()->getHPSprites().size(); i++)
+	for (unsigned int i = 0; i < playerOne->getUI()->getHPSprites().size(); i++)
 		this->addChild(playerOne->getUI()->getHPSprites()[i]);
 
 
@@ -159,10 +159,10 @@ void HelloWorld::initSprites()
 	this->addChild(playerTwo->getBox()->getDrawNode());
 	this->addChild(playerTwo->getSprite(), 10);
 	this->addChild(playerTwo->getUI()->getUIGunSprite(), 20);
-	for (int i = 0; i < playerTwo->getUI()->getLabelList().size(); i++) {
+	for (unsigned int i = 0; i < playerTwo->getUI()->getLabelList().size(); i++) {
 		this->addChild(playerTwo->getUI()->getLabelList()[i], 20);
 	}
-	for (int i = 0; i < playerTwo->getUI()->getHPSprites().size(); i++)
+	for (unsigned int i = 0; i < playerTwo->getUI()->getHPSprites().size(); i++)
 		this->addChild(playerTwo->getUI()->getHPSprites()[i]);
 
 
@@ -205,7 +205,7 @@ void HelloWorld::initSprites()
 
 
 
-	for (int i = 0; i < pauseMenu->getLabelList().size(); i++) {
+	for (unsigned int i = 0; i < pauseMenu->getLabelList().size(); i++) {
 		this->addChild(pauseMenu->getLabelList()[i], 100);
 		pauseMenu->getLabelList()[i]->enableShadow();
 		pauseMenu->getLabelList()[i]->setAnchorPoint(cocos2d::Vec2(0, 0));
@@ -219,7 +219,7 @@ void HelloWorld::initSprites()
 
 
 
-	for (int i = 0; i < pauseMenu->getLabelList().size(); i++) {
+	for (unsigned int i = 0; i < pauseMenu->getLabelList().size(); i++) {
 		pauseMenu->getLabelList()[i]->setVisible(false);
 	}
 	pauseMenu->select(1);
@@ -270,7 +270,7 @@ void HelloWorld::pause(float dt)
 		p2Controller->setVibration(0, 0);
 		if (!TEMPPAUSE)
 		{
-			for (int i = 0; i < pauseMenu->getLabelList().size(); i++) {
+			for (unsigned int i = 0; i < pauseMenu->getLabelList().size(); i++) {
 				pausedLabel->setVisible(true);
 				pauseMenu->getLabelList()[i]->setVisible(true);
 			}
@@ -288,7 +288,7 @@ void HelloWorld::pause(float dt)
 	{
 
 		paused = true;
-		for (int i = 0; i < pauseMenu->getLabelList().size(); i++) {
+		for (unsigned int i = 0; i < pauseMenu->getLabelList().size(); i++) {
 			pausedLabel->setVisible(true);
 			pauseMenu->getLabelList()[i]->setVisible(true);
 		}
@@ -326,7 +326,7 @@ void HelloWorld::pause(float dt)
 
 
 	else {
-		for (int i = 0; i < pauseMenu->getLabelList().size(); i++) {
+		for (unsigned int i = 0; i < pauseMenu->getLabelList().size(); i++) {
 			pausedLabel->setVisible(false);
 			pauseMenu->getLabelList()[i]->setVisible(false);
 		}
@@ -431,7 +431,7 @@ void HelloWorld::play(float dt)
 				sManager.update(dt, DDOS->getSprite()->getPosition().y);
 				if (moveScreen)
 				{
-					for (int i = 0; i < pauseMenu->getLabelList().size(); i++) {
+					for (unsigned int i = 0; i < pauseMenu->getLabelList().size(); i++) {
 						pauseMenu->getLabelList()[i]->setPosition(cocos2d::Vec2(pauseMenu->getLabelList()[i]->getPosition().x,
 							pauseMenu->getLabelList()[i]->getPosition().y + CAMERASPEED));
 					}
@@ -530,7 +530,7 @@ void HelloWorld::getCollisions()
 
 void HelloWorld::checkManyLists(float dt)
 {
-	for (int i = 0; i < sManager.outlawList.size(); i++) {
+	for (unsigned int i = 0; i < sManager.outlawList.size(); i++) {
 		auto first = playerOne->getBox()->getLocation() - sManager.outlawList[i]->getBox()->getLocation();
 		auto second = playerTwo->getBox()->getLocation() - sManager.outlawList[i]->getBox()->getLocation();
 
