@@ -379,7 +379,7 @@ void HelloWorld::pause(float dt)
 			{
 				startLabel->setString("3");
 				if (!playMusic) {
-					if(optionStuff::music)
+					if(Sedna::optionStuff::music)
 						cocos2d::experimental::AudioEngine::play2d("bgm.mp3", true);
 					playMusic = true;
 				}
@@ -437,11 +437,17 @@ void HelloWorld::play(float dt)
 			playerTwo->update(dt);
 			bloodyMaryP_up->updateGameObject();
 			theBiggestIronP_up->updateGameObject();
-			if (!optionStuff::tutorial)
+			if (Sedna::optionStuff::tutorial&&tutorialEnd)
+			{
+				//make stuff invisible
+				Sedna::optionStuff::tutorial = false;
+			}
+			if (!Sedna::optionStuff::tutorial)
 			{
 				CAMERASPEED += 0.005 * dt;
 				sManager.update(dt, DDOS->getSprite()->getPosition().y);
-				if (moveScreen)
+				
+				 if (moveScreen)
 				{
 					for (unsigned int i = 0; i < pauseMenu->getLabelList().size(); i++) {
 						pauseMenu->getLabelList()[i]->setPosition(cocos2d::Vec2(pauseMenu->getLabelList()[i]->getPosition().x,
@@ -465,9 +471,13 @@ void HelloWorld::play(float dt)
 					}
 				}
 			}
-			else//if tutorial
-			{
+			
+			else//if tutorial//TODO
+			{//make stuff for player to interact with
 
+
+				if (tutorialSlow&&tutorialShoot&&tutorialKick)//more to be added
+					tutorialEnd = true;
 			}
 		}
 

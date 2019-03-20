@@ -64,7 +64,7 @@ public:
 
 	// implement the "static create()" method manually
 	CREATE_FUNC(HelloWorld);
-private:
+
 	cocos2d::Label* btLabel;
 	Sedna::SquarePrimitive btMeter;
 	bool bossTime = false;///
@@ -131,6 +131,21 @@ private:
 	bool bulletTime = false;
 
 	float loseTimer = 0.0f;
+
+	bool tutorialEnd = false;
+
+	bool tutorialKick = false;
+	bool tutorialShoot = false;
+	bool tutorialSlow = false;
+	bool tutorialPotionH = false;
+	bool tutorialPotionI = false;
+	bool tutorialPotionR = false;
+
+	bool tutorialOutlaw = false;
+	bool tutorialRifle = false;
+	bool tutorialShotgun = false;
+	bool tutorialPete = false;
+	private:
 };
 
 #endif // __HELLOWORLD_SCENE_H__

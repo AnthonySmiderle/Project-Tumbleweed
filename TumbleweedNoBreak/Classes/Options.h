@@ -1,9 +1,9 @@
 #pragma once
-
-namespace optionStuff
+namespace Sedna
 {
-	static bool tutorial = false;
-	static bool music = true;
-
-
+	namespace optionStuff
+	{
+		static bool tutorial = false;
+		static bool music = true;
+	}
 }
