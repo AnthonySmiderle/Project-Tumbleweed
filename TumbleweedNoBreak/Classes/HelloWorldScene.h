@@ -56,9 +56,9 @@ public:
 	void getCollisions();
 	void checkManyLists(float dt);
 	void bossCheckManyLists(float dt);
-	void recursiveFunctionOne();
-	void recursiveFunctionThree();
-	void recursiveFunctionTwo();
+	void recursiveFunctionOutlaw();
+	void recursiveFunctionTables();
+	void recursiveFunctionOutlawInTable();
 	void checkPosAll();
 
 	// a selector callback

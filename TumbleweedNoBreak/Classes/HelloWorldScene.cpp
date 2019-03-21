@@ -580,9 +580,9 @@ void HelloWorld::checkManyLists(float dt)
 		sManager.outlawList.erase(sManager.outlawList.begin());
 	}
 
-	recursiveFunctionTwo();
-	recursiveFunctionOne();
-	recursiveFunctionThree();
+	recursiveFunctionOutlawInTable();
+	recursiveFunctionOutlaw();
+	recursiveFunctionTables();
 	
 
 	playerOne->checkBCollision(sManager.outlawList, bloodyMaryP_up, theBiggestIronP_up);
@@ -625,7 +625,7 @@ void HelloWorld::bossCheckManyLists(float dt)
 
 
 
-	recursiveFunctionThree();
+	recursiveFunctionTables();
 
 	playerOne->checkBCollision(goldmans, bloodyMaryP_up, theBiggestIronP_up);
 	playerTwo->checkBCollision(goldmans, bloodyMaryP_up, theBiggestIronP_up);
@@ -647,7 +647,7 @@ void HelloWorld::bossCheckManyLists(float dt)
 	}
 }
 
-void HelloWorld::recursiveFunctionOne()
+void HelloWorld::recursiveFunctionOutlaw()
 {
 	for (unsigned int i = 0; i < sManager.outlawList.size(); i++) {
 		for (unsigned int j = 0; j < sManager.outlawList.size(); j++) {
@@ -656,13 +656,13 @@ void HelloWorld::recursiveFunctionOne()
 			if (sManager.outlawList[i]->getBox()->checkCollision(*sManager.outlawList[j]->getBox())) {
 				sManager.outlawList[i]->getBox()->setLocation(cocos2d::Vec2(100 + (rand() % 300),
 					sManager.outlawList[i]->getBox()->getLocation().y + 50));
-				recursiveFunctionOne();
+				recursiveFunctionOutlaw();
 			}
 
 		}
 	}
 }
-void HelloWorld::recursiveFunctionThree()
+void HelloWorld::recursiveFunctionTables()
 {
 	for (unsigned int i = 0; i < sManager.tableList.size(); i++) {
 		if (sManager.tableList[i]->knocked != true)
@@ -673,7 +673,7 @@ void HelloWorld::recursiveFunctionThree()
 				if (sManager.tableList[i]->getBox()->checkCollision(*sManager.tableList[j]->getBox())) {
 					sManager.tableList[i]->getBox()->setLocation(cocos2d::Vec2(100 + (rand() % 300),
 						sManager.tableList[i]->getBox()->getLocation().y + 50));
-					recursiveFunctionThree();
+					recursiveFunctionTables();
 				}
 
 			}
@@ -682,7 +682,7 @@ void HelloWorld::recursiveFunctionThree()
 	}
 
 }
-void HelloWorld::recursiveFunctionTwo()
+void HelloWorld::recursiveFunctionOutlawInTable()
 {
 	for (unsigned int i = 0; i < sManager.tableList.size(); i++) {
 		if (sManager.tableList[i]->knocked != true)
@@ -691,7 +691,7 @@ void HelloWorld::recursiveFunctionTwo()
 				if (sManager.tableList[i]->getBox()->checkCollision(*sManager.outlawList[j]->getBox())) {
 					sManager.tableList[i]->getBox()->setLocation(cocos2d::Vec2(100 + (rand() % 300),
 						sManager.tableList[i]->getBox()->getLocation().y + 50));
-					recursiveFunctionTwo();
+					recursiveFunctionOutlawInTable();
 				}
 
 			}
