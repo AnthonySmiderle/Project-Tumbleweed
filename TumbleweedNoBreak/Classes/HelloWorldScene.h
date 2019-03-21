@@ -47,6 +47,7 @@ public:
 	virtual bool init();
 	void update(float dt);
 
+	void tutorial(float dt);
 	void pause(float dt);
 	void play(float dt);
 	void boss(float dt);
@@ -67,6 +68,8 @@ public:
 	// implement the "static create()" method manually
 	CREATE_FUNC(HelloWorld);
 
+	bool tutCutscene = true;
+	std::vector<Sedna::Outlaw*>tutOutlaws;
 
 	Sedna::Sign* testSign;
 
@@ -137,19 +140,19 @@ public:
 
 	float loseTimer = 0.0f;
 
-	bool tutorialEnd = false;
-
-	bool tutorialKick = false;
-	bool tutorialShoot = false;
-	bool tutorialSlow = false;
-	bool tutorialPotionH = false;
-	bool tutorialPotionI = false;
-	bool tutorialPotionR = false;
-
-	bool tutorialOutlaw = false;
-	bool tutorialRifle = false;
-	bool tutorialShotgun = false;
-	bool tutorialPete = false;
+	///<what dis for>bool tutorialEnd = false;
+	///<what dis for>
+	///<what dis for>bool tutorialKick = false;
+	///<what dis for>bool tutorialShoot = false;
+	///<what dis for>bool tutorialSlow = false;
+	///<what dis for>bool tutorialPotionH = false;
+	///<what dis for>bool tutorialPotionI = false;
+	///<what dis for>bool tutorialPotionR = false;
+	///<what dis for>
+	///<what dis for>bool tutorialOutlaw = false;
+	///<what dis for>bool tutorialRifle = false;
+	///<what dis for>bool tutorialShotgun = false;
+	///<what dis for>bool tutorialPete = false;
 	private:
 		
 };
