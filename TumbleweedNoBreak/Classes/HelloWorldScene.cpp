@@ -234,6 +234,18 @@ void HelloWorld::initSprites()
 
 
 	tutOutlaws.push_back(new Sedna::Outlaw(200, DDOS->getSprite()->getPosition().y));
+	this->addChild(tutOutlaws.back()->getBox()->getDrawNode());
+	this->addChild(tutOutlaws.back()->getSprite());
+
+	for (int i = 0; i < 3; i++) {
+		tutTables.push_back(new Sedna::Table(200 + (i * 70), 100));
+		this->addChild(tutTables.back()->getBox()->getDrawNode());
+		this->addChild(tutTables.back()->getSprite());
+	}
+
+	dummy = new Sedna::Player(1, 320, 40, managerR, Sedna::Guns::olReliable);
+	this->addChild(dummy->getBox()->getDrawNode());
+	this->addChild(dummy->getSprite());
 }
 
 void HelloWorld::update(float dt)
@@ -253,8 +265,8 @@ void HelloWorld::update(float dt)
 			playerTwo->setCurrentGun(Sedna::Guns::olReliable2);
 
 
-		if (Sedna::optionStuff::tutorial)
-			this->tutorial(dt);
+		if (tutBool)
+			this->gameTutorial(dt);
 		else {
 			this->pause(dt);
 			this->play(dt);
@@ -276,30 +288,49 @@ void HelloWorld::boss(float dt)
 
 
 }
-void HelloWorld::tutorial(float dt)
+void HelloWorld::gameTutorial(float dt)
 {
 	btMeter.setP2x(280 - (bulletTimeMax * 30));
 
 	btMeter.update();
 
-	playerOne->update(dt);
-	playerTwo->update(dt);
+	//playerOne->update(dt);
+	//playerTwo->update(dt);
 
 	srand(time(0));
 	checkInput(dt);
 	getCollisions();
 	checkManyLists(dt);
 
+	if(dummy->getBox()->getLocation().x == 320)
+	dummy->getBox()->setForce(cocos2d::Vec2(2, 0));
+	else if(dummy->getBox()->getLocation().x == 380)
+		dummy->getBox()->setForce(cocos2d::Vec2(-2, 0));
 
-	playerOne->updateGameObject();
-	playerTwo->updateGameObject();
+	//	playerOne->updateGameObject();
+		//playerTwo->updateGameObject();
+	dummy->updateGameObject();
 	bounceFunc();
 
 	if (tutCutscene) {
-
-		if (tutOutlaws.back()->getBox()->getLocation().y > 280) {
-			tutOutlaws.back()->getBox()->setForce(cocos2d::Vec2(0, -2));
+		//temp static bool
+		static bool yes = false;
+		static bool no = true;
+		if (tutTables.size() == 2 && !yes) {
+			tutOutlaws.push_back(new Sedna::ShotgunOutlaw(250, DDOS->getSprite()->getPosition().y));
+			this->addChild(tutOutlaws.back()->getBox()->getDrawNode());
+			this->addChild(tutOutlaws.back()->getSprite());
+			yes = true;
 		}
+		else if (tutTables.size() == 1 && no) {
+			tutOutlaws.push_back(new Sedna::RifleOutlaw(350, DDOS->getSprite()->getPosition().y));
+			this->addChild(tutOutlaws.back()->getBox()->getDrawNode());
+			this->addChild(tutOutlaws.back()->getSprite());
+			no = false;
+		}
+
+		if (tutOutlaws.back()->getBox()->getLocation().y > 200)
+			tutOutlaws.back()->getBox()->setForce(cocos2d::Vec2(0, -2));
 		else
 			tutOutlaws.back()->getBox()->setForce(cocos2d::Vec2(0, 0));
 
@@ -336,12 +367,12 @@ void HelloWorld::play(float dt)
 			playerTwo->update(dt);
 			bloodyMaryP_up->updateGameObject();
 			theBiggestIronP_up->updateGameObject();
-			if (Sedna::optionStuff::tutorial/*&&tutorialEnd*/)
+			if (tutBool/*&&tutorialEnd*/)
 			{
 				//make stuff invisible
-				Sedna::optionStuff::tutorial = false;
+				tutBool = false;
 			}
-			if (!Sedna::optionStuff::tutorial)
+			if (!tutBool)
 			{
 				CAMERASPEED += 0.005 * dt;
 				sManager.update(dt, DDOS->getSprite()->getPosition().y);
@@ -538,8 +569,8 @@ void HelloWorld::pause(float dt)
 			{
 				startLabel->setString("3");
 				if (!playMusic) {
-					if (Sedna::optionStuff::music)
-						cocos2d::experimental::AudioEngine::play2d("bgm.mp3", true);
+					//					if (Sedna::optionStuff::music)
+					cocos2d::experimental::AudioEngine::play2d("bgm.mp3", true);
 					playMusic = true;
 				}
 			}
@@ -588,67 +619,93 @@ void HelloWorld::getCollisions()
 
 void HelloWorld::checkManyLists(float dt)
 {
-	for (unsigned int i = 0; i < sManager.outlawList.size(); i++) {
-		auto first = playerOne->getBox()->getLocation() - sManager.outlawList[i]->getBox()->getLocation();
-		auto second = playerTwo->getBox()->getLocation() - sManager.outlawList[i]->getBox()->getLocation();
+	if (tutBool) {
 
-		if (sManager.outlawList[i]->points == 200)
-			((Sedna::ShotgunOutlaw*)sManager.outlawList[i])->onLeftSideOf
-			((first.getLengthSq() < second.getLengthSq()) ? playerOne : playerTwo);
+		for (unsigned int i = 0; i < tutOutlaws.size(); i++) {
 
-		if (sManager.outlawList[i]->points == 300)
-			((Sedna::RifleOutlaw*)sManager.outlawList[i])->setTrack
-			((first.getLengthSq() < second.getLengthSq()) ? playerOne : playerTwo);
+			tutOutlaws[i]->animate(dt);
+			tutOutlaws[i]->checkBCollision(tutTables);
+			if (tutOutlaws[i]->points == 300)
+				((Sedna::RifleOutlaw*)tutOutlaws[i])->setTrack(dummy);
 
-		if (sManager.outlawList[i]->points == 1000)
-			((Sedna::CrazyPete*)sManager.outlawList[i])->updateDyn(dt, this);
-		else
-			sManager.outlawList[i]->shoot(dt, this);
-	}
+			tutOutlaws[i]->shoot(dt, this);
+			tutOutlaws[i]->checkList();
+			tutOutlaws[i]->updateGameObject();
 
-
-	checkPosAll();
-	if (sManager.outlawList.size() > 6) {
-		sManager.outlawList.front()->removeProjectiles();
-		sManager.outlawList.front()->getBox()->getDrawNode()->removeFromParent();
-		sManager.outlawList.front()->getSprite()->removeFromParent();
-		sManager.outlawList.erase(sManager.outlawList.begin());
-	}
-
-	recursiveFunctionTwo();
-	recursiveFunctionOne();
-	recursiveFunctionThree();
-
-
-	playerOne->checkBCollision(sManager.outlawList, bloodyMaryP_up, theBiggestIronP_up);
-	playerTwo->checkBCollision(sManager.outlawList, bloodyMaryP_up, theBiggestIronP_up);
-	//playerOne->checkBCollision(sManager.tableList);
-	//playerTwo->checkBCollision(sManager.tableList);
-	playerOne->checkList();
-	playerTwo->checkList();
-	for (unsigned int i = 0; i < sManager.tableList.size(); i++)
-		sManager.tableList[i]->updateGameObject();
-
-	for (unsigned int i = 0; i < sManager.outlawList.size(); i++) {
-
-		sManager.outlawList[i]->animate(dt);
-		sManager.outlawList[i]->checkBCollision(sManager.tableList);
-		sManager.outlawList[i]->checkBCollision(playerOne);
-		sManager.outlawList[i]->checkBCollision(playerTwo);
-		sManager.outlawList[i]->checkList();
-		sManager.outlawList[i]->updateGameObject();
-	}
-
-	for (unsigned int i = 0; i < sManager.tableList.size(); i++) {
-		for (unsigned int j = 0; j < sManager.tableList.size(); j++) {
-			if (i == j)
-				continue;
-			sManager.tableList[i]->collideTable(sManager.tableList[j]);
 		}
-	}
+		for (unsigned int i = 0; i < tutTables.size(); i++)
+			tutTables[i]->updateGameObject();
 
-	btMeter.getDrawNode()->setPosition(btMeter.getDrawNode()->getPosition().x, btMeter.getDrawNode()->getPosition().y + CAMERASPEED);
-	btLabel->setPosition(btLabel->getPosition().x, btLabel->getPosition().y + CAMERASPEED);
+
+
+
+
+
+	}
+	else {
+
+		for (unsigned int i = 0; i < sManager.outlawList.size(); i++) {
+			auto first = playerOne->getBox()->getLocation() - sManager.outlawList[i]->getBox()->getLocation();
+			auto second = playerTwo->getBox()->getLocation() - sManager.outlawList[i]->getBox()->getLocation();
+
+			if (sManager.outlawList[i]->points == 200)
+				((Sedna::ShotgunOutlaw*)sManager.outlawList[i])->onLeftSideOf
+				((first.getLengthSq() < second.getLengthSq()) ? playerOne : playerTwo);
+
+			if (sManager.outlawList[i]->points == 300)
+				((Sedna::RifleOutlaw*)sManager.outlawList[i])->setTrack
+				((first.getLengthSq() < second.getLengthSq()) ? playerOne : playerTwo);
+
+			if (sManager.outlawList[i]->points == 1000)
+				((Sedna::CrazyPete*)sManager.outlawList[i])->updateDyn(dt, this);
+			else
+				sManager.outlawList[i]->shoot(dt, this);
+		}
+
+
+		checkPosAll();
+		if (sManager.outlawList.size() > 6) {
+			sManager.outlawList.front()->removeProjectiles();
+			sManager.outlawList.front()->getBox()->getDrawNode()->removeFromParent();
+			sManager.outlawList.front()->getSprite()->removeFromParent();
+			sManager.outlawList.erase(sManager.outlawList.begin());
+		}
+
+		recursiveFunctionTwo();
+		recursiveFunctionOne();
+		recursiveFunctionThree();
+
+
+		playerOne->checkBCollision(sManager.outlawList, bloodyMaryP_up, theBiggestIronP_up);
+		playerTwo->checkBCollision(sManager.outlawList, bloodyMaryP_up, theBiggestIronP_up);
+		//playerOne->checkBCollision(sManager.tableList);
+		//playerTwo->checkBCollision(sManager.tableList);
+		playerOne->checkList();
+		playerTwo->checkList();
+		for (unsigned int i = 0; i < sManager.tableList.size(); i++)
+			sManager.tableList[i]->updateGameObject();
+
+		for (unsigned int i = 0; i < sManager.outlawList.size(); i++) {
+
+			sManager.outlawList[i]->animate(dt);
+			sManager.outlawList[i]->checkBCollision(sManager.tableList);
+			sManager.outlawList[i]->checkBCollision(playerOne);
+			sManager.outlawList[i]->checkBCollision(playerTwo);
+			sManager.outlawList[i]->checkList();
+			sManager.outlawList[i]->updateGameObject();
+		}
+
+		for (unsigned int i = 0; i < sManager.tableList.size(); i++) {
+			for (unsigned int j = 0; j < sManager.tableList.size(); j++) {
+				if (i == j)
+					continue;
+				sManager.tableList[i]->collideTable(sManager.tableList[j]);
+			}
+		}
+
+		btMeter.getDrawNode()->setPosition(btMeter.getDrawNode()->getPosition().x, btMeter.getDrawNode()->getPosition().y + CAMERASPEED);
+		btLabel->setPosition(btLabel->getPosition().x, btLabel->getPosition().y + CAMERASPEED);
+	}
 }
 
 void HelloWorld::bossCheckManyLists(float dt)

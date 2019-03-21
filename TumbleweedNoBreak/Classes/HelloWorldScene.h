@@ -47,7 +47,7 @@ public:
 	virtual bool init();
 	void update(float dt);
 
-	void tutorial(float dt);
+	void gameTutorial(float dt);
 	void pause(float dt);
 	void play(float dt);
 	void boss(float dt);
@@ -68,7 +68,10 @@ public:
 	// implement the "static create()" method manually
 	CREATE_FUNC(HelloWorld);
 
+	Sedna::Player* dummy;
+	bool tutBool = true;
 	bool tutCutscene = true;
+	std::vector<Sedna::Table*>tutTables;
 	std::vector<Sedna::Outlaw*>tutOutlaws;
 
 	Sedna::Sign* testSign;
