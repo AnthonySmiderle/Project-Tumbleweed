@@ -231,6 +231,9 @@ void HelloWorld::initSprites()
 		pauseMenu->getLabelList()[i]->setVisible(false);
 	}
 	pauseMenu->select(1);
+
+
+	tutOutlaws.push_back(new Sedna::Outlaw(200, DDOS->getSprite()->getPosition().y));
 }
 
 void HelloWorld::update(float dt)
@@ -250,9 +253,12 @@ void HelloWorld::update(float dt)
 			playerTwo->setCurrentGun(Sedna::Guns::olReliable2);
 
 
-
-		this->pause(dt);
-		this->play(dt);
+		if (Sedna::optionStuff::tutorial)
+			this->tutorial(dt);
+		else {
+			this->pause(dt);
+			this->play(dt);
+		}
 
 
 
@@ -270,6 +276,158 @@ void HelloWorld::boss(float dt)
 
 
 }
+void HelloWorld::tutorial(float dt)
+{
+	btMeter.setP2x(280 - (bulletTimeMax * 30));
+
+	btMeter.update();
+
+	playerOne->update(dt);
+	playerTwo->update(dt);
+
+	srand(time(0));
+	checkInput(dt);
+	getCollisions();
+	checkManyLists(dt);
+
+
+	playerOne->updateGameObject();
+	playerTwo->updateGameObject();
+	bounceFunc();
+
+	if (tutCutscene) {
+
+		if (tutOutlaws.back()->getBox()->getLocation().y > 280) {
+			tutOutlaws.back()->getBox()->setForce(cocos2d::Vec2(0, -2));
+		}
+		else
+			tutOutlaws.back()->getBox()->setForce(cocos2d::Vec2(0, 0));
+
+	}
+
+}
+void HelloWorld::play(float dt)
+{
+	if (!paused)
+	{
+		btMeter.setP2x(280 - (bulletTimeMax * 30));
+
+		btMeter.update();
+		if (playerOne->isDead() && playerTwo->isDead())//is this loss
+		{
+			CAMERASPEED = 0;
+			startLabel->setString("You Lose");
+			startLabel->setVisible(true);
+			loseTimer += dt;
+			startLabel->setPosition(50, startLabel->getPosition().y);
+			if (loseTimer >= 4.0f)
+			{
+				auto mMenu = MenuScene::create();
+				cocos2d::experimental::AudioEngine::stopAll();
+				end = true;
+
+				director->replaceScene(TransitionFade::create(2.0f, mMenu));
+			}
+
+		}
+		else
+		{
+			playerOne->update(dt);
+			playerTwo->update(dt);
+			bloodyMaryP_up->updateGameObject();
+			theBiggestIronP_up->updateGameObject();
+			if (Sedna::optionStuff::tutorial/*&&tutorialEnd*/)
+			{
+				//make stuff invisible
+				Sedna::optionStuff::tutorial = false;
+			}
+			if (!Sedna::optionStuff::tutorial)
+			{
+				CAMERASPEED += 0.005 * dt;
+				sManager.update(dt, DDOS->getSprite()->getPosition().y);
+
+				if (moveScreen)
+				{
+					for (unsigned int i = 0; i < pauseMenu->getLabelList().size(); i++) {
+						pauseMenu->getLabelList()[i]->setPosition(cocos2d::Vec2(pauseMenu->getLabelList()[i]->getPosition().x,
+							pauseMenu->getLabelList()[i]->getPosition().y + CAMERASPEED));
+					}
+					pausedLabel->setPosition(pausedLabel->getPosition() + cocos2d::Vec2(0, CAMERASPEED));
+					startLabel->setPosition(startLabel->getPosition() + cocos2d::Vec2(0, CAMERASPEED));
+
+					playerOne->getUI()->updatePosition(cocos2d::Vec2(0, CAMERASPEED));
+					playerTwo->getUI()->updatePosition(cocos2d::Vec2(0, CAMERASPEED));
+
+					this->getDefaultCamera()->setPosition(cocos2d::Vec2(this->getDefaultCamera()->getPosition().x,
+						this->getDefaultCamera()->getPosition().y + CAMERASPEED));
+					DDOS->getSprite()->setPosition(cocos2d::Vec2(100, (DDOS->getSprite()->getPosition().y + CAMERASPEED)));
+
+					if (DDOS->getSprite()->getPosition().y - bg2->getPosition().y >= 588.8f) {
+						bg2->setPosition(cocos2d::Vec2(bg2->getPosition().x, bg2->getPosition().y + 588.8f));
+					}
+					if (DDOS->getSprite()->getPosition().y - bg3->getPosition().y >= 588.8f) {
+						bg3->setPosition(cocos2d::Vec2(bg3->getPosition().x, bg3->getPosition().y + 588.8f));
+					}
+				}
+			}
+
+			else//if tutorial//TODO
+			{//make stuff for player to interact with
+
+
+				//if (tutorialSlow&&tutorialShoot&&tutorialKick)//more to be added
+					//tutorialEnd = true;
+			}
+		}
+
+		srand(time(0));
+		checkInput(dt);
+		getCollisions();
+
+
+#ifdef _DEBUG
+		if (p1Controller->isButtonPressed(Sedna::Y) || p2Controller->isButtonPressed(Sedna::Y))
+			moveScreen ^= 1;
+
+		if (p1Controller->isButtonPressed(Sedna::X) || p2Controller->isButtonPressed(Sedna::X)) {
+			for (unsigned int i = 0; i < sManager.outlawList.size(); i++)
+				sManager.outlawList[i]->getBox()->getDrawNode()->setVisible(true);
+			for (unsigned int i = 0; i < sManager.tableList.size(); i++)
+				sManager.tableList[i]->getBox()->getDrawNode()->setVisible(true);
+			playerOne->getBox()->getDrawNode()->setVisible(true);
+			playerTwo->getBox()->getDrawNode()->setVisible(true);
+
+		}
+		else {
+			for (unsigned int i = 0; i < sManager.outlawList.size(); i++)
+				sManager.outlawList[i]->getBox()->getDrawNode()->setVisible(false);
+			for (unsigned int i = 0; i < sManager.tableList.size(); i++)
+				sManager.tableList[i]->getBox()->getDrawNode()->setVisible(false);
+
+			playerOne->getBox()->getDrawNode()->setVisible(false);
+			playerTwo->getBox()->getDrawNode()->setVisible(false);
+		}//show hitboxes
+#endif
+
+		if (!bossTime)
+			checkManyLists(dt);
+		else {
+			boss(dt);
+			bossCheckManyLists(dt);
+		}
+
+		playerOne->updateGameObject();
+		playerTwo->updateGameObject();
+		bounceFunc();
+
+		bloodyMaryP_up->pickUp(playerOne);
+		bloodyMaryP_up->pickUp(playerTwo);
+		theBiggestIronP_up->pickUp(playerOne);
+		theBiggestIronP_up->pickUp(playerTwo);
+
+	}
+}
+
 void HelloWorld::pause(float dt)
 {
 	if (p1Controller->isButtonPressed(Sedna::SELECT) || p2Controller->isButtonPressed(Sedna::SELECT))
@@ -407,129 +565,6 @@ void HelloWorld::pause(float dt)
 
 }
 
-void HelloWorld::play(float dt)
-{
-	if (!paused)
-	{
-		btMeter.setP2x(280 - (bulletTimeMax * 30));
-		//btMeter.setP1y(btMeter.getP1().y + CAMERASPEED);
-		//btMeter.setP2y(btMeter.getP2().y + CAMERASPEED);
-		btMeter.update();
-		if (playerOne->isDead() && playerTwo->isDead())//is this loss
-		{
-			CAMERASPEED = 0;
-			startLabel->setString("You Lose");
-			startLabel->setVisible(true);
-			loseTimer += dt;
-			startLabel->setPosition(50, startLabel->getPosition().y);
-			if (loseTimer >= 4.0f)
-			{
-				auto mMenu = MenuScene::create();
-				cocos2d::experimental::AudioEngine::stopAll();
-				end = true;
-
-				director->replaceScene(TransitionFade::create(2.0f, mMenu));
-			}
-
-		}
-		else
-		{
-			playerOne->update(dt);
-			playerTwo->update(dt);
-			bloodyMaryP_up->updateGameObject();
-			theBiggestIronP_up->updateGameObject();
-			if (Sedna::optionStuff::tutorial&&tutorialEnd)
-			{
-				//make stuff invisible
-				Sedna::optionStuff::tutorial = false;
-			}
-			if (!Sedna::optionStuff::tutorial)
-			{
-				CAMERASPEED += 0.005 * dt;
-				sManager.update(dt, DDOS->getSprite()->getPosition().y);
-
-				if (moveScreen)
-				{
-					for (unsigned int i = 0; i < pauseMenu->getLabelList().size(); i++) {
-						pauseMenu->getLabelList()[i]->setPosition(cocos2d::Vec2(pauseMenu->getLabelList()[i]->getPosition().x,
-							pauseMenu->getLabelList()[i]->getPosition().y + CAMERASPEED));
-					}
-					pausedLabel->setPosition(pausedLabel->getPosition() + cocos2d::Vec2(0, CAMERASPEED));
-					startLabel->setPosition(startLabel->getPosition() + cocos2d::Vec2(0, CAMERASPEED));
-
-					playerOne->getUI()->updatePosition(cocos2d::Vec2(0, CAMERASPEED));
-					playerTwo->getUI()->updatePosition(cocos2d::Vec2(0, CAMERASPEED));
-
-					this->getDefaultCamera()->setPosition(cocos2d::Vec2(this->getDefaultCamera()->getPosition().x,
-						this->getDefaultCamera()->getPosition().y + CAMERASPEED));
-					DDOS->getSprite()->setPosition(cocos2d::Vec2(100, (DDOS->getSprite()->getPosition().y + CAMERASPEED)));
-
-					if (DDOS->getSprite()->getPosition().y - bg2->getPosition().y >= 588.8f) {
-						bg2->setPosition(cocos2d::Vec2(bg2->getPosition().x, bg2->getPosition().y + 588.8f));
-					}
-					if (DDOS->getSprite()->getPosition().y - bg3->getPosition().y >= 588.8f) {
-						bg3->setPosition(cocos2d::Vec2(bg3->getPosition().x, bg3->getPosition().y + 588.8f));
-					}
-				}
-			}
-
-			else//if tutorial//TODO
-			{//make stuff for player to interact with
-
-
-				if (tutorialSlow&&tutorialShoot&&tutorialKick)//more to be added
-					tutorialEnd = true;
-			}
-		}
-
-		srand(time(0));
-		checkInput(dt);
-		getCollisions();
-
-
-#ifdef _DEBUG
-		if (p1Controller->isButtonPressed(Sedna::Y) || p2Controller->isButtonPressed(Sedna::Y))
-			moveScreen ^= 1;
-
-		if (p1Controller->isButtonPressed(Sedna::X) || p2Controller->isButtonPressed(Sedna::X)) {
-			for (unsigned int i = 0; i < sManager.outlawList.size(); i++)
-				sManager.outlawList[i]->getBox()->getDrawNode()->setVisible(true);
-			for (unsigned int i = 0; i < sManager.tableList.size(); i++)
-				sManager.tableList[i]->getBox()->getDrawNode()->setVisible(true);
-			playerOne->getBox()->getDrawNode()->setVisible(true);
-			playerTwo->getBox()->getDrawNode()->setVisible(true);
-
-		}
-		else {
-			for (unsigned int i = 0; i < sManager.outlawList.size(); i++)
-				sManager.outlawList[i]->getBox()->getDrawNode()->setVisible(false);
-			for (unsigned int i = 0; i < sManager.tableList.size(); i++)
-				sManager.tableList[i]->getBox()->getDrawNode()->setVisible(false);
-
-			playerOne->getBox()->getDrawNode()->setVisible(false);
-			playerTwo->getBox()->getDrawNode()->setVisible(false);
-		}//show hitboxes
-#endif
-
-		if (!bossTime)
-			checkManyLists(dt);
-		else {
-			boss(dt);
-			bossCheckManyLists(dt);
-		}
-
-		playerOne->updateGameObject();
-		playerTwo->updateGameObject();
-		bounceFunc();
-
-		bloodyMaryP_up->pickUp(playerOne);
-		bloodyMaryP_up->pickUp(playerTwo);
-		theBiggestIronP_up->pickUp(playerOne);
-		theBiggestIronP_up->pickUp(playerTwo);
-
-	}
-}
-
 
 
 
@@ -583,7 +618,7 @@ void HelloWorld::checkManyLists(float dt)
 	recursiveFunctionTwo();
 	recursiveFunctionOne();
 	recursiveFunctionThree();
-	
+
 
 	playerOne->checkBCollision(sManager.outlawList, bloodyMaryP_up, theBiggestIronP_up);
 	playerTwo->checkBCollision(sManager.outlawList, bloodyMaryP_up, theBiggestIronP_up);
