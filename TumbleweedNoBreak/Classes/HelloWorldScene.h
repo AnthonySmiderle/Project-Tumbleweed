@@ -70,6 +70,11 @@ public:
 	// implement the "static create()" method manually
 	CREATE_FUNC(HelloWorld);
 
+	cocos2d::Label* tutorialLabel;
+	bool tutFunc1 = false;
+	bool tutFunc2 = false;
+	bool tutFunc3 = false;
+	bool tutFunc4 = false;
 	Sedna::Sign* healSign;
 	Sedna::Sign* reviveSign;
 	Sedna::Sign* invinceSign;

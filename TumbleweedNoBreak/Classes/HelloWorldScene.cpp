@@ -109,6 +109,15 @@ bool HelloWorld::init()
 
 	director = cocos2d::Director::getInstance();
 	end = false;
+
+	tutFunc1 = false;
+	tutFunc2 = false;
+	tutFunc3 = false;
+	tutFunc4 = false;
+
+	tutBool = true;
+	tutCutscene = true;
+
 	this->scheduleUpdate();
 
 	return true;
@@ -251,10 +260,14 @@ void HelloWorld::initSprites()
 	shootSign = new Sedna::Sign("Use the Right Thumbstick to aim\n Hold the Right Trigger to shoot", this, cocos2d::Vec2(-1000, 0));
 	btSign = new Sedna::Sign("Hold the Left Trigger for Bullet Time", this, cocos2d::Vec2(-1000, 0));
 	tablekickSign = new Sedna::Sign("Hold A to kick tables\nKick tables with drinks on \nthem for special effects!", this, cocos2d::Vec2(-1000, 0));
+	invinceSign = new Sedna::Sign("Invincibility Drink!", this, cocos2d::Vec2(-1000, 0));
+	reviveSign = new Sedna::Sign("Revive your friend Drink!", this, cocos2d::Vec2(-1000, 0));
+	healSign = new Sedna::Sign("Healing Drink!", this, cocos2d::Vec2(-1000, 0));
 
-	auto temp = cocos2d::Label::create("Tutorial", "fonts/Montague.ttf", 20);
-	temp->setPosition(cocos2d::Vec2(380, 280));
-	this->addChild(temp, 1000);
+
+	tutorialLabel = cocos2d::Label::create("Tutorial", "fonts/Montague.ttf", 8);
+	tutorialLabel->setPosition(cocos2d::Vec2(380, 280));
+	this->addChild(tutorialLabel, 1000);
 }
 
 void HelloWorld::update(float dt)
@@ -337,14 +350,38 @@ void HelloWorld::gameTutorial(float dt)
 
 		//playerOne->update(dt);
 		//playerTwo->update(dt);
+		if (!tutCutscene) {
 
+			if (playerOne->getController()->isButtonPressed(Sedna::X))
+			{
+				tutFunc4 = true;
+				for (auto x : tutTables)
+					x->getBox()->setLocation(cocos2d::Vec2(-1000, 0));
+				for (auto x : tutOutlaws)
+					x->getBox()->setLocation(cocos2d::Vec2(-1000, 0));
 
+				movementSign->getBox()->setLocation(cocos2d::Vec2(-1300, 150));
+				shootSign->getBox()->setLocation(cocos2d::Vec2(-1340, 190));
+				btSign->getBox()->setLocation(cocos2d::Vec2(-1360, 80));
+				tablekickSign->getBox()->setLocation(cocos2d::Vec2(-1195, 270));
+				invinceSign->getBox()->setLocation(cocos2d::Vec2(-1195, 185));
+				reviveSign->getBox()->setLocation(cocos2d::Vec2(-1195, 113));
+				healSign->getBox()->setLocation(cocos2d::Vec2(-1195, 49));
+
+				playerOne->getBox()->setLocation(cocos2d::Vec2(150, 100));
+				playerTwo->getBox()->setLocation(cocos2d::Vec2(280, 100));
+
+			}
+		}
 
 
 		movementSign->signUpdate(playerOne, playerTwo);
 		shootSign->signUpdate(playerOne, playerTwo);
 		btSign->signUpdate(playerOne, playerTwo);
 		tablekickSign->signUpdate(playerOne, playerTwo);
+		invinceSign->signUpdate(playerOne, playerTwo);
+		reviveSign->signUpdate(playerOne, playerTwo);
+		healSign->signUpdate(playerOne, playerTwo);
 
 		if (tutCutscene) {
 
@@ -360,19 +397,18 @@ void HelloWorld::gameTutorial(float dt)
 			dummy->updateGameObject();
 
 			//temp static bool
-			static bool yes = false;
-			static bool no = true;
-			if (tutTables.size() == 2 && !yes) {
+
+			if (tutTables.size() == 2 && !tutFunc1) {
 				tutOutlaws.push_back(new Sedna::ShotgunOutlaw(250, DDOS->getSprite()->getPosition().y));
 				this->addChild(tutOutlaws.back()->getBox()->getDrawNode());
 				this->addChild(tutOutlaws.back()->getSprite());
-				yes = true;
+				tutFunc1 = true;
 			}
-			else if (tutTables.size() == 1 && no) {
+			else if (tutTables.size() == 1 && !tutFunc2) {
 				tutOutlaws.push_back(new Sedna::RifleOutlaw(350, DDOS->getSprite()->getPosition().y));
 				this->addChild(tutOutlaws.back()->getBox()->getDrawNode());
 				this->addChild(tutOutlaws.back()->getSprite());
-				no = false;
+				tutFunc2 = true;
 			}
 
 			if (tutOutlaws.back()->getBox()->getLocation().y > 200)
@@ -383,8 +419,9 @@ void HelloWorld::gameTutorial(float dt)
 				tutCutscene = false;
 		}
 		if (!tutCutscene) {
-			static bool cleared = false;
-			if (!cleared) {
+
+			tutorialLabel->setString("Tutorial\nPress X to play the game!");
+			if (!tutFunc3) {
 				dummy->getBox()->getDrawNode()->removeFromParent();
 				dummy->getSprite()->removeFromParent();
 
@@ -401,7 +438,7 @@ void HelloWorld::gameTutorial(float dt)
 
 				tutOutlaws.clear();
 				tutTables.clear();
-				cleared = true;
+				tutFunc3 = true;
 
 				for (int i = 0; i < 4; i++) {
 					tutTables.push_back(new Sedna::Table(150, 40 + (70 * i), Sedna::health + i));
@@ -411,13 +448,18 @@ void HelloWorld::gameTutorial(float dt)
 				movementSign->getBox()->setLocation(cocos2d::Vec2(300, 150));
 				shootSign->getBox()->setLocation(cocos2d::Vec2(340, 190));
 				btSign->getBox()->setLocation(cocos2d::Vec2(360, 80));
-				//260 370
-				tablekickSign->getBox()->setLocation(cocos2d::Vec2(340, 270));
+				tablekickSign->getBox()->setLocation(cocos2d::Vec2(195, 270));
+				invinceSign->getBox()->setLocation(cocos2d::Vec2(195, 185));
+				reviveSign->getBox()->setLocation(cocos2d::Vec2(195, 113));
+				healSign->getBox()->setLocation(cocos2d::Vec2(195, 49));
 
 				movementSign->getLabel()->setVisible(true);
 				shootSign->getLabel()->setVisible(true);
 				btSign->getLabel()->setVisible(true);
 				tablekickSign->getLabel()->setVisible(true);
+				invinceSign->getLabel()->setVisible(true);
+				reviveSign->getLabel()->setVisible(true);
+				healSign->getLabel()->setVisible(true);
 
 			}
 			bounds();
@@ -430,13 +472,18 @@ void HelloWorld::gameTutorial(float dt)
 			playerTwo->updateGameObject();
 			checkPosAll();
 
-			std::cout << playerOne->getBox()->getLocation().x << " " << playerOne->getBox()->getLocation().y << "\n";
+			///std::cout << playerOne->getBox()->getLocation().x << " " << playerOne->getBox()->getLocation().y << "\n";
 
 		}
 		srand(time(0));
 
 		getCollisions();
 		checkManyLists(dt);
+
+		if (tutFunc4) {
+			tutBool = false;
+			tutorialLabel->removeFromParent();
+		}
 	}
 
 }

@@ -20,7 +20,10 @@ namespace Sedna {
 	}
 	Sign::~Sign()
 	{
-		delete signText;
+		signText->removeFromParent();
+		//sprite->removeFromParent();
+		//hitBox->getDrawNode()->removeFromParent();
+
 	}
 	void Sign::signUpdate(Player* playerOne, Player* playerTwo)
 	{
@@ -39,6 +42,7 @@ namespace Sedna {
 		else
 			signText->setVisible(false);
 	}
+	
 	cocos2d::Label * Sign::getLabel() const
 	{
 		return signText;
