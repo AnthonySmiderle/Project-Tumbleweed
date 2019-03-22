@@ -517,13 +517,8 @@ void HelloWorld::play(float dt)
 			playerTwo->update(dt);
 			bloodyMaryP_up->updateGameObject();
 			theBiggestIronP_up->updateGameObject();
-			if (tutBool/*&&tutorialEnd*/)
-			{
-				//make stuff invisible
-				tutBool = false;
-			}
-			if (!tutBool)
-			{
+			
+			
 				CAMERASPEED += 0.005 * dt;
 				sManager.update(dt, DDOS->getSprite()->getPosition().y);
 
@@ -550,15 +545,8 @@ void HelloWorld::play(float dt)
 						bg3->setPosition(cocos2d::Vec2(bg3->getPosition().x, bg3->getPosition().y + 588.8f));
 					}
 				}
-			}
+			
 
-			else//if tutorial//TODO
-			{//make stuff for player to interact with
-
-
-				//if (tutorialSlow&&tutorialShoot&&tutorialKick)//more to be added
-					//tutorialEnd = true;
-			}
 		}
 
 		srand(time(0));
