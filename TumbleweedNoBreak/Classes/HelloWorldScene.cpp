@@ -392,8 +392,8 @@ void HelloWorld::gameTutorial(float dt)
 				dummy->getBox()->setForce(cocos2d::Vec2(-1, 0));
 			bounds();
 
-			//	playerOne->updateGameObject();
-				//playerTwo->updateGameObject();
+			//playerOne->updateGameObject();
+			//playerTwo->updateGameObject();
 			dummy->updateGameObject();
 
 			//temp static bool
@@ -682,8 +682,8 @@ void HelloWorld::pause(float dt)
 			{
 				startLabel->setString("3");
 				if (!playMusic) {
-					//					if (Sedna::optionStuff::music)
-					cocos2d::experimental::AudioEngine::play2d("bgm.mp3", true);
+					if (Sedna::optionStuff::music)
+						cocos2d::experimental::AudioEngine::play2d("bgm.mp3", true);
 					playMusic = true;
 				}
 			}
