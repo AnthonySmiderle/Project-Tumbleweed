@@ -150,7 +150,7 @@ void HelloWorld::initSprites()
 	this->addChild(theBiggestIronP_up->getSprite());
 
 
-	playerOne = new Sedna::Player(1, 100, 100, managerR, Sedna::Guns::olReliable);
+	playerOne = new Sedna::Player(1, 300, 150, managerR, Sedna::Guns::olReliable);
 	this->addChild(playerOne->getBox()->getDrawNode());
 	this->addChild(playerOne->getSprite(), 10);
 	this->addChild(playerOne->getUI()->getUIGunSprite(), 20);
@@ -246,6 +246,15 @@ void HelloWorld::initSprites()
 	dummy = new Sedna::Player(1, 320, 40, managerR, Sedna::Guns::olReliable);
 	this->addChild(dummy->getBox()->getDrawNode());
 	this->addChild(dummy->getSprite());
+
+	movementSign = new Sedna::Sign("Use the Left Thumbstick to Move", this, cocos2d::Vec2(-1000, 0));
+	shootSign = new Sedna::Sign("Use the Right Thumbstick to aim\n Hold the Right Trigger to shoot", this, cocos2d::Vec2(-1000, 0));
+	btSign = new Sedna::Sign("Hold the Left Trigger for Bullet Time", this, cocos2d::Vec2(-1000, 0));
+	tablekickSign = new Sedna::Sign("Hold A to kick tables\nKick tables with drinks on \nthem for special effects!", this, cocos2d::Vec2(-1000, 0));
+
+	auto temp = cocos2d::Label::create("Tutorial", "fonts/Montague.ttf", 20);
+	temp->setPosition(cocos2d::Vec2(380, 280));
+	this->addChild(temp, 1000);
 }
 
 void HelloWorld::update(float dt)
@@ -288,52 +297,146 @@ void HelloWorld::boss(float dt)
 
 
 }
+void HelloWorld::useBulletTime(float dt)
+{
+	if ((p1Triggers.LT > 0.0f || p2Triggers.LT > 0.0f) && bulletTimeMax < 3.0f)//triggers can be replaced by a power up boolean for a drink instead of a toggle thing
+		bulletTime = true;
+
+	if (bulletTime)
+	{
+		togglePause();
+
+		playerOne->getBox()->setRadius(15);	///
+		playerTwo->getBox()->setRadius(15);	///
+		bulletTimeMax += dt;
+	}
+	if (p1Triggers.LT == 0 && p2Triggers.LT == 0 || bulletTimeMax >= 3.0f)
+	{
+
+		bulletTime = false;
+		paused = false;
+		bulletTimeMax -= dt;
+
+		playerOne->getBox()->setRadius(20);	 ///
+		playerTwo->getBox()->setRadius(20);	 ///
+	}
+	if (bulletTimeMax < 0.0f) {
+		bulletTimeMax = 0;
+
+	}
+}
 void HelloWorld::gameTutorial(float dt)
 {
+
 	btMeter.setP2x(280 - (bulletTimeMax * 30));
 
 	btMeter.update();
 
-	//playerOne->update(dt);
-	//playerTwo->update(dt);
+	useBulletTime(dt);
+	if (!paused) {
 
-	srand(time(0));
-	checkInput(dt);
-	getCollisions();
-	checkManyLists(dt);
+		//playerOne->update(dt);
+		//playerTwo->update(dt);
 
-	if(dummy->getBox()->getLocation().x == 320)
-	dummy->getBox()->setForce(cocos2d::Vec2(2, 0));
-	else if(dummy->getBox()->getLocation().x == 380)
-		dummy->getBox()->setForce(cocos2d::Vec2(-2, 0));
 
-	//	playerOne->updateGameObject();
-		//playerTwo->updateGameObject();
-	dummy->updateGameObject();
-	bounceFunc();
 
-	if (tutCutscene) {
-		//temp static bool
-		static bool yes = false;
-		static bool no = true;
-		if (tutTables.size() == 2 && !yes) {
-			tutOutlaws.push_back(new Sedna::ShotgunOutlaw(250, DDOS->getSprite()->getPosition().y));
-			this->addChild(tutOutlaws.back()->getBox()->getDrawNode());
-			this->addChild(tutOutlaws.back()->getSprite());
-			yes = true;
+
+		movementSign->signUpdate(playerOne, playerTwo);
+		shootSign->signUpdate(playerOne, playerTwo);
+		btSign->signUpdate(playerOne, playerTwo);
+		tablekickSign->signUpdate(playerOne, playerTwo);
+
+		if (tutCutscene) {
+
+
+			if (dummy->getBox()->getLocation().x == 320)
+				dummy->getBox()->setForce(cocos2d::Vec2(1, 0));
+			else if (dummy->getBox()->getLocation().x == 380)
+				dummy->getBox()->setForce(cocos2d::Vec2(-1, 0));
+			bounds();
+
+			//	playerOne->updateGameObject();
+				//playerTwo->updateGameObject();
+			dummy->updateGameObject();
+
+			//temp static bool
+			static bool yes = false;
+			static bool no = true;
+			if (tutTables.size() == 2 && !yes) {
+				tutOutlaws.push_back(new Sedna::ShotgunOutlaw(250, DDOS->getSprite()->getPosition().y));
+				this->addChild(tutOutlaws.back()->getBox()->getDrawNode());
+				this->addChild(tutOutlaws.back()->getSprite());
+				yes = true;
+			}
+			else if (tutTables.size() == 1 && no) {
+				tutOutlaws.push_back(new Sedna::RifleOutlaw(350, DDOS->getSprite()->getPosition().y));
+				this->addChild(tutOutlaws.back()->getBox()->getDrawNode());
+				this->addChild(tutOutlaws.back()->getSprite());
+				no = false;
+			}
+
+			if (tutOutlaws.back()->getBox()->getLocation().y > 200)
+				tutOutlaws.back()->getBox()->setForce(cocos2d::Vec2(0, -2));
+			else
+				tutOutlaws.back()->getBox()->setForce(cocos2d::Vec2(0, 0));
+			if (tutTables.empty())
+				tutCutscene = false;
 		}
-		else if (tutTables.size() == 1 && no) {
-			tutOutlaws.push_back(new Sedna::RifleOutlaw(350, DDOS->getSprite()->getPosition().y));
-			this->addChild(tutOutlaws.back()->getBox()->getDrawNode());
-			this->addChild(tutOutlaws.back()->getSprite());
-			no = false;
+		if (!tutCutscene) {
+			static bool cleared = false;
+			if (!cleared) {
+				dummy->getBox()->getDrawNode()->removeFromParent();
+				dummy->getSprite()->removeFromParent();
+
+				for (auto x : tutOutlaws) {
+					x->removeProjectiles();
+					x->getBox()->getDrawNode()->removeFromParent();
+					x->getSprite()->removeFromParent();
+				}
+				for (auto x : tutTables) {
+
+					x->getBox()->getDrawNode()->removeFromParent();
+					x->getSprite()->removeFromParent();
+				}
+
+				tutOutlaws.clear();
+				tutTables.clear();
+				cleared = true;
+
+				for (int i = 0; i < 4; i++) {
+					tutTables.push_back(new Sedna::Table(150, 40 + (70 * i), Sedna::health + i));
+					this->addChild(tutTables.back()->getBox()->getDrawNode());
+					this->addChild(tutTables.back()->getSprite());
+				}
+				movementSign->getBox()->setLocation(cocos2d::Vec2(300, 150));
+				shootSign->getBox()->setLocation(cocos2d::Vec2(340, 190));
+				btSign->getBox()->setLocation(cocos2d::Vec2(360, 80));
+				//260 370
+				tablekickSign->getBox()->setLocation(cocos2d::Vec2(340, 270));
+
+				movementSign->getLabel()->setVisible(true);
+				shootSign->getLabel()->setVisible(true);
+				btSign->getLabel()->setVisible(true);
+				tablekickSign->getLabel()->setVisible(true);
+
+			}
+			bounds();
+
+			//signs
+			checkInput(dt);
+			playerOne->update(dt);
+			playerOne->updateGameObject();
+			playerTwo->update(dt);
+			playerTwo->updateGameObject();
+			checkPosAll();
+
+			std::cout << playerOne->getBox()->getLocation().x << " " << playerOne->getBox()->getLocation().y << "\n";
+
 		}
+		srand(time(0));
 
-		if (tutOutlaws.back()->getBox()->getLocation().y > 200)
-			tutOutlaws.back()->getBox()->setForce(cocos2d::Vec2(0, -2));
-		else
-			tutOutlaws.back()->getBox()->setForce(cocos2d::Vec2(0, 0));
-
+		getCollisions();
+		checkManyLists(dt);
 	}
 
 }
@@ -444,12 +547,11 @@ void HelloWorld::play(float dt)
 			checkManyLists(dt);
 		else {
 			boss(dt);
-			bossCheckManyLists(dt);
 		}
 
 		playerOne->updateGameObject();
 		playerTwo->updateGameObject();
-		bounceFunc();
+		bounds();
 
 		bloodyMaryP_up->pickUp(playerOne);
 		bloodyMaryP_up->pickUp(playerTwo);
@@ -534,31 +636,7 @@ void HelloWorld::pause(float dt)
 	if (!TRUEPAUSE)
 	{
 
-		if ((p1Triggers.LT > 0.0f || p2Triggers.LT > 0.0f) && bulletTimeMax < 3.0f)//triggers can be replaced by a power up boolean for a drink instead of a toggle thing
-			bulletTime = true;
-
-		if (bulletTime)
-		{
-			togglePause();
-
-			playerOne->getBox()->setRadius(15);	///
-			playerTwo->getBox()->setRadius(15);	///
-			bulletTimeMax += dt;
-		}
-		if (p1Triggers.LT == 0 && p2Triggers.LT == 0 || bulletTimeMax >= 3.0f)
-		{
-
-			bulletTime = false;
-			paused = false;
-			bulletTimeMax -= dt;
-
-			playerOne->getBox()->setRadius(20);	 ///
-			playerTwo->getBox()->setRadius(20);	 ///
-		}
-		if (bulletTimeMax < 0.0f) {
-			bulletTimeMax = 0;
-
-		}
+		useBulletTime(dt);
 
 		if (gameStart < 5)
 		{
@@ -611,6 +689,10 @@ void HelloWorld::checkInput(float dt)
 
 void HelloWorld::getCollisions()
 {
+	if (tutBool) {
+		playerOne->checkTableStuff(tutTables, playerTwo);
+		playerTwo->checkTableStuff(tutTables, playerOne);
+	}
 	playerOne->checkTableStuff(sManager.tableList, playerTwo);
 	playerTwo->checkTableStuff(sManager.tableList, playerOne);
 }
@@ -636,10 +718,10 @@ void HelloWorld::checkManyLists(float dt)
 		for (unsigned int i = 0; i < tutTables.size(); i++)
 			tutTables[i]->updateGameObject();
 
-
-
-
-
+		if (!tutCutscene) {
+			playerOne->checkList();
+			playerTwo->checkList();
+		}
 
 	}
 	else {
@@ -671,9 +753,9 @@ void HelloWorld::checkManyLists(float dt)
 			sManager.outlawList.erase(sManager.outlawList.begin());
 		}
 
-		recursiveFunctionTwo();
-		recursiveFunctionOne();
-		recursiveFunctionThree();
+		recursiveFunctionKnocked();
+		recursiveFunctionOutlaw();
+		recursiveFunctionTable();
 
 
 		playerOne->checkBCollision(sManager.outlawList, bloodyMaryP_up, theBiggestIronP_up);
@@ -708,38 +790,8 @@ void HelloWorld::checkManyLists(float dt)
 	}
 }
 
-void HelloWorld::bossCheckManyLists(float dt)
-{
 
-
-	checkPosAll();
-
-
-
-
-	recursiveFunctionThree();
-
-	playerOne->checkBCollision(goldmans, bloodyMaryP_up, theBiggestIronP_up);
-	playerTwo->checkBCollision(goldmans, bloodyMaryP_up, theBiggestIronP_up);
-	playerOne->checkBCollision(sManager.tableList);
-	playerTwo->checkBCollision(sManager.tableList);
-	playerOne->checkList();
-	playerTwo->checkList();
-	for (unsigned int i = 0; i < sManager.tableList.size(); i++)
-		sManager.tableList[i]->updateGameObject();
-
-
-
-	for (unsigned int i = 0; i < sManager.tableList.size(); i++) {
-		for (unsigned int j = 0; j < sManager.tableList.size(); j++) {
-			if (i == j)
-				continue;
-			sManager.tableList[i]->collideTable(sManager.tableList[j]);
-		}
-	}
-}
-
-void HelloWorld::recursiveFunctionOne()
+void HelloWorld::recursiveFunctionOutlaw()
 {
 	for (unsigned int i = 0; i < sManager.outlawList.size(); i++) {
 		for (unsigned int j = 0; j < sManager.outlawList.size(); j++) {
@@ -748,13 +800,13 @@ void HelloWorld::recursiveFunctionOne()
 			if (sManager.outlawList[i]->getBox()->checkCollision(*sManager.outlawList[j]->getBox())) {
 				sManager.outlawList[i]->getBox()->setLocation(cocos2d::Vec2(100 + (rand() % 300),
 					sManager.outlawList[i]->getBox()->getLocation().y + 50));
-				recursiveFunctionOne();
+				recursiveFunctionOutlaw();
 			}
 
 		}
 	}
 }
-void HelloWorld::recursiveFunctionThree()
+void HelloWorld::recursiveFunctionTable()
 {
 	for (unsigned int i = 0; i < sManager.tableList.size(); i++) {
 		if (sManager.tableList[i]->knocked != true)
@@ -765,7 +817,7 @@ void HelloWorld::recursiveFunctionThree()
 				if (sManager.tableList[i]->getBox()->checkCollision(*sManager.tableList[j]->getBox())) {
 					sManager.tableList[i]->getBox()->setLocation(cocos2d::Vec2(100 + (rand() % 300),
 						sManager.tableList[i]->getBox()->getLocation().y + 50));
-					recursiveFunctionThree();
+					recursiveFunctionTable();
 				}
 
 			}
@@ -774,7 +826,7 @@ void HelloWorld::recursiveFunctionThree()
 	}
 
 }
-void HelloWorld::recursiveFunctionTwo()
+void HelloWorld::recursiveFunctionKnocked()
 {
 	for (unsigned int i = 0; i < sManager.tableList.size(); i++) {
 		if (sManager.tableList[i]->knocked != true)
@@ -783,7 +835,7 @@ void HelloWorld::recursiveFunctionTwo()
 				if (sManager.tableList[i]->getBox()->checkCollision(*sManager.outlawList[j]->getBox())) {
 					sManager.tableList[i]->getBox()->setLocation(cocos2d::Vec2(100 + (rand() % 300),
 						sManager.tableList[i]->getBox()->getLocation().y + 50));
-					recursiveFunctionTwo();
+					recursiveFunctionKnocked();
 				}
 
 			}
@@ -809,6 +861,7 @@ void HelloWorld::checkPosAll()//this function will remove and objects that go to
 			}
 		}
 	}
+
 	for (unsigned int i = 0; i < sManager.tableList.size(); i++)
 	{
 		if (sManager.tableList[i]->getBox()->getLocation().y < DDOS->getSprite()->getPosition().y - 400)
@@ -844,59 +897,65 @@ void HelloWorld::menuCloseCallback(Ref* pSender)
 
 
 }
+void HelloWorld::performBounce(Sedna::Player* p) {
+	if ((int)p->getBox()->getLocation().x >= barRightMax)
+	{
+		p->getBox()->setLocation(cocos2d::Vec2(430, p->getBox()->getLocation().y));
+		p->getBox()->addForce(-25, 0);
+	}
 
-void HelloWorld::bounceFunc()//this function stops the player from leaving the screen on the left and right
+	if ((int)p->getBox()->getLocation().x <= barLeftMax)
+	{
+		p->getBox()->setLocation(cocos2d::Vec2(90, p->getBox()->getLocation().y));
+		p->getBox()->addForce(25, 0);
+	}
+	if (p->getBox()->getLocation().y >= DDOS->getSprite()->getPosition().y) {
+		p->getBox()->setLocation(cocos2d::Vec2(p->getBox()->getLocation().x, DDOS->getSprite()->getPosition().y));
+		p->getBox()->addForce(0, -25);
+	}
+}
+void HelloWorld::bounds()//this function stops the player from leaving the screen on the left and right
 {
-	if ((int)playerOne->getBox()->getLocation().x >= barRightMax)
-	{
-		playerOne->getBox()->setLocation(cocos2d::Vec2(430, playerOne->getBox()->getLocation().y));
-		playerOne->getBox()->addForce(-25, 0);
-	}
 
-	if ((int)playerOne->getBox()->getLocation().x <= barLeftMax)
-	{
-		playerOne->getBox()->setLocation(cocos2d::Vec2(90, playerOne->getBox()->getLocation().y));
-		playerOne->getBox()->addForce(25, 0);
-	}
+	performBounce(playerOne);
+	performBounce(playerTwo);
 
 
-	if ((int)playerTwo->getBox()->getLocation().x >= barRightMax)
-	{
-		playerTwo->getBox()->setLocation(cocos2d::Vec2(430, playerTwo->getBox()->getLocation().y));
-		playerTwo->getBox()->addForce(-25, 0);
-	}
 
-	if ((int)playerTwo->getBox()->getLocation().x <= barLeftMax)
-	{
-		playerTwo->getBox()->setLocation(cocos2d::Vec2(90, playerTwo->getBox()->getLocation().y));
-		playerTwo->getBox()->addForce(25, 0);
-	}
-
-
-	if (playerOne->getBox()->getLocation().y >= DDOS->getSprite()->getPosition().y) {
-		playerOne->getBox()->setLocation(cocos2d::Vec2(playerOne->getBox()->getLocation().x, DDOS->getSprite()->getPosition().y));
-		playerOne->getBox()->addForce(0, -25);
-	}
-
-	if (playerTwo->getBox()->getLocation().y >= DDOS->getSprite()->getPosition().y) {
-		playerTwo->getBox()->setLocation(cocos2d::Vec2(playerTwo->getBox()->getLocation().x, DDOS->getSprite()->getPosition().y));
-		playerTwo->getBox()->addForce(0, -25);
-	}
-
-	for (unsigned int i = 0; i < sManager.tableList.size(); i++)
-	{
-		if ((int)sManager.tableList[i]->getBox()->getLocation().x >= barRightMax)
+	if (tutBool) {
+		for (unsigned int i = 0; i < tutTables.size(); i++)
 		{
-			sManager.tableList[i]->getBox()->setLocation(cocos2d::Vec2(430, sManager.tableList[i]->getBox()->getLocation().y));
-			sManager.tableList[i]->getBox()->addForce(-25, 0);
-		}
+			if ((int)tutTables[i]->getBox()->getLocation().x >= barRightMax)
+			{
+				tutTables[i]->getBox()->setLocation(cocos2d::Vec2(430, tutTables[i]->getBox()->getLocation().y));
+				tutTables[i]->getBox()->addForce(-25, 0);
+			}
 
-		if ((int)sManager.tableList[i]->getBox()->getLocation().x <= barLeftMax)
-		{
-			sManager.tableList[i]->getBox()->setLocation(cocos2d::Vec2(90, sManager.tableList[i]->getBox()->getLocation().y));
-			sManager.tableList[i]->getBox()->addForce(25, 0);
+			if ((int)tutTables[i]->getBox()->getLocation().x <= barLeftMax)
+			{
+				tutTables[i]->getBox()->setLocation(cocos2d::Vec2(90, tutTables[i]->getBox()->getLocation().y));
+				tutTables[i]->getBox()->addForce(25, 0);
+			}
 		}
 	}
+	else {
+		for (unsigned int i = 0; i < sManager.tableList.size(); i++)
+		{
+			if ((int)sManager.tableList[i]->getBox()->getLocation().x >= barRightMax)
+			{
+				sManager.tableList[i]->getBox()->setLocation(cocos2d::Vec2(430, sManager.tableList[i]->getBox()->getLocation().y));
+				sManager.tableList[i]->getBox()->addForce(-25, 0);
+			}
+
+			if ((int)sManager.tableList[i]->getBox()->getLocation().x <= barLeftMax)
+			{
+				sManager.tableList[i]->getBox()->setLocation(cocos2d::Vec2(90, sManager.tableList[i]->getBox()->getLocation().y));
+				sManager.tableList[i]->getBox()->addForce(25, 0);
+			}
+		}
+
+	}
+
 }
 
 void HelloWorld::togglePause() {//this actually has many applications

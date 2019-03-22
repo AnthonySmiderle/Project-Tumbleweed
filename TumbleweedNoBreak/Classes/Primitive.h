@@ -41,7 +41,7 @@ namespace Sedna {
 		cocos2d::Vec2 p1;
 		cocos2d::Vec2 p2;
 
-
+		float dt = 0, dt2 = 0.01f;
 
 	};
 	//the actually useful one

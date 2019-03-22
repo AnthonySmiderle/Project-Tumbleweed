@@ -19,7 +19,7 @@ namespace Sedna {
 		p1 = startingPosition;
 		p2 = endPosition;
 		
-		Node->drawSolidRect(p1, p2, cocos2d::Color4F(1.0f, 1.0f, 0.0f, 1.0f));
+		Node->drawSolidRect(p1, p2, lerpdeColour(cocos2d::Color4F(1.0f, 0.0f, 0.0f, 1.0f), cocos2d::Color4F(0.0f, 0.0f, 1.0f, 1.0f), 1.0f));
 
 		velocity = cocos2d::Vec2(0, 0);
 	}
@@ -54,12 +54,18 @@ namespace Sedna {
 
 		//p1 += velocity;
 		//p2 += velocity;
+		if (dt > 0.9f || dt < 0.01f)
+		{
+			dt = dt > .9f ? .9f : 0.01f;
+			dt2 *= -1;
+		}
 
+		dt += dt2;
 
 		p1 += velocity;
 		p2 += velocity;
 		this->Node->clear();
-		Node->drawSolidRect(p1, p2, cocos2d::Color4F(1.0f, 1.0f, 0.0f, 1.0f));
+		Node->drawSolidRect(p1, p2, lerpdeColour(cocos2d::Color4F(1.0f, 0.0f, 0.0f, 1.0f), cocos2d::Color4F(0.0f, 0.0f, 1.0f, 1.0f), dt));
 	}
 
 

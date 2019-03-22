@@ -52,14 +52,16 @@ public:
 	void play(float dt);
 	void boss(float dt);
 
+	void useBulletTime(float dt);
+	///<used to reduce duplicate code>
+	void performBounce(Sedna::Player* p);
 	void initSprites();
 	void checkInput(float dt);
 	void getCollisions();
 	void checkManyLists(float dt);
-	void bossCheckManyLists(float dt);
-	void recursiveFunctionOne();
-	void recursiveFunctionThree();
-	void recursiveFunctionTwo();
+	void recursiveFunctionOutlaw();
+	void recursiveFunctionTable();
+	void recursiveFunctionKnocked();
 	void checkPosAll();
 
 	// a selector callback
@@ -68,6 +70,13 @@ public:
 	// implement the "static create()" method manually
 	CREATE_FUNC(HelloWorld);
 
+	Sedna::Sign* healSign;
+	Sedna::Sign* reviveSign;
+	Sedna::Sign* invinceSign;
+	Sedna::Sign* tablekickSign;
+	Sedna::Sign* btSign;
+	Sedna::Sign* shootSign;
+	Sedna::Sign* movementSign;
 	Sedna::Player* dummy;
 	bool tutBool = true;
 	bool tutCutscene = true;
@@ -98,7 +107,7 @@ public:
 
 	cocos2d::Director* director;
 
-	void bounceFunc();
+	void bounds();
 	Sedna::SpawnManager sManager = Sedna::SpawnManager(this);
 	Sedna::XinputManager managerR;
 	Sedna::XinputController* p1Controller;
