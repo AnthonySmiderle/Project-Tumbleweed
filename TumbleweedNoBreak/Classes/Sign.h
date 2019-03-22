@@ -11,6 +11,7 @@ namespace Sedna {
 
 		void signUpdate(Player* playerOne, Player* playerTwo);
 
+
 		cocos2d::Label* getLabel() const;
 	private:
 		cocos2d::Label* signText;

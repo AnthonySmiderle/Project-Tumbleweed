@@ -32,20 +32,20 @@ namespace Sedna {
 		this->objectHp = 5;
 	}
 
-	Table::Table(float x, float y, potionType p)
+	Table::Table(float x, float y, int p)
 	{
 		std::string tableImage;
-		if (p=health)
+		if (p==health)
 		{
 			beer = new Potion(health);
 			tableImage = "Table_HealthPot.png";
 		}
-		else if (p=revive)
+		else if (p==revive)
 		{
 			beer = new Potion(revive);
 			tableImage = "Table_RFPot.png";
 		}
-		else if (p=invinc)
+		else if (p==invinc)
 		{
 			beer = new Potion(invinc);
 			tableImage = "Table_invPot.png";

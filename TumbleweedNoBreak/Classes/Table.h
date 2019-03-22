@@ -7,7 +7,7 @@ namespace Sedna {
 	class Table : public GameObject  {
 	public:
 		Table(float x, float y);// : hasDrink(false) {};
-		Table(float x, float y,potionType p);
+		Table(float x, float y,int p);
 		void spriteSwitch();
 		void collideTable(Table* table);
 		potionType getBeer();

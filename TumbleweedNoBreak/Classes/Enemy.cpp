@@ -187,6 +187,7 @@ ShotgunOutlaw::ShotgunOutlaw(float x, float y) :Outlaw(x, y)
 	points = 200;
 
 	this->getSprite()->setTexture("shotgunOutlaw.png");
+	onLeft = false;
 }
 void Sedna::ShotgunOutlaw::animate(float dt)
 {

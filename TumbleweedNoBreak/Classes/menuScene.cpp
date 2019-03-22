@@ -129,7 +129,7 @@ bool MenuScene::init() {
 
 	menuE->select(1);
 
-	if(Sedna::optionStuff::music)
+//	if(Sedna::optionStuff::music)
 		cocos2d::experimental::AudioEngine::play2d("bgm2.mp3", true);
 	end = false;
 	this->scheduleUpdate();
