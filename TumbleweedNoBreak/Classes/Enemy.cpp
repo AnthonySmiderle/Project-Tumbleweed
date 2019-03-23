@@ -84,7 +84,7 @@ namespace Sedna {
 
 
 			if (eProjectiles[i]->getBox()->checkCollision(*p->getBox())) {
-#ifdef _DEBUG
+#ifdef _DEBUG//TODO remove the invincible stuff 
 				if (p->getController()->isButtonReleased(Sedna::LB) && !(p->getInvinc())) {
 
 					p->setHP(p->getHP() - 1);
