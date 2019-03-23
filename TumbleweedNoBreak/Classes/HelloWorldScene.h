@@ -83,7 +83,7 @@ public:
 	Sedna::Sign* shootSign;
 	Sedna::Sign* movementSign;
 	Sedna::Player* dummy;
-	bool tutBool = true;
+	bool tutBool;
 	bool tutCutscene = true;
 	std::vector<Sedna::Table*>tutTables;
 	std::vector<Sedna::Outlaw*>tutOutlaws;

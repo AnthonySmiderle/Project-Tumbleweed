@@ -105,11 +105,7 @@ bool HelloWorld::init()
 	p1Controller->getTriggers(p1Triggers);
 	p2Controller->updateSticks(p2Sticks);
 	p2Controller->getTriggers(p2Triggers);
-	initSprites();
-
-	director = cocos2d::Director::getInstance();
-	end = false;
-
+	
 	tutFunc1 = false;
 	tutFunc2 = false;
 	tutFunc3 = false;
@@ -117,6 +113,11 @@ bool HelloWorld::init()
 
 	tutBool = false;
 	tutCutscene = true;
+	initSprites();
+
+	director = cocos2d::Director::getInstance();
+	end = false;
+
 
 	this->scheduleUpdate();
 
@@ -125,10 +126,6 @@ bool HelloWorld::init()
 void HelloWorld::initSprites()
 {
 	cocos2d::experimental::AudioEngine::preload("bgm.mp3");
-	///<cocos2d::experimental::AudioEngine::preload("oRsound.mp3");>
-
-
-
 
 	DDOS = new Sedna::GameObject("a.png", cocos2d::Vec2(100, 300), 1, 1, 1);
 	this->addChild(DDOS->getBox()->getDrawNode());
@@ -141,7 +138,6 @@ void HelloWorld::initSprites()
 	this->addChild(btLabel, 101);
 	btMeter = Sedna::SquarePrimitive(cocos2d::Vec2(190, DDOS->getSprite()->getPosition().y - 20), cocos2d::Vec2(280, DDOS->getSprite()->getPosition().y - 10));
 	this->addChild(btMeter.getDrawNode(), 100);
-	/////////////////////////////////////
 
 
 	goldman = new Sedna::Goldman(250, 250);
@@ -189,8 +185,6 @@ void HelloWorld::initSprites()
 	bg->setAnchorPoint(cocos2d::Vec2(0, 0));
 	bg->setPosition(0, 0);
 
-
-
 	bg2 = cocos2d::Sprite::create("bgPlain.png");
 	this->addChild(bg2, -1000);
 	bg2->setScale(0.85f, 0.92f);
@@ -236,9 +230,8 @@ void HelloWorld::initSprites()
 
 
 
-	for (unsigned int i = 0; i < pauseMenu->getLabelList().size(); i++) {
+	for (unsigned int i = 0; i < pauseMenu->getLabelList().size(); i++) 
 		pauseMenu->getLabelList()[i]->setVisible(false);
-	}
 	pauseMenu->select(1);
 
 
@@ -265,9 +258,11 @@ void HelloWorld::initSprites()
 	healSign = new Sedna::Sign("Healing Drink!", this, cocos2d::Vec2(-1000, 0));
 
 
+	if (tutBool) {
 	tutorialLabel = cocos2d::Label::create("Tutorial", "fonts/Montague.ttf", 8);
 	tutorialLabel->setPosition(cocos2d::Vec2(380, 280));
 	this->addChild(tutorialLabel, 1000);
+	}
 }
 
 void HelloWorld::update(float dt)
