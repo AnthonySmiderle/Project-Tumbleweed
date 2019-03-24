@@ -36,6 +36,8 @@ namespace Sedna {
 
 			eProjectiles.back()->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-8, 0));
 			eProjectiles.back()->getBox()->setForce(cocos2d::Vec2(0, -5));
+
+			cocos2d::experimental::AudioEngine::play2d("outlawNormal.mp3");
 		}
 		if (eHasShot)
 			eShootTimer += dt;
@@ -262,6 +264,7 @@ void ShotgunOutlaw::shoot(float dt, cocos2d::Scene * s)
 			eProjectiles[3]->getBox()->setForce(cocos2d::Vec2(-1.75, -4.5));
 			eProjectiles[4]->getBox()->setForce(cocos2d::Vec2(0, -5.06));//projectile on the right
 		}
+		cocos2d::experimental::AudioEngine::play2d("outlawShotgun.mp3");
 
 
 	}
@@ -339,6 +342,8 @@ void Sedna::RifleOutlaw::shoot(float dt, cocos2d::Scene * s)
 		eProjectiles.back()->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-16, 0));
 		auto direction = track / sqrt(track.x*track.x + track.y*track.y);
 		eProjectiles.back()->getBox()->setForce(direction * 8);
+		cocos2d::experimental::AudioEngine::play2d("outlawRifle.mp3");
+
 	}
 	if (eHasShot)
 		eShootTimer += dt;
@@ -449,6 +454,7 @@ void Sedna::CrazyPete::shoot(float dt, cocos2d::Scene * s)
 	eProjectiles[6]->getBox()->setForce(cocos2d::Vec2(0.5f, -0.5f) *speed);
 	eProjectiles[7]->getBox()->setForce(cocos2d::Vec2(0.5f, 0.5f)  *speed);
 
+	cocos2d::experimental::AudioEngine::play2d("peteBomb.mp3");
 
 
 }
