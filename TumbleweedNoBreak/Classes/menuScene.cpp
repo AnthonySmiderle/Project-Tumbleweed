@@ -42,14 +42,23 @@ namespace Sedna {
 			exit(std::stoi("exception"));
 #endif
 
-		labelList[lastIndex]->enableWrap(false);
+		for (unsigned i = 0; i < labelList.size(); i++) {
+			if (i == index)
+				continue;
+			else {
+				labelList[i]->enableWrap(false);
+				labelList[i]->disableEffect(LabelEffect::UNDERLINE);
+			}
+		}
+
+		//labelList[lastIndex]->enableWrap(false);
 		labelList[index]->enableWrap(false);
-		labelList[lastIndex]->disableEffect(LabelEffect::UNDERLINE);
+		//labelList[lastIndex]->disableEffect(LabelEffect::UNDERLINE);
 		labelList[index]->enableUnderline();
 
 		labelList[index]->enableWrap(true);
 
-		lastIndex = index;
+		//lastIndex = index;
 	}
 
 	unsigned int SednaMenu::getIndexOfSelected() const
@@ -137,12 +146,12 @@ bool MenuScene::init() {
 	menuE = new Sedna::SednaMenu(3, label, label2, label3);
 
 
-	
+
 	initMenu();
 
 	menuE->select(2);
 
-	if(Sedna::optionStuff::music)
+	if (Sedna::optionStuff::music)
 		cocos2d::experimental::AudioEngine::play2d("bgm2.mp3", true);
 	end = false;
 	this->scheduleUpdate();
@@ -152,8 +161,8 @@ bool MenuScene::init() {
 
 void MenuScene::update(float dt)
 {
-	if (director->getInstance()->getRunningScene()==this) {
-	
+	if (director->getInstance()->getRunningScene() == this) {
+
 
 		manager.update();
 		p1Controller->updateSticks(p1Sticks);
@@ -184,7 +193,6 @@ void MenuScene::update(float dt)
 				if (menuWait >= 0.3)
 					menuWait = 0.0f;
 			}
-
 			if (menuE->getIndexOfSelected() == 2 && p1Controller->isButtonPressed(Sedna::A)) {
 				auto game = HelloWorld::createScene();
 				cocos2d::experimental::AudioEngine::play2d("cha ching.mp3", false);
@@ -196,10 +204,8 @@ void MenuScene::update(float dt)
 			}
 			if (menuE->getIndexOfSelected() == 1 && p1Controller->isButtonPressed(Sedna::A)) {
 				optionMenuBool = true;
-				for (unsigned int i=0; i<menuE->getLabelList().size();i++)
-				{
+				for (unsigned int i = 0; i < menuE->getLabelList().size(); i++)
 					menuE->getLabelList()[i]->setVisible(false);
-				}
 			}
 			if (menuE->getIndexOfSelected() == 0 && p1Controller->isButtonPressed(Sedna::A)) {
 				cocos2d::experimental::AudioEngine::play2d("cha ching.mp3", false);
@@ -212,7 +218,7 @@ void MenuScene::update(float dt)
 		{
 
 		}
-		
+
 	}
 }
 
