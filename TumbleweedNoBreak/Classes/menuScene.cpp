@@ -130,11 +130,13 @@ bool MenuScene::init() {
 	label = Label::create("Exit", "fonts/Montague.ttf", 25);
 	label2 = Label::create("Options", "fonts/Montague.ttf", 25);
 	label3 = Label::create("Start Game", "fonts/Montague.ttf", 25);
+	menuE = new Sedna::SednaMenu(3, label, label2, label3);
 
 	oLabel = Label::create(oLabelStrings[Sedna::optionStuff::music], "fonts/Montague.ttf", 25);
 	oLabel2 = Label::create(oLabel2Strings[Sedna::optionStuff::tutorial], "fonts/Montague.ttf", 25);
+	menuO = new Sedna::SednaMenu(2,oLabel,oLabel2);
 
-	menuE = new Sedna::SednaMenu(3, label, label2, label3);
+	
 
 
 	
@@ -196,10 +198,16 @@ void MenuScene::update(float dt)
 			}
 			if (menuE->getIndexOfSelected() == 1 && p1Controller->isButtonPressed(Sedna::A)) {
 				optionMenuBool = true;
+				selectWait += dt;
 				for (unsigned int i=0; i<menuE->getLabelList().size();i++)
 				{
 					menuE->getLabelList()[i]->setVisible(false);
 				}
+				for (unsigned int i=0; i <menuO->getLabelList().size();i++)
+				{
+					menuO->getLabelList()[i]->setVisible(true);
+				}
+				menuO->select(1);
 			}
 			if (menuE->getIndexOfSelected() == 0 && p1Controller->isButtonPressed(Sedna::A)) {
 				cocos2d::experimental::AudioEngine::play2d("cha ching.mp3", false);
@@ -210,7 +218,57 @@ void MenuScene::update(float dt)
 		}
 		else
 		{
+			if (p1Sticks[0].y < -0.3f && menuO->getIndexOfSelected() != 0)
+			{
 
+				menuO->select(menuE->getIndexOfSelected() - 1);
+				menuWait += dt;
+			}
+			if (p1Sticks[0].y > 0.3f)
+			{
+				if (menuO->getIndexOfSelected() + 1 > menuO->getLabelList().size() - 1)
+				{
+				}
+				else
+				{
+					menuO->select(menuO->getIndexOfSelected() + 1);
+					menuWait += dt;
+				}
+			}
+
+			if (menuO->getIndexOfSelected() == 0 && p1Controller->isButtonPressed(Sedna::A) && !selectWait)
+			{
+				Sedna::optionStuff::music ^= 1;
+				menuO->getLabelList()[0]->setString(oLabelStrings[Sedna::optionStuff::music]);
+				selectWait += dt;
+			}
+			else if (menuO->getIndexOfSelected() == 1 && p1Controller->isButtonPressed(Sedna::A) && !selectWait)
+			{
+				Sedna::optionStuff::tutorial ^= 1;
+				menuO->getLabelList()[1]->setString(oLabel2Strings[Sedna::optionStuff::tutorial]);
+				selectWait += dt;
+			}
+			else
+			{
+				if(selectWait)
+					selectWait += dt;
+				if (selectWait >= 0.3f)
+					selectWait = 0.0f;
+			}
+			if (p1Controller->isButtonPressed(Sedna::B))
+			{
+				optionMenuBool = false;
+				for (unsigned int i = 0; i < menuE->getLabelList().size(); i++)
+				{
+					menuE->getLabelList()[i]->setVisible(true);
+				}
+				for (unsigned int i = 0; i < menuO->getLabelList().size(); i++)
+				{
+					menuO->getLabelList()[i]->setVisible(false);
+				}
+				menuE->select(1);
+
+			}
 		}
 		
 	}
@@ -245,17 +303,17 @@ void MenuScene::initMenu()
 		}
 	}
 
-	//for (int i = 0; i < menuO->getLabelList().size(); i++) {
-	//	this->addChild(menuE->getLabelList()[i]);
-	//	menuE->getLabelList()[i]->enableShadow();
-	//	menuE->getLabelList()[i]->setAnchorPoint(cocos2d::Vec2(0, 0));
-	//	if (i == 0)
-	//		menuE->getLabelList()[i]->setPosition(140, 50);
-	//	else {
-	//		menuE->getLabelList()[i]->setPosition(140, menuE->getLabelList()[i - 1]->getPosition().y + 30);
-	//
-	//	}
-	//}	
+	for (int i = 0; i < menuO->getLabelList().size(); i++) {
+		this->addChild(menuO->getLabelList()[i]);
+		menuO->getLabelList()[i]->enableShadow();
+		menuO->getLabelList()[i]->setAnchorPoint(cocos2d::Vec2(0, 0));
+		if (i == 0)
+			menuO->getLabelList()[i]->setPosition(140, 50);
+		else {
+			menuO->getLabelList()[i]->setPosition(140, menuO->getLabelList()[i - 1]->getPosition().y + 30);
+		}
+		menuO->getLabelList()[i]->setVisible(false);
+	}	
 
 	this->addChild(background, -1000);
 	this->addChild(title);
