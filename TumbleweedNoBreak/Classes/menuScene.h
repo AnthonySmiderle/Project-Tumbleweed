@@ -59,5 +59,13 @@ private:
 	cocos2d::Label* label2;
 	cocos2d::Label* label3;
 
+	Sedna::SednaMenu* menuO;
+	cocos2d::Label* oLabel;
+	cocos2d::Label* oLabel2;
+	std::string oLabelStrings[2] = {"Music:Off","Music:On"};
+	std::string oLabel2Strings[2] = { "Tutorial:Off","Tutorial:On" };
+
+
 	float menuWait = 0.0f;
+	bool optionMenuBool = false;
 };

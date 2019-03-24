@@ -124,11 +124,14 @@ bool MenuScene::init() {
 	label2 = Label::create("Options", "fonts/Montague.ttf", 25);
 	label3 = Label::create("Start Game", "fonts/Montague.ttf", 25);
 
+	oLabel = Label::create(oLabelStrings[Sedna::optionStuff::music], "fonts/Montague.ttf", 25);
+	oLabel2 = Label::create(oLabel2Strings[Sedna::optionStuff::tutorial], "fonts/Montague.ttf", 25);
+
 	menuE = new Sedna::SednaMenu(3, label, label2, label3);
 
 	initMenu();
 
-	menuE->select(1);
+	menuE->select(2);
 
 	if(Sedna::optionStuff::music)
 		cocos2d::experimental::AudioEngine::play2d("bgm2.mp3", true);
@@ -145,52 +148,62 @@ void MenuScene::update(float dt)
 
 		manager.update();
 		p1Controller->updateSticks(p1Sticks);
-		if (!menuWait)
+		if (!optionMenuBool)
 		{
-			if (p1Sticks[0].y < -0.3f && menuE->getIndexOfSelected() != 0) 
+			if (!menuWait)
 			{
-
-				menuE->select(menuE->getIndexOfSelected() - 1);
-				menuWait += dt;
-			}
-			if (p1Sticks[0].y > 0.3f)
-			{
-				if (menuE->getIndexOfSelected() + 1 > menuE->getLabelList().size() - 1) {
-				}
-				else
+				if (p1Sticks[0].y < -0.3f && menuE->getIndexOfSelected() != 0)
 				{
-					menuE->select(menuE->getIndexOfSelected() + 1);
+
+					menuE->select(menuE->getIndexOfSelected() - 1);
 					menuWait += dt;
 				}
-					
+				if (p1Sticks[0].y > 0.3f)
+				{
+					if (menuE->getIndexOfSelected() + 1 > menuE->getLabelList().size() - 1) {
+					}
+					else
+					{
+						menuE->select(menuE->getIndexOfSelected() + 1);
+						menuWait += dt;
+					}
+				}
+			}
+			else
+			{
+				menuWait += dt;
+				if (menuWait >= 0.3)
+					menuWait = 0.0f;
+			}
+
+			if (menuE->getIndexOfSelected() == 2 && p1Controller->isButtonPressed(Sedna::A)) {
+				auto game = HelloWorld::createScene();
+				cocos2d::experimental::AudioEngine::play2d("cha ching.mp3", false);
+
+				cocos2d::experimental::AudioEngine::stop(0);
+				end = true;
+				//this->onExit();
+				director->replaceScene(TransitionFade::create(1.0f, game));
+			}
+			if (menuE->getIndexOfSelected() == 1 && p1Controller->isButtonPressed(Sedna::A)) {
+				optionMenuBool = true;
+				for (unsigned int i=0; i<menuE->getLabelList().size();i++)
+				{
+					menuE->getLabelList()[i]->setVisible(false);
+				}
+			}
+			if (menuE->getIndexOfSelected() == 0 && p1Controller->isButtonPressed(Sedna::A)) {
+				cocos2d::experimental::AudioEngine::play2d("cha ching.mp3", false);
+
+				exit(0);
 
 			}
 		}
 		else
 		{
-			menuWait += dt;
-			if (menuWait >= 0.5)
-				menuWait = 0.0f;
-		}
-
-		if (menuE->getIndexOfSelected() == 2 && p1Controller->isButtonPressed(Sedna::A)) {
-			auto game = HelloWorld::createScene();
-			cocos2d::experimental::AudioEngine::play2d("cha ching.mp3", false);
-
-			cocos2d::experimental::AudioEngine::stop(0);
-			end = true;
-			//this->onExit();
-			director->replaceScene(TransitionFade::create(1.0f, game));
-		}
-		if (menuE->getIndexOfSelected() == 1 && p1Controller->isButtonPressed(Sedna::A)) {
 
 		}
-		if (menuE->getIndexOfSelected() == 0 && p1Controller->isButtonPressed(Sedna::A)) {
-			cocos2d::experimental::AudioEngine::play2d("cha ching.mp3", false);
-
-			exit(0);
-
-		}
+		
 	}
 }
 
@@ -222,6 +235,18 @@ void MenuScene::initMenu()
 
 		}
 	}
+
+	//for (int i = 0; i < menuO->getLabelList().size(); i++) {
+	//	this->addChild(menuE->getLabelList()[i]);
+	//	menuE->getLabelList()[i]->enableShadow();
+	//	menuE->getLabelList()[i]->setAnchorPoint(cocos2d::Vec2(0, 0));
+	//	if (i == 0)
+	//		menuE->getLabelList()[i]->setPosition(140, 50);
+	//	else {
+	//		menuE->getLabelList()[i]->setPosition(140, menuE->getLabelList()[i - 1]->getPosition().y + 30);
+	//
+	//	}
+	//}	
 
 	this->addChild(background, -1000);
 	this->addChild(title);
