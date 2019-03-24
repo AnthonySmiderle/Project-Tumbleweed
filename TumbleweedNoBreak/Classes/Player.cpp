@@ -21,7 +21,7 @@ namespace Sedna {
 		playerUI = new SednaUI(CURRENTGUN, this, 2, localL1, localL2);
 
 
-		sprite = cocos2d::Sprite::create(Sedna::Animations::playerImage[playerNumber-1]);//CHANGE THIS WITH ANIMATION STUFF
+		sprite = cocos2d::Sprite::create(Sedna::Animations::playerImage[playerNumber - 1]);//CHANGE THIS WITH ANIMATION STUFF
 		sprite->setScale(spriteScale);
 		hitBox = new CirclePrimitive(cocos2d::Vec2(x, y), 20, 5, 30);
 		hitBox->getDrawNode()->setVisible(false);
@@ -33,9 +33,9 @@ namespace Sedna {
 		playerUI->getLabelList()[1]->setAnchorPoint(cocos2d::Vec2(0, 0));
 		playerUI->getLabelList()[1]->setPosition(cocos2d::Vec2(112 - 40 + (UIDISPOSITION*(playerNumber - 1)), 116 - 80));
 
-		playerUI->getHPSprites()[0]->setPosition(cocos2d::Vec2((60 - 40)+(80*(playerNumber - 1)) + (UIDISPOSITION*(playerNumber - 1)), 116 - 70));
-		playerUI->getHPSprites()[1]->setPosition(cocos2d::Vec2((60 - 40)+(80*(playerNumber - 1)) + (UIDISPOSITION*(playerNumber - 1)), playerUI->getHPSprites()[0]->getPosition().y + 20));
-		playerUI->getHPSprites()[2]->setPosition(cocos2d::Vec2((60 - 40)+(80*(playerNumber - 1)) + (UIDISPOSITION*(playerNumber - 1)), playerUI->getHPSprites()[1]->getPosition().y + 20));
+		playerUI->getHPSprites()[0]->setPosition(cocos2d::Vec2((60 - 40) + (80 * (playerNumber - 1)) + (UIDISPOSITION*(playerNumber - 1)), 116 - 70));
+		playerUI->getHPSprites()[1]->setPosition(cocos2d::Vec2((60 - 40) + (80 * (playerNumber - 1)) + (UIDISPOSITION*(playerNumber - 1)), playerUI->getHPSprites()[0]->getPosition().y + 20));
+		playerUI->getHPSprites()[2]->setPosition(cocos2d::Vec2((60 - 40) + (80 * (playerNumber - 1)) + (UIDISPOSITION*(playerNumber - 1)), playerUI->getHPSprites()[1]->getPosition().y + 20));
 		currentGun = CURRENTGUN;
 
 
@@ -80,16 +80,16 @@ namespace Sedna {
 			}
 		}
 		if (takeInputs) {
-			if (this->getBox()->getVelocity() != cocos2d::Vec2(0,0)) {
+			if (this->getBox()->getVelocity() != cocos2d::Vec2(0, 0)) {
 				if (animationTimer > 0.3f && !isAimingLeft && !isAimingRight) {
 					this->getSprite()->setTexture(Sedna::Animations::w2[playerNumber - 1]);
 					hasAnimation = false;
 				}
-				 if (animationTimer > 0.3f && isAimingRight) {
+				if (animationTimer > 0.3f && isAimingRight) {
 					this->getSprite()->setTexture(Sedna::Animations::w2l[playerNumber - 1]);
 					hasAnimation = false;
 				}
-				 if (animationTimer > 0.3f && isAimingLeft) {
+				if (animationTimer > 0.3f && isAimingLeft) {
 					this->getSprite()->setTexture(Sedna::Animations::w2r[playerNumber - 1]);
 					hasAnimation = false;
 				}
@@ -103,40 +103,42 @@ namespace Sedna {
 					hasAnimation = true;
 					this->getSprite()->setTexture(Sedna::Animations::w1[playerNumber - 1]);
 				}
-				 if (!animationTimer && isAimingRight) {
+				if (!animationTimer && isAimingRight) {
 					hasAnimation = true;
 					this->getSprite()->setTexture(Sedna::Animations::w1l[playerNumber - 1]);
 				}
-				 if (!animationTimer && isAimingLeft) {
+				if (!animationTimer && isAimingLeft) {
 					hasAnimation = true;
 					this->getSprite()->setTexture(Sedna::Animations::w1r[playerNumber - 1]);
 				}
 				animationTimer += dt;
 			}
 
-			
+
 
 
 			pController->updateSticks(pSticks);
-			if (pSticks[0].x > 0.3f){
-				this->getBox()->addForce(3, 0);
-				
-			}
-
-			else if (pSticks[0].x < -0.3f)
-				this->getBox()->addForce(-3, 0);
-
-			if (pSticks[0].y > 0.3f) {
-				this->getBox()->addForce(0, 3);
-				
-					
-			}
-
-			else if (pSticks[0].y < -0.3f)
-				this->getBox()->addForce(0, -3);
+			///if (pSticks[0].x > 0.3f)
+			///	this->getBox()->addForce(5, 0);
+			///	
+			///else if (pSticks[0].x < -0.3f)
+			///	this->getBox()->addForce(-5, 0);
+			///
+			///if (pSticks[0].y > 0.3f) 
+			///	this->getBox()->addForce(0, 5);
+			///
+			///else if (pSticks[0].y < -0.3f)
+			///	this->getBox()->addForce(0, -5);
 
 			if (pSticks[0].x > -0.3f && pSticks[0].x < 0.3f && pSticks[0].y > -0.3f && pSticks[0].y < 0.3f)
-				this->getBox()->addForce(this->getBox()->getVelocity().x *-2.0f, this->getBox()->getVelocity().y*-2.0f);
+				this->getBox()->addForce(this->getBox()->getVelocity().x *-3.0f, this->getBox()->getVelocity().y*-3.0f);
+			else {
+				auto direction = cocos2d::Vec2(pSticks[0].x, pSticks[0].y);
+				auto force = direction / (direction.x*direction.x + direction.y*direction.y);
+
+				this->getBox()->addForce(force.x * 5, force.y * 5);
+
+			}
 
 			if (pController->isButtonPressed(Sedna::START))
 				exit(0);
@@ -186,7 +188,7 @@ namespace Sedna {
 						auto test = cocos2d::Vec2(pSticks[1].x, pSticks[1].y);
 						auto test2 = test / sqrt(test.x*test.x + test.y*test.y);
 						if (currentGun->getName() == "olReliable" || currentGun->getName() == "theBiggestIron") {
-							
+
 
 							pProjectiles.push_back(new Sedna::Projectile(-1000, 0, Sedna::Ally));
 							s->addChild(pProjectiles.back()->getBox()->getDrawNode());
@@ -227,7 +229,7 @@ namespace Sedna {
 							}
 						}
 #pragma endregion
-						
+
 						else if (currentGun->getName() == "bloodyMary") {
 							cocos2d::experimental::AudioEngine::play2d("shotgun.mp3", false, 0.5f);
 
@@ -236,7 +238,7 @@ namespace Sedna {
 								pProjectiles[i]->getSprite()->removeFromParent();
 								pProjectiles.erase(pProjectiles.begin() + i);
 							}
-							
+
 
 							for (int i = 0; i < 5; i++) {
 								pProjectiles.push_back(new Projectile(-1000, 0, Sedna::Ally));
@@ -244,7 +246,7 @@ namespace Sedna {
 								s->addChild(pProjectiles.back()->getSprite());
 							}
 
-							
+
 
 							pProjectiles[0]->getBox()->setLocation(this->getBox()->getLocation());
 							pProjectiles[1]->getBox()->setLocation(this->getBox()->getLocation());
@@ -412,7 +414,7 @@ namespace Sedna {
 		}
 	}
 
-	void Player::checkTableStuff(std::vector<Table*>& tableList,Sedna::Player* p)
+	void Player::checkTableStuff(std::vector<Table*>& tableList, Sedna::Player* p)
 	{
 		for (int i = 0; i < tableList.size(); i++) {
 			if (pController->isButtonPressed(Sedna::A) && this->getBox()->checkCollision(*tableList[i]->getBox())) {
@@ -441,7 +443,7 @@ namespace Sedna {
 					{
 						p->setHP(3);
 						p->sprite->setRotation(0);
-						p->takeInputs=true;
+						p->takeInputs = true;
 						p->getBox()->setLocation(this->getBox()->getLocation());
 						for (int k = 0; k < this->getUI()->getHPSprites().size(); k++)
 						{
@@ -485,7 +487,7 @@ namespace Sedna {
 				}
 			}
 		}
-			
+
 		if (invincTimer < 0)
 		{
 
@@ -497,7 +499,7 @@ namespace Sedna {
 			}
 			invincTimer = 0;
 		}
-			
+
 	}
 
 	bool Player::getInvinc() const
@@ -623,7 +625,7 @@ namespace Sedna {
 	{
 		this->currentGun = p->getCurrentGun();
 		for (int i = 0; i < labelList.size(); i++) {
-			if(this->currentGun->getName()!="olReliable")
+			if (this->currentGun->getName() != "olReliable")
 
 				labelList[0]->setString(std::to_string(currentGun->getAmmo()));
 			else

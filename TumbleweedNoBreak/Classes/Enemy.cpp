@@ -331,6 +331,9 @@ void Sedna::RifleOutlaw::shoot(float dt, cocos2d::Scene * s)
 	}
 	if (!eShootTimer) {
 		eHasShot = true;
+		auto direction = track / sqrt(track.x*track.x + track.y*track.y);
+		if (direction.y > 0)
+			return;
 		for (int i = 0; i < 5; i++) {
 			eProjectiles.push_back(new Projectile(-1000, 10, Enemy));
 			s->addChild(eProjectiles.back()->getBox()->getDrawNode());
@@ -340,7 +343,6 @@ void Sedna::RifleOutlaw::shoot(float dt, cocos2d::Scene * s)
 
 
 		eProjectiles.back()->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-16, 0));
-		auto direction = track / sqrt(track.x*track.x + track.y*track.y);
 		eProjectiles.back()->getBox()->setForce(direction * 8);
 		cocos2d::experimental::AudioEngine::play2d("outlawRifle.mp3");
 

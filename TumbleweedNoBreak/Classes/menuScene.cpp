@@ -67,6 +67,13 @@ namespace Sedna {
 		return labelList;
 	}
 
+	cocos2d::Label * SednaMenu::operator[](const unsigned int index)
+	{
+		if (index > labelList.size())
+			exit(std::stoi("We're out of index chief"));
+		return labelList[index];
+	}
+
 }
 
 
@@ -129,6 +136,8 @@ bool MenuScene::init() {
 
 	menuE = new Sedna::SednaMenu(3, label, label2, label3);
 
+
+	
 	initMenu();
 
 	menuE->select(2);

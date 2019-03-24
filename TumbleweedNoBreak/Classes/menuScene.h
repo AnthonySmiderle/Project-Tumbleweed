@@ -17,6 +17,10 @@ namespace Sedna {
 		unsigned int getIndexOfSelected() const;
 		//get the currently selected label out of the list
 		std::vector<cocos2d::Label*> getLabelList() const;
+
+
+		cocos2d::Label* operator[](const unsigned int);
+
 	private:
 		unsigned lastIndex = 0;
 		std::vector<cocos2d::Label*> labelList;
