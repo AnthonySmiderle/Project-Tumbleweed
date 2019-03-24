@@ -4,6 +4,7 @@
 
 void Sedna::SpawnManager::update(float dt, int DDOS)
 {
+	srand(time(0));
 	totalTime += dt;
 	DDOS += 25;
 	for (unsigned int i = 0; i < tables.update(dt,tableList.size()); i++)

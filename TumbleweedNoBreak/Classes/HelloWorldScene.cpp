@@ -111,7 +111,7 @@ bool HelloWorld::init()
 	tutFunc3 = false;
 	tutFunc4 = false;
 
-	tutBool = true;
+	tutBool = false;///
 	tutCutscene = true;
 	initSprites();
 
