@@ -142,7 +142,6 @@ void HelloWorld::initSprites()
 	goldman = new Sedna::Goldman(250, 250);
 	this->addChild(goldman->getBox()->getDrawNode());
 	this->addChild(goldman->getSprite());
-	goldmans.push_back(goldman);
 
 
 	bloodyMaryP_up = new Sedna::Powerup("gun2.png", Sedna::Guns::bloodyMary, -1000, 0);

@@ -95,7 +95,6 @@ public:
 	cocos2d::Label* btLabel;
 	Sedna::SquarePrimitive btMeter;
 	Sedna::Goldman* goldman;
-	std::vector<Sedna::Outlaw*>goldmans;
 
 	bool decrimenting = false;
 	float bulletTimeMax = 0.0f;
