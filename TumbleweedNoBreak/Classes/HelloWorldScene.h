@@ -50,11 +50,13 @@ public:
 	void gameTutorial(float dt);
 	void pause(float dt);
 	void play(float dt);
-	void boss(float dt);
 
-	void useBulletTime(float dt);
 	///<used to reduce duplicate code>
+	void useBulletTime(float dt);
 	void performBounce(Sedna::Player* p);
+	void notDead(float dt);
+	void checkUnderScreen(Sedna::Player* p);
+	
 	void initSprites();
 	void checkInput(float dt);
 	void getCollisions();
@@ -92,7 +94,6 @@ public:
 
 	cocos2d::Label* btLabel;
 	Sedna::SquarePrimitive btMeter;
-	bool bossTime = false;///
 	Sedna::Goldman* goldman;
 	std::vector<Sedna::Outlaw*>goldmans;
 

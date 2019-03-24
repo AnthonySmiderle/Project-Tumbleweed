@@ -473,7 +473,7 @@ namespace Sedna {
 		}
 	}
 
-	void Player::update(float dt)
+	void Player::updateInvince(float dt)
 	{
 		if (invincTimer)
 		{
