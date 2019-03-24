@@ -105,18 +105,19 @@ bool HelloWorld::init()
 	p1Controller->getTriggers(p1Triggers);
 	p2Controller->updateSticks(p2Sticks);
 	p2Controller->getTriggers(p2Triggers);
-	initSprites();
-
-	director = cocos2d::Director::getInstance();
-	end = false;
 
 	tutFunc1 = false;
 	tutFunc2 = false;
 	tutFunc3 = false;
 	tutFunc4 = false;
 
-	tutBool = false;
+	tutBool = true;
 	tutCutscene = true;
+	initSprites();
+
+	director = cocos2d::Director::getInstance();
+	end = false;
+
 
 	this->scheduleUpdate();
 
@@ -125,10 +126,6 @@ bool HelloWorld::init()
 void HelloWorld::initSprites()
 {
 	cocos2d::experimental::AudioEngine::preload("bgm.mp3");
-	///<cocos2d::experimental::AudioEngine::preload("oRsound.mp3");>
-
-
-
 
 	DDOS = new Sedna::GameObject("a.png", cocos2d::Vec2(100, 300), 1, 1, 1);
 	this->addChild(DDOS->getBox()->getDrawNode());
@@ -141,7 +138,6 @@ void HelloWorld::initSprites()
 	this->addChild(btLabel, 101);
 	btMeter = Sedna::SquarePrimitive(cocos2d::Vec2(190, DDOS->getSprite()->getPosition().y - 20), cocos2d::Vec2(280, DDOS->getSprite()->getPosition().y - 10));
 	this->addChild(btMeter.getDrawNode(), 100);
-	/////////////////////////////////////
 
 
 	goldman = new Sedna::Goldman(250, 250);
@@ -189,8 +185,6 @@ void HelloWorld::initSprites()
 	bg->setAnchorPoint(cocos2d::Vec2(0, 0));
 	bg->setPosition(0, 0);
 
-
-
 	bg2 = cocos2d::Sprite::create("bgPlain.png");
 	this->addChild(bg2, -1000);
 	bg2->setScale(0.85f, 0.92f);
@@ -236,9 +230,8 @@ void HelloWorld::initSprites()
 
 
 
-	for (unsigned int i = 0; i < pauseMenu->getLabelList().size(); i++) {
+	for (unsigned int i = 0; i < pauseMenu->getLabelList().size(); i++)
 		pauseMenu->getLabelList()[i]->setVisible(false);
-	}
 	pauseMenu->select(1);
 
 
@@ -265,9 +258,11 @@ void HelloWorld::initSprites()
 	healSign = new Sedna::Sign("Healing Drink!", this, cocos2d::Vec2(-1000, 0));
 
 
-	tutorialLabel = cocos2d::Label::create("Tutorial", "fonts/Montague.ttf", 8);
-	tutorialLabel->setPosition(cocos2d::Vec2(380, 280));
-	this->addChild(tutorialLabel, 1000);
+	if (tutBool) {
+		tutorialLabel = cocos2d::Label::create("Tutorial", "fonts/Montague.ttf", 8);
+		tutorialLabel->setPosition(cocos2d::Vec2(380, 280));
+		this->addChild(tutorialLabel, 1000);
+	}
 }
 
 void HelloWorld::update(float dt)
@@ -420,7 +415,7 @@ void HelloWorld::gameTutorial(float dt)
 		}
 		if (!tutCutscene) {
 
-			tutorialLabel->setString("Tutorial\nPress X to play the game!");
+			tutorialLabel->setString("Tutorial\nTry everything out then\nPress X to play the game!");
 			if (!tutFunc3) {
 				dummy->getBox()->getDrawNode()->removeFromParent();
 				dummy->getSprite()->removeFromParent();
@@ -517,35 +512,35 @@ void HelloWorld::play(float dt)
 			playerTwo->update(dt);
 			bloodyMaryP_up->updateGameObject();
 			theBiggestIronP_up->updateGameObject();
-			
-			
-				CAMERASPEED += 0.005 * dt;
-				sManager.update(dt, DDOS->getSprite()->getPosition().y);
 
-				if (moveScreen)
-				{
-					for (unsigned int i = 0; i < pauseMenu->getLabelList().size(); i++) {
-						pauseMenu->getLabelList()[i]->setPosition(cocos2d::Vec2(pauseMenu->getLabelList()[i]->getPosition().x,
-							pauseMenu->getLabelList()[i]->getPosition().y + CAMERASPEED));
-					}
-					pausedLabel->setPosition(pausedLabel->getPosition() + cocos2d::Vec2(0, CAMERASPEED));
-					startLabel->setPosition(startLabel->getPosition() + cocos2d::Vec2(0, CAMERASPEED));
 
-					playerOne->getUI()->updatePosition(cocos2d::Vec2(0, CAMERASPEED));
-					playerTwo->getUI()->updatePosition(cocos2d::Vec2(0, CAMERASPEED));
+			CAMERASPEED += 0.005 * dt;
+			sManager.update(dt, DDOS->getSprite()->getPosition().y);
 
-					this->getDefaultCamera()->setPosition(cocos2d::Vec2(this->getDefaultCamera()->getPosition().x,
-						this->getDefaultCamera()->getPosition().y + CAMERASPEED));
-					DDOS->getSprite()->setPosition(cocos2d::Vec2(100, (DDOS->getSprite()->getPosition().y + CAMERASPEED)));
-
-					if (DDOS->getSprite()->getPosition().y - bg2->getPosition().y >= 588.8f) {
-						bg2->setPosition(cocos2d::Vec2(bg2->getPosition().x, bg2->getPosition().y + 588.8f));
-					}
-					if (DDOS->getSprite()->getPosition().y - bg3->getPosition().y >= 588.8f) {
-						bg3->setPosition(cocos2d::Vec2(bg3->getPosition().x, bg3->getPosition().y + 588.8f));
-					}
+			if (moveScreen)
+			{
+				for (unsigned int i = 0; i < pauseMenu->getLabelList().size(); i++) {
+					pauseMenu->getLabelList()[i]->setPosition(cocos2d::Vec2(pauseMenu->getLabelList()[i]->getPosition().x,
+						pauseMenu->getLabelList()[i]->getPosition().y + CAMERASPEED));
 				}
-			
+				pausedLabel->setPosition(pausedLabel->getPosition() + cocos2d::Vec2(0, CAMERASPEED));
+				startLabel->setPosition(startLabel->getPosition() + cocos2d::Vec2(0, CAMERASPEED));
+
+				playerOne->getUI()->updatePosition(cocos2d::Vec2(0, CAMERASPEED));
+				playerTwo->getUI()->updatePosition(cocos2d::Vec2(0, CAMERASPEED));
+
+				this->getDefaultCamera()->setPosition(cocos2d::Vec2(this->getDefaultCamera()->getPosition().x,
+					this->getDefaultCamera()->getPosition().y + CAMERASPEED));
+				DDOS->getSprite()->setPosition(cocos2d::Vec2(100, (DDOS->getSprite()->getPosition().y + CAMERASPEED)));
+
+				if (DDOS->getSprite()->getPosition().y - bg2->getPosition().y >= 588.8f) {
+					bg2->setPosition(cocos2d::Vec2(bg2->getPosition().x, bg2->getPosition().y + 588.8f));
+				}
+				if (DDOS->getSprite()->getPosition().y - bg3->getPosition().y >= 588.8f) {
+					bg3->setPosition(cocos2d::Vec2(bg3->getPosition().x, bg3->getPosition().y + 588.8f));
+				}
+			}
+
 
 		}
 
@@ -907,15 +902,18 @@ void HelloWorld::checkPosAll()//this function will remove and objects that go to
 			i--;
 		}
 	}
-	if (playerOne->getBox()->getLocation().y <= DDOS->getSprite()->getPosition().y - 400)//TODO change health sprites as well
-	{
-		playerOne->setHP(0);
-		playerOne->die();
-	}
-	if (playerTwo->getBox()->getLocation().y <= DDOS->getSprite()->getPosition().y - 400)
-	{
-		playerTwo->setHP(0);
-		playerTwo->die();
+	if (!tutBool) {
+
+		if (playerOne->getBox()->getLocation().y <= DDOS->getSprite()->getPosition().y - 400)//TODO change health sprites as well
+		{
+			playerOne->setHP(0);
+			playerOne->die();
+		}
+		if (playerTwo->getBox()->getLocation().y <= DDOS->getSprite()->getPosition().y - 400)
+		{
+			playerTwo->setHP(0);
+			playerTwo->die();
+		}
 	}
 }
 

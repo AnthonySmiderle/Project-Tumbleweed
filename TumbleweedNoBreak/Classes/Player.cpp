@@ -351,7 +351,7 @@ namespace Sedna {
 					score += outlawList[j]->points;
 					srand(time(0));
 					if (rand() % 10 + 1 <= 2) {
-						if (rand() % 2 == 0) {
+						if (1 + rand() % 6 <= 2) {
 							power1->getBox()->setLocation(outlawList[j]->getBox()->getLocation());
 							power1->updateGameObject();
 						}

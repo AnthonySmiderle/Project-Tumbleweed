@@ -17,6 +17,8 @@ namespace Sedna {
 		s->addChild(sprite);
 		s->addChild(hitBox->getDrawNode());
 
+		hitBox->getDrawNode()->setVisible(false);
+
 	}
 	Sign::~Sign()
 	{
