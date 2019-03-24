@@ -3,7 +3,7 @@ namespace Sedna
 {
 	namespace optionStuff
 	{
-		static bool tutorial = false;
+		static bool tutorial = true;
 		static bool music = true;
 	}
 }

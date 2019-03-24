@@ -57,5 +57,7 @@ private:
 	Sedna::SednaMenu* menuE;
 	cocos2d::Label* label;
 	cocos2d::Label* label2;
+	cocos2d::Label* label3;
 
+	float menuWait = 0.0f;
 };

@@ -111,7 +111,6 @@ bool HelloWorld::init()
 	tutFunc3 = false;
 	tutFunc4 = false;
 
-	tutBool = true;
 	tutCutscene = true;
 	initSprites();
 
@@ -257,12 +256,15 @@ void HelloWorld::initSprites()
 	reviveSign = new Sedna::Sign("Revive your friend Drink!", this, cocos2d::Vec2(-1000, 0));
 	healSign = new Sedna::Sign("Healing Drink!", this, cocos2d::Vec2(-1000, 0));
 
-
-	if (tutBool) {
-		tutorialLabel = cocos2d::Label::create("Tutorial", "fonts/Montague.ttf", 8);
-		tutorialLabel->setPosition(cocos2d::Vec2(380, 280));
-		this->addChild(tutorialLabel, 1000);
+	if (Sedna::optionStuff::tutorial)
+	{
+		if (tutBool) {
+			tutorialLabel = cocos2d::Label::create("Tutorial", "fonts/Montague.ttf", 8);
+			tutorialLabel->setPosition(cocos2d::Vec2(380, 280));
+			this->addChild(tutorialLabel, 1000);
+		}
 	}
+	
 }
 
 void HelloWorld::update(float dt)
@@ -282,7 +284,7 @@ void HelloWorld::update(float dt)
 			playerTwo->setCurrentGun(Sedna::Guns::olReliable2);
 
 
-		if (tutBool)
+		if (Sedna::optionStuff::tutorial)
 			this->gameTutorial(dt);
 		else {
 			this->pause(dt);
@@ -476,7 +478,7 @@ void HelloWorld::gameTutorial(float dt)
 		checkManyLists(dt);
 
 		if (tutFunc4) {
-			tutBool = false;
+			Sedna::optionStuff::tutorial = false;
 			tutorialLabel->removeFromParent();
 		}
 	}
@@ -719,7 +721,7 @@ void HelloWorld::checkInput(float dt)
 
 void HelloWorld::getCollisions()
 {
-	if (tutBool) {
+	if (Sedna::optionStuff::tutorial) {
 		playerOne->checkTableStuff(tutTables, playerTwo);
 		playerTwo->checkTableStuff(tutTables, playerOne);
 	}
@@ -731,7 +733,7 @@ void HelloWorld::getCollisions()
 
 void HelloWorld::checkManyLists(float dt)
 {
-	if (tutBool) {
+	if (Sedna::optionStuff::tutorial) {
 
 		for (unsigned int i = 0; i < tutOutlaws.size(); i++) {
 
@@ -902,7 +904,7 @@ void HelloWorld::checkPosAll()//this function will remove and objects that go to
 			i--;
 		}
 	}
-	if (!tutBool) {
+	if (!Sedna::optionStuff::tutorial) {
 
 		if (playerOne->getBox()->getLocation().y <= DDOS->getSprite()->getPosition().y - 400)//TODO change health sprites as well
 		{
@@ -955,7 +957,7 @@ void HelloWorld::bounds()//this function stops the player from leaving the scree
 
 
 
-	if (tutBool) {
+	if (Sedna::optionStuff::tutorial) {
 		for (unsigned int i = 0; i < tutTables.size(); i++)
 		{
 			if ((int)tutTables[i]->getBox()->getLocation().x >= barRightMax)

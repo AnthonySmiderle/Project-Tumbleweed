@@ -121,9 +121,10 @@ bool MenuScene::init() {
 	manager.update();
 
 	label = Label::create("Exit", "fonts/Montague.ttf", 25);
-	label2 = Label::create("Start Game", "fonts/Montague.ttf", 25);
+	label2 = Label::create("Options", "fonts/Montague.ttf", 25);
+	label3 = Label::create("Start Game", "fonts/Montague.ttf", 25);
 
-	menuE = new Sedna::SednaMenu(2, label, label2);
+	menuE = new Sedna::SednaMenu(3, label, label2, label3);
 
 	initMenu();
 
@@ -144,20 +145,35 @@ void MenuScene::update(float dt)
 
 		manager.update();
 		p1Controller->updateSticks(p1Sticks);
+		if (!menuWait)
+		{
+			if (p1Sticks[0].y < -0.3f && menuE->getIndexOfSelected() != 0) 
+			{
 
-		if (p1Sticks[0].y < -0.3f && menuE->getIndexOfSelected() != 0) {
-
-			menuE->select(menuE->getIndexOfSelected() - 1);
-		}
-		if (p1Sticks[0].y > 0.3f) {
-			if (menuE->getIndexOfSelected() + 1 > menuE->getLabelList().size() - 1) {
+				menuE->select(menuE->getIndexOfSelected() - 1);
+				menuWait += dt;
 			}
-			else
-				menuE->select(menuE->getIndexOfSelected() + 1);
+			if (p1Sticks[0].y > 0.3f)
+			{
+				if (menuE->getIndexOfSelected() + 1 > menuE->getLabelList().size() - 1) {
+				}
+				else
+				{
+					menuE->select(menuE->getIndexOfSelected() + 1);
+					menuWait += dt;
+				}
+					
 
+			}
+		}
+		else
+		{
+			menuWait += dt;
+			if (menuWait >= 0.5)
+				menuWait = 0.0f;
 		}
 
-		if (menuE->getIndexOfSelected() == 1 && p1Controller->isButtonPressed(Sedna::A)) {
+		if (menuE->getIndexOfSelected() == 2 && p1Controller->isButtonPressed(Sedna::A)) {
 			auto game = HelloWorld::createScene();
 			cocos2d::experimental::AudioEngine::play2d("cha ching.mp3", false);
 
@@ -165,6 +181,9 @@ void MenuScene::update(float dt)
 			end = true;
 			//this->onExit();
 			director->replaceScene(TransitionFade::create(1.0f, game));
+		}
+		if (menuE->getIndexOfSelected() == 1 && p1Controller->isButtonPressed(Sedna::A)) {
+
 		}
 		if (menuE->getIndexOfSelected() == 0 && p1Controller->isButtonPressed(Sedna::A)) {
 			cocos2d::experimental::AudioEngine::play2d("cha ching.mp3", false);
