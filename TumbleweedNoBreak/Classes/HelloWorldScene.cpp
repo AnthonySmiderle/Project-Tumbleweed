@@ -738,7 +738,6 @@ void HelloWorld::checkManyLists(float dt)
 		recursiveFunctionOutlaw();
 		recursiveFunctionTable();
 
-
 		playerOne->checkBCollision(sManager.outlawList, bloodyMaryP_up, theBiggestIronP_up);
 		playerTwo->checkBCollision(sManager.outlawList, bloodyMaryP_up, theBiggestIronP_up);
 		playerOne->checkList();
@@ -858,7 +857,6 @@ void HelloWorld::checkPosAll()//this function will remove and objects that go to
 		checkUnderScreen(playerTwo);
 	}
 }
-
 
 void HelloWorld::menuCloseCallback(Ref* pSender)
 {
