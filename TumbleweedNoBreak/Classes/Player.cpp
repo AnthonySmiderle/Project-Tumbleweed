@@ -160,6 +160,7 @@ namespace Sedna {
 			pController->getTriggers(pTriggers);
 			if (pTriggers.RT > 0) {
 
+
 				if (currentGun->getGunTimer() > currentGun->getRateOfFire())
 				{
 					currentGun->setGunTimer(0.0f);
@@ -174,6 +175,9 @@ namespace Sedna {
 					}
 					//comment this else statement out for omidirectional
 					else {
+						pController->setVibration(0.0f, 0.0f);
+						pController->setVibration(0.25f, 0.25f);
+
 						cocos2d::experimental::AudioEngine::play2d("revolver1.mp3", false, 0.5f);
 						//else if (this->currentGun->getName() == "theBiggestIron") {
 						//	static auto last = cocos2d::experimental::AudioEngine::play2d("gattling.mp3", false, 0.5f);

@@ -181,7 +181,6 @@ void HelloWorld::initSprites()
 		this->addChild(playerTwo->getUI()->getHPSprites()[i]);
 
 
-
 	bg = cocos2d::Sprite::create("bg1.png");
 	this->addChild(bg, -1000);
 	bg->setScale(0.85f, 0.92f);
