@@ -142,7 +142,7 @@ bool MenuScene::init() {
 	menuE = new Sedna::SednaMenu(3, label, label2, label3);
 
 	oLabel = Label::create(oLabelStrings[Sedna::optionStuff::music], "fonts/Montague.ttf", 25);
-	oLabel2 = Label::create(oLabel2Strings[Sedna::optionStuff::tutorial], "fonts/Montague.ttf", 25);
+	oLabel2 = Label::create(oLabel2Strings[((Tutorial*)this)->tutorial], "fonts/Montague.ttf", 25);
 	menuO = new Sedna::SednaMenu(2,oLabel,oLabel2);
 
 	
@@ -252,8 +252,8 @@ void MenuScene::update(float dt)
 			}
 			else if (menuO->getIndexOfSelected() == 1 && p1Controller->isButtonPressed(Sedna::A) && !selectWait)
 			{
-				Sedna::optionStuff::tutorial ^= 1;
-				menuO->getLabelList()[1]->setString(oLabel2Strings[Sedna::optionStuff::tutorial]);
+				((Tutorial*)this)->tutorial ^= 1;
+				menuO->getLabelList()[1]->setString(oLabel2Strings[((Tutorial*)this)->tutorial]);
 				selectWait += dt;
 			}
 			else

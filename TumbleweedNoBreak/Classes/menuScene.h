@@ -1,6 +1,7 @@
 #pragma once
 #include "cocos2d.h"
 #include "XinputManager.h"
+#include "Tutorial.h"
 namespace Sedna {
 
 	
@@ -29,7 +30,7 @@ namespace Sedna {
 
 
 }
-class MenuScene : public cocos2d::Scene {
+class MenuScene : public cocos2d::Scene,public Tutorial {
 public:
 	static cocos2d::Scene* createScene();
 

@@ -33,13 +33,14 @@
 #include "Potion.h"
 #include "Projectile.h"
 #include "Enemy.h"
+#include "Tutorial.h"
 #include "SpawnManager.h"
 #include "Powerup.h"
 #include "Sign.h"
 namespace Sedna {
 	class SednaMenu;
 }
-class HelloWorld : public cocos2d::Scene
+class HelloWorld : public cocos2d::Scene,public Tutorial
 {
 public:
 	static cocos2d::Scene* createScene();

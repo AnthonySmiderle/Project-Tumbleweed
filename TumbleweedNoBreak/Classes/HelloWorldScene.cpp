@@ -254,7 +254,7 @@ void HelloWorld::initSprites()
 	reviveSign = new Sedna::Sign("Revive your friend Drink!", this, cocos2d::Vec2(-1000, 0));
 	healSign = new Sedna::Sign("Healing Drink!", this, cocos2d::Vec2(-1000, 0));
 
-	if (Sedna::optionStuff::tutorial)
+	if (((Tutorial*)this)->tutorial)
 	{
 		if (tutBool) {
 			tutorialLabel = cocos2d::Label::create("Tutorial", "fonts/Montague.ttf", 8);
@@ -282,7 +282,7 @@ void HelloWorld::update(float dt)
 			playerTwo->setCurrentGun(Sedna::Guns::olReliable2);
 
 
-		if (Sedna::optionStuff::tutorial)
+		if (((Tutorial*)this)->tutorial)
 			this->gameTutorial(dt);
 		else {
 			this->pause(dt);
@@ -460,7 +460,7 @@ void HelloWorld::gameTutorial(float dt)
 		checkManyLists(dt);
 
 		if (tutFunc4) {
-			Sedna::optionStuff::tutorial = false;
+			((Tutorial*)this)->tutorial = false;
 			tutorialLabel->removeFromParent();
 		}
 	}
@@ -659,7 +659,7 @@ void HelloWorld::checkInput(float dt)
 
 void HelloWorld::getCollisions()
 {
-	if (Sedna::optionStuff::tutorial) {
+	if (((Tutorial*)this)->tutorial) {
 		playerOne->checkTableStuff(tutTables, playerTwo);
 		playerTwo->checkTableStuff(tutTables, playerOne);
 	}
@@ -671,7 +671,7 @@ void HelloWorld::getCollisions()
 
 void HelloWorld::checkManyLists(float dt)
 {
-	if (Sedna::optionStuff::tutorial) {
+	if (((Tutorial*)this)->tutorial) {
 
 		for (unsigned int i = 0; i < tutOutlaws.size(); i++) {
 
@@ -841,7 +841,7 @@ void HelloWorld::checkPosAll()//this function will remove and objects that go to
 			i--;
 		}
 	}
-	if (!Sedna::optionStuff::tutorial) {
+	if (!((Tutorial*)this)->tutorial) {
 
 		checkUnderScreen(playerOne);
 		checkUnderScreen(playerTwo);
@@ -929,7 +929,7 @@ void HelloWorld::bounds()//this function stops the player from leaving the scree
 
 
 
-	if (Sedna::optionStuff::tutorial) {
+	if (((Tutorial*)this)->tutorial) {
 		for (unsigned int i = 0; i < tutTables.size(); i++)
 		{
 			if ((int)tutTables[i]->getBox()->getLocation().x >= barRightMax)
