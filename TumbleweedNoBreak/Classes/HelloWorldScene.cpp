@@ -139,7 +139,7 @@ void HelloWorld::initSprites()
 	btMeter = Sedna::SquarePrimitive(cocos2d::Vec2(190, DDOS->getSprite()->getPosition().y - 20), cocos2d::Vec2(280, DDOS->getSprite()->getPosition().y - 10));
 	this->addChild(btMeter.getDrawNode(), 100);
 
-	highScoreLabel = cocos2d::Label::create("Highscore", "fonts/Montague.ttf", 8);
+	highScoreLabel = cocos2d::Label::create("Highscore", "fonts/Montague.ttf", 15);
 	highScoreLabel->setPosition(cocos2d::Vec2(100, DDOS->getSprite()->getPosition().y - 100));
 	highScoreLabel->setVisible(false);
 	this->addChild(highScoreLabel);
@@ -981,14 +981,12 @@ void HelloWorld::togglePause() {//this actually has many applications
 
 void HelloWorld::writeScore()
 {
+	
 	highFileIn = std::ifstream("Saloon_Scores.txt");
 	if (highFileIn.is_open())
 	{
 		std::string HighestScore;
-		while (std::getline(highFileIn, HighestScore))
-		{
-			std::cout << HighestScore;
-		}
+		while (std::getline(highFileIn, HighestScore)){}
 		highFileIn.close();
 
 		if (HighestScore == "")
@@ -998,28 +996,41 @@ void HelloWorld::writeScore()
 		{
 			intHighScore = playerOne->getScore();
 			HighestScore = std::to_string(playerOne->getScore());
+			HighestScore = "Player One just set the Highscore with " + HighestScore + " Points!";
 		}
 		else if (playerTwo->getScore() > intHighScore)
 		{
 			intHighScore = playerTwo->getScore();
 			HighestScore = std::to_string(playerTwo->getScore());
+			HighestScore = "Player Two just set the Highscore with " + HighestScore + " Points!";
+		}
+		else
+		{
+			intHighScore = std::stoi(HighestScore);
+			HighestScore = "The Highscore is " + HighestScore;
 		}
 		highFileOut = std::ofstream("Saloon_Scores.txt");
 		if (highFileOut.is_open())
 		{
-			highFileOut << HighestScore;
+			highFileOut << std::to_string(intHighScore);
+
 		}
 		highFileOut.close();
-		HighestScore = "The Highscore is " + HighestScore;
 		highScoreLabel->setString(HighestScore);
 			std::cout << HighestScore;
-		highScoreLabel->setPosition(cocos2d::Vec2(200, DDOS->getSprite()->getPosition().y - 200));
+		highScoreLabel->setPosition(cocos2d::Vec2(230, DDOS->getSprite()->getPosition().y - 200));
 		highScoreLabel->setVisible(true);
 
 	}
 	else
 	{
-
+		highFileOut = std::ofstream("Saloon_Scores.txt");
+		if (highFileOut.is_open())
+		{
+			highFileOut.close();
+		}
+		highFileOut = std::ofstream();
+		writeScore();
 	}
 	
 	hasWritten = true;

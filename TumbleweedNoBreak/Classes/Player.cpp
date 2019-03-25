@@ -349,7 +349,8 @@ namespace Sedna {
 				else
 					check = false;
 				if (outlawList[j]->getHP() <= 0) {
-					score += outlawList[j]->points;
+					if(this->takeInputs)
+						score += outlawList[j]->points;
 					srand(time(0));
 					if (rand() % 10 + 1 <= 2) {
 						if (1 + rand() % 6 <= 2) {
