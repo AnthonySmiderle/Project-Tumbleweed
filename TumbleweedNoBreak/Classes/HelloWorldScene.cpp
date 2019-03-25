@@ -29,6 +29,7 @@
 #include "menuScene.h"
 #include "MusicList.h"
 #include "Options.h"
+#include <fstream>
 
 USING_NS_CC;
 
@@ -138,6 +139,10 @@ void HelloWorld::initSprites()
 	btMeter = Sedna::SquarePrimitive(cocos2d::Vec2(190, DDOS->getSprite()->getPosition().y - 20), cocos2d::Vec2(280, DDOS->getSprite()->getPosition().y - 10));
 	this->addChild(btMeter.getDrawNode(), 100);
 
+	highScoreLabel = cocos2d::Label::create("Highscore", "fonts/Montague.ttf", 8);
+	highScoreLabel->setPosition(cocos2d::Vec2(100, DDOS->getSprite()->getPosition().y - 100));
+	highScoreLabel->setVisible(false);
+	this->addChild(highScoreLabel);
 
 	goldman = new Sedna::Goldman(250, 250);
 	this->addChild(goldman->getBox()->getDrawNode());
@@ -462,6 +467,8 @@ void HelloWorld::gameTutorial(float dt)
 		if (tutFunc4) {
 			((Tutorial*)this)->tutorial = false;
 			tutorialLabel->removeFromParent();
+			playerOne->setScore(0);
+			playerTwo->setScore(0);
 		}
 	}
 
@@ -480,6 +487,10 @@ void HelloWorld::play(float dt)
 			startLabel->setVisible(true);
 			loseTimer += dt;
 			startLabel->setPosition(50, startLabel->getPosition().y);
+			if (!hasWritten)
+			{
+				writeScore();
+			}
 			if (loseTimer >= 4.0f)
 			{
 				auto mMenu = MenuScene::create();
@@ -968,4 +979,50 @@ void HelloWorld::bounds()//this function stops the player from leaving the scree
 void HelloWorld::togglePause() {//this actually has many applications
 	//dpes ot really
 	paused ^= 1;
+}
+
+void HelloWorld::writeScore()
+{
+	highFileIn = std::ifstream("Saloon_Scores.txt");
+	if (highFileIn.is_open())
+	{
+		std::string HighestScore;
+		while (std::getline(highFileIn, HighestScore))
+		{
+			std::cout << HighestScore;
+		}
+		highFileIn.close();
+
+		if (HighestScore == "")
+			HighestScore = "0";
+		int intHighScore = std::stoi(HighestScore);
+		if (playerOne->getScore()>intHighScore)
+		{
+			intHighScore = playerOne->getScore();
+			HighestScore = std::to_string(playerOne->getScore());
+		}
+		else if (playerTwo->getScore() > intHighScore)
+		{
+			intHighScore = playerTwo->getScore();
+			HighestScore = std::to_string(playerTwo->getScore());
+		}
+		highFileOut = std::ofstream("Saloon_Scores.txt");
+		if (highFileOut.is_open())
+		{
+			highFileOut << HighestScore;
+		}
+		highFileOut.close();
+		HighestScore = "The Highscore is " + HighestScore;
+		highScoreLabel->setString(HighestScore);
+			std::cout << HighestScore;
+		highScoreLabel->setPosition(cocos2d::Vec2(200, DDOS->getSprite()->getPosition().y - 200));
+		highScoreLabel->setVisible(true);
+
+	}
+	else
+	{
+
+	}
+	
+	hasWritten = true;
 }

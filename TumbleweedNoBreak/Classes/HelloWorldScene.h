@@ -37,6 +37,7 @@
 #include "SpawnManager.h"
 #include "Powerup.h"
 #include "Sign.h"
+#include <fstream>
 namespace Sedna {
 	class SednaMenu;
 }
@@ -158,19 +159,12 @@ public:
 
 	float loseTimer = 0.0f;
 
-	///<what dis for>bool tutorialEnd = false;
-	///<what dis for>
-	///<what dis for>bool tutorialKick = false;
-	///<what dis for>bool tutorialShoot = false;
-	///<what dis for>bool tutorialSlow = false;
-	///<what dis for>bool tutorialPotionH = false;
-	///<what dis for>bool tutorialPotionI = false;
-	///<what dis for>bool tutorialPotionR = false;
-	///<what dis for>
-	///<what dis for>bool tutorialOutlaw = false;
-	///<what dis for>bool tutorialRifle = false;
-	///<what dis for>bool tutorialShotgun = false;
-	///<what dis for>bool tutorialPete = false;
+	std::ifstream highFileIn;
+	std::ofstream highFileOut;
+	bool hasWritten = false;
+	void writeScore();
+	cocos2d::Label *highScoreLabel;
+
 	private:
 		
 };

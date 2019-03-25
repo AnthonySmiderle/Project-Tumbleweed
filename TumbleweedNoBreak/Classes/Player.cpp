@@ -517,6 +517,11 @@ namespace Sedna {
 		return !takeInputs;
 	}
 
+	void Player::setScore(const unsigned int new_Score)
+	{
+		score = new_Score;
+	}
+
 	SednaUI * Player::getUI() const
 	{
 		return playerUI;

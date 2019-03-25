@@ -63,7 +63,7 @@ namespace Sedna {
 		bool getInvinc()const ;
 		void wasHurt();
 		bool isDead();
-
+		void setScore(const unsigned int);
 		SednaUI* getUI() const;
 
 		void setGun(Gun* g);
