@@ -18,8 +18,7 @@ namespace Sedna {
 
 		auto localL1 = cocos2d::Label::create(CURRENTGUN->getName() == "olReliable" ? "" : std::to_string(CURRENTGUN->getAmmo()), "fonts/Montague.ttf", 15);
 		auto localL2 = cocos2d::Label::create(std::to_string(score), "fonts/Montague.ttf", 15);
-		playerUI = new SednaUI(CURRENTGUN, this, 2, localL1, localL2);
-
+		playerUI = new SednaUI(CURRENTGUN, this, 2, localL2, localL1);
 
 		sprite = cocos2d::Sprite::create(Sedna::Animations::playerImage[playerNumber - 1]);//CHANGE THIS WITH ANIMATION STUFF
 		sprite->setScale(spriteScale);
@@ -65,7 +64,7 @@ namespace Sedna {
 		currentGun = g;
 		if (g->getName() == "olReliable") {
 			playerUI->getUIGunSprite()->setTexture("gun1.png");
-			playerUI->getLabelList()[0]->setString(" ");
+			playerUI->getLabelList()[1]->setString(" ");
 		}
 
 	}
@@ -522,7 +521,6 @@ namespace Sedna {
 		return playerUI;
 	}
 
-
 	void Player::setGun(Gun * g)
 	{
 		currentGun = g;
@@ -626,11 +624,10 @@ namespace Sedna {
 		this->currentGun = p->getCurrentGun();
 		for (int i = 0; i < labelList.size(); i++) {
 			if (this->currentGun->getName() != "olReliable")
-
-				labelList[0]->setString(std::to_string(currentGun->getAmmo()));
+				labelList[1]->setString(std::to_string(currentGun->getAmmo()));
 			else
-				labelList[0]->setString(" ");
-			labelList[1]->setString(std::to_string(p->getScore()));
+				labelList[1]->setString(" ");
+			labelList[0]->setString(std::to_string(p->getScore()));
 		}
 	}
 
