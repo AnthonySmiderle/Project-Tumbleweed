@@ -76,4 +76,7 @@ private:
 
 	cocos2d::Sprite* bButton;
 	cocos2d::Label* bButtonLabel;
+
+	cocos2d::Sprite* aButton;
+	cocos2d::Label* aButtonLabel;
 };

@@ -126,9 +126,34 @@ bool MenuScene::init() {
 	oLabel2 = Label::create(oLabel2Strings[((Tutorial*)this)->tutorial], "fonts/Montague.ttf", 25);
 	menuO = new Sedna::SednaMenu(2,oLabel,oLabel2);
 
-	
+	bButton = Sprite::create("b.png");
+	bButton->setScale(0.6);
+	bButtonLabel = Label::create(": Back", "fonts/Montague.ttf", 12);
+	bButtonLabel->setAnchorPoint(Vec2(0, 0));
+	bButton->setAnchorPoint(Vec2(0, 0));
+	bButton->setZOrder(1000);
+	bButtonLabel->setZOrder(1000);
+	bButton->setPosition(10,50);
+	bButtonLabel->setPosition(30,50);
+	bButton->setVisible(false);
+	bButtonLabel->setVisible(false);
+	this->addChild(bButton);
+	this->addChild(bButtonLabel);
 
 
+	aButton = Sprite::create("a1.png");bButton->setScale(0.6);
+	aButton->setScale(0.6);
+	aButtonLabel = Label::create(": Select", "fonts/Montague.ttf", 12);
+	aButtonLabel->setAnchorPoint(Vec2(0, 0));
+	aButton->setAnchorPoint(Vec2(0, 0));
+	aButton->setZOrder(1000);
+	aButtonLabel->setZOrder(1000);
+	aButton->setPosition(10, 70);
+	aButtonLabel->setPosition(30, 70);
+	aButton->setVisible(true);
+	aButtonLabel->setVisible(true);
+	this->addChild(aButton);
+	this->addChild(aButtonLabel);
 
 	initMenu();
 
@@ -197,6 +222,8 @@ void MenuScene::update(float dt)
 					menuO->getLabelList()[i]->setVisible(true);
 				}
 				menuO->select(1);
+				bButton->setVisible(true);
+				bButtonLabel->setVisible(true);
 			}
 			if (menuE->getIndexOfSelected() == 0 && p1Controller->isButtonPressed(Sedna::A)) {
 				cocos2d::experimental::AudioEngine::play2d("cha ching.mp3", false);
@@ -256,6 +283,8 @@ void MenuScene::update(float dt)
 					menuO->getLabelList()[i]->setVisible(false);
 				}
 				menuE->select(1);
+				bButton->setVisible(false);
+				bButtonLabel->setVisible(false);
 
 			}
 		}
