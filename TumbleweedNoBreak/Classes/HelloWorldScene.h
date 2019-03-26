@@ -75,8 +75,9 @@ public:
 	// implement the "static create()" method manually
 	CREATE_FUNC(HelloWorld);
 
-	bool pizzaTime = false;
-	Sedna::Goldman* goldman;
+	bool pizzaTime = true;
+	std::vector<Sedna::Outlaw*> g;
+	Sedna::CirclePrimitive* dummyTracker;
 
 
 	cocos2d::Label* tutorialLabel;

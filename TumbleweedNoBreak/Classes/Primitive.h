@@ -34,6 +34,7 @@ namespace Sedna {
 		cocos2d::Vec2 getCentre();
 		void addForce(cocos2d::Vec2 v);
 		void update();
+		void update(bool yn);
 	private:
 		cocos2d::DrawNode *Node;
 		cocos2d::Vec2 velocity;

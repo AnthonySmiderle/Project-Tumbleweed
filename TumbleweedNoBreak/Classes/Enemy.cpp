@@ -368,6 +368,7 @@ cocos2d::Vec2 Sedna::RifleOutlaw::getTrack() const
 
 CrazyPete::CrazyPete(float x, float y) : Outlaw(x, y)
 {
+	this->setHP(50);
 	points = 1000;
 	this->getSprite()->setTexture("CrazyPete.png");
 	dynamite = new Projectile(getBox()->getLocation().x, getBox()->getLocation().y, Enemy);
@@ -479,40 +480,92 @@ void Sedna::CrazyPete::checkList()
 
 Goldman::Goldman(float x, float y) :Outlaw(x, y)
 {
+	this->setHP(50);
 	points = 5000;
 	sprite->setTexture("boss.png");
-	phase1 = true;
+	healthBar = new SquarePrimitive(cocos2d::Vec2(this->getBox()->getLocation().x - 160, this->getBox()->getLocation().y - 210),
+		cocos2d::Vec2(this->getBox()->getLocation().x - 160 + this->getHP() * 6, this->getBox()->getLocation().y - 215));
+
 }
 
-void Sedna::Goldman::shoot(float dt, cocos2d::Scene * s)
+void Sedna::Goldman::shoot(float dt, cocos2d::Scene * s,CirclePrimitive* c)
 {
-	for (int i = 0; i < eProjectiles.size(); i++) {
-		eProjectiles[i]->getBox()->getDrawNode()->removeFromParent();
-		eProjectiles[i]->getSprite()->removeFromParent();
-		eProjectiles.erase(eProjectiles.begin() + i);
-		i--;
-	}
+	auto v = cocos2d::Vec2(0, 0);
+	srand(time(0));
+	//srand(rand() % rand());
 	if (phase1) {
 
-		for (int i = 0; i < 10; i++) {
-			this->eProjectiles.push_back(new Projectile(-1000, 10, Enemy));
-			s->addChild(eProjectiles.back()->getBox()->getDrawNode());
-			s->addChild(eProjectiles.back()->getSprite());
-		}
-		if (eShootTimer > 1.0f) {
+		if (eShootTimer > 1.15f) {
 			eShootTimer = 0.0f;
 			eHasShot = false;
 		}
 		if (!eShootTimer) {
+			for (int i = 0; i < eProjectiles.size(); i++) {
+				eProjectiles[i]->getBox()->getDrawNode()->removeFromParent();
+				eProjectiles[i]->getSprite()->removeFromParent();
+				eProjectiles.erase(eProjectiles.begin() + i);
+				i--;
+			}
+
+			for (int i = 0; i < 10; i++) {
+				this->eProjectiles.push_back(new Projectile(this->getBox()->getLocation().x, this->getBox()->getLocation().y + 60, Enemy));
+				s->addChild(eProjectiles.back()->getBox()->getDrawNode());
+				s->addChild(eProjectiles.back()->getSprite());
+			}
 			eHasShot = true;
-			for (int i = 0; i < eProjectiles.size(); i++)
-				eProjectiles[i]->getBox()->setForce(cocos2d::Vec2(1 + rand() % 5, -1 * (1 + rand() % 5)));
+			v.x = -5;
+			for (int i = 0; i < 10; i++) {
+				v.x++;
+				v.y = -v.x*v.x;
+				auto first = rand() % 4 >= 1 ? (rand() % 2 == 1 ? (rand() % 6) : (-rand() % 6)) : 0.0f;
+				auto second = -3.0f;
+				eProjectiles[i]->getBox()->setLocation(cocos2d::Vec2(this->getBox()->getLocation().x, this->getBox()->getLocation().y + 60) + v);
+				auto force = v / sqrt(v.x*v.x + v.y*v.y);
+				eProjectiles[i]->getBox()->setForce(force*1.5f + cocos2d::Vec2(first, second*1.5f));
+			}
 
 
 		}
 		if (eHasShot)
 			eShootTimer += dt;
 
+	}
+	else if (phase2) {
+		if (eShootTimer > 0.089f) {
+			eShootTimer = 0.0f;
+			eHasShot = false;
+		}
+		if (!eShootTimer) {
+
+			eHasShot = true;
+			
+			if (phase2Vec.x < -5.0f)
+				switche = false;
+			if (phase2Vec.x > 5.0f)
+				switche = true;
+			if (!switche)
+				phase2Vec.x += 0.1f;
+			if (switche)
+				phase2Vec.x -= 0.1f;
+
+
+			
+			auto direction = c->getLocation() - this->getBox()->getLocation() ;
+
+			this->eProjectiles.push_back(new Projectile(this->getBox()->getLocation().x, this->getBox()->getLocation().y + 60, Enemy));
+			s->addChild(eProjectiles.back()->getBox()->getDrawNode());
+			s->addChild(eProjectiles.back()->getSprite());
+
+			eProjectiles.back()->getBox()->setLocation(cocos2d::Vec2(this->getBox()->getLocation().x, this->getBox()->getLocation().y + 60) + v);
+			auto force =  direction/ sqrt(direction.x*direction.x + direction.y*direction.y);
+			eProjectiles.back()->getBox()->setForce(force*8);
+
+			
+
+
+		}
+		if (eHasShot)
+			eShootTimer += dt;
 	}
 }
 
@@ -522,13 +575,21 @@ void Sedna::Goldman::animate(float dt)
 
 void Sedna::Goldman::checkList()
 {
-	if (eProjectiles.size() > 20) {
+	healthBar->setP2x(this->getBox()->getLocation().x - 160 + this->getHP() * 6);
+	healthBar->update(true);
+
+	if (eProjectiles.size() > (phase1 ? 20 : 100)) {
 		eProjectiles.front()->getBox()->getDrawNode()->removeFromParent();
 		eProjectiles.front()->getSprite()->removeFromParent();
 		eProjectiles.erase(eProjectiles.begin());
 	}
 	for (int i = 0; i < eProjectiles.size(); i++)
 		eProjectiles[i]->updateGameObject();
+}
+
+SquarePrimitive * Sedna::Goldman::getHealthBar() const
+{
+	return healthBar;
 }
 
 }

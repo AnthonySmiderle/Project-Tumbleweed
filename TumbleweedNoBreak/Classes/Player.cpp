@@ -135,7 +135,7 @@ namespace Sedna {
 				auto direction = cocos2d::Vec2(pSticks[0].x, pSticks[0].y);
 				auto force = direction / (direction.x*direction.x + direction.y*direction.y);
 
-				this->getBox()->addForce(force.x * 5, force.y * 5);
+				this->getBox()->addForce((pSticks[0].x > 0.3f || pSticks[0].x < -0.3f) ? force.x * 5:0.0f, (pSticks[0].y > 0.3f || pSticks[0].y < -0.3f) ? force.y * 5 : 0.0f);
 
 			}
 
@@ -353,7 +353,7 @@ namespace Sedna {
 				else
 					check = false;
 				if (outlawList[j]->getHP() <= 0) {
-					if(this->takeInputs)
+					if (this->takeInputs)
 						score += outlawList[j]->points;
 					srand(time(0));
 					if (rand() % 10 + 1 <= 2) {
@@ -371,11 +371,12 @@ namespace Sedna {
 
 
 					playerUI->updateList();
-					outlawList[j]->removeProjectiles();
-					outlawList[j]->getBox()->getDrawNode()->removeFromParent();
-					outlawList[j]->getSprite()->removeFromParent();
-					outlawList.erase(outlawList.begin() + j);
-					j--;
+
+						outlawList[j]->removeProjectiles();
+						outlawList[j]->getBox()->getDrawNode()->removeFromParent();
+						outlawList[j]->getSprite()->removeFromParent();
+						outlawList.erase(outlawList.begin() + j);
+						j--;
 				}
 
 
