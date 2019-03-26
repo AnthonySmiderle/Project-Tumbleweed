@@ -261,7 +261,7 @@ void HelloWorld::initSprites()
 	this->addChild(((Sedna::Goldman*)g.back())->getHealthBar()->getDrawNode());
 	((Sedna::Goldman*)g.back())->getHealthBar()->getDrawNode()->setVisible(false);
 
-	dummyTracker = new Sedna::CirclePrimitive(cocos2d::Vec2(100, 40), 5, 20, 50);
+	dummyTracker = new Sedna::CirclePrimitive(cocos2d::Vec2(70, 40), 5, 20, 50);
 	this->addChild(dummyTracker->getDrawNode());
 	dummyTracker->getDrawNode()->setVisible(true);
 
@@ -271,7 +271,6 @@ void HelloWorld::initSprites()
 			tutorialLabel->setPosition(cocos2d::Vec2(380, 280));
 			this->addChild(tutorialLabel, 1000);
 		}
-
 }
 
 void HelloWorld::update(float dt)
@@ -558,10 +557,10 @@ void HelloWorld::play(float dt)
 
 void HelloWorld::boss(float dt)
 {
-	if(dummyTracker->getLocation().x <= 100)
-	dummyTracker->setForce(cocos2d::Vec2(5, 0));
-	else if (dummyTracker->getLocation().x >= 400)
-		dummyTracker->setForce(cocos2d::Vec2(-5, 0));
+	if (dummyTracker->getLocation().x <= 70)
+		dummyTracker->setForce(cocos2d::Vec2(8, 0));
+	else if (dummyTracker->getLocation().x >= 430)
+		dummyTracker->setForce(cocos2d::Vec2(-8, 0));
 	dummyTracker->update();
 
 	if (!g.empty())
@@ -569,7 +568,7 @@ void HelloWorld::boss(float dt)
 		((Sedna::Goldman*)g.back())->getHealthBar()->getDrawNode()->setVisible(true);
 		g.back()->updateGameObject();
 		g.back()->animate(dt);
-		((Sedna::Goldman*)g.back())->shoot(dt, this,dummyTracker);
+		((Sedna::Goldman*)g.back())->shoot(dt, this, dummyTracker);
 		g.back()->checkList();
 		g.back()->checkBCollision(playerOne);
 		g.back()->checkBCollision(playerTwo);

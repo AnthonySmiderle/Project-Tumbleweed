@@ -87,8 +87,8 @@ namespace Sedna {
 		cocos2d::Vec2 phase2Vec{-5,0};
 		SquarePrimitive* healthBar;
 		bool switche = false;
-		bool phase1 = false;
-		bool phase2 = true;
+		bool phase1 = true;
+		bool phase2 = false;
 		bool phase3 = false;
 	};
 

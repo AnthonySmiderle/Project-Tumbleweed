@@ -488,8 +488,13 @@ Goldman::Goldman(float x, float y) :Outlaw(x, y)
 
 }
 
-void Sedna::Goldman::shoot(float dt, cocos2d::Scene * s,CirclePrimitive* c)
+void Sedna::Goldman::shoot(float dt, cocos2d::Scene * s, CirclePrimitive* c)
 {
+	if (this->getHP() <= (50 / 2)/*left it as a fraction incase we wanna change it later*/)
+	{
+		phase1 = false;
+		phase2 = true;
+	}
 	auto v = cocos2d::Vec2(0, 0);
 	srand(time(0));
 	//srand(rand() % rand());
@@ -538,7 +543,7 @@ void Sedna::Goldman::shoot(float dt, cocos2d::Scene * s,CirclePrimitive* c)
 		if (!eShootTimer) {
 
 			eHasShot = true;
-			
+
 			if (phase2Vec.x < -5.0f)
 				switche = false;
 			if (phase2Vec.x > 5.0f)
@@ -549,18 +554,18 @@ void Sedna::Goldman::shoot(float dt, cocos2d::Scene * s,CirclePrimitive* c)
 				phase2Vec.x -= 0.1f;
 
 
-			
-			auto direction = c->getLocation() - this->getBox()->getLocation() ;
+
+			auto direction = c->getLocation() - this->getBox()->getLocation();
 
 			this->eProjectiles.push_back(new Projectile(this->getBox()->getLocation().x, this->getBox()->getLocation().y + 60, Enemy));
 			s->addChild(eProjectiles.back()->getBox()->getDrawNode());
 			s->addChild(eProjectiles.back()->getSprite());
 
 			eProjectiles.back()->getBox()->setLocation(cocos2d::Vec2(this->getBox()->getLocation().x, this->getBox()->getLocation().y + 60) + v);
-			auto force =  direction/ sqrt(direction.x*direction.x + direction.y*direction.y);
-			eProjectiles.back()->getBox()->setForce(force*8);
+			auto force = direction / sqrt(direction.x*direction.x + direction.y*direction.y);
+			eProjectiles.back()->getBox()->setForce(force * 8);
 
-			
+
 
 
 		}
