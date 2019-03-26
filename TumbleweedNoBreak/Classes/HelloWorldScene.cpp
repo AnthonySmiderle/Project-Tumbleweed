@@ -142,7 +142,7 @@ void HelloWorld::initSprites()
 	highScoreLabel = cocos2d::Label::create("Highscore", "fonts/Montague.ttf", 15);
 	highScoreLabel->setPosition(cocos2d::Vec2(100, DDOS->getSprite()->getPosition().y - 100));
 	highScoreLabel->setVisible(false);
-	this->addChild(highScoreLabel);
+	this->addChild(highScoreLabel,10000);
 
 
 	bloodyMaryP_up = new Sedna::Powerup("gun2.png", Sedna::Guns::bloodyMary, -1000, 0);
@@ -263,7 +263,7 @@ void HelloWorld::initSprites()
 
 	dummyTracker = new Sedna::CirclePrimitive(cocos2d::Vec2(70, 40), 5, 20, 50);
 	this->addChild(dummyTracker->getDrawNode());
-	dummyTracker->getDrawNode()->setVisible(true);
+	dummyTracker->getDrawNode()->setVisible(false);
 
 	if (((Tutorial*)this)->tutorial)
 		if (tutBool) {
