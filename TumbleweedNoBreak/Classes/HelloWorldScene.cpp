@@ -255,7 +255,7 @@ void HelloWorld::initSprites()
 	healSign = new Sedna::Sign("Healing Drink!", this, cocos2d::Vec2(-1000, 0));
 
 
-	g.push_back(new Sedna::Goldman(250, 250));
+	g.push_back(new Sedna::Goldman(250, DDOS->getSprite()->getPosition().y));
 	this->addChild(g.back()->getBox()->getDrawNode());
 	this->addChild(g.back()->getSprite());
 	this->addChild(((Sedna::Goldman*)g.back())->getHealthBar()->getDrawNode());
@@ -289,6 +289,12 @@ void HelloWorld::update(float dt)
 		if (playerTwo->getCurrentGun()->getAmmo() <= 0)
 			playerTwo->setCurrentGun(Sedna::Guns::olReliable2);
 
+		bossTimer += dt;
+		if (bossTimer >= 10) {
+			pizzaTime = true;
+			if(!g.empty())
+			g.back()->getBox()->setLocation(cocos2d::Vec2(250, DDOS->getSprite()->getPosition().y + 40));
+		}
 
 		if (((Tutorial*)this)->tutorial)
 			this->gameTutorial(dt);
@@ -318,7 +324,6 @@ void HelloWorld::useBulletTime(float dt)
 	}
 	if (p1Triggers.LT == 0 && p2Triggers.LT == 0 || bulletTimeMax >= 3.0f)
 	{
-
 		bulletTime = false;
 		paused = false;
 		bulletTimeMax -= dt;

@@ -75,6 +75,7 @@ public:
 	// implement the "static create()" method manually
 	CREATE_FUNC(HelloWorld);
 
+	float bossTimer = 0.0f;
 	bool pizzaTime = false;
 	std::vector<Sedna::Outlaw*> g;
 	Sedna::CirclePrimitive* dummyTracker;

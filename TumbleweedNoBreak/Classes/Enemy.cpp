@@ -368,7 +368,7 @@ cocos2d::Vec2 Sedna::RifleOutlaw::getTrack() const
 
 CrazyPete::CrazyPete(float x, float y) : Outlaw(x, y)
 {
-	this->setHP(50);
+	this->setHP(3);
 	points = 1000;
 	this->getSprite()->setTexture("CrazyPete.png");
 	dynamite = new Projectile(getBox()->getLocation().x, getBox()->getLocation().y, Enemy);
