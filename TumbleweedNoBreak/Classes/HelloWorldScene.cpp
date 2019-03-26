@@ -144,10 +144,6 @@ void HelloWorld::initSprites()
 	highScoreLabel->setVisible(false);
 	this->addChild(highScoreLabel);
 
-	goldman = new Sedna::Goldman(250, 250);
-	this->addChild(goldman->getBox()->getDrawNode());
-	this->addChild(goldman->getSprite());
-
 
 	bloodyMaryP_up = new Sedna::Powerup("gun2.png", Sedna::Guns::bloodyMary, -1000, 0);
 	theBiggestIronP_up = new Sedna::Powerup("gun3.png", Sedna::Guns::theBiggestIron, -1000, 0);
@@ -179,7 +175,6 @@ void HelloWorld::initSprites()
 		this->addChild(playerTwo->getUI()->getLabelList()[i], 20);
 	for (unsigned int i = 0; i < playerTwo->getUI()->getHPSprites().size(); i++)
 		this->addChild(playerTwo->getUI()->getHPSprites()[i]);
-
 
 
 	bg = cocos2d::Sprite::create("bg1.png");
@@ -259,15 +254,23 @@ void HelloWorld::initSprites()
 	reviveSign = new Sedna::Sign("Revive your friend Drink!", this, cocos2d::Vec2(-1000, 0));
 	healSign = new Sedna::Sign("Healing Drink!", this, cocos2d::Vec2(-1000, 0));
 
+
+	g.push_back(new Sedna::Goldman(250, 250));
+	this->addChild(g.back()->getBox()->getDrawNode());
+	this->addChild(g.back()->getSprite());
+	this->addChild(((Sedna::Goldman*)g.back())->getHealthBar()->getDrawNode());
+	((Sedna::Goldman*)g.back())->getHealthBar()->getDrawNode()->setVisible(false);
+
+	dummyTracker = new Sedna::CirclePrimitive(cocos2d::Vec2(70, 40), 5, 20, 50);
+	this->addChild(dummyTracker->getDrawNode());
+	dummyTracker->getDrawNode()->setVisible(true);
+
 	if (((Tutorial*)this)->tutorial)
-	{
 		if (tutBool) {
 			tutorialLabel = cocos2d::Label::create("Tutorial", "fonts/Montague.ttf", 8);
 			tutorialLabel->setPosition(cocos2d::Vec2(380, 280));
 			this->addChild(tutorialLabel, 1000);
 		}
-	}
-	
 }
 
 void HelloWorld::update(float dt)
@@ -323,7 +326,7 @@ void HelloWorld::useBulletTime(float dt)
 		playerOne->getBox()->setRadius(20);	 ///
 		playerTwo->getBox()->setRadius(20);	 ///
 	}
-	if (bulletTimeMax < 0.0f) 
+	if (bulletTimeMax < 0.0f)
 		bulletTimeMax = 0;
 
 }
@@ -509,30 +512,30 @@ void HelloWorld::play(float dt)
 		getCollisions();
 
 
-#ifdef _DEBUG
-		if (p1Controller->isButtonPressed(Sedna::Y) || p2Controller->isButtonPressed(Sedna::Y))
-			moveScreen ^= 1;
-
-		if (p1Controller->isButtonPressed(Sedna::X) || p2Controller->isButtonPressed(Sedna::X)) {
-			for (unsigned int i = 0; i < sManager.outlawList.size(); i++)
-				sManager.outlawList[i]->getBox()->getDrawNode()->setVisible(true);
-			for (unsigned int i = 0; i < sManager.tableList.size(); i++)
-				sManager.tableList[i]->getBox()->getDrawNode()->setVisible(true);
-			playerOne->getBox()->getDrawNode()->setVisible(true);
-			playerTwo->getBox()->getDrawNode()->setVisible(true);
-
-		}
-		else {
-			for (unsigned int i = 0; i < sManager.outlawList.size(); i++)
-				sManager.outlawList[i]->getBox()->getDrawNode()->setVisible(false);
-			for (unsigned int i = 0; i < sManager.tableList.size(); i++)
-				sManager.tableList[i]->getBox()->getDrawNode()->setVisible(false);
-
-			playerOne->getBox()->getDrawNode()->setVisible(false);
-			playerTwo->getBox()->getDrawNode()->setVisible(false);
-		}//show hitboxes
-#endif
-
+		//#ifdef _DEBUG
+		//		if (p1Controller->isButtonPressed(Sedna::Y) || p2Controller->isButtonPressed(Sedna::Y))
+		//			moveScreen ^= 1;
+		//
+		//		if (p1Controller->isButtonPressed(Sedna::X) || p2Controller->isButtonPressed(Sedna::X)) {
+		//			for (unsigned int i = 0; i < sManager.outlawList.size(); i++)
+		//				sManager.outlawList[i]->getBox()->getDrawNode()->setVisible(true);
+		//			for (unsigned int i = 0; i < sManager.tableList.size(); i++)
+		//				sManager.tableList[i]->getBox()->getDrawNode()->setVisible(true);
+		//			playerOne->getBox()->getDrawNode()->setVisible(true);
+		//			playerTwo->getBox()->getDrawNode()->setVisible(true);
+		//
+		//		}
+		//		else {
+		//			for (unsigned int i = 0; i < sManager.outlawList.size(); i++)
+		//				sManager.outlawList[i]->getBox()->getDrawNode()->setVisible(false);
+		//			for (unsigned int i = 0; i < sManager.tableList.size(); i++)
+		//				sManager.tableList[i]->getBox()->getDrawNode()->setVisible(false);
+		//
+		//			playerOne->getBox()->getDrawNode()->setVisible(false);
+		//			playerTwo->getBox()->getDrawNode()->setVisible(false);
+		//		}//show hitboxes
+		//#endif
+		//
 
 		checkManyLists(dt);
 
@@ -546,7 +549,35 @@ void HelloWorld::play(float dt)
 		theBiggestIronP_up->pickUp(playerOne);
 		theBiggestIronP_up->pickUp(playerTwo);
 
+		if (pizzaTime)
+			boss(dt);
+
 	}
+}
+
+void HelloWorld::boss(float dt)
+{
+	if (dummyTracker->getLocation().x <= 70)
+		dummyTracker->setForce(cocos2d::Vec2(8, 0));
+	else if (dummyTracker->getLocation().x >= 430)
+		dummyTracker->setForce(cocos2d::Vec2(-8, 0));
+	dummyTracker->update();
+
+	if (!g.empty())
+	{
+		((Sedna::Goldman*)g.back())->getHealthBar()->getDrawNode()->setVisible(true);
+		g.back()->updateGameObject();
+		g.back()->animate(dt);
+		((Sedna::Goldman*)g.back())->shoot(dt, this, dummyTracker);
+		g.back()->checkList();
+		g.back()->checkBCollision(playerOne);
+		g.back()->checkBCollision(playerTwo);
+
+		playerOne->checkBCollision(g, bloodyMaryP_up, theBiggestIronP_up);
+		playerTwo->checkBCollision(g, bloodyMaryP_up, theBiggestIronP_up);
+	}
+	if (g.empty())
+		pizzaTime = false;///
 }
 
 void HelloWorld::pause(float dt)
@@ -582,9 +613,9 @@ void HelloWorld::pause(float dt)
 
 
 
-		if ((p1Sticks[0].y < -0.3f || p2Sticks[0].y < -0.3f) && pauseMenu->getIndexOfSelected() != 0) 
+		if ((p1Sticks[0].y < -0.3f || p2Sticks[0].y < -0.3f) && pauseMenu->getIndexOfSelected() != 0)
 			pauseMenu->select(pauseMenu->getIndexOfSelected() - 1);
-		
+
 
 		if (p1Sticks[0].y > 0.3f || p2Sticks[0].y > 0.3f) {
 			if (pauseMenu->getIndexOfSelected() + 1 > pauseMenu->getLabelList().size() - 1) {
@@ -595,7 +626,7 @@ void HelloWorld::pause(float dt)
 
 
 
-		if (pauseMenu->getIndexOfSelected() == 1 && (p1Controller->isButtonPressed(Sedna::A) || p2Controller->isButtonPressed(Sedna::A))) 
+		if (pauseMenu->getIndexOfSelected() == 1 && (p1Controller->isButtonPressed(Sedna::A) || p2Controller->isButtonPressed(Sedna::A)))
 			TRUEPAUSE = false;
 
 
@@ -609,12 +640,12 @@ void HelloWorld::pause(float dt)
 	}
 
 
-	else 
+	else
 		for (unsigned int i = 0; i < pauseMenu->getLabelList().size(); i++) {
 			pausedLabel->setVisible(false);
 			pauseMenu->getLabelList()[i]->setVisible(false);
 		}
-	
+
 
 
 
@@ -644,7 +675,7 @@ void HelloWorld::pause(float dt)
 			else if (gameStart > 3 && gameStart < 4)
 				startLabel->setString("1");
 
-			else if (gameStart > 4 && gameStart < 5) 
+			else if (gameStart > 4 && gameStart < 5)
 				startLabel->setString("0");
 
 			else if (!playerOne->isDead() && !playerTwo->isDead())
@@ -706,28 +737,30 @@ void HelloWorld::checkManyLists(float dt)
 
 	}
 	else {
+		if (!pizzaTime) {
 
-		for (unsigned int i = 0; i < sManager.outlawList.size(); i++) {
-			auto first = playerOne->getBox()->getLocation() - sManager.outlawList[i]->getBox()->getLocation();
-			auto second = playerTwo->getBox()->getLocation() - sManager.outlawList[i]->getBox()->getLocation();
+			for (unsigned int i = 0; i < sManager.outlawList.size(); i++) {
+				auto first = playerOne->getBox()->getLocation() - sManager.outlawList[i]->getBox()->getLocation();
+				auto second = playerTwo->getBox()->getLocation() - sManager.outlawList[i]->getBox()->getLocation();
 
-			if (sManager.outlawList[i]->points == 200)
-				((Sedna::ShotgunOutlaw*)sManager.outlawList[i])->onLeftSideOf
-				((first.getLengthSq() < second.getLengthSq()) ? playerOne : playerTwo);
+				if (sManager.outlawList[i]->points == 200)
+					((Sedna::ShotgunOutlaw*)sManager.outlawList[i])->onLeftSideOf
+					((first.getLengthSq() < second.getLengthSq()) ? playerOne : playerTwo);
 
-			if (sManager.outlawList[i]->points == 300)
-				((Sedna::RifleOutlaw*)sManager.outlawList[i])->setTrack
-				((first.getLengthSq() < second.getLengthSq()) ? playerOne : playerTwo);
+				if (sManager.outlawList[i]->points == 300)
+					((Sedna::RifleOutlaw*)sManager.outlawList[i])->setTrack
+					((first.getLengthSq() < second.getLengthSq()) ? playerOne : playerTwo);
 
-			if (sManager.outlawList[i]->points == 1000)
-				((Sedna::CrazyPete*)sManager.outlawList[i])->updateDyn(dt, this);
-			else
-				sManager.outlawList[i]->shoot(dt, this);
+				if (sManager.outlawList[i]->points == 1000)
+					((Sedna::CrazyPete*)sManager.outlawList[i])->updateDyn(dt, this);
+				else
+					sManager.outlawList[i]->shoot(dt, this);
+			}
 		}
 
 
 		checkPosAll();
-		if (sManager.outlawList.size() > 6) {
+		if (!pizzaTime && sManager.outlawList.size() > 6) {
 			sManager.outlawList.front()->removeProjectiles();
 			sManager.outlawList.front()->getBox()->getDrawNode()->removeFromParent();
 			sManager.outlawList.front()->getSprite()->removeFromParent();
@@ -735,7 +768,8 @@ void HelloWorld::checkManyLists(float dt)
 		}
 
 		recursiveFunctionKnocked();
-		recursiveFunctionOutlaw();
+		if (!pizzaTime)
+			recursiveFunctionOutlaw();
 		recursiveFunctionTable();
 
 		playerOne->checkBCollision(sManager.outlawList, bloodyMaryP_up, theBiggestIronP_up);
@@ -744,16 +778,16 @@ void HelloWorld::checkManyLists(float dt)
 		playerTwo->checkList();
 		for (unsigned int i = 0; i < sManager.tableList.size(); i++)
 			sManager.tableList[i]->updateGameObject();
+		if (!pizzaTime)
+			for (unsigned int i = 0; i < sManager.outlawList.size(); i++) {
 
-		for (unsigned int i = 0; i < sManager.outlawList.size(); i++) {
-
-			sManager.outlawList[i]->animate(dt);
-			sManager.outlawList[i]->checkBCollision(sManager.tableList);
-			sManager.outlawList[i]->checkBCollision(playerOne);
-			sManager.outlawList[i]->checkBCollision(playerTwo);
-			sManager.outlawList[i]->checkList();
-			sManager.outlawList[i]->updateGameObject();
-		}
+				sManager.outlawList[i]->animate(dt);
+				sManager.outlawList[i]->checkBCollision(sManager.tableList);
+				sManager.outlawList[i]->checkBCollision(playerOne);
+				sManager.outlawList[i]->checkBCollision(playerTwo);
+				sManager.outlawList[i]->checkList();
+				sManager.outlawList[i]->updateGameObject();
+			}
 
 		for (unsigned int i = 0; i < sManager.tableList.size(); i++) {
 			for (unsigned int j = 0; j < sManager.tableList.size(); j++) {
@@ -778,7 +812,7 @@ void HelloWorld::recursiveFunctionOutlaw()
 			if (sManager.outlawList[i]->getBox()->checkCollision(*sManager.outlawList[j]->getBox())) {
 				sManager.outlawList[i]->getBox()->setLocation(
 					cocos2d::Vec2(100 + (rand() % 300),
-					sManager.outlawList[i]->getBox()->getLocation().y + 50));
+						sManager.outlawList[i]->getBox()->getLocation().y + 50));
 				recursiveFunctionOutlaw();
 			}
 
@@ -796,7 +830,7 @@ void HelloWorld::recursiveFunctionTable()
 				if (sManager.tableList[i]->getBox()->checkCollision(*sManager.tableList[j]->getBox())) {
 					sManager.tableList[i]->getBox()->setLocation(
 						cocos2d::Vec2(100 + (rand() % 300),
-						sManager.tableList[i]->getBox()->getLocation().y + 50));
+							sManager.tableList[i]->getBox()->getLocation().y + 50));
 					recursiveFunctionTable();
 				}
 
@@ -829,17 +863,18 @@ void HelloWorld::recursiveFunctionKnocked()
 
 void HelloWorld::checkPosAll()//this function will remove and objects that go to far below the screen
 {
-	for (unsigned int i = 0; i < sManager.outlawList.size(); i++)
-	{
-		if (sManager.outlawList[i]->getBox()->getLocation().y < DDOS->getSprite()->getPosition().y - 400)
+	if (!pizzaTime)
+		for (unsigned int i = 0; i < sManager.outlawList.size(); i++)
 		{
-			sManager.outlawList[i]->removeProjectiles();
-			sManager.outlawList[i]->getBox()->getDrawNode()->removeFromParent();
-			sManager.outlawList[i]->getSprite()->removeFromParent();
-			sManager.outlawList.erase(sManager.outlawList.begin() + i);
-			i--;
+			if (sManager.outlawList[i]->getBox()->getLocation().y < DDOS->getSprite()->getPosition().y - 400)
+			{
+				sManager.outlawList[i]->removeProjectiles();
+				sManager.outlawList[i]->getBox()->getDrawNode()->removeFromParent();
+				sManager.outlawList[i]->getSprite()->removeFromParent();
+				sManager.outlawList.erase(sManager.outlawList.begin() + i);
+				i--;
+			}
 		}
-	}
 
 	for (unsigned int i = 0; i < sManager.tableList.size(); i++)
 	{
@@ -894,8 +929,10 @@ void HelloWorld::notDead(float dt)
 	bloodyMaryP_up->updateGameObject();
 	theBiggestIronP_up->updateGameObject();
 
-
-	CAMERASPEED += 0.005 * dt;
+	if (!pizzaTime)
+		CAMERASPEED += 0.005 * dt;
+	else
+		CAMERASPEED = 0;
 	sManager.update(dt, DDOS->getSprite()->getPosition().y);
 
 	if (moveScreen)
@@ -981,18 +1018,18 @@ void HelloWorld::togglePause() {//this actually has many applications
 
 void HelloWorld::writeScore()
 {
-	
+
 	highFileIn = std::ifstream("Saloon_Scores.txt");
 	if (highFileIn.is_open())
 	{
 		std::string HighestScore;
-		while (std::getline(highFileIn, HighestScore)){}
+		while (std::getline(highFileIn, HighestScore)) {}
 		highFileIn.close();
 
 		if (HighestScore == "")
 			HighestScore = "0";
 		int intHighScore = std::stoi(HighestScore);
-		if (playerOne->getScore()>intHighScore)
+		if (playerOne->getScore() > intHighScore)
 		{
 			intHighScore = playerOne->getScore();
 			HighestScore = std::to_string(playerOne->getScore());
@@ -1017,7 +1054,7 @@ void HelloWorld::writeScore()
 		}
 		highFileOut.close();
 		highScoreLabel->setString(HighestScore);
-			std::cout << HighestScore;
+		std::cout << HighestScore;
 		highScoreLabel->setPosition(cocos2d::Vec2(230, DDOS->getSprite()->getPosition().y - 200));
 		highScoreLabel->setVisible(true);
 
@@ -1032,6 +1069,6 @@ void HelloWorld::writeScore()
 		highFileOut = std::ofstream();
 		writeScore();
 	}
-	
+
 	hasWritten = true;
 }

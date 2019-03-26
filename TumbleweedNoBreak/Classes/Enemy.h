@@ -79,10 +79,14 @@ namespace Sedna {
 	class Goldman : public Outlaw {
 	public:
 		Goldman(float x, float y);
-		void shoot(float dt, cocos2d::Scene*s) override;
+		void shoot(float dt, cocos2d::Scene*s,CirclePrimitive* c);
 		void animate(float dt) override;
 		void checkList() override;
+		SquarePrimitive* getHealthBar() const;
 	private:
+		cocos2d::Vec2 phase2Vec{-5,0};
+		SquarePrimitive* healthBar;
+		bool switche = false;
 		bool phase1 = true;
 		bool phase2 = false;
 		bool phase3 = false;
