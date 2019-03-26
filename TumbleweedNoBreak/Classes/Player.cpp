@@ -138,10 +138,6 @@ namespace Sedna {
 				this->getBox()->addForce((pSticks[0].x > 0.3f || pSticks[0].x < -0.3f) ? force.x * 5:0.0f, (pSticks[0].y > 0.3f || pSticks[0].y < -0.3f) ? force.y * 5 : 0.0f);
 
 			}
-
-			if (pController->isButtonPressed(Sedna::START))
-				exit(0);
-
 		}
 	}
 	void Player::shoot(float dt, cocos2d::Scene* s)

@@ -73,4 +73,7 @@ private:
 
 	float menuWait = 0.0f;
 	bool optionMenuBool = false;
+
+	cocos2d::Sprite* bButton;
+	cocos2d::Label* bButtonLabel;
 };

@@ -582,7 +582,7 @@ void HelloWorld::boss(float dt)
 
 void HelloWorld::pause(float dt)
 {
-	if (p1Controller->isButtonPressed(Sedna::SELECT) || p2Controller->isButtonPressed(Sedna::SELECT))
+	if (p1Controller->isButtonPressed(Sedna::START) || p2Controller->isButtonPressed(Sedna::START))
 	{
 		p1Controller->setVibration(0, 0);
 		p2Controller->setVibration(0, 0);
@@ -598,7 +598,7 @@ void HelloWorld::pause(float dt)
 	}
 
 
-	if (p1Controller->isButtonReleased(Sedna::SELECT) && p2Controller->isButtonReleased(Sedna::SELECT))
+	if (p1Controller->isButtonReleased(Sedna::START) && p2Controller->isButtonReleased(Sedna::START))
 		TEMPPAUSE = false;
 
 
