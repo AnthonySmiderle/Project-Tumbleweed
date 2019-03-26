@@ -52,6 +52,7 @@ public:
 	void gameTutorial(float dt);
 	void pause(float dt);
 	void play(float dt);
+	void boss(float dt);
 
 	///<used to reduce duplicate code>
 	void useBulletTime(float dt);
@@ -73,6 +74,10 @@ public:
 
 	// implement the "static create()" method manually
 	CREATE_FUNC(HelloWorld);
+
+	bool pizzaTime = false;
+	Sedna::Goldman* goldman;
+
 
 	cocos2d::Label* tutorialLabel;
 	bool tutFunc1 = false;
@@ -96,7 +101,6 @@ public:
 
 	cocos2d::Label* btLabel;
 	Sedna::SquarePrimitive btMeter;
-	Sedna::Goldman* goldman;
 
 	bool decrimenting = false;
 	float bulletTimeMax = 0.0f;

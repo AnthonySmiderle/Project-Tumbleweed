@@ -258,6 +258,11 @@ void HelloWorld::initSprites()
 	reviveSign = new Sedna::Sign("Revive your friend Drink!", this, cocos2d::Vec2(-1000, 0));
 	healSign = new Sedna::Sign("Healing Drink!", this, cocos2d::Vec2(-1000, 0));
 
+
+	goldman = new Sedna::Goldman(250, 250);
+	this->addChild(goldman->getBox()->getDrawNode());
+	this->addChild(goldman->getSprite());
+
 	if (((Tutorial*)this)->tutorial)
 	{
 		if (tutBool) {
@@ -266,7 +271,7 @@ void HelloWorld::initSprites()
 			this->addChild(tutorialLabel, 1000);
 		}
 	}
-	
+
 }
 
 void HelloWorld::update(float dt)
@@ -322,7 +327,7 @@ void HelloWorld::useBulletTime(float dt)
 		playerOne->getBox()->setRadius(20);	 ///
 		playerTwo->getBox()->setRadius(20);	 ///
 	}
-	if (bulletTimeMax < 0.0f) 
+	if (bulletTimeMax < 0.0f)
 		bulletTimeMax = 0;
 
 }
@@ -548,6 +553,14 @@ void HelloWorld::play(float dt)
 	}
 }
 
+void HelloWorld::boss(float dt)
+{
+	goldman->updateGameObject();
+	goldman->animate(dt);
+	goldman->shoot(dt, this);
+	goldman->checkList();
+}
+
 void HelloWorld::pause(float dt)
 {
 	if (p1Controller->isButtonPressed(Sedna::SELECT) || p2Controller->isButtonPressed(Sedna::SELECT))
@@ -581,9 +594,9 @@ void HelloWorld::pause(float dt)
 
 
 
-		if ((p1Sticks[0].y < -0.3f || p2Sticks[0].y < -0.3f) && pauseMenu->getIndexOfSelected() != 0) 
+		if ((p1Sticks[0].y < -0.3f || p2Sticks[0].y < -0.3f) && pauseMenu->getIndexOfSelected() != 0)
 			pauseMenu->select(pauseMenu->getIndexOfSelected() - 1);
-		
+
 
 		if (p1Sticks[0].y > 0.3f || p2Sticks[0].y > 0.3f) {
 			if (pauseMenu->getIndexOfSelected() + 1 > pauseMenu->getLabelList().size() - 1) {
@@ -594,7 +607,7 @@ void HelloWorld::pause(float dt)
 
 
 
-		if (pauseMenu->getIndexOfSelected() == 1 && (p1Controller->isButtonPressed(Sedna::A) || p2Controller->isButtonPressed(Sedna::A))) 
+		if (pauseMenu->getIndexOfSelected() == 1 && (p1Controller->isButtonPressed(Sedna::A) || p2Controller->isButtonPressed(Sedna::A)))
 			TRUEPAUSE = false;
 
 
@@ -608,12 +621,12 @@ void HelloWorld::pause(float dt)
 	}
 
 
-	else 
+	else
 		for (unsigned int i = 0; i < pauseMenu->getLabelList().size(); i++) {
 			pausedLabel->setVisible(false);
 			pauseMenu->getLabelList()[i]->setVisible(false);
 		}
-	
+
 
 
 
@@ -643,7 +656,7 @@ void HelloWorld::pause(float dt)
 			else if (gameStart > 3 && gameStart < 4)
 				startLabel->setString("1");
 
-			else if (gameStart > 4 && gameStart < 5) 
+			else if (gameStart > 4 && gameStart < 5)
 				startLabel->setString("0");
 
 			else if (!playerOne->isDead() && !playerTwo->isDead())
@@ -705,28 +718,30 @@ void HelloWorld::checkManyLists(float dt)
 
 	}
 	else {
+		if (!pizzaTime) {
 
-		for (unsigned int i = 0; i < sManager.outlawList.size(); i++) {
-			auto first = playerOne->getBox()->getLocation() - sManager.outlawList[i]->getBox()->getLocation();
-			auto second = playerTwo->getBox()->getLocation() - sManager.outlawList[i]->getBox()->getLocation();
+			for (unsigned int i = 0; i < sManager.outlawList.size(); i++) {
+				auto first = playerOne->getBox()->getLocation() - sManager.outlawList[i]->getBox()->getLocation();
+				auto second = playerTwo->getBox()->getLocation() - sManager.outlawList[i]->getBox()->getLocation();
 
-			if (sManager.outlawList[i]->points == 200)
-				((Sedna::ShotgunOutlaw*)sManager.outlawList[i])->onLeftSideOf
-				((first.getLengthSq() < second.getLengthSq()) ? playerOne : playerTwo);
+				if (sManager.outlawList[i]->points == 200)
+					((Sedna::ShotgunOutlaw*)sManager.outlawList[i])->onLeftSideOf
+					((first.getLengthSq() < second.getLengthSq()) ? playerOne : playerTwo);
 
-			if (sManager.outlawList[i]->points == 300)
-				((Sedna::RifleOutlaw*)sManager.outlawList[i])->setTrack
-				((first.getLengthSq() < second.getLengthSq()) ? playerOne : playerTwo);
+				if (sManager.outlawList[i]->points == 300)
+					((Sedna::RifleOutlaw*)sManager.outlawList[i])->setTrack
+					((first.getLengthSq() < second.getLengthSq()) ? playerOne : playerTwo);
 
-			if (sManager.outlawList[i]->points == 1000)
-				((Sedna::CrazyPete*)sManager.outlawList[i])->updateDyn(dt, this);
-			else
-				sManager.outlawList[i]->shoot(dt, this);
+				if (sManager.outlawList[i]->points == 1000)
+					((Sedna::CrazyPete*)sManager.outlawList[i])->updateDyn(dt, this);
+				else
+					sManager.outlawList[i]->shoot(dt, this);
+			}
 		}
 
 
 		checkPosAll();
-		if (sManager.outlawList.size() > 6) {
+		if (!pizzaTime && sManager.outlawList.size() > 6) {
 			sManager.outlawList.front()->removeProjectiles();
 			sManager.outlawList.front()->getBox()->getDrawNode()->removeFromParent();
 			sManager.outlawList.front()->getSprite()->removeFromParent();
@@ -734,6 +749,7 @@ void HelloWorld::checkManyLists(float dt)
 		}
 
 		recursiveFunctionKnocked();
+		if(!pizzaTime)
 		recursiveFunctionOutlaw();
 		recursiveFunctionTable();
 
@@ -743,7 +759,7 @@ void HelloWorld::checkManyLists(float dt)
 		playerTwo->checkList();
 		for (unsigned int i = 0; i < sManager.tableList.size(); i++)
 			sManager.tableList[i]->updateGameObject();
-
+		if(!pizzaTime)
 		for (unsigned int i = 0; i < sManager.outlawList.size(); i++) {
 
 			sManager.outlawList[i]->animate(dt);
@@ -777,7 +793,7 @@ void HelloWorld::recursiveFunctionOutlaw()
 			if (sManager.outlawList[i]->getBox()->checkCollision(*sManager.outlawList[j]->getBox())) {
 				sManager.outlawList[i]->getBox()->setLocation(
 					cocos2d::Vec2(100 + (rand() % 300),
-					sManager.outlawList[i]->getBox()->getLocation().y + 50));
+						sManager.outlawList[i]->getBox()->getLocation().y + 50));
 				recursiveFunctionOutlaw();
 			}
 
@@ -795,7 +811,7 @@ void HelloWorld::recursiveFunctionTable()
 				if (sManager.tableList[i]->getBox()->checkCollision(*sManager.tableList[j]->getBox())) {
 					sManager.tableList[i]->getBox()->setLocation(
 						cocos2d::Vec2(100 + (rand() % 300),
-						sManager.tableList[i]->getBox()->getLocation().y + 50));
+							sManager.tableList[i]->getBox()->getLocation().y + 50));
 					recursiveFunctionTable();
 				}
 
@@ -828,6 +844,7 @@ void HelloWorld::recursiveFunctionKnocked()
 
 void HelloWorld::checkPosAll()//this function will remove and objects that go to far below the screen
 {
+	if(!pizzaTime)
 	for (unsigned int i = 0; i < sManager.outlawList.size(); i++)
 	{
 		if (sManager.outlawList[i]->getBox()->getLocation().y < DDOS->getSprite()->getPosition().y - 400)
@@ -980,18 +997,18 @@ void HelloWorld::togglePause() {//this actually has many applications
 
 void HelloWorld::writeScore()
 {
-	
+
 	highFileIn = std::ifstream("Saloon_Scores.txt");
 	if (highFileIn.is_open())
 	{
 		std::string HighestScore;
-		while (std::getline(highFileIn, HighestScore)){}
+		while (std::getline(highFileIn, HighestScore)) {}
 		highFileIn.close();
 
 		if (HighestScore == "")
 			HighestScore = "0";
 		int intHighScore = std::stoi(HighestScore);
-		if (playerOne->getScore()>intHighScore)
+		if (playerOne->getScore() > intHighScore)
 		{
 			intHighScore = playerOne->getScore();
 			HighestScore = std::to_string(playerOne->getScore());
@@ -1016,7 +1033,7 @@ void HelloWorld::writeScore()
 		}
 		highFileOut.close();
 		highScoreLabel->setString(HighestScore);
-			std::cout << HighestScore;
+		std::cout << HighestScore;
 		highScoreLabel->setPosition(cocos2d::Vec2(230, DDOS->getSprite()->getPosition().y - 200));
 		highScoreLabel->setVisible(true);
 
@@ -1031,6 +1048,6 @@ void HelloWorld::writeScore()
 		highFileOut = std::ofstream();
 		writeScore();
 	}
-	
+
 	hasWritten = true;
 }
