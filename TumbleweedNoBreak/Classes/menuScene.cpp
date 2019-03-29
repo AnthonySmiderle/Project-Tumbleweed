@@ -159,8 +159,8 @@ bool MenuScene::init() {
 
 	menuE->select(2);
 
-	if (Sedna::optionStuff::music)
-		cocos2d::experimental::AudioEngine::play2d("bgm2.mp3", true);
+	///if (Sedna::optionStuff::music)
+	///	cocos2d::experimental::AudioEngine::play2d("bgm2.mp3", true);
 	end = false;
 	this->scheduleUpdate();
 
@@ -170,6 +170,11 @@ bool MenuScene::init() {
 void MenuScene::update(float dt)
 {
 	if (director->getInstance()->getRunningScene() == this) {
+
+		if (!playingMusic) {
+			cocos2d::experimental::AudioEngine::play2d("bgm2.mp3", true);
+			playingMusic = true;
+		}
 
 
 		manager.update();
@@ -205,7 +210,7 @@ void MenuScene::update(float dt)
 				auto game = HelloWorld::createScene();
 				cocos2d::experimental::AudioEngine::play2d("cha ching.mp3", false);
 
-				cocos2d::experimental::AudioEngine::stop(0);
+				cocos2d::experimental::AudioEngine::stopAll();
 				end = true;
 				//this->onExit();
 				director->replaceScene(TransitionFade::create(1.0f, game));

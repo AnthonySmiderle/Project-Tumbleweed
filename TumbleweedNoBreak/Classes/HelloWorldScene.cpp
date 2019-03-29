@@ -930,8 +930,8 @@ void HelloWorld::notDead(float dt)
 	if (!bossTime)
 		CAMERASPEED += 0.005 * dt;
 	else {
-		if (CAMERASPEED < 0)
-			CAMERASPEED = 0;
+		if (CAMERASPEED <= -2)
+			CAMERASPEED = -2;
 		else
 			CAMERASPEED += -0.5 * dt;
 	}
@@ -953,11 +953,22 @@ void HelloWorld::notDead(float dt)
 			this->getDefaultCamera()->getPosition().y + CAMERASPEED));
 		DDOS->getSprite()->setPosition(cocos2d::Vec2(100, (DDOS->getSprite()->getPosition().y + CAMERASPEED)));
 
-		if (DDOS->getSprite()->getPosition().y - bg2->getPosition().y >= 588.8f)
-			bg2->setPosition(cocos2d::Vec2(bg2->getPosition().x, bg2->getPosition().y + 588.8f));
 
-		if (DDOS->getSprite()->getPosition().y - bg3->getPosition().y >= 588.8f)
-			bg3->setPosition(cocos2d::Vec2(bg3->getPosition().x, bg3->getPosition().y + 588.8f));
+		if (CAMERASPEED > 0) {
+
+			if (DDOS->getSprite()->getPosition().y - bg2->getPosition().y >= 588.8f)
+				bg2->setPosition(cocos2d::Vec2(bg2->getPosition().x, bg2->getPosition().y + 588.8f));
+
+			if (DDOS->getSprite()->getPosition().y - bg3->getPosition().y >= 588.8f)
+				bg3->setPosition(cocos2d::Vec2(bg3->getPosition().x, bg3->getPosition().y + 588.8f));
+		}
+		else if (CAMERASPEED < 0) {
+			if (DDOS->getSprite()->getPosition().y - bg2->getPosition().y <= 0.0f)
+				bg2->setPosition(cocos2d::Vec2(bg2->getPosition().x, bg2->getPosition().y - 588.8f));
+
+			if (DDOS->getSprite()->getPosition().y - bg3->getPosition().y <= 0.0f)
+				bg3->setPosition(cocos2d::Vec2(bg3->getPosition().x, bg3->getPosition().y - 588.8f));
+		}
 
 	}
 }

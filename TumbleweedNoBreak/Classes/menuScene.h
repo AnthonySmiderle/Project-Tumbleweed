@@ -46,6 +46,8 @@ public:
 
 	CREATE_FUNC(MenuScene);
 private:
+	bool playingMusic = false;
+
 	static bool end;
 	cocos2d::Director* director;
 

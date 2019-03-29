@@ -135,9 +135,9 @@ namespace Sedna {
 				auto direction = cocos2d::Vec2(pSticks[0].x, pSticks[0].y);
 				auto force = direction / (direction.x*direction.x + direction.y*direction.y);
 
-				this->getBox()->addForce((pSticks[0].x > 0.3f || pSticks[0].x < -0.3f) ? 
+				this->getBox()->addForce((pSticks[0].x > 0.3f || pSticks[0].x < -0.3f) ?
 					force.x * 5 : 0.0f,
-					(pSticks[0].y > 0.3f || pSticks[0].y < -0.3f) ? 
+					(pSticks[0].y > 0.3f || pSticks[0].y < -0.3f) ?
 					force.y * 5 : 0.0f);
 
 			}
@@ -176,7 +176,7 @@ namespace Sedna {
 						pController->setVibration(0.25f, 0.25f);
 
 						cocos2d::experimental::AudioEngine::play2d("revolver1.mp3", false, 0.5f);
-						
+
 
 						currentGun->setAmmo(currentGun->getAmmo() - 1);
 						playerUI->updateList();
@@ -190,12 +190,12 @@ namespace Sedna {
 							s->addChild(pProjectiles.back()->getBox()->getDrawNode());
 							s->addChild(pProjectiles.back()->getSprite());
 
-							
+
 							pProjectiles.back()->getSprite()->setTexture("pBullet.png");
 							pProjectiles.back()->getBox()->setLocation(this->getBox()->getLocation());
 							//uncomment this for omnidirectional
 							if (currentGun->getName() == "theBiggestIron")
-								pProjectiles.back()->getBox()->setForce((pSticks[1].x > 0.3f || pSticks[1].x < -0.3f|| pSticks[1].y > 0.3f || pSticks[1].y <-0.3f) ?cocos2d::Vec2(test2)*BULLETSPEED1 * 2.5 : cocos2d::Vec2(0,5));
+								pProjectiles.back()->getBox()->setForce((pSticks[1].x > 0.3f || pSticks[1].x < -0.3f || pSticks[1].y > 0.3f || pSticks[1].y < -0.3f) ? cocos2d::Vec2(test2)*BULLETSPEED1 * 2.5f : cocos2d::Vec2(0, 1) *BULLETSPEED1*2.5f);
 
 							//comment out this region to enable omnidirectional shooting
 							else {
@@ -226,7 +226,7 @@ namespace Sedna {
 								//s->addChild(test);
 								//test->setPosition(pProjectiles.back()->getBox()->getLocation());
 								//test->update(dt);
-								
+
 
 							}
 						}
@@ -331,7 +331,7 @@ namespace Sedna {
 
 	}
 
-	void Player::checkBCollision(std::vector<Outlaw*>& outlawList, Powerup* power1, Powerup* power2,cocos2d::Scene* s)
+	void Player::checkBCollision(std::vector<Outlaw*>& outlawList, Powerup* power1, Powerup* power2, cocos2d::Scene* s)
 	{
 		bool check = false;
 		for (int i = 0; i < pProjectiles.size(); i++) {
@@ -452,9 +452,7 @@ namespace Sedna {
 							this->setHP(this->getHP() + 1);
 					}
 					if (tableList[i]->getBeer() == invinc)
-					{
 						invincTimer = 6.0f;
-					}
 					if (tableList[i]->getBeer() == revive && !p->takeInputs)
 					{
 						p->setHP(3);
