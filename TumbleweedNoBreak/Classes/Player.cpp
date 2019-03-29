@@ -135,7 +135,10 @@ namespace Sedna {
 				auto direction = cocos2d::Vec2(pSticks[0].x, pSticks[0].y);
 				auto force = direction / (direction.x*direction.x + direction.y*direction.y);
 
-				this->getBox()->addForce((pSticks[0].x > 0.3f || pSticks[0].x < -0.3f) ? force.x * 5:0.0f, (pSticks[0].y > 0.3f || pSticks[0].y < -0.3f) ? force.y * 5 : 0.0f);
+				this->getBox()->addForce((pSticks[0].x > 0.3f || pSticks[0].x < -0.3f) ? 
+					force.x * 5 : 0.0f,
+					(pSticks[0].y > 0.3f || pSticks[0].y < -0.3f) ? 
+					force.y * 5 : 0.0f);
 
 			}
 		}
@@ -165,21 +168,15 @@ namespace Sedna {
 				if (currentGun->getGunTimer() == 0)
 				{
 
-					//comment this if statement out for omnidirectional
 					if (pSticks[1].y < -0.3f) {
 
 					}
-					//comment this else statement out for omidirectional
 					else {
 						pController->setVibration(0.0f, 0.0f);
 						pController->setVibration(0.25f, 0.25f);
 
 						cocos2d::experimental::AudioEngine::play2d("revolver1.mp3", false, 0.5f);
-						//else if (this->currentGun->getName() == "theBiggestIron") {
-						//	static auto last = cocos2d::experimental::AudioEngine::play2d("gattling.mp3", false, 0.5f);
-						//	cocos2d::experimental::AudioEngine::stop(last);
-						//	cocos2d::experimental::AudioEngine::play2d("gattling.mp3", false, 0.5f);
-						//}
+						
 
 						currentGun->setAmmo(currentGun->getAmmo() - 1);
 						playerUI->updateList();
@@ -193,16 +190,16 @@ namespace Sedna {
 							s->addChild(pProjectiles.back()->getBox()->getDrawNode());
 							s->addChild(pProjectiles.back()->getSprite());
 
+							
 							pProjectiles.back()->getSprite()->setTexture("pBullet.png");
 							pProjectiles.back()->getBox()->setLocation(this->getBox()->getLocation());
 							//uncomment this for omnidirectional
 							if (currentGun->getName() == "theBiggestIron")
-								pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(test2)*BULLETSPEED1 * 2.5);
+								pProjectiles.back()->getBox()->setForce((pSticks[1].x > 0.3f || pSticks[1].x < -0.3f|| pSticks[1].y > 0.3f || pSticks[1].y <-0.3f) ?cocos2d::Vec2(test2)*BULLETSPEED1 * 2.5 : cocos2d::Vec2(0,5));
 
 							//comment out this region to enable omnidirectional shooting
 							else {
 
-#pragma region 3DirectionShooting
 								if (pSticks[1].x < -0.3f) {
 									pProjectiles.back()->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-16, 0));
 
@@ -225,9 +222,14 @@ namespace Sedna {
 								//pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(test2)*BULLETSPEED1*2);
 
 
+								//auto test = cocos2d::MotionStreak::create(1.0f,5.0f,5.0f,cocos2d::Color3B(255,160,0),"a.png");
+								//s->addChild(test);
+								//test->setPosition(pProjectiles.back()->getBox()->getLocation());
+								//test->update(dt);
+								
+
 							}
 						}
-#pragma endregion
 
 						else if (currentGun->getName() == "bloodyMary") {
 							cocos2d::experimental::AudioEngine::play2d("shotgun.mp3", false, 0.5f);
@@ -329,7 +331,7 @@ namespace Sedna {
 
 	}
 
-	void Player::checkBCollision(std::vector<Outlaw*>& outlawList, Powerup* power1, Powerup* power2)
+	void Player::checkBCollision(std::vector<Outlaw*>& outlawList, Powerup* power1, Powerup* power2,cocos2d::Scene* s)
 	{
 		bool check = false;
 		for (int i = 0; i < pProjectiles.size(); i++) {
@@ -368,11 +370,20 @@ namespace Sedna {
 
 					playerUI->updateList();
 
-						outlawList[j]->removeProjectiles();
-						outlawList[j]->getBox()->getDrawNode()->removeFromParent();
-						outlawList[j]->getSprite()->removeFromParent();
-						outlawList.erase(outlawList.begin() + j);
-						j--;
+					auto particles = cocos2d::ParticleExplosion::create();
+					particles->setSpeed(650);
+					particles->setSpeedVar(20);
+					particles->setEmissionRate(200);
+					particles->setPosition(outlawList[j]->getBox()->getLocation());
+					particles->setStartColor(cocos2d::Color4F(1.0f, 0, 0, 1.0f));
+					particles->setEndColor(cocos2d::Color4F(1.0f, 0, 0, 1.0f));
+					s->addChild(particles);
+
+					outlawList[j]->removeProjectiles();
+					outlawList[j]->getBox()->getDrawNode()->removeFromParent();
+					outlawList[j]->getSprite()->removeFromParent();
+					outlawList.erase(outlawList.begin() + j);
+					j--;
 				}
 
 

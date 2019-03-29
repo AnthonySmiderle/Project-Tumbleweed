@@ -76,7 +76,7 @@ public:
 	CREATE_FUNC(HelloWorld);
 
 	float bossTimer = 0.0f;
-	bool pizzaTime = false;
+	bool bossTime = false;
 	std::vector<Sedna::Outlaw*> g;
 	Sedna::CirclePrimitive* dummyTracker;
 

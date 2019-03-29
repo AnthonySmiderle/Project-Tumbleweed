@@ -59,36 +59,7 @@ bool HelloWorld::init()
 		return false;
 	}
 
-	auto visibleSize = Director::getInstance()->getVisibleSize();
-	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-	/////////////////////////////
-	// 2. add a menu item with "X" image, which is clicked to quit the program
-	//    you may modify it.
-
-	// add a "close" icon to exit the progress. it's an autorelease object
-	auto closeItem = MenuItemImage::create(
-		"CloseNormal.png",
-		"CloseSelected.png",
-		CC_CALLBACK_1(HelloWorld::menuCloseCallback, this));
-
-	if (closeItem == nullptr ||
-		closeItem->getContentSize().width <= 0 ||
-		closeItem->getContentSize().height <= 0)
-	{
-		problemLoading("'CloseNormal.png' and 'CloseSelected.png'");
-	}
-	else
-	{
-		float x = origin.x + visibleSize.width - closeItem->getContentSize().width / 2;
-		float y = origin.y + closeItem->getContentSize().height / 2;
-		closeItem->setPosition(Vec2(x, y));
-	}
-
-	// create menu, it's an autorelease object
-	auto menu = Menu::create(closeItem, NULL);
-	menu->setPosition(Vec2::ZERO);
-	this->addChild(menu, 1);
 
 	//bottom label
 
@@ -142,7 +113,7 @@ void HelloWorld::initSprites()
 	highScoreLabel = cocos2d::Label::create("Highscore", "fonts/Montague.ttf", 15);
 	highScoreLabel->setPosition(cocos2d::Vec2(100, DDOS->getSprite()->getPosition().y - 100));
 	highScoreLabel->setVisible(false);
-	this->addChild(highScoreLabel,10000);
+	this->addChild(highScoreLabel, 10000);
 
 
 	bloodyMaryP_up = new Sedna::Powerup("gun2.png", Sedna::Guns::bloodyMary, -1000, 0);
@@ -255,13 +226,13 @@ void HelloWorld::initSprites()
 	healSign = new Sedna::Sign("Healing Drink!", this, cocos2d::Vec2(-1000, 0));
 
 
-	g.push_back(new Sedna::Goldman(250, DDOS->getSprite()->getPosition().y));
+	g.push_back(new Sedna::Goldman(250, DDOS->getSprite()->getPosition().y - 60));
 	this->addChild(g.back()->getBox()->getDrawNode());
 	this->addChild(g.back()->getSprite());
-	this->addChild(((Sedna::Goldman*)g.back())->getHealthBar()->getDrawNode());
+	this->addChild(((Sedna::Goldman*)g.back())->getHealthBar()->getDrawNode(), 100);
 	((Sedna::Goldman*)g.back())->getHealthBar()->getDrawNode()->setVisible(false);
 
-	dummyTracker = new Sedna::CirclePrimitive(cocos2d::Vec2(70, 40), 5, 20, 50);
+	dummyTracker = new Sedna::CirclePrimitive(cocos2d::Vec2(50, static_cast<Sedna::Goldman*>(g.back())->getHealthBar()->getP2().y), 5, 20, 50);
 	this->addChild(dummyTracker->getDrawNode());
 	dummyTracker->getDrawNode()->setVisible(false);
 
@@ -276,7 +247,8 @@ void HelloWorld::initSprites()
 void HelloWorld::update(float dt)
 {
 	if (!end) {
-
+		if (bulletTime)
+			dt *= 0.5f;
 		managerR.update();
 		p1Controller->updateSticks(p1Sticks);
 		p1Controller->getTriggers(p1Triggers);
@@ -290,13 +262,11 @@ void HelloWorld::update(float dt)
 			playerTwo->setCurrentGun(Sedna::Guns::olReliable2);
 
 		bossTimer += dt;
-		if (bossTimer >= 10) {
-			pizzaTime = true;
-			if(!g.empty())
-			g.back()->getBox()->setLocation(cocos2d::Vec2(250, DDOS->getSprite()->getPosition().y + 40));
-		}
+		if (bossTimer >= 120) 
+			bossTime = true;
 
-		if (((Tutorial*)this)->tutorial)
+
+		if (this->tutorial)
 			this->gameTutorial(dt);
 		else {
 			this->pause(dt);
@@ -554,7 +524,7 @@ void HelloWorld::play(float dt)
 		theBiggestIronP_up->pickUp(playerOne);
 		theBiggestIronP_up->pickUp(playerTwo);
 
-		if (pizzaTime)
+		if (bossTime)
 			boss(dt);
 
 	}
@@ -562,27 +532,31 @@ void HelloWorld::play(float dt)
 
 void HelloWorld::boss(float dt)
 {
-	if (dummyTracker->getLocation().x <= 70)
-		dummyTracker->setForce(cocos2d::Vec2(8, 0));
-	else if (dummyTracker->getLocation().x >= 430)
-		dummyTracker->setForce(cocos2d::Vec2(-8, 0));
+	dummyTracker->setLocation(cocos2d::Vec2(dummyTracker->getLocation().x,g.back()->getBox()->getLocation().y - 260));
+	dummyTracker->getDrawNode()->setVisible(true);
+	if (dummyTracker->getLocation().x <= 50)
+		dummyTracker->setForce(cocos2d::Vec2(10, 0));
+	else if (dummyTracker->getLocation().x >= 450)
+		dummyTracker->setForce(cocos2d::Vec2(-10, 0));
 	dummyTracker->update();
 
 	if (!g.empty())
 	{
+		g.back()->getBox()->setLocation(cocos2d::Vec2(g.back()->getBox()->getLocation().x,DDOS->getSprite()->getPosition().y - 45));
 		((Sedna::Goldman*)g.back())->getHealthBar()->getDrawNode()->setVisible(true);
 		g.back()->updateGameObject();
 		g.back()->animate(dt);
 		((Sedna::Goldman*)g.back())->shoot(dt, this, dummyTracker);
-		g.back()->checkList();
+		static_cast<Sedna::Goldman*>(g.back())->checkList();
 		g.back()->checkBCollision(playerOne);
 		g.back()->checkBCollision(playerTwo);
 
-		playerOne->checkBCollision(g, bloodyMaryP_up, theBiggestIronP_up);
-		playerTwo->checkBCollision(g, bloodyMaryP_up, theBiggestIronP_up);
+		playerOne->checkBCollision(g, bloodyMaryP_up, theBiggestIronP_up, this);
+		playerTwo->checkBCollision(g, bloodyMaryP_up, theBiggestIronP_up, this);
 	}
 	if (g.empty())
-		pizzaTime = false;///
+		bossTime = false;///
+
 }
 
 void HelloWorld::pause(float dt)
@@ -742,22 +716,24 @@ void HelloWorld::checkManyLists(float dt)
 
 	}
 	else {
-		if (!pizzaTime) {
+		if (!bossTime) {
 
 			for (unsigned int i = 0; i < sManager.outlawList.size(); i++) {
 				auto first = playerOne->getBox()->getLocation() - sManager.outlawList[i]->getBox()->getLocation();
 				auto second = playerTwo->getBox()->getLocation() - sManager.outlawList[i]->getBox()->getLocation();
 
 				if (sManager.outlawList[i]->points == 200)
-					((Sedna::ShotgunOutlaw*)sManager.outlawList[i])->onLeftSideOf
-					((first.getLengthSq() < second.getLengthSq()) ? playerOne : playerTwo);
+					(static_cast<Sedna::ShotgunOutlaw*>(sManager.outlawList[i]))->onLeftSideOf
+					((first.getLengthSq() < second.getLengthSq()) ?
+						playerOne : playerTwo);
 
 				if (sManager.outlawList[i]->points == 300)
-					((Sedna::RifleOutlaw*)sManager.outlawList[i])->setTrack
-					((first.getLengthSq() < second.getLengthSq()) ? playerOne : playerTwo);
+					(static_cast<Sedna::RifleOutlaw*>(sManager.outlawList[i]))->setTrack
+					((first.getLengthSq() < second.getLengthSq()) ?
+						playerOne : playerTwo);
 
 				if (sManager.outlawList[i]->points == 1000)
-					((Sedna::CrazyPete*)sManager.outlawList[i])->updateDyn(dt, this);
+					(static_cast<Sedna::CrazyPete*>(sManager.outlawList[i])->updateDyn(dt, this));
 				else
 					sManager.outlawList[i]->shoot(dt, this);
 			}
@@ -765,7 +741,7 @@ void HelloWorld::checkManyLists(float dt)
 
 
 		checkPosAll();
-		if (!pizzaTime && sManager.outlawList.size() > 6) {
+		if (!bossTime && sManager.outlawList.size() > 6) {
 			sManager.outlawList.front()->removeProjectiles();
 			sManager.outlawList.front()->getBox()->getDrawNode()->removeFromParent();
 			sManager.outlawList.front()->getSprite()->removeFromParent();
@@ -773,17 +749,17 @@ void HelloWorld::checkManyLists(float dt)
 		}
 
 		recursiveFunctionKnocked();
-		if (!pizzaTime)
+		if (!bossTime)
 			recursiveFunctionOutlaw();
 		recursiveFunctionTable();
 
-		playerOne->checkBCollision(sManager.outlawList, bloodyMaryP_up, theBiggestIronP_up);
-		playerTwo->checkBCollision(sManager.outlawList, bloodyMaryP_up, theBiggestIronP_up);
+		playerOne->checkBCollision(sManager.outlawList, bloodyMaryP_up, theBiggestIronP_up, this);
+		playerTwo->checkBCollision(sManager.outlawList, bloodyMaryP_up, theBiggestIronP_up, this);
 		playerOne->checkList();
 		playerTwo->checkList();
 		for (unsigned int i = 0; i < sManager.tableList.size(); i++)
 			sManager.tableList[i]->updateGameObject();
-		if (!pizzaTime)
+		if (!bossTime)
 			for (unsigned int i = 0; i < sManager.outlawList.size(); i++) {
 
 				sManager.outlawList[i]->animate(dt);
@@ -868,7 +844,7 @@ void HelloWorld::recursiveFunctionKnocked()
 
 void HelloWorld::checkPosAll()//this function will remove and objects that go to far below the screen
 {
-	if (!pizzaTime)
+	if (!bossTime)
 		for (unsigned int i = 0; i < sManager.outlawList.size(); i++)
 		{
 			if (sManager.outlawList[i]->getBox()->getLocation().y < DDOS->getSprite()->getPosition().y - 400)
@@ -934,7 +910,7 @@ void HelloWorld::notDead(float dt)
 	bloodyMaryP_up->updateGameObject();
 	theBiggestIronP_up->updateGameObject();
 
-	if (!pizzaTime)
+	if (!bossTime)
 		CAMERASPEED += 0.005 * dt;
 	else
 		CAMERASPEED = 0;
