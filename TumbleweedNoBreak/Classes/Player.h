@@ -56,7 +56,7 @@ namespace Sedna {
 		void checkInput(float dt);
 		void shoot(float dt, cocos2d::Scene* s);
 		void checkList();
-		void checkBCollision(std::vector<Outlaw*>& outlawList,Powerup* power1,Powerup* power2);
+		void checkBCollision(std::vector<Outlaw*>& outlawList,Powerup* power1,Powerup* power2,cocos2d::Scene* s);
 		void checkBCollision(std::vector<Table*>& tableList);
 		void checkTableStuff(std::vector<Table*>& tableList, Sedna::Player*);
 		void updateInvince(float dt);

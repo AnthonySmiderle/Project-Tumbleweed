@@ -368,7 +368,7 @@ cocos2d::Vec2 Sedna::RifleOutlaw::getTrack() const
 
 CrazyPete::CrazyPete(float x, float y) : Outlaw(x, y)
 {
-	this->setHP(50);
+	this->setHP(3);
 	points = 1000;
 	this->getSprite()->setTexture("CrazyPete.png");
 	dynamite = new Projectile(getBox()->getLocation().x, getBox()->getLocation().y, Enemy);
@@ -480,17 +480,17 @@ void Sedna::CrazyPete::checkList()
 
 Goldman::Goldman(float x, float y) :Outlaw(x, y)
 {
-	this->setHP(50);
+	this->setHP(100);
 	points = 5000;
 	sprite->setTexture("boss.png");
-	healthBar = new SquarePrimitive(cocos2d::Vec2(this->getBox()->getLocation().x - 160, this->getBox()->getLocation().y - 210),
-		cocos2d::Vec2(this->getBox()->getLocation().x - 160 + this->getHP() * 6, this->getBox()->getLocation().y - 215));
+	healthBar = new SquarePrimitive(cocos2d::Vec2(this->getBox()->getLocation().x - 160, this->getBox()->getLocation().y - 235),
+		cocos2d::Vec2(this->getBox()->getLocation().x - 160 + this->getHP() * 3, this->getBox()->getLocation().y - 240));
 
 }
 
 void Sedna::Goldman::shoot(float dt, cocos2d::Scene * s, CirclePrimitive* c)
 {
-	if (this->getHP() <= (50 / 2)/*left it as a fraction incase we wanna change it later*/)
+	if (this->getHP() <= (100 / 2)/*left it as a fraction incase we wanna change it later*/)
 	{
 		phase1 = false;
 		phase2 = true;
@@ -522,7 +522,9 @@ void Sedna::Goldman::shoot(float dt, cocos2d::Scene * s, CirclePrimitive* c)
 			for (int i = 0; i < 10; i++) {
 				v.x++;
 				v.y = -v.x*v.x;
-				auto first = rand() % 4 >= 1 ? (rand() % 2 == 1 ? (rand() % 6) : (-rand() % 6)) : 0.0f;
+				auto first = rand() % 4 >= 1 ? 
+					(rand() % 2 == 1 ? 
+					(rand() % 6) : (-rand() % 6)) : 0.0f;
 				auto second = -3.0f;
 				eProjectiles[i]->getBox()->setLocation(cocos2d::Vec2(this->getBox()->getLocation().x, this->getBox()->getLocation().y + 60) + v);
 				auto force = v / sqrt(v.x*v.x + v.y*v.y);
@@ -580,7 +582,10 @@ void Sedna::Goldman::animate(float dt)
 
 void Sedna::Goldman::checkList()
 {
-	healthBar->setP2x(this->getBox()->getLocation().x - 160 + this->getHP() * 6);
+	healthBar->setP2x(this->getBox()->getLocation().x - 160 + this->getHP() * 3);
+	healthBar->setP1y(this->getBox()->getLocation().y - 215);
+	healthBar->setP2y(this->getBox()->getLocation().y - 220);
+	std::cout << healthBar->getP1().x << " " << healthBar->getP1().y << " \n";
 	healthBar->update(true);
 
 	if (eProjectiles.size() > (phase1 ? 20 : 100)) {
