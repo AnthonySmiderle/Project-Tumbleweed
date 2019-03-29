@@ -232,7 +232,7 @@ void HelloWorld::initSprites()
 	this->addChild(((Sedna::Goldman*)g.back())->getHealthBar()->getDrawNode(), 100);
 	((Sedna::Goldman*)g.back())->getHealthBar()->getDrawNode()->setVisible(false);
 
-	dummyTracker = new Sedna::CirclePrimitive(cocos2d::Vec2(50, static_cast<Sedna::Goldman*>(g.back())->getHealthBar()->getP2().y), 5, 20, 50);
+	dummyTracker = new Sedna::CirclePrimitive(cocos2d::Vec2(0, static_cast<Sedna::Goldman*>(g.back())->getHealthBar()->getP2().y), 5, 20, 50);
 	this->addChild(dummyTracker->getDrawNode());
 	dummyTracker->getDrawNode()->setVisible(false);
 
@@ -261,14 +261,14 @@ void HelloWorld::update(float dt)
 		if (playerTwo->getCurrentGun()->getAmmo() <= 0)
 			playerTwo->setCurrentGun(Sedna::Guns::olReliable2);
 
-		bossTimer += dt;
-		if (bossTimer >= 120) 
-			bossTime = true;
 
 
 		if (this->tutorial)
 			this->gameTutorial(dt);
 		else {
+			bossTimer += dt;
+			if (bossTimer >= 120)
+				bossTime = true;
 			this->pause(dt);
 			this->play(dt);
 		}
@@ -532,17 +532,27 @@ void HelloWorld::play(float dt)
 
 void HelloWorld::boss(float dt)
 {
-	dummyTracker->setLocation(cocos2d::Vec2(dummyTracker->getLocation().x,g.back()->getBox()->getLocation().y - 260));
-	dummyTracker->getDrawNode()->setVisible(true);
-	if (dummyTracker->getLocation().x <= 50)
+	if (!g.empty())
+		dummyTracker->setLocation(cocos2d::Vec2(dummyTracker->getLocation().x, g.back()->getBox()->getLocation().y - 260));
+	if (dummyTracker->getLocation().x <= 0)
 		dummyTracker->setForce(cocos2d::Vec2(10, 0));
-	else if (dummyTracker->getLocation().x >= 450)
+	else if (dummyTracker->getLocation().x >= 500)
 		dummyTracker->setForce(cocos2d::Vec2(-10, 0));
 	dummyTracker->update();
 
 	if (!g.empty())
 	{
-		g.back()->getBox()->setLocation(cocos2d::Vec2(g.back()->getBox()->getLocation().x,DDOS->getSprite()->getPosition().y - 45));
+		if (!sManager.outlawList.empty())
+		{
+			for (unsigned i = 0; i < sManager.outlawList.size(); i++) {
+				sManager.outlawList[i]->removeProjectiles();
+				sManager.outlawList[i]->getBox()->getDrawNode()->removeFromParent();
+				sManager.outlawList[i]->getSprite()->removeFromParent();
+				sManager.outlawList.erase(sManager.outlawList.begin() + i);
+				i--;
+			}
+		}
+		g.back()->getBox()->setLocation(cocos2d::Vec2(g.back()->getBox()->getLocation().x, DDOS->getSprite()->getPosition().y - 45));
 		((Sedna::Goldman*)g.back())->getHealthBar()->getDrawNode()->setVisible(true);
 		g.back()->updateGameObject();
 		g.back()->animate(dt);
@@ -554,8 +564,15 @@ void HelloWorld::boss(float dt)
 		playerOne->checkBCollision(g, bloodyMaryP_up, theBiggestIronP_up, this);
 		playerTwo->checkBCollision(g, bloodyMaryP_up, theBiggestIronP_up, this);
 	}
-	if (g.empty())
+	if (g.empty()) {
+		if (!playedWinSound) {
+			cocos2d::experimental::AudioEngine::stopAll();
+			cocos2d::experimental::AudioEngine::play2d("bgmWin.mp3", true);
+			playedWinSound = true;
+		}
+
 		bossTime = false;///
+	}
 
 }
 
@@ -912,8 +929,12 @@ void HelloWorld::notDead(float dt)
 
 	if (!bossTime)
 		CAMERASPEED += 0.005 * dt;
-	else
-		CAMERASPEED = 0;
+	else {
+		if (CAMERASPEED < 0)
+			CAMERASPEED = 0;
+		else
+			CAMERASPEED += -0.5 * dt;
+	}
 	sManager.update(dt, DDOS->getSprite()->getPosition().y);
 
 	if (moveScreen)

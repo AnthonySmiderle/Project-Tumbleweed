@@ -411,12 +411,12 @@ void Sedna::CrazyPete::updateDyn(float dt, cocos2d::Scene * s)
 	}
 	if (!eShootTimer) {
 		eHasShot = true;
-		dynamite->getBox()->setForce(cocos2d::Vec2(0, -3));
+		dynamite->getBox()->setForce(cocos2d::Vec2(0, -4));
 	}
 
 	if (eHasShot) {
 		eShootTimer += dt;
-		dynamite->getBox()->setForce(cocos2d::Vec2(0, -3));
+		dynamite->getBox()->setForce(cocos2d::Vec2(0, -4));
 	}
 	if (this->getBox()->getLocation().y - dynamite->getBox()->getLocation().y >= 150) {
 		shoot(dt, s);
@@ -445,7 +445,7 @@ void Sedna::CrazyPete::shoot(float dt, cocos2d::Scene * s)
 
 
 
-	auto speed = 5;
+	auto speed = 6;
 
 	eProjectiles[0]->getBox()->setForce(cocos2d::Vec2(-1, 0)*speed);
 	eProjectiles[1]->getBox()->setForce(cocos2d::Vec2(1, 0) *speed);
@@ -585,7 +585,6 @@ void Sedna::Goldman::checkList()
 	healthBar->setP2x(this->getBox()->getLocation().x - 160 + this->getHP() * 3);
 	healthBar->setP1y(this->getBox()->getLocation().y - 215);
 	healthBar->setP2y(this->getBox()->getLocation().y - 220);
-	std::cout << healthBar->getP1().x << " " << healthBar->getP1().y << " \n";
 	healthBar->update(true);
 
 	if (eProjectiles.size() > (phase1 ? 20 : 100)) {

@@ -375,9 +375,11 @@ namespace Sedna {
 					particles->setSpeedVar(20);
 					particles->setEmissionRate(200);
 					particles->setPosition(outlawList[j]->getBox()->getLocation());
-					particles->setStartColor(cocos2d::Color4F(1.0f, 0, 0, 1.0f));
-					particles->setEndColor(cocos2d::Color4F(1.0f, 0, 0, 1.0f));
+					particles->setStartColor(cocos2d::Color4F(0.0f, 0, 1.0f, 1.0f));
+					particles->setEndColor(cocos2d::Color4F(0.0f, 0, 1.0f, 1.0f));
 					s->addChild(particles);
+
+					cocos2d::experimental::AudioEngine::play2d("pain.mp3");
 
 					outlawList[j]->removeProjectiles();
 					outlawList[j]->getBox()->getDrawNode()->removeFromParent();
@@ -394,7 +396,7 @@ namespace Sedna {
 			}
 		}
 	}
-	void Player::checkBCollision(std::vector<Table*>& tableList)
+	void Player::checkBCollision(std::vector<Table*>& tableList)///depreciated
 	{
 		bool check = false;
 		for (int i = 0; i < pProjectiles.size(); i++) {
@@ -435,6 +437,8 @@ namespace Sedna {
 				//POWERUP CODE
 				if (tableList[i]->getBeer() != blank)
 				{
+					cocos2d::experimental::AudioEngine::play2d("pickupPotion.mp3");
+
 					if (tableList[i]->getBeer() == health)
 					{
 						for (int j = this->getUI()->getHPSprites().size() - 1; j >= 0; j--) {

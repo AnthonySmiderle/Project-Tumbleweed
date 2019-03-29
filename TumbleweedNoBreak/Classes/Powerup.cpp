@@ -1,5 +1,6 @@
 #include "Powerup.h"
 #include "Player.h"
+#include "AudioEngine.h"
 namespace Sedna {
 
 	Sedna::Powerup::Powerup(const char* s, Gun* GUN, float x, float y) : gun(GUN)
@@ -26,11 +27,17 @@ namespace Sedna {
 			p->setCurrentGun(gun);
 			p->getCurrentGun()->setAmmo(p->getCurrentGun()->getOriginalAmmo());
 
-			if(p->getCurrentGun()->getName() == "bloodyMary")
-			p->getUI()->getUIGunSprite()->setTexture("gun2.png");
-			else if(p->getCurrentGun()->getName() == "theBiggestIron")
+			if (p->getCurrentGun()->getName() == "bloodyMary") {
+				p->getUI()->getUIGunSprite()->setTexture("gun2.png");
+				cocos2d::experimental::AudioEngine::play2d("pickupShot.mp3");
+			}
+
+			else if (p->getCurrentGun()->getName() == "theBiggestIron") {
 				p->getUI()->getUIGunSprite()->setTexture("gun3.png");
-			
+				cocos2d::experimental::AudioEngine::play2d("pickupMini.mp3");
+
+			}
+
 			p->getUI()->updateList();
 			this->getBox()->setLocation(cocos2d::Vec2(-1000, 0));
 			this->updateGameObject();
@@ -42,6 +49,6 @@ namespace Sedna {
 		return gun;
 	}
 
-	
+
 
 }

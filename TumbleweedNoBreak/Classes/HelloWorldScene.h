@@ -75,6 +75,7 @@ public:
 	// implement the "static create()" method manually
 	CREATE_FUNC(HelloWorld);
 
+	bool playedWinSound = false;
 	float bossTimer = 0.0f;
 	bool bossTime = false;
 	std::vector<Sedna::Outlaw*> g;
