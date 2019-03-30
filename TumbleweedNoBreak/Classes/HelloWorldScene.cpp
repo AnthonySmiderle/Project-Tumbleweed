@@ -97,6 +97,27 @@ bool HelloWorld::init()
 void HelloWorld::initSprites()
 {
 	cocos2d::experimental::AudioEngine::preload("bgm.mp3");
+	cocos2d::experimental::AudioEngine::preload("bgm2.mp3");
+	cocos2d::experimental::AudioEngine::preload("bgmWin.mp3");
+	cocos2d::experimental::AudioEngine::preload("cha ching.mp3");
+	cocos2d::experimental::AudioEngine::preload("gattling.mp3");
+	cocos2d::experimental::AudioEngine::preload("outlawNormal.mp3");
+	cocos2d::experimental::AudioEngine::preload("outlawShotgun.mp3");
+	cocos2d::experimental::AudioEngine::preload("outlawRifle.mp3");
+	cocos2d::experimental::AudioEngine::preload("p1Hurt.mp3");
+	cocos2d::experimental::AudioEngine::preload("p1Hur2.mp3");
+	cocos2d::experimental::AudioEngine::preload("p1Hurt3.mp3");
+	cocos2d::experimental::AudioEngine::preload("p2Hurt.mp3");
+	cocos2d::experimental::AudioEngine::preload("p2Hurt2.mp3");
+	cocos2d::experimental::AudioEngine::preload("p2Hurt3.mp3");
+	cocos2d::experimental::AudioEngine::preload("p2Hurt3.mp3");
+	cocos2d::experimental::AudioEngine::preload("p2Hurt3.mp3");
+	cocos2d::experimental::AudioEngine::preload("pickupMini.mp3");
+	cocos2d::experimental::AudioEngine::preload("pickupPotion.mp3");
+	cocos2d::experimental::AudioEngine::preload("pickupShot.mp3");
+	cocos2d::experimental::AudioEngine::preload("revolver.mp3");
+	cocos2d::experimental::AudioEngine::preload("revolver.mp3");
+	cocos2d::experimental::AudioEngine::preload("shotgun.mp3");
 
 	DDOS = new Sedna::GameObject("a.png", cocos2d::Vec2(100, 300), 1, 1, 1);
 	this->addChild(DDOS->getBox()->getDrawNode());
@@ -217,13 +238,6 @@ void HelloWorld::initSprites()
 	this->addChild(dummy->getBox()->getDrawNode());
 	this->addChild(dummy->getSprite());
 
-	movementSign = new Sedna::Sign("Use the Left Thumbstick to Move", this, cocos2d::Vec2(-1000, 0));
-	shootSign = new Sedna::Sign("Use the Right Thumbstick to aim\n Hold the Right Trigger to shoot", this, cocos2d::Vec2(-1000, 0));
-	btSign = new Sedna::Sign("Hold the Left Trigger for Bullet Time", this, cocos2d::Vec2(-1000, 0));
-	tablekickSign = new Sedna::Sign("Hold A to kick tables\nKick tables with drinks on \nthem for special effects!", this, cocos2d::Vec2(-1000, 0));
-	invinceSign = new Sedna::Sign("Invincibility Drink!", this, cocos2d::Vec2(-1000, 0));
-	reviveSign = new Sedna::Sign("Revive your friend Drink!", this, cocos2d::Vec2(-1000, 0));
-	healSign = new Sedna::Sign("Healing Drink!", this, cocos2d::Vec2(-1000, 0));
 
 
 	g.push_back(new Sedna::Goldman(250, DDOS->getSprite()->getPosition().y - 60));
@@ -238,10 +252,27 @@ void HelloWorld::initSprites()
 
 	if (((Tutorial*)this)->tutorial)
 		if (tutBool) {
-			tutorialLabel = cocos2d::Label::create("Tutorial", "fonts/Montague.ttf", 8);
+			movementSign = new Sedna::Sign("Use the Left Thumbstick to Move", this, cocos2d::Vec2(-1000, 0));
+			shootSign = new Sedna::Sign("Use the Right Thumbstick to aim\n Hold the Right Trigger to shoot", this, cocos2d::Vec2(-1000, 0));
+			btSign = new Sedna::Sign("Hold the Left Trigger for Bullet Time", this, cocos2d::Vec2(-1000, 0));
+			tablekickSign = new Sedna::Sign("Hold A to kick tables\nKick tables with drinks on \nthem for special effects!", this, cocos2d::Vec2(-1000, 0));
+			invinceSign = new Sedna::Sign("Invincibility Drink!", this, cocos2d::Vec2(-1000, 0));
+			reviveSign = new Sedna::Sign("Revive your friend Drink!", this, cocos2d::Vec2(-1000, 0));
+			healSign = new Sedna::Sign("Healing Drink!", this, cocos2d::Vec2(-1000, 0));
+
+			tutorialLabel2 = cocos2d::Label::create("Tutorial\nTry everything out then\nPress X to play the game!", "fonts/Montague.ttf", 15);
+			tutorialLabel2->setPosition(cocos2d::Vec2(380, 270));
+			this->addChild(tutorialLabel2, 1000);
+			tutorialLabel2->setVisible(false);
+
+			tutorialLabel = cocos2d::Label::create("Tutorial", "fonts/Montague.ttf", 30);
 			tutorialLabel->setPosition(cocos2d::Vec2(380, 280));
 			this->addChild(tutorialLabel, 1000);
 		}
+
+
+
+
 }
 
 void HelloWorld::update(float dt)
@@ -340,13 +371,13 @@ void HelloWorld::gameTutorial(float dt)
 		}
 
 
-		movementSign->signUpdate(playerOne, playerTwo);
-		shootSign->signUpdate(playerOne, playerTwo);
-		btSign->signUpdate(playerOne, playerTwo);
-		tablekickSign->signUpdate(playerOne, playerTwo);
-		invinceSign->signUpdate(playerOne, playerTwo);
-		reviveSign->signUpdate(playerOne, playerTwo);
-		healSign->signUpdate(playerOne, playerTwo);
+		movementSign->signUpdate(playerOne);
+		shootSign->signUpdate(playerOne);
+		btSign->signUpdate(playerOne);
+		tablekickSign->signUpdate(playerOne);
+		invinceSign->signUpdate(playerOne);
+		reviveSign->signUpdate(playerOne);
+		healSign->signUpdate(playerOne);
 
 		if (tutCutscene) {
 
@@ -382,7 +413,9 @@ void HelloWorld::gameTutorial(float dt)
 		}
 		if (!tutCutscene) {
 
-			tutorialLabel->setString("Tutorial\nTry everything out then\nPress X to play the game!");
+			tutorialLabel->setVisible(false);
+			tutorialLabel2->setVisible(true);
+
 			if (!tutFunc3) {
 				dummy->getBox()->getDrawNode()->removeFromParent();
 				dummy->getSprite()->removeFromParent();
@@ -486,31 +519,6 @@ void HelloWorld::play(float dt)
 		checkInput(dt);
 		getCollisions();
 
-
-		//#ifdef _DEBUG
-		//		if (p1Controller->isButtonPressed(Sedna::Y) || p2Controller->isButtonPressed(Sedna::Y))
-		//			moveScreen ^= 1;
-		//
-		//		if (p1Controller->isButtonPressed(Sedna::X) || p2Controller->isButtonPressed(Sedna::X)) {
-		//			for (unsigned int i = 0; i < sManager.outlawList.size(); i++)
-		//				sManager.outlawList[i]->getBox()->getDrawNode()->setVisible(true);
-		//			for (unsigned int i = 0; i < sManager.tableList.size(); i++)
-		//				sManager.tableList[i]->getBox()->getDrawNode()->setVisible(true);
-		//			playerOne->getBox()->getDrawNode()->setVisible(true);
-		//			playerTwo->getBox()->getDrawNode()->setVisible(true);
-		//
-		//		}
-		//		else {
-		//			for (unsigned int i = 0; i < sManager.outlawList.size(); i++)
-		//				sManager.outlawList[i]->getBox()->getDrawNode()->setVisible(false);
-		//			for (unsigned int i = 0; i < sManager.tableList.size(); i++)
-		//				sManager.tableList[i]->getBox()->getDrawNode()->setVisible(false);
-		//
-		//			playerOne->getBox()->getDrawNode()->setVisible(false);
-		//			playerTwo->getBox()->getDrawNode()->setVisible(false);
-		//		}//show hitboxes
-		//#endif
-		//
 
 		checkManyLists(dt);
 

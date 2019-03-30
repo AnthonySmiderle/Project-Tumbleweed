@@ -83,6 +83,7 @@ public:
 
 
 	cocos2d::Label* tutorialLabel;
+	cocos2d::Label* tutorialLabel2;
 	bool tutFunc1 = false;
 	bool tutFunc2 = false;
 	bool tutFunc3 = false;

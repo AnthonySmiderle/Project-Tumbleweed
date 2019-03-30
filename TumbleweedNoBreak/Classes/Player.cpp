@@ -370,14 +370,20 @@ namespace Sedna {
 
 					playerUI->updateList();
 
-					auto particles = cocos2d::ParticleExplosion::create();
-					particles->setSpeed(650);
-					particles->setSpeedVar(20);
-					particles->setEmissionRate(200);
-					particles->setPosition(outlawList[j]->getBox()->getLocation());
-					particles->setStartColor(cocos2d::Color4F(0.0f, 0, 1.0f, 1.0f));
-					particles->setEndColor(cocos2d::Color4F(0.0f, 0, 1.0f, 1.0f));
-					s->addChild(particles);
+					for (unsigned i = 0; i < particles.size(); i++) {
+						particles[i]->removeFromParent();
+						particles.erase(particles.begin() + i);
+						i--;
+					}
+
+					particles.push_back(cocos2d::ParticleExplosion::create());
+					particles.back()->setSpeed(650);
+					particles.back()->setSpeedVar(20);
+					particles.back()->setEmissionRate(200);
+					particles.back()->setPosition(outlawList[j]->getBox()->getLocation());
+					particles.back()->setStartColor(cocos2d::Color4F(1.0f, 1.0f, 0.40f, 1.0f));
+					particles.back()->setEndColor(  cocos2d::Color4F(1.0f, 1.0f, 0.40f, 1.0f));
+					s->addChild(particles.back());
 
 					cocos2d::experimental::AudioEngine::play2d("pain.mp3");
 

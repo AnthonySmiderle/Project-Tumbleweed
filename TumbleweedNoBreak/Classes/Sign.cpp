@@ -13,38 +13,81 @@ namespace Sedna {
 		signText->enableShadow();
 		signText->enableBold();
 		signText->setVisible(false);
-		s->addChild(signText,10000);
+		s->addChild(signText, 10000);
 		s->addChild(sprite);
 		s->addChild(hitBox->getDrawNode());
 
 		hitBox->getDrawNode()->setVisible(false);
 
 	}
+
+	Sign::Sign(std::string FILEPATH, cocos2d::Scene * s, const cocos2d::Vec2 & LOCATION, bool CONSTWITHSPRITE)
+	{
+		sprite = cocos2d::Sprite::create("Crazy.png");
+		hitBox = new CirclePrimitive(LOCATION, 5, 5, 50);
+		hitBox->getDrawNode()->setVisible(false);
+		s->addChild(sprite);
+		s->addChild(hitBox->getDrawNode());
+
+		spritepath = FILEPATH;
+		displayedSprite = cocos2d::Sprite::create(FILEPATH);
+		displayedSprite->setPosition(LOCATION);
+		displayedSprite->setVisible(false);
+		constructedWithSprite = true;
+		s->addChild(displayedSprite, 1000);
+	}
+
 	Sign::~Sign()
 	{
-		signText->removeFromParent();
-		//sprite->removeFromParent();
-		//hitBox->getDrawNode()->removeFromParent();
-
+		if (constructedWithSprite)
+			displayedSprite->removeFromParent();
+		else
+			signText->removeFromParent();
 	}
-	void Sign::signUpdate(Player* playerOne, Player* playerTwo)
+	void Sign::signUpdate(Player* playerOne)
 	{
 		this->updateGameObject();
 
 		if ((this->getBox()->getLocation().x - playerOne->getBox()->getLocation().x) <= 20 &&
 			(this->getBox()->getLocation().x - playerOne->getBox()->getLocation().x) >= -20 &&
 			(this->getBox()->getLocation().y - playerOne->getBox()->getLocation().y) >= -20 &&
-			(this->getBox()->getLocation().y - playerOne->getBox()->getLocation().y) <= 20 ||
-
-			(this->getBox()->getLocation().x - playerTwo->getBox()->getLocation().x) <= 20 &&
-			(this->getBox()->getLocation().x - playerTwo->getBox()->getLocation().x) >= -20 &&
-			(this->getBox()->getLocation().y - playerTwo->getBox()->getLocation().y) <= 20 &&
-			(this->getBox()->getLocation().y - playerTwo->getBox()->getLocation().y) >= -20)
-			signText->setVisible(true);
+			(this->getBox()->getLocation().y - playerOne->getBox()->getLocation().y) <= 20)
+			(constructedWithSprite) ? displayedSprite->setVisible(true) : signText->setVisible(true);
 		else
-			signText->setVisible(false);
+			(constructedWithSprite) ? displayedSprite->setVisible(false) : signText->setVisible(false);
+
+		
+
 	}
-	
+
+	void Sign::animate(float dt, std::string TEMPSPRITE)
+	{
+		if (!constructedWithSprite)
+			return;
+		if (animationTimer >= 0.75f) {
+			animationTimer = 0.0f;
+			hasAnimated = false;
+		}
+		if (animationTimer <= 0.25f) {
+			hasAnimated = true;
+			displayedSprite->setTexture(TEMPSPRITE);
+
+		}
+		else if (animationTimer >= 0.5f) 
+			displayedSprite->setTexture(spritepath);
+
+		if (hasAnimated)
+			animationTimer += dt;
+
+	}
+
+	cocos2d::Sprite * Sign::getDisplayedSprite() const
+	{
+		if (constructedWithSprite)
+			return displayedSprite;
+		return nullptr;
+	}
+
 	cocos2d::Label * Sign::getLabel() const
 	{
 		return signText;

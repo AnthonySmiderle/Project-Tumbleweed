@@ -70,7 +70,7 @@ namespace Sedna {
 	
 		std::vector<Projectile*> getpProjectile() const;
 	private:
-		
+		std::vector<cocos2d::ParticleExplosion*> particles;
 		bool isAimingLeft = false;
 		bool isAimingRight = false;
 		float animationTimer = 0.0f;
