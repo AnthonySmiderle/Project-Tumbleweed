@@ -117,17 +117,7 @@ namespace Sedna {
 
 
 			pController->updateSticks(pSticks);
-			///if (pSticks[0].x > 0.3f)
-			///	this->getBox()->addForce(5, 0);
-			///	
-			///else if (pSticks[0].x < -0.3f)
-			///	this->getBox()->addForce(-5, 0);
-			///
-			///if (pSticks[0].y > 0.3f) 
-			///	this->getBox()->addForce(0, 5);
-			///
-			///else if (pSticks[0].y < -0.3f)
-			///	this->getBox()->addForce(0, -5);
+			
 
 			if (pSticks[0].x > -0.3f && pSticks[0].x < 0.3f && pSticks[0].y > -0.3f && pSticks[0].y < 0.3f)
 				this->getBox()->addForce(this->getBox()->getVelocity().x *-3.0f, this->getBox()->getVelocity().y*-3.0f);
@@ -139,7 +129,7 @@ namespace Sedna {
 					force.x * 5 : 0.0f,
 					(pSticks[0].y > 0.3f || pSticks[0].y < -0.3f) ?
 					force.y * 5 : 0.0f);
-
+				moved = true;
 			}
 		}
 	}
@@ -159,6 +149,7 @@ namespace Sedna {
 			pController->getTriggers(pTriggers);
 			if (pTriggers.RT > 0) {
 
+				shot = true;
 
 				if (currentGun->getGunTimer() > currentGun->getRateOfFire())
 				{
@@ -438,6 +429,7 @@ namespace Sedna {
 	{
 		for (int i = 0; i < tableList.size(); i++) {
 			if (pController->isButtonPressed(Sedna::A) && this->getBox()->checkCollision(*tableList[i]->getBox())) {
+				kickedTable = true;
 				cocos2d::Vec2 distanceVector((tableList[i]->getBox()->getLocation().x - this->getBox()->getLocation().x),
 					(tableList[i]->getBox()->getLocation().y - this->getBox()->getLocation().y));
 				//POWERUP CODE

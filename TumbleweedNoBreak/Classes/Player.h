@@ -69,7 +69,19 @@ namespace Sedna {
 		void setGun(Gun* g);
 	
 		std::vector<Projectile*> getpProjectile() const;
+
+		///<used for tutorial purposes only>
+		bool usedBt = false;
+		bool hasMoved() const { return moved; }
+		bool usedShot() const { return shot; }
+		///<not to be confused with xinput>
+		bool pressedA() const { return kickedTable; }
 	private:
+		///<used for tutorial purposes only>
+		bool moved = false;
+		bool shot = false;
+		bool kickedTable = false;
+
 		std::vector<cocos2d::ParticleExplosion*> particles;
 		bool isAimingLeft = false;
 		bool isAimingRight = false;

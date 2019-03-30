@@ -36,8 +36,9 @@ int WINAPI _tWinMain(HINSTANCE hInstance,
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
 
-	AllocConsole();
-	freopen("CONOUT$", "w", stdout);
+	///<only uncomment if you really need to allocate a console for whatever reason>
+	///AllocConsole();
+	///freopen("CONOUT$", "w", stdout);
 
 
     // create the application instance

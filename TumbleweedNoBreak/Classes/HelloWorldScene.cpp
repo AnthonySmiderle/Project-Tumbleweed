@@ -253,20 +253,28 @@ void HelloWorld::initSprites()
 	if (((Tutorial*)this)->tutorial)
 		if (tutBool) {
 			movementSign = new Sedna::Sign("Use the Left Thumbstick to Move", this, cocos2d::Vec2(-1000, 0));
-			shootSign = new Sedna::Sign("Use the Right Thumbstick to aim\n Hold the Right Trigger to shoot", this, cocos2d::Vec2(-1000, 0));
+			shootSign = new Sedna::Sign("rt.png", this, cocos2d::Vec2(-1000, 0),true);
+			tutorialGun = cocos2d::Sprite::create("tutorialGun.png");
+			this->addChild(tutorialGun);
+			tutorialGun->setScale(0.5f);
+			tutorialGun->setVisible(false);
+			tutorialGun->setPosition(shootSign->getDisplayedSprite()->getPosition() + cocos2d::Vec2(30, 0));
+
+
+
 			btSign = new Sedna::Sign("Hold the Left Trigger for Bullet Time", this, cocos2d::Vec2(-1000, 0));
 			tablekickSign = new Sedna::Sign("Hold A to kick tables\nKick tables with drinks on \nthem for special effects!", this, cocos2d::Vec2(-1000, 0));
 			invinceSign = new Sedna::Sign("Invincibility Drink!", this, cocos2d::Vec2(-1000, 0));
 			reviveSign = new Sedna::Sign("Revive your friend Drink!", this, cocos2d::Vec2(-1000, 0));
 			healSign = new Sedna::Sign("Healing Drink!", this, cocos2d::Vec2(-1000, 0));
 
-			tutorialLabel2 = cocos2d::Label::create("Tutorial\nTry everything out then\nPress X to play the game!", "fonts/Montague.ttf", 15);
-			tutorialLabel2->setPosition(cocos2d::Vec2(380, 270));
+			tutorialLabel2 = cocos2d::Label::create("Tutorial\nTry everything out then\nPress X to play the game!", "fonts/Montague.ttf", 12);
+			tutorialLabel2->setPosition(cocos2d::Vec2(400, 270));
 			this->addChild(tutorialLabel2, 1000);
 			tutorialLabel2->setVisible(false);
 
 			tutorialLabel = cocos2d::Label::create("Tutorial", "fonts/Montague.ttf", 30);
-			tutorialLabel->setPosition(cocos2d::Vec2(380, 280));
+			tutorialLabel->setPosition(cocos2d::Vec2(400, 280));	
 			this->addChild(tutorialLabel, 1000);
 		}
 
@@ -317,6 +325,8 @@ void HelloWorld::useBulletTime(float dt)
 
 	if (bulletTime)
 	{
+		playerOne->usedBt = true;
+		playerTwo->usedBt = true;
 		paused ^= 1;
 
 		playerOne->getBox()->setRadius(15);	///
@@ -348,7 +358,8 @@ void HelloWorld::gameTutorial(float dt)
 
 		if (!tutCutscene) {
 
-			if (playerOne->getController()->isButtonPressed(Sedna::X))
+			if (playerOne->getController()->isButtonPressed(Sedna::X) &&
+				playerOne->hasMoved() && playerOne->usedShot() && playerOne->usedBt && playerOne->pressedA())
 			{
 				tutFunc4 = true;
 				for (auto x : tutTables)
@@ -368,9 +379,10 @@ void HelloWorld::gameTutorial(float dt)
 				playerTwo->getBox()->setLocation(cocos2d::Vec2(280, 100));
 
 			}
+			
 		}
 
-
+		//tutorial signs
 		movementSign->signUpdate(playerOne);
 		shootSign->signUpdate(playerOne);
 		btSign->signUpdate(playerOne);
@@ -378,6 +390,12 @@ void HelloWorld::gameTutorial(float dt)
 		invinceSign->signUpdate(playerOne);
 		reviveSign->signUpdate(playerOne);
 		healSign->signUpdate(playerOne);
+
+		//sub images
+		if (shootSign->getDisplayedSprite()->isVisible() && !tutorialGun->isVisible())
+			tutorialGun->setVisible(true);
+		else if (!shootSign->getDisplayedSprite()->isVisible() && tutorialGun->isVisible())
+			tutorialGun->setVisible(false);
 
 		if (tutCutscene) {
 
@@ -448,13 +466,6 @@ void HelloWorld::gameTutorial(float dt)
 				reviveSign->getBox()->setLocation(cocos2d::Vec2(195, 113));
 				healSign->getBox()->setLocation(cocos2d::Vec2(195, 49));
 
-				movementSign->getLabel()->setVisible(true);
-				shootSign->getLabel()->setVisible(true);
-				btSign->getLabel()->setVisible(true);
-				tablekickSign->getLabel()->setVisible(true);
-				invinceSign->getLabel()->setVisible(true);
-				reviveSign->getLabel()->setVisible(true);
-				healSign->getLabel()->setVisible(true);
 
 			}
 			bounds();
@@ -478,6 +489,7 @@ void HelloWorld::gameTutorial(float dt)
 		if (tutFunc4) {
 			((Tutorial*)this)->tutorial = false;
 			tutorialLabel->removeFromParent();
+			tutorialLabel2->removeFromParent();
 			playerOne->setScore(0);
 			playerTwo->setScore(0);
 		}

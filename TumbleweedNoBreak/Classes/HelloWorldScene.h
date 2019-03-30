@@ -94,6 +94,7 @@ public:
 	Sedna::Sign* tablekickSign;
 	Sedna::Sign* btSign;
 	Sedna::Sign* shootSign;
+	cocos2d::Sprite* tutorialGun;
 	Sedna::Sign* movementSign;
 	Sedna::Player* dummy;
 	bool tutBool = true;

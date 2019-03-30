@@ -1,6 +1,6 @@
 #include "Sign.h"
 namespace Sedna {
-	///<REMEMBER TO SET VISIBLE TO TRUE>
+	///<REMEMBER TO SET VISIBLE TO TRUE....might not need this anymore>
 	Sign::Sign(std::string LABELTEXT, cocos2d::Scene * s, const cocos2d::Vec2& LOCATION)
 	{
 		sprite = cocos2d::Sprite::create("Crazy.png");
@@ -8,8 +8,8 @@ namespace Sedna {
 
 		labelText = LABELTEXT;
 
-		signText = cocos2d::Label::create(labelText, "fonts/Montague.ttf", 20);
-		signText->setPosition(cocos2d::Vec2(250, 250));
+		signText = cocos2d::Label::create(labelText, "fonts/Montague.ttf", 15);
+		signText->setPosition(cocos2d::Vec2(220, 250));
 		signText->enableShadow();
 		signText->enableBold();
 		signText->setVisible(false);
@@ -31,7 +31,7 @@ namespace Sedna {
 
 		spritepath = FILEPATH;
 		displayedSprite = cocos2d::Sprite::create(FILEPATH);
-		displayedSprite->setPosition(LOCATION);
+		displayedSprite->setPosition(cocos2d::Vec2(230,250));
 		displayedSprite->setVisible(false);
 		constructedWithSprite = true;
 		s->addChild(displayedSprite, 1000);
