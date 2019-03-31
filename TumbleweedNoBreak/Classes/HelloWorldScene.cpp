@@ -254,7 +254,6 @@ void HelloWorld::initSprites()
 		if (tutBool) {
 			movementSign = new Sedna::Sign("lsl.png", this, cocos2d::Vec2(-1000, 0),true);
 
-
 			shootSign = new Sedna::Sign("rt.png", this, cocos2d::Vec2(-1000, 0),true);
 			tutorialGun = cocos2d::Sprite::create("tutorialGun.png");
 			this->addChild(tutorialGun);

@@ -86,8 +86,8 @@ namespace Sedna {
 
 
 			if (eProjectiles[i]->getBox()->checkCollision(*p->getBox())) {
-#ifdef _DEBUG//TODO remove the invincible stuff 
-				if (p->getController()->isButtonReleased(Sedna::LB) && !(p->getInvinc())) {
+//TODO remove the invincible stuff 
+				if (!(p->getInvinc())) {
 
 					p->setHP(p->getHP() - 1);
 					srand(rand() % time(0));
@@ -118,20 +118,19 @@ namespace Sedna {
 						}
 					}
 				}
-#endif
-#ifdef _RELEASE
-
-				p->setHP(p->getHP() - 1);
-
-				for (int j = 0; j < p->getUI()->getHPSprites().size(); j++) {
-					if (p->getUI()->getHPSprites()[j]->getZOrder() == 21) {
-						p->getUI()->getHPSprites()[j]->setZOrder(20);
-						p->getUI()->getHPSprites()[j]->setTexture("brokenHeart.png");
-						break;
-					}
-				}
-			}
-#endif
+//#ifdef _RELEASE
+//
+//				p->setHP(p->getHP() - 1);
+//
+//				for (int j = 0; j < p->getUI()->getHPSprites().size(); j++) {
+//					if (p->getUI()->getHPSprites()[j]->getZOrder() == 21) {
+//						p->getUI()->getHPSprites()[j]->setZOrder(20);
+//						p->getUI()->getHPSprites()[j]->setTexture("brokenHeart.png");
+//						break;
+//					}
+//				}
+//			}
+//#endif
 			eProjectiles[i]->getBox()->getDrawNode()->removeFromParent();
 			eProjectiles[i]->getSprite()->removeFromParent();
 			eProjectiles.erase(eProjectiles.begin() + i);
