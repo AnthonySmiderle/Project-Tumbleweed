@@ -82,6 +82,12 @@ public:
 	Sedna::CirclePrimitive* dummyTracker;
 
 
+
+	cocos2d::Sprite* noControl;
+	cocos2d::Label* tutorialMovedLabel;
+	cocos2d::Label* tutorialKickedLabel;
+	cocos2d::Label* tutorialBulletLabel;
+	cocos2d::Label* tutorialShootLabel;
 	cocos2d::Label* tutorialLabel;
 	cocos2d::Label* tutorialLabel2;
 	bool tutFunc1 = false;
@@ -92,8 +98,12 @@ public:
 	Sedna::Sign* reviveSign;
 	Sedna::Sign* invinceSign;
 	Sedna::Sign* tablekickSign;
+	cocos2d::Sprite* tutorialTime;
+	cocos2d::Sprite* tutorialBoot;
 	Sedna::Sign* btSign;
 	Sedna::Sign* shootSign;
+	Sedna::Sign* shootSign2;
+	cocos2d::Sprite* crosshair;
 	cocos2d::Sprite* tutorialGun;
 	Sedna::Sign* movementSign;
 	Sedna::Player* dummy;

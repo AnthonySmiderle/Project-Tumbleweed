@@ -51,7 +51,6 @@ void Sedna::SpawnManager::outlawSpawn(int DDOS)
 void Sedna::SpawnManager::shotgunOutlawSpawn(int DDOS)
 {
 	int x = 100 + (rand() % 300);
-	shotgunOutlaw = new Sedna::ShotgunOutlaw(x, DDOS);
 	outlawList.push_back(new Sedna::ShotgunOutlaw(x, DDOS));
 	scene->addChild(outlawList.back()->getBox()->getDrawNode());
 	scene->addChild(outlawList.back()->getSprite());

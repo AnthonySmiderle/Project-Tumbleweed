@@ -252,18 +252,34 @@ void HelloWorld::initSprites()
 
 	if (((Tutorial*)this)->tutorial)
 		if (tutBool) {
-			movementSign = new Sedna::Sign("Use the Left Thumbstick to Move", this, cocos2d::Vec2(-1000, 0));
+			movementSign = new Sedna::Sign("lsl.png", this, cocos2d::Vec2(-1000, 0),true);
+
+
 			shootSign = new Sedna::Sign("rt.png", this, cocos2d::Vec2(-1000, 0),true);
 			tutorialGun = cocos2d::Sprite::create("tutorialGun.png");
 			this->addChild(tutorialGun);
 			tutorialGun->setScale(0.5f);
 			tutorialGun->setVisible(false);
 			tutorialGun->setPosition(shootSign->getDisplayedSprite()->getPosition() + cocos2d::Vec2(30, 0));
+			shootSign2 = new Sedna::Sign("rsl.png", this, shootSign->getBox()->getLocation(),true);
+			shootSign2->getDisplayedSprite()->setPosition(shootSign2->getDisplayedSprite()->getPosition() + cocos2d::Vec2(0, -30));
+			crosshair = cocos2d::Sprite::create("Crosshairs.png");
+			this->addChild(crosshair);
+			crosshair->setVisible(false);
+			crosshair->setPosition(shootSign2->getDisplayedSprite()->getPosition() + cocos2d::Vec2(30, 0));
 
+			btSign = new Sedna::Sign("lt.png", this, cocos2d::Vec2(-1000, 0),true);
+			tutorialTime = cocos2d::Sprite::create("tutorialTime.png");
+			this->addChild(tutorialTime);
+			tutorialTime->setVisible(false);
+			tutorialTime->setPosition(btSign->getDisplayedSprite()->getPosition() + cocos2d::Vec2(30, 0));
 
+			tablekickSign = new Sedna::Sign("a1.png", this, cocos2d::Vec2(-1000, 0),true);
+			tutorialBoot = cocos2d::Sprite::create("Boot.png");
+			this->addChild(tutorialBoot);
+			tutorialBoot->setVisible(false);
+			tutorialBoot->setPosition(tablekickSign->getDisplayedSprite()->getPosition() + cocos2d::Vec2(30, 0));
 
-			btSign = new Sedna::Sign("Hold the Left Trigger for Bullet Time", this, cocos2d::Vec2(-1000, 0));
-			tablekickSign = new Sedna::Sign("Hold A to kick tables\nKick tables with drinks on \nthem for special effects!", this, cocos2d::Vec2(-1000, 0));
 			invinceSign = new Sedna::Sign("Invincibility Drink!", this, cocos2d::Vec2(-1000, 0));
 			reviveSign = new Sedna::Sign("Revive your friend Drink!", this, cocos2d::Vec2(-1000, 0));
 			healSign = new Sedna::Sign("Healing Drink!", this, cocos2d::Vec2(-1000, 0));
@@ -276,6 +292,36 @@ void HelloWorld::initSprites()
 			tutorialLabel = cocos2d::Label::create("Tutorial", "fonts/Montague.ttf", 30);
 			tutorialLabel->setPosition(cocos2d::Vec2(400, 280));	
 			this->addChild(tutorialLabel, 1000);
+
+			tutorialKickedLabel = cocos2d::Label::create("Kicked", "fonts/Montague.ttf", 12);
+			tutorialKickedLabel->setPosition(cocos2d::Vec2(400, 240));
+			this->addChild(tutorialKickedLabel, 1000);
+			tutorialKickedLabel->setTextColor(cocos2d::Color4B::RED);
+
+			tutorialMovedLabel = cocos2d::Label::create("Moved", "fonts/Montague.ttf", 12);
+			tutorialMovedLabel->setPosition(cocos2d::Vec2(400, 230));
+			this->addChild(tutorialMovedLabel, 1000);
+			tutorialMovedLabel->setTextColor(cocos2d::Color4B::RED);
+
+			tutorialBulletLabel = cocos2d::Label::create("Bullet Time", "fonts/Montague.ttf", 12);
+			tutorialBulletLabel->setPosition(cocos2d::Vec2(400, 220));
+			this->addChild(tutorialBulletLabel, 1000);
+			tutorialBulletLabel->setTextColor(cocos2d::Color4B::RED);
+
+			tutorialShootLabel = cocos2d::Label::create("Has Shot", "fonts/Montague.ttf", 12);
+			tutorialShootLabel->setPosition(cocos2d::Vec2(400, 210));
+			this->addChild(tutorialShootLabel, 1000);
+			tutorialShootLabel->setTextColor(cocos2d::Color4B::RED);
+
+			tutorialKickedLabel->setVisible(false);
+			tutorialShootLabel->setVisible(false);
+			tutorialBulletLabel->setVisible(false);
+			tutorialMovedLabel->setVisible(false);
+			
+			noControl = cocos2d::Sprite::create("nope.png");
+			noControl->setPosition(cocos2d::Vec2(400, 210));
+			noControl->setScale(2);
+			this->addChild(noControl, 1000);
 		}
 
 
@@ -369,6 +415,7 @@ void HelloWorld::gameTutorial(float dt)
 
 				movementSign->getBox()->setLocation(cocos2d::Vec2(-1300, 150));
 				shootSign->getBox()->setLocation(cocos2d::Vec2(-1340, 190));
+				shootSign2->getBox()->setLocation(cocos2d::Vec2(-1340, 190));
 				btSign->getBox()->setLocation(cocos2d::Vec2(-1360, 80));
 				tablekickSign->getBox()->setLocation(cocos2d::Vec2(-1195, 270));
 				invinceSign->getBox()->setLocation(cocos2d::Vec2(-1195, 185));
@@ -384,9 +431,12 @@ void HelloWorld::gameTutorial(float dt)
 
 		//tutorial signs
 		movementSign->signUpdate(playerOne);
-		shootSign->signUpdate(playerOne);
-		btSign->signUpdate(playerOne);
+		movementSign->animate(dt, "lsR.png");
 		tablekickSign->signUpdate(playerOne);
+		shootSign->signUpdate(playerOne);
+		shootSign2->signUpdate(playerOne);
+		shootSign2->animate(dt, "rsr.png");
+		btSign->signUpdate(playerOne);
 		invinceSign->signUpdate(playerOne);
 		reviveSign->signUpdate(playerOne);
 		healSign->signUpdate(playerOne);
@@ -396,6 +446,23 @@ void HelloWorld::gameTutorial(float dt)
 			tutorialGun->setVisible(true);
 		else if (!shootSign->getDisplayedSprite()->isVisible() && tutorialGun->isVisible())
 			tutorialGun->setVisible(false);
+
+		if (tablekickSign->getDisplayedSprite()->isVisible() && !tutorialBoot->isVisible())
+			tutorialBoot->setVisible(true);
+		else if (!tablekickSign->getDisplayedSprite()->isVisible() && tutorialBoot->isVisible())
+			tutorialBoot->setVisible(false);
+
+		if (btSign->getDisplayedSprite()->isVisible() && !tutorialTime->isVisible())
+			tutorialTime->setVisible(true);
+		else if (!btSign->getDisplayedSprite()->isVisible() && tutorialTime->isVisible())
+			tutorialTime->setVisible(false);
+
+		if (shootSign->getDisplayedSprite()->isVisible() && !crosshair->isVisible())
+			crosshair->setVisible(true);
+		else if (!shootSign->getDisplayedSprite()->isVisible() && crosshair->isVisible())
+			crosshair->setVisible(false);
+		
+
 
 		if (tutCutscene) {
 
@@ -426,14 +493,23 @@ void HelloWorld::gameTutorial(float dt)
 				tutOutlaws.back()->getBox()->setForce(cocos2d::Vec2(0, -2));
 			else
 				tutOutlaws.back()->getBox()->setForce(cocos2d::Vec2(0, 0));
-			if (tutTables.empty())
+			if (tutTables.empty()) {
+				noControl->removeFromParent();
 				tutCutscene = false;
+			}
 		}
+
+
+
+
 		if (!tutCutscene) {
 
 			tutorialLabel->setVisible(false);
 			tutorialLabel2->setVisible(true);
-
+			tutorialKickedLabel->setVisible(true);
+			tutorialShootLabel->setVisible( true);
+			tutorialBulletLabel->setVisible(true);
+			tutorialMovedLabel->setVisible( true);
 			if (!tutFunc3) {
 				dummy->getBox()->getDrawNode()->removeFromParent();
 				dummy->getSprite()->removeFromParent();
@@ -460,6 +536,7 @@ void HelloWorld::gameTutorial(float dt)
 				}
 				movementSign->getBox()->setLocation(cocos2d::Vec2(300, 150));
 				shootSign->getBox()->setLocation(cocos2d::Vec2(340, 190));
+				shootSign2->getBox()->setLocation(cocos2d::Vec2(340, 190));
 				btSign->getBox()->setLocation(cocos2d::Vec2(360, 80));
 				tablekickSign->getBox()->setLocation(cocos2d::Vec2(195, 270));
 				invinceSign->getBox()->setLocation(cocos2d::Vec2(195, 185));
@@ -478,6 +555,15 @@ void HelloWorld::gameTutorial(float dt)
 			playerTwo->updateGameObject();
 			checkPosAll();
 
+			if(playerOne->getController()->isButtonPressed(Sedna::A))
+				tutorialKickedLabel->setTextColor(cocos2d::Color4B::GREEN);
+			if (p1Sticks[0].x > 0.3f)
+				tutorialMovedLabel->setTextColor(cocos2d::Color4B::GREEN);
+			if (p1Triggers.RT > 0.3f)
+				tutorialShootLabel->setTextColor(cocos2d::Color4B::GREEN);
+			if (p1Triggers.LT > 0.3f)
+				tutorialBulletLabel->setTextColor(cocos2d::Color4B::GREEN);
+
 			///std::cout << playerOne->getBox()->getLocation().x << " " << playerOne->getBox()->getLocation().y << "\n";
 
 		}
@@ -490,6 +576,11 @@ void HelloWorld::gameTutorial(float dt)
 			((Tutorial*)this)->tutorial = false;
 			tutorialLabel->removeFromParent();
 			tutorialLabel2->removeFromParent();
+			tutorialKickedLabel->removeFromParent();
+			tutorialShootLabel->removeFromParent();
+			tutorialBulletLabel->removeFromParent();
+			tutorialMovedLabel->removeFromParent();
+
 			playerOne->setScore(0);
 			playerTwo->setScore(0);
 		}
@@ -840,7 +931,7 @@ void HelloWorld::recursiveFunctionOutlaw()
 void HelloWorld::recursiveFunctionTable()
 {
 	for (unsigned int i = 0; i < sManager.tableList.size(); i++) {
-		if (sManager.tableList[i]->knocked != true)
+		if (!sManager.tableList[i]->knocked)
 		{
 			for (unsigned int j = 0; j < sManager.tableList.size(); j++) {
 				if (i == j)

@@ -20,10 +20,6 @@ namespace Sedna {
 		void rifleOutlawSpawn(int DDOS);
 		void peteSpawn(int DDOS);
 
-		Sedna::Outlaw* outlaw;
-		Sedna::ShotgunOutlaw* shotgunOutlaw;
-		Sedna::RifleOutlaw* rifleOutlaw;
-		Sedna::CrazyPete* pete;
 
 		
 		float totalTime = 0.0f;
