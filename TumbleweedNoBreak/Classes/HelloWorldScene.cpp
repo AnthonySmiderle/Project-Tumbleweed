@@ -251,30 +251,36 @@ void HelloWorld::initSprites()
 	this->addChild(dummyTracker->getDrawNode());
 	dummyTracker->getDrawNode()->setVisible(false);
 
+	bossTimeLabel = cocos2d::Label::create(std::to_string(bossTimeMax), "fonts/Montague.ttf", 15);
+	bossTimeLabel->setPosition(cocos2d::Vec2(50, 250));
+	bossTimeLabel->setAnchorPoint(cocos2d::Vec2(0.5f,0.5f));
+	this->addChild(bossTimeLabel, 1000);
+	bossTimeLabel->setVisible(false);
+
 	if (((Tutorial*)this)->tutorial)
 		if (tutBool) {
-			movementSign = new Sedna::Sign("lsl.png", this, cocos2d::Vec2(-1000, 0),true);
+			movementSign = new Sedna::Sign("lsl.png", this, cocos2d::Vec2(-1000, 0), true);
 
-			shootSign = new Sedna::Sign("rt.png", this, cocos2d::Vec2(-1000, 0),true);
+			shootSign = new Sedna::Sign("rt.png", this, cocos2d::Vec2(-1000, 0), true);
 			tutorialGun = cocos2d::Sprite::create("tutorialGun.png");
 			this->addChild(tutorialGun);
 			tutorialGun->setScale(0.5f);
 			tutorialGun->setVisible(false);
 			tutorialGun->setPosition(shootSign->getDisplayedSprite()->getPosition() + cocos2d::Vec2(30, 0));
-			shootSign2 = new Sedna::Sign("rsl.png", this, shootSign->getBox()->getLocation(),true);
+			shootSign2 = new Sedna::Sign("rsl.png", this, shootSign->getBox()->getLocation(), true);
 			shootSign2->getDisplayedSprite()->setPosition(shootSign2->getDisplayedSprite()->getPosition() + cocos2d::Vec2(0, -30));
 			crosshair = cocos2d::Sprite::create("Crosshairs.png");
 			this->addChild(crosshair);
 			crosshair->setVisible(false);
 			crosshair->setPosition(shootSign2->getDisplayedSprite()->getPosition() + cocos2d::Vec2(30, 0));
 
-			btSign = new Sedna::Sign("lt.png", this, cocos2d::Vec2(-1000, 0),true);
+			btSign = new Sedna::Sign("lt.png", this, cocos2d::Vec2(-1000, 0), true);
 			tutorialTime = cocos2d::Sprite::create("tutorialTime.png");
 			this->addChild(tutorialTime);
 			tutorialTime->setVisible(false);
 			tutorialTime->setPosition(btSign->getDisplayedSprite()->getPosition() + cocos2d::Vec2(30, 0));
 
-			tablekickSign = new Sedna::Sign("a1.png", this, cocos2d::Vec2(-1000, 0),true);
+			tablekickSign = new Sedna::Sign("a1.png", this, cocos2d::Vec2(-1000, 0), true);
 			tutorialBoot = cocos2d::Sprite::create("Boot.png");
 			this->addChild(tutorialBoot);
 			tutorialBoot->setVisible(false);
@@ -290,7 +296,7 @@ void HelloWorld::initSprites()
 			tutorialLabel2->setVisible(false);
 
 			tutorialLabel = cocos2d::Label::create("Tutorial", "fonts/Montague.ttf", 30);
-			tutorialLabel->setPosition(cocos2d::Vec2(400, 280));	
+			tutorialLabel->setPosition(cocos2d::Vec2(400, 280));
 			this->addChild(tutorialLabel, 1000);
 
 			tutorialKickedLabel = cocos2d::Label::create("Kicked", "fonts/Montague.ttf", 12);
@@ -343,7 +349,7 @@ void HelloWorld::initSprites()
 			tutorialBulletLabel2->setVisible(false);
 			tutorialMovedLabel2->setVisible(false);
 
-			
+
 			noControl = cocos2d::Sprite::create("nope.png");
 			noControl->setPosition(cocos2d::Vec2(400, 210));
 			noControl->setScale(2);
@@ -377,7 +383,16 @@ void HelloWorld::update(float dt)
 		if (this->tutorial)
 			this->gameTutorial(dt);
 		else {
-			bossTimer += dt;
+			if (!paused) {
+				bossTimer += dt;
+				bossTimeMax -= dt;
+			}
+			if (bossTimeMax <= 0)
+				bossTimeLabel->setVisible(false);
+			else
+				bossTimeLabel->setVisible(true);
+			bossTimeLabel->setString(std::to_string(bossTimeMax));
+
 			if (bossTimer >= 120)
 				bossTime = true;
 			this->pause(dt);
@@ -431,7 +446,7 @@ void HelloWorld::gameTutorial(float dt)
 		if (!tutCutscene) {
 
 			if (playerOne->getController()->isButtonPressed(Sedna::X) &&
-				playerOne->hasMoved() && playerOne->usedShot() && playerOne->usedBt && playerOne->pressedA()&&
+				playerOne->hasMoved() && playerOne->usedShot() && playerOne->usedBt && playerOne->pressedA() &&
 				playerTwo->hasMoved() && playerTwo->usedShot() && playerTwo->usedBt && playerTwo->pressedA())
 			{
 				tutFunc4 = true;
@@ -453,7 +468,7 @@ void HelloWorld::gameTutorial(float dt)
 				playerTwo->getBox()->setLocation(cocos2d::Vec2(280, 100));
 
 			}
-			
+
 		}
 
 		//tutorial signs
@@ -488,7 +503,7 @@ void HelloWorld::gameTutorial(float dt)
 			crosshair->setVisible(true);
 		else if (!shootSign->getDisplayedSprite()->isVisible() && crosshair->isVisible())
 			crosshair->setVisible(false);
-		
+
 
 
 		if (tutCutscene) {
@@ -534,9 +549,9 @@ void HelloWorld::gameTutorial(float dt)
 			tutorialLabel->setVisible(false);
 			tutorialLabel2->setVisible(true);
 			tutorialKickedLabel->setVisible(true);
-			tutorialShootLabel->setVisible( true);
+			tutorialShootLabel->setVisible(true);
 			tutorialBulletLabel->setVisible(true);
-			tutorialMovedLabel->setVisible( true);
+			tutorialMovedLabel->setVisible(true);
 			tutorialKickedLabel2->setVisible(true);
 			tutorialShootLabel2->setVisible(true);
 			tutorialBulletLabel2->setVisible(true);
@@ -586,7 +601,7 @@ void HelloWorld::gameTutorial(float dt)
 			playerTwo->updateGameObject();
 			checkPosAll();
 
-			if(playerOne->pressedA())
+			if (playerOne->pressedA())
 				tutorialKickedLabel->setTextColor(cocos2d::Color4B::GREEN);
 			if (playerOne->hasMoved())
 				tutorialMovedLabel->setTextColor(cocos2d::Color4B::GREEN);
@@ -1094,15 +1109,22 @@ void HelloWorld::notDead(float dt)
 
 	if (moveScreen)
 	{
+		bossTimeLabel->setPosition(bossTimeLabel->getPosition() + cocos2d::Vec2(0, CAMERASPEED));
+		
+		
 		for (unsigned int i = 0; i < pauseMenu->getLabelList().size(); i++) {
 			pauseMenu->getLabelList()[i]->setPosition(cocos2d::Vec2(pauseMenu->getLabelList()[i]->getPosition().x,
 				pauseMenu->getLabelList()[i]->getPosition().y + CAMERASPEED));
 		}
+		
+		
 		pausedLabel->setPosition(pausedLabel->getPosition() + cocos2d::Vec2(0, CAMERASPEED));
 		startLabel->setPosition(startLabel->getPosition() + cocos2d::Vec2(0, CAMERASPEED));
 
+
 		playerOne->getUI()->updatePosition(cocos2d::Vec2(0, CAMERASPEED));
 		playerTwo->getUI()->updatePosition(cocos2d::Vec2(0, CAMERASPEED));
+
 
 		this->getDefaultCamera()->setPosition(cocos2d::Vec2(this->getDefaultCamera()->getPosition().x,
 			this->getDefaultCamera()->getPosition().y + CAMERASPEED));
