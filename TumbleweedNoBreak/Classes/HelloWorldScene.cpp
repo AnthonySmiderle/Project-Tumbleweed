@@ -136,6 +136,11 @@ void HelloWorld::initSprites()
 	highScoreLabel->setVisible(false);
 	this->addChild(highScoreLabel, 10000);
 
+	highScoreNameLabel = cocos2d::Label::create("", "fonts/Montague.ttf", 30);
+	highScoreNameLabel->setAnchorPoint(Vec2(0.0f, 0.0f));
+	highScoreNameLabel->setPosition(cocos2d::Vec2(100, DDOS->getSprite()->getPosition().y - 100));
+	highScoreNameLabel->setVisible(false);
+	this->addChild(highScoreNameLabel);
 
 	bloodyMaryP_up = new Sedna::Powerup("gun2.png", Sedna::Guns::bloodyMary, -1000, 0);
 	theBiggestIronP_up = new Sedna::Powerup("gun3.png", Sedna::Guns::theBiggestIron, -1000, 0);
@@ -187,7 +192,16 @@ void HelloWorld::initSprites()
 	bg3->setAnchorPoint(cocos2d::Vec2(0, 0));
 	bg3->setPosition(cocos2d::Vec2(0, (bg2->getContentSize().height * 0.92f) * 2));
 
-
+	flashingScore1 = cocos2d::Sprite::create("ScoreArrow.png");
+	flashingScore2 = cocos2d::Sprite::create("ScoreArrow1.png");
+	flashingScore1->setAnchorPoint(Vec2(0.0f, 0.0f));
+	flashingScore2->setAnchorPoint(Vec2(0.0f, 0.0f));
+	flashingScore1->setScale(0.7);
+	flashingScore2->setScale(0.7);
+	this->addChild(flashingScore1, 100);
+	this->addChild(flashingScore2, 100);
+	flashingScore1->setVisible(false);
+	flashingScore2->setVisible(false);
 	///menu 
 
 	pausedLabel = Label::create("Paused", "fonts/Montague.ttf", 25);
@@ -662,11 +676,25 @@ void HelloWorld::play(float dt)
 			CAMERASPEED = 0;
 			startLabel->setString("You Lose");
 			startLabel->setVisible(true);
-			loseTimer += dt;
 			startLabel->setPosition(50, startLabel->getPosition().y);
+			highScoreNameLabel->setVisible(true);
 			if (!hasWritten)
 			{
-				writeScore();
+				highScoreNameLabel->setPosition(200, DDOS->getSprite()->getPosition().y - 200);
+				flashingScore1->setPosition(cocos2d::Vec2(198 + currentScoreName * 16, DDOS->getSprite()->getPosition().y - 170));
+				flashingScore2->setPosition(cocos2d::Vec2(196 + currentScoreName * 16, DDOS->getSprite()->getPosition().y - 210));
+				if (playerTwo->getScore()>playerOne->getScore())
+				{
+					getScore(p2Controller, p2Sticks,dt);
+				}
+				else
+				{
+					getScore(p1Controller, p1Sticks,dt);
+				}
+			}
+			else
+			{
+				loseTimer += dt;
 			}
 			if (loseTimer >= 4.0f)
 			{
@@ -1265,4 +1293,72 @@ void HelloWorld::writeScore()
 	}
 
 	hasWritten = true;
+}
+
+void HelloWorld::getScore(Sedna::XinputController* controller, Sedna::Stick sticks[],float dt)
+{
+	flashingScoreTimer += dt;
+	if (((int)(flashingScoreTimer*2))%2==0)
+	{
+		flashingScore1->setVisible(false);
+		flashingScore2->setVisible(false);
+	}
+	else
+	{
+		flashingScore1->setVisible(true);
+		flashingScore2->setVisible(true);
+	}
+	if (sticks[0].y > 0.3 && !hasLetGo)
+	{
+		if (scoreName[currentScoreName] == 65)
+		{
+			scoreName[currentScoreName] = 90;
+		}
+		else
+		{
+			scoreName[currentScoreName] = scoreName[currentScoreName] - 1;
+		}
+		hasLetGo += dt;
+	}
+	if (sticks[0].y < -0.3 && !hasLetGo)
+	{
+		if (scoreName[currentScoreName] == 90)
+		{
+			scoreName[currentScoreName] = 65;
+		}
+		else
+		{
+			scoreName[currentScoreName] = scoreName[currentScoreName] + 1;
+		}
+		hasLetGo += dt;
+	}
+	if (controller->isButtonPressed(Sedna::A) && !hasLetGo)
+	{
+		currentScoreName++;
+		hasLetGo += dt;
+	}
+	if (controller->isButtonPressed(Sedna::B) && !hasLetGo)
+	{
+		if (currentScoreName>0)
+			currentScoreName--;
+		hasLetGo += dt;
+	}
+	if (currentScoreName == 3)
+	{
+		writeScore();
+		currentScoreName++;
+		flashingScore1->setVisible(false);
+		flashingScore2->setVisible(false);
+	}		
+	if (hasLetGo > 0.3f)
+		hasLetGo = 0.0f;
+	if(hasLetGo)
+		hasLetGo += dt;
+	std::string temp;
+	temp += "\n";
+	temp +=static_cast<char>(scoreName[0]);
+	temp +=static_cast<char>(scoreName[1]);
+	temp +=static_cast<char>(scoreName[2]);
+	highScoreNameLabel->setString(temp);
+	
 }
