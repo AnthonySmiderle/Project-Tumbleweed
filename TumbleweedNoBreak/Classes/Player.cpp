@@ -121,7 +121,7 @@ namespace Sedna {
 				this->getBox()->addForce(this->getBox()->getVelocity().x *-3.0f, this->getBox()->getVelocity().y*-3.0f);
 			else {
 				auto direction = cocos2d::Vec2(pSticks[0].x, pSticks[0].y);
-				auto force = direction / (direction.x*direction.x + direction.y*direction.y);
+				auto force = direction / sqrt(direction.x*direction.x + direction.y*direction.y);
 
 				this->getBox()->addForce((pSticks[0].x > 0.3f || pSticks[0].x < -0.3f) ?
 					force.x * 5 : 0.0f,
