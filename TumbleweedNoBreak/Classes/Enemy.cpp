@@ -496,7 +496,6 @@ namespace Sedna {
 		sprite->setTexture("boss.png");
 		sprite->setScale(0.4f);
 		sprite->setAnchorPoint(cocos2d::Vec2(0.4f, 0.3f));
-		hitBox->getDrawNode()->setVisible(true);
 		healthBar = new SquarePrimitive(cocos2d::Vec2(this->getBox()->getLocation().x - 160, this->getBox()->getLocation().y - 235),
 			cocos2d::Vec2(this->getBox()->getLocation().x - 160 + this->getHP() * 3, this->getBox()->getLocation().y - 240));
 
