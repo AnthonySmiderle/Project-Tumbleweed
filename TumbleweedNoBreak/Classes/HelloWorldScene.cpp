@@ -137,8 +137,8 @@ void HelloWorld::initSprites()
 	this->addChild(highScoreLabel, 10000);
 
 
-	bloodyMaryP_up = new Sedna::Powerup("gun2.png", Sedna::Guns::bloodyMary, -1000, 0);
-	theBiggestIronP_up = new Sedna::Powerup("gun3.png", Sedna::Guns::theBiggestIron, -1000, 0);
+	bloodyMaryP_up = new Sedna::Powerup("gun2.png", Sedna::Guns::bloodyMary,Sedna::Guns::bloodyMary2, -1000, 0);
+	theBiggestIronP_up = new Sedna::Powerup("gun3.png", Sedna::Guns::theBiggestIron,Sedna::Guns::theBiggestIron2, -1000, 0);
 
 	this->addChild(bloodyMaryP_up->getBox()->getDrawNode());
 	this->addChild(bloodyMaryP_up->getSprite());
