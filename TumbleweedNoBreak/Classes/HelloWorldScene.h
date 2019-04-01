@@ -77,7 +77,7 @@ public:
 
 	bool playedWinSound = false;
 	float bossTimer = 0.0f;
-	bool bossTime = false;
+	bool bossTime = true;
 	std::vector<Sedna::Outlaw*> g;
 	Sedna::CirclePrimitive* dummyTracker;
 
