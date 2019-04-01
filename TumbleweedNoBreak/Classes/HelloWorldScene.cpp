@@ -243,6 +243,7 @@ void HelloWorld::initSprites()
 	g.push_back(new Sedna::Goldman(250, DDOS->getSprite()->getPosition().y - 60));
 	this->addChild(g.back()->getBox()->getDrawNode());
 	this->addChild(g.back()->getSprite());
+	g.back()->getSprite()->setPosition(cocos2d::Vec2(-1000, 0));
 	this->addChild(((Sedna::Goldman*)g.back())->getHealthBar()->getDrawNode(), 100);
 	((Sedna::Goldman*)g.back())->getHealthBar()->getDrawNode()->setVisible(false);
 
@@ -316,6 +317,32 @@ void HelloWorld::initSprites()
 			tutorialShootLabel->setVisible(false);
 			tutorialBulletLabel->setVisible(false);
 			tutorialMovedLabel->setVisible(false);
+
+			tutorialKickedLabel2 = cocos2d::Label::create("Kicked", "fonts/Montague.ttf", 12);
+			tutorialKickedLabel2->setPosition(cocos2d::Vec2(50, 240));
+			this->addChild(tutorialKickedLabel2, 1000);
+			tutorialKickedLabel2->setTextColor(cocos2d::Color4B::RED);
+
+			tutorialMovedLabel2 = cocos2d::Label::create("Moved", "fonts/Montague.ttf", 12);
+			tutorialMovedLabel2->setPosition(cocos2d::Vec2(50, 230));
+			this->addChild(tutorialMovedLabel2, 1000);
+			tutorialMovedLabel2->setTextColor(cocos2d::Color4B::RED);
+
+			tutorialBulletLabel2 = cocos2d::Label::create("Bullet Time", "fonts/Montague.ttf", 12);
+			tutorialBulletLabel2->setPosition(cocos2d::Vec2(50, 220));
+			this->addChild(tutorialBulletLabel2, 1000);
+			tutorialBulletLabel2->setTextColor(cocos2d::Color4B::RED);
+
+			tutorialShootLabel2 = cocos2d::Label::create("Has Shot", "fonts/Montague.ttf", 12);
+			tutorialShootLabel2->setPosition(cocos2d::Vec2(50, 210));
+			this->addChild(tutorialShootLabel2, 1000);
+			tutorialShootLabel2->setTextColor(cocos2d::Color4B::RED);
+
+			tutorialKickedLabel2->setVisible(false);
+			tutorialShootLabel2->setVisible(false);
+			tutorialBulletLabel2->setVisible(false);
+			tutorialMovedLabel2->setVisible(false);
+
 			
 			noControl = cocos2d::Sprite::create("nope.png");
 			noControl->setPosition(cocos2d::Vec2(400, 210));
@@ -404,7 +431,8 @@ void HelloWorld::gameTutorial(float dt)
 		if (!tutCutscene) {
 
 			if (playerOne->getController()->isButtonPressed(Sedna::X) &&
-				playerOne->hasMoved() && playerOne->usedShot() && playerOne->usedBt && playerOne->pressedA())
+				playerOne->hasMoved() && playerOne->usedShot() && playerOne->usedBt && playerOne->pressedA()&&
+				playerTwo->hasMoved() && playerTwo->usedShot() && playerTwo->usedBt && playerTwo->pressedA())
 			{
 				tutFunc4 = true;
 				for (auto x : tutTables)
@@ -509,6 +537,10 @@ void HelloWorld::gameTutorial(float dt)
 			tutorialShootLabel->setVisible( true);
 			tutorialBulletLabel->setVisible(true);
 			tutorialMovedLabel->setVisible( true);
+			tutorialKickedLabel2->setVisible(true);
+			tutorialShootLabel2->setVisible(true);
+			tutorialBulletLabel2->setVisible(true);
+			tutorialMovedLabel2->setVisible(true);
 			if (!tutFunc3) {
 				dummy->getBox()->getDrawNode()->removeFromParent();
 				dummy->getSprite()->removeFromParent();
@@ -554,14 +586,23 @@ void HelloWorld::gameTutorial(float dt)
 			playerTwo->updateGameObject();
 			checkPosAll();
 
-			if(playerOne->getController()->isButtonPressed(Sedna::A))
+			if(playerOne->pressedA())
 				tutorialKickedLabel->setTextColor(cocos2d::Color4B::GREEN);
-			if (p1Sticks[0].x > 0.3f)
+			if (playerOne->hasMoved())
 				tutorialMovedLabel->setTextColor(cocos2d::Color4B::GREEN);
-			if (p1Triggers.RT > 0.3f)
+			if (playerOne->usedShot())
 				tutorialShootLabel->setTextColor(cocos2d::Color4B::GREEN);
-			if (p1Triggers.LT > 0.3f)
+			if (playerOne->usedBt)
 				tutorialBulletLabel->setTextColor(cocos2d::Color4B::GREEN);
+
+			if (playerTwo->pressedA())
+				tutorialKickedLabel2->setTextColor(cocos2d::Color4B::GREEN);
+			if (playerTwo->hasMoved())
+				tutorialMovedLabel2->setTextColor(cocos2d::Color4B::GREEN);
+			if (playerTwo->usedShot())
+				tutorialShootLabel2->setTextColor(cocos2d::Color4B::GREEN);
+			if (playerTwo->usedBt)
+				tutorialBulletLabel2->setTextColor(cocos2d::Color4B::GREEN);
 
 			///std::cout << playerOne->getBox()->getLocation().x << " " << playerOne->getBox()->getLocation().y << "\n";
 
@@ -579,6 +620,10 @@ void HelloWorld::gameTutorial(float dt)
 			tutorialShootLabel->removeFromParent();
 			tutorialBulletLabel->removeFromParent();
 			tutorialMovedLabel->removeFromParent();
+			tutorialKickedLabel2->removeFromParent();
+			tutorialShootLabel2->removeFromParent();
+			tutorialBulletLabel2->removeFromParent();
+			tutorialMovedLabel2->removeFromParent();
 
 			playerOne->setScore(0);
 			playerTwo->setScore(0);

@@ -88,6 +88,10 @@ public:
 	cocos2d::Label* tutorialKickedLabel;
 	cocos2d::Label* tutorialBulletLabel;
 	cocos2d::Label* tutorialShootLabel;
+	cocos2d::Label* tutorialMovedLabel2;
+	cocos2d::Label* tutorialKickedLabel2;
+	cocos2d::Label* tutorialBulletLabel2;
+	cocos2d::Label* tutorialShootLabel2;
 	cocos2d::Label* tutorialLabel;
 	cocos2d::Label* tutorialLabel2;
 	bool tutFunc1 = false;

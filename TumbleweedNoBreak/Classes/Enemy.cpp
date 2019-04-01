@@ -85,46 +85,46 @@ namespace Sedna {
 				break;
 
 
-			if (eProjectiles[i]->getBox()->checkCollision(*p->getBox())) {
-				//TODO remove the invincible stuff 
-				if (!(p->getInvinc())) {
-
-					p->setHP(p->getHP() - 1);
-					srand(rand() % time(0));
-					int random = (rand() % 3) + 1;
-					if (p->getPlayerNumber() == 1) {
-						if (random == 1)
-							cocos2d::experimental::AudioEngine::play2d("p1Hurt.mp3");
-						if (random == 2)
-							cocos2d::experimental::AudioEngine::play2d("p1Hurt2.mp3");
-						if (random == 3)
-							cocos2d::experimental::AudioEngine::play2d("p1Hurt3.mp3");
-					}
-					else {
-						if (random == 1)
-							cocos2d::experimental::AudioEngine::play2d("p2Hurt.mp3");
-						if (random == 2)
-							cocos2d::experimental::AudioEngine::play2d("p2Hurt2.mp3");
-						if (random == 3)
-							cocos2d::experimental::AudioEngine::play2d("p2Hurt3.mp3");
-					}
-					p->getController()->setVibration(1, 1);
-					p->wasHurt();
-					for (int j = 0; j < p->getUI()->getHPSprites().size(); j++) {
-						if (p->getUI()->getHPSprites()[j]->getZOrder() == 21) {
-							p->getUI()->getHPSprites()[j]->setZOrder(20);
-							p->getUI()->getHPSprites()[j]->setTexture("brokenHeart.png");
-							break;
-						}
-					}
-				}
-
-				eProjectiles[i]->getBox()->getDrawNode()->removeFromParent();
-				eProjectiles[i]->getSprite()->removeFromParent();
-				eProjectiles.erase(eProjectiles.begin() + i);
-				if (p->getHP() <= 0)
-					p->die();
-			}
+			///if (eProjectiles[i]->getBox()->checkCollision(*p->getBox())) {
+			///	//TODO remove the invincible stuff 
+			///	if (!(p->getInvinc())) {
+			///
+			///		p->setHP(p->getHP() - 1);
+			///		srand(rand() % time(0));
+			///		int random = (rand() % 3) + 1;
+			///		if (p->getPlayerNumber() == 1) {
+			///			if (random == 1)
+			///				cocos2d::experimental::AudioEngine::play2d("p1Hurt.mp3");
+			///			if (random == 2)
+			///				cocos2d::experimental::AudioEngine::play2d("p1Hurt2.mp3");
+			///			if (random == 3)
+			///				cocos2d::experimental::AudioEngine::play2d("p1Hurt3.mp3");
+			///		}
+			///		else {
+			///			if (random == 1)
+			///				cocos2d::experimental::AudioEngine::play2d("p2Hurt.mp3");
+			///			if (random == 2)
+			///				cocos2d::experimental::AudioEngine::play2d("p2Hurt2.mp3");
+			///			if (random == 3)
+			///				cocos2d::experimental::AudioEngine::play2d("p2Hurt3.mp3");
+			///		}
+			///		p->getController()->setVibration(1, 1);
+			///		p->wasHurt();
+			///		for (int j = 0; j < p->getUI()->getHPSprites().size(); j++) {
+			///			if (p->getUI()->getHPSprites()[j]->getZOrder() == 21) {
+			///				p->getUI()->getHPSprites()[j]->setZOrder(20);
+			///				p->getUI()->getHPSprites()[j]->setTexture("brokenHeart.png");
+			///				break;
+			///			}
+			///		}
+			///	}
+			///
+			///	eProjectiles[i]->getBox()->getDrawNode()->removeFromParent();
+			///	eProjectiles[i]->getSprite()->removeFromParent();
+			///	eProjectiles.erase(eProjectiles.begin() + i);
+			///	if (p->getHP() <= 0)
+			///		p->die();
+			///}
 		}
 
 
@@ -523,7 +523,7 @@ namespace Sedna {
 		srand(time(0));
 		if (phase1) {
 
-			if (eShootTimer > 1.15f) {
+			if (eShootTimer > ((phase3) ? 0.7f:1.15f)) {
 				eShootTimer = 0.0f;
 				eHasShot = false;
 			}
@@ -561,7 +561,7 @@ namespace Sedna {
 
 		}
 		else if (phase2) {
-			if (eShootTimer > 0.089f) {
+			if (eShootTimer >((phase3) ? 0.059f:0.089f)) {
 				eShootTimer = 0.0f;
 				eHasShot = false;
 			}

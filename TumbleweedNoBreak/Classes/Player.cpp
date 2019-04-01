@@ -94,9 +94,7 @@ namespace Sedna {
 				}
 
 				if (animationTimer > 0.6f)
-				{
 					animationTimer = 0.0f;
-				}
 
 				if (!animationTimer && !isAimingLeft && !isAimingRight) {
 					hasAnimation = true;
