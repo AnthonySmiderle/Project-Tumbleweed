@@ -391,7 +391,7 @@ void HelloWorld::update(float dt)
 				bossTimeLabel->setVisible(false);
 			else
 				bossTimeLabel->setVisible(true);
-			bossTimeLabel->setString(std::to_string(bossTimeMax));
+			bossTimeLabel->setString(std::to_string((int)bossTimeMax));
 
 			if (bossTimer >= 120)
 				bossTime = true;
