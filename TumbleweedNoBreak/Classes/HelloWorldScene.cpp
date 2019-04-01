@@ -251,9 +251,9 @@ void HelloWorld::initSprites()
 	this->addChild(dummyTracker->getDrawNode());
 	dummyTracker->getDrawNode()->setVisible(false);
 
-	bossTimeLabel = cocos2d::Label::create(std::to_string(bossTimeMax), "fonts/Montague.ttf", 15);
+	bossTimeLabel = cocos2d::Label::create(std::to_string(bossTimeMax), "fonts/Montague.ttf", 20);
 	bossTimeLabel->setPosition(cocos2d::Vec2(50, 250));
-	bossTimeLabel->setAnchorPoint(cocos2d::Vec2(0.5f,0.5f));
+	bossTimeLabel->setAnchorPoint(cocos2d::Vec2(0.5f, 0.5f));
 	this->addChild(bossTimeLabel, 1000);
 	bossTimeLabel->setVisible(false);
 
@@ -391,7 +391,11 @@ void HelloWorld::update(float dt)
 				bossTimeLabel->setVisible(false);
 			else
 				bossTimeLabel->setVisible(true);
-			bossTimeLabel->setString(std::to_string((int)bossTimeMax));
+
+			if (bossTimeMax <= 10)
+				bossTimeLabel->setString(std::to_string(bossTimeMax));
+			else
+				bossTimeLabel->setString(std::to_string((int)bossTimeMax));
 
 			if (bossTimer >= 120)
 				bossTime = true;
@@ -601,22 +605,22 @@ void HelloWorld::gameTutorial(float dt)
 			playerTwo->updateGameObject();
 			checkPosAll();
 
-			if (playerOne->pressedA())
+			if (playerTwo->pressedA())
 				tutorialKickedLabel->setTextColor(cocos2d::Color4B::GREEN);
-			if (playerOne->hasMoved())
+			if (playerTwo->hasMoved())
 				tutorialMovedLabel->setTextColor(cocos2d::Color4B::GREEN);
-			if (playerOne->usedShot())
+			if (playerTwo->usedShot())
 				tutorialShootLabel->setTextColor(cocos2d::Color4B::GREEN);
-			if (playerOne->usedBt)
+			if (playerTwo->usedBt)
 				tutorialBulletLabel->setTextColor(cocos2d::Color4B::GREEN);
 
-			if (playerTwo->pressedA())
+			if (playerOne->pressedA())
 				tutorialKickedLabel2->setTextColor(cocos2d::Color4B::GREEN);
-			if (playerTwo->hasMoved())
+			if (playerOne->hasMoved())
 				tutorialMovedLabel2->setTextColor(cocos2d::Color4B::GREEN);
-			if (playerTwo->usedShot())
+			if (playerOne->usedShot())
 				tutorialShootLabel2->setTextColor(cocos2d::Color4B::GREEN);
-			if (playerTwo->usedBt)
+			if (playerOne->usedBt)
 				tutorialBulletLabel2->setTextColor(cocos2d::Color4B::GREEN);
 
 			///std::cout << playerOne->getBox()->getLocation().x << " " << playerOne->getBox()->getLocation().y << "\n";
@@ -1110,14 +1114,14 @@ void HelloWorld::notDead(float dt)
 	if (moveScreen)
 	{
 		bossTimeLabel->setPosition(bossTimeLabel->getPosition() + cocos2d::Vec2(0, CAMERASPEED));
-		
-		
+
+
 		for (unsigned int i = 0; i < pauseMenu->getLabelList().size(); i++) {
 			pauseMenu->getLabelList()[i]->setPosition(cocos2d::Vec2(pauseMenu->getLabelList()[i]->getPosition().x,
 				pauseMenu->getLabelList()[i]->getPosition().y + CAMERASPEED));
 		}
-		
-		
+
+
 		pausedLabel->setPosition(pausedLabel->getPosition() + cocos2d::Vec2(0, CAMERASPEED));
 		startLabel->setPosition(startLabel->getPosition() + cocos2d::Vec2(0, CAMERASPEED));
 
