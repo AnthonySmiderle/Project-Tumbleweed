@@ -131,16 +131,16 @@ void HelloWorld::initSprites()
 	btMeter = Sedna::SquarePrimitive(cocos2d::Vec2(190, DDOS->getSprite()->getPosition().y - 20), cocos2d::Vec2(280, DDOS->getSprite()->getPosition().y - 10));
 	this->addChild(btMeter.getDrawNode(), 100);
 
-	highScoreLabel = cocos2d::Label::create("Highscore", "fonts/Montague.ttf", 15);
-	highScoreLabel->setPosition(cocos2d::Vec2(100, DDOS->getSprite()->getPosition().y - 100));
-	highScoreLabel->setVisible(false);
-	this->addChild(highScoreLabel, 10000);
+	score.highScoreLabel = cocos2d::Label::create("Highscore", "fonts/Montague.ttf", 15);
+	score.highScoreLabel->setPosition(cocos2d::Vec2(100, DDOS->getSprite()->getPosition().y - 100));
+	score.highScoreLabel->setVisible(false);
+	this->addChild(score.highScoreLabel, 10000);
 
-	highScoreNameLabel = cocos2d::Label::create("", "fonts/Montague.ttf", 30);
-	highScoreNameLabel->setAnchorPoint(Vec2(0.0f, 0.0f));
-	highScoreNameLabel->setPosition(cocos2d::Vec2(100, DDOS->getSprite()->getPosition().y - 100));
-	highScoreNameLabel->setVisible(false);
-	this->addChild(highScoreNameLabel);
+	score.highScoreNameLabel = cocos2d::Label::create("", "fonts/Montague.ttf", 30);
+	score.highScoreNameLabel->setAnchorPoint(Vec2(0.0f, 0.0f));
+	score.highScoreNameLabel->setPosition(cocos2d::Vec2(100, DDOS->getSprite()->getPosition().y - 100));
+	score.highScoreNameLabel->setVisible(false);
+	this->addChild(score.highScoreNameLabel);
 
 	bloodyMaryP_up = new Sedna::Powerup("gun2.png", Sedna::Guns::bloodyMary, -1000, 0);
 	theBiggestIronP_up = new Sedna::Powerup("gun3.png", Sedna::Guns::theBiggestIron, -1000, 0);
@@ -192,16 +192,16 @@ void HelloWorld::initSprites()
 	bg3->setAnchorPoint(cocos2d::Vec2(0, 0));
 	bg3->setPosition(cocos2d::Vec2(0, (bg2->getContentSize().height * 0.92f) * 2));
 
-	flashingScore1 = cocos2d::Sprite::create("ScoreArrow.png");
-	flashingScore2 = cocos2d::Sprite::create("ScoreArrow1.png");
-	flashingScore1->setAnchorPoint(Vec2(0.0f, 0.0f));
-	flashingScore2->setAnchorPoint(Vec2(0.0f, 0.0f));
-	flashingScore1->setScale(0.7);
-	flashingScore2->setScale(0.7);
-	this->addChild(flashingScore1, 100);
-	this->addChild(flashingScore2, 100);
-	flashingScore1->setVisible(false);
-	flashingScore2->setVisible(false);
+	score.flashingScore1 = cocos2d::Sprite::create("ScoreArrow.png");
+	score.flashingScore2 = cocos2d::Sprite::create("ScoreArrow1.png");
+	score.flashingScore1->setAnchorPoint(Vec2(0.0f, 0.0f));
+	score.flashingScore2->setAnchorPoint(Vec2(0.0f, 0.0f));
+	score.flashingScore1->setScale(0.7);
+	score.flashingScore2->setScale(0.7);
+	this->addChild(score.flashingScore1, 100);
+	this->addChild(score.flashingScore2, 100);
+	score.flashingScore1->setVisible(false);
+	score.flashingScore2->setVisible(false);
 	///menu 
 
 	pausedLabel = Label::create("Paused", "fonts/Montague.ttf", 25);
@@ -678,19 +678,19 @@ void HelloWorld::play(float dt)
 			startLabel->setVisible(true);
 			startLabel->setPosition(50, startLabel->getPosition().y);
 			
-			if (!hasWritten)
+			if (!score.hasWritten)
 			{
-				highScoreNameLabel->setVisible(true);
-				highScoreNameLabel->setPosition(200, DDOS->getSprite()->getPosition().y - 200);
-				flashingScore1->setPosition(cocos2d::Vec2(198 + currentScoreName * 16, DDOS->getSprite()->getPosition().y - 170));
-				flashingScore2->setPosition(cocos2d::Vec2(196 + currentScoreName * 16, DDOS->getSprite()->getPosition().y - 210));
+				score.highScoreNameLabel->setVisible(true);
+				score.highScoreNameLabel->setPosition(200, DDOS->getSprite()->getPosition().y - 200);
+				score.flashingScore1->setPosition(cocos2d::Vec2(198 + score.currentScoreName * 16, DDOS->getSprite()->getPosition().y - 170));
+				score.flashingScore2->setPosition(cocos2d::Vec2(196 + score.currentScoreName * 16, DDOS->getSprite()->getPosition().y - 210));
 				if (playerTwo->getScore() > playerOne->getScore())
 				{
-					getScore(p2Controller, p2Sticks, dt, playerTwo);
+					score.getScore(p2Controller, p2Sticks, dt, playerTwo, DDOS->getSprite()->getPosition().y - 200);
 				}
 				else
 				{
-					getScore(p1Controller, p1Sticks, dt, playerOne);
+					score.getScore(p1Controller, p1Sticks, dt, playerOne, DDOS->getSprite()->getPosition().y - 200);
 				}
 			}
 			else
@@ -772,6 +772,37 @@ void HelloWorld::boss(float dt)
 			cocos2d::experimental::AudioEngine::stopAll();
 			cocos2d::experimental::AudioEngine::play2d("bgmWin.mp3", true);
 			playedWinSound = true;
+			startLabel->setString("You Win");
+			startLabel->setVisible(true);
+			startLabel->setPosition(50, startLabel->getPosition().y);
+			if (!score.hasWritten)
+			{
+				score.highScoreNameLabel->setVisible(true);
+				score.highScoreNameLabel->setPosition(200, DDOS->getSprite()->getPosition().y - 200);
+				score.flashingScore1->setPosition(cocos2d::Vec2(198 + score.currentScoreName * 16, DDOS->getSprite()->getPosition().y - 170));
+				score.flashingScore2->setPosition(cocos2d::Vec2(196 + score.currentScoreName * 16, DDOS->getSprite()->getPosition().y - 210));
+				if (playerTwo->getScore() > playerOne->getScore())
+				{
+					score.getScore(p2Controller, p2Sticks, dt, playerTwo, DDOS->getSprite()->getPosition().y - 200);
+				}
+				else
+				{
+					score.getScore(p1Controller, p1Sticks, dt, playerOne, DDOS->getSprite()->getPosition().y - 200);
+				}
+			}
+			else
+			{
+				loseTimer += dt;
+			}
+			if (loseTimer >= 8.0f)
+			{
+				auto mMenu = MenuScene::create();
+				cocos2d::experimental::AudioEngine::stopAll();
+				end = true;
+
+				director->replaceScene(TransitionFade::create(2.0f, mMenu));
+			}
+			//WIN STUFF
 		}
 
 		bossTime = false;///
@@ -1239,135 +1270,4 @@ void HelloWorld::togglePause() {//this actually has many applications
 	paused ^= 1;
 }
 
-void HelloWorld::writeScore(Sedna::Player* player, std::string name)
-{
-	highFileIn = std::ifstream("Saloon_Scores.txt");
-	if (highFileIn.is_open())
-	{
-		std::string input;
-		std::vector<std::string> scoreSheet;
-		while (std::getline(highFileIn, input))
-		{
-			scoreSheet.push_back(input);
-		}
-		highFileIn.close();
-		std::string HighestScore;
-		int intHighScore = 0;
 
-		intHighScore = player->getScore();
-		HighestScore = std::to_string(intHighScore);
-		scoreSheet.push_back(name + HighestScore);
-		HighestScore = name + " had " + HighestScore + " Points!";
-
-		for (unsigned int i = 0; i < scoreSheet.size(); i++)
-		{
-			for (unsigned int n = 0; n < scoreSheet.size() - 1; n++)
-			{
-				if (stoi(scoreSheet[n].substr(3)) < stoi(scoreSheet[n + 1].substr(3)))
-				{
-					std::string temp = scoreSheet[n];
-					scoreSheet[n] = scoreSheet[n + 1];
-					scoreSheet[n + 1] = temp;
-				}
-			}
-		}
-		if (scoreSheet.size() > 7)
-			scoreSheet.pop_back();
-		highFileOut = std::ofstream("Saloon_Scores.txt");
-		if (highFileOut.is_open())
-			for (unsigned int i = 0; i < scoreSheet.size(); i++)
-				highFileOut << scoreSheet[i] + "\n";
-
-
-		highFileOut.close();
-		
-		HighestScore = "";
-		for (unsigned int i = 0; i < scoreSheet.size(); i++)
-		{
-			HighestScore += scoreSheet[i].substr(0, 3) + "  " + scoreSheet[i].substr(3) + "\n";
-		}
-		highScoreLabel->setString(HighestScore);
-		highScoreLabel->setPosition(cocos2d::Vec2(230, DDOS->getSprite()->getPosition().y - 200));
-		highScoreLabel->setVisible(true);
-		highScoreNameLabel->setVisible(false);
-	}
-	else
-	{
-		highFileOut = std::ofstream("Saloon_Scores.txt");
-		if (highFileOut.is_open())
-		{
-			highFileOut.close();
-		}
-		highFileOut = std::ofstream();
-		writeScore(player, name);
-	}
-
-	hasWritten = true;
-}
-
-void HelloWorld::getScore(Sedna::XinputController* controller, Sedna::Stick sticks[], float dt, Sedna::Player* player)
-{
-	flashingScoreTimer += dt;
-	if (((int)(flashingScoreTimer * 2)) % 2 == 0)
-	{
-		flashingScore1->setVisible(false);
-		flashingScore2->setVisible(false);
-	}
-	else
-	{
-		flashingScore1->setVisible(true);
-		flashingScore2->setVisible(true);
-	}
-	if (sticks[0].y > 0.3 && !hasLetGo)
-	{
-		if (scoreName[currentScoreName] == 65)
-		{
-			scoreName[currentScoreName] = 90;
-		}
-		else
-		{
-			scoreName[currentScoreName] = scoreName[currentScoreName] - 1;
-		}
-		hasLetGo += dt;
-	}
-	if (sticks[0].y < -0.3 && !hasLetGo)
-	{
-		if (scoreName[currentScoreName] == 90)
-		{
-			scoreName[currentScoreName] = 65;
-		}
-		else
-		{
-			scoreName[currentScoreName] = scoreName[currentScoreName] + 1;
-		}
-		hasLetGo += dt;
-	}
-	if (controller->isButtonPressed(Sedna::A) && !hasLetGo)
-	{
-		currentScoreName++;
-		hasLetGo += dt;
-	}
-	if (controller->isButtonPressed(Sedna::B) && !hasLetGo)
-	{
-		if (currentScoreName > 0)
-			currentScoreName--;
-		hasLetGo += dt;
-	}
-	if (hasLetGo > 0.3f)
-		hasLetGo = 0.0f;
-	if (hasLetGo)
-		hasLetGo += dt;
-	std::string temp;
-	temp += static_cast<char>(scoreName[0]);
-	temp += static_cast<char>(scoreName[1]);
-	temp += static_cast<char>(scoreName[2]);
-	highScoreNameLabel->setString(temp);
-	if (currentScoreName == 3)
-	{
-		writeScore(player, temp);
-		currentScoreName++;
-		flashingScore1->setVisible(false);
-		flashingScore2->setVisible(false);
-	}
-
-}

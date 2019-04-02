@@ -37,7 +37,7 @@
 #include "SpawnManager.h"
 #include "Powerup.h"
 #include "Sign.h"
-#include <fstream>
+#include "ScoreBoard.h"
 namespace Sedna {
 	class SednaMenu;
 }
@@ -68,8 +68,6 @@ public:
 	void recursiveFunctionTable();
 	void recursiveFunctionKnocked();
 	void checkPosAll();
-	void writeScore(Sedna::Player* player, std::string name);
-	void getScore(Sedna::XinputController* controller, Sedna::Stick sticks[], float dt,Sedna::Player* player);
 
 	// a selector callback
 	void menuCloseCallback(cocos2d::Ref* pSender);
@@ -81,12 +79,10 @@ public:
 	cocos2d::Label* bossTimeLabel;
 	bool playedWinSound = false;
 	float bossTimer = 0.0f;
-	bool bossTime = false;
+	bool bossTime = true;
 	std::vector<Sedna::Outlaw*> g;
 	Sedna::CirclePrimitive* dummyTracker;
 
-	cocos2d::Sprite* flashingScore1;
-	cocos2d::Sprite* flashingScore2;
 	cocos2d::Sprite* noControl;
 	cocos2d::Label* tutorialMovedLabel;
 	cocos2d::Label* tutorialKickedLabel;
@@ -186,18 +182,9 @@ public:
 	bool bulletTime = false;
 
 	float loseTimer = 0.0f;
+	//score
+	Sedna::ScoreBoard score;
 
-	std::ifstream highFileIn;
-	std::ofstream highFileOut;
-	bool hasWritten = false;
-	float hasLetGo = 0.0f;
-	cocos2d::Label *highScoreLabel;
-	cocos2d::Label *highScoreNameLabel;
-	float flashingScoreTimer = 0.0f;
-
-
-	int scoreName[3] = {65,65,65};
-	int currentScoreName = 0;
 	private:
 		
 };
