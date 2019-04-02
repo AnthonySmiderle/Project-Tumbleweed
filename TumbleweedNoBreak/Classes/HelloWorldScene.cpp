@@ -1149,10 +1149,11 @@ void HelloWorld::performBounce(Sedna::Player* p) {
 		p->getBox()->setLocation(cocos2d::Vec2(90, p->getBox()->getLocation().y));
 		p->getBox()->addForce(25, 0);
 	}
-	if (p->getBox()->getLocation().y >= DDOS->getSprite()->getPosition().y) {
-		p->getBox()->setLocation(cocos2d::Vec2(p->getBox()->getLocation().x, DDOS->getSprite()->getPosition().y));
-		p->getBox()->addForce(0, -25);
-	}
+	if(!p->isDead())
+		if (p->getBox()->getLocation().y >= DDOS->getSprite()->getPosition().y) {
+			p->getBox()->setLocation(cocos2d::Vec2(p->getBox()->getLocation().x, DDOS->getSprite()->getPosition().y));
+			p->getBox()->addForce(0, -25);
+		}
 }
 void HelloWorld::notDead(float dt)
 {
