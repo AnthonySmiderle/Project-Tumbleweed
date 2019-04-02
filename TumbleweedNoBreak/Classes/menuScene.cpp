@@ -308,10 +308,6 @@ void MenuScene::initMenu()
 	background->setScale(0.85f, 0.92f);
 	background->setPosition(0, 0);
 
-	title = Label::create("Goldman's Saloon", "fonts/Montague.ttf", 25);
-	title->setAnchorPoint(Vec2(0.0f, 0.0f));
-	title->setPosition(Vec2(140, 250));
-	title->enableShadow();
 
 
 	for (int i = 0; i < menuE->getLabelList().size(); i++) {
@@ -339,7 +335,6 @@ void MenuScene::initMenu()
 	}	
 
 	this->addChild(background, -1000);
-	this->addChild(title);
 }
 
 

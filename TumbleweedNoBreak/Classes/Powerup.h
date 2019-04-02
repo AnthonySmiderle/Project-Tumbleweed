@@ -15,7 +15,7 @@ namespace Sedna {
 	private:
 
 		Gun* gun;
-		Gun* gun2
+		Gun* gun2;
 
 	};
 

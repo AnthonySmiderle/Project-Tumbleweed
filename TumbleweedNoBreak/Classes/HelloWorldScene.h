@@ -68,6 +68,7 @@ public:
 	void recursiveFunctionTable();
 	void recursiveFunctionKnocked();
 	void checkPosAll();
+	void bounds();
 
 	// a selector callback
 	void menuCloseCallback(cocos2d::Ref* pSender);
@@ -75,7 +76,7 @@ public:
 	// implement the "static create()" method manually
 	CREATE_FUNC(HelloWorld);
 
-	float bossTimeMax = 120.0f;
+	float bossTimeMax = 121.0f;
 	cocos2d::Label* bossTimeLabel;
 	bool playedWinSound = false;
 	float bossTimer = 0.0f;
@@ -139,7 +140,6 @@ public:
 
 	cocos2d::Director* director;
 
-	void bounds();
 	Sedna::SpawnManager sManager = Sedna::SpawnManager(this);
 	Sedna::XinputManager managerR;
 	Sedna::XinputController* p1Controller;
@@ -169,6 +169,12 @@ public:
 	cocos2d::Sprite* bg;
 	cocos2d::Sprite* bg2;
 	cocos2d::Sprite* bg3;
+	cocos2d::Sprite* stairs;
+	cocos2d::Sprite* level2;
+	cocos2d::Sprite* level2Other;
+	cocos2d::Sprite* outsideTransition;
+	cocos2d::Sprite* level3;
+	cocos2d::Sprite* level3Other;
 
 	int barRightMax = 430;
 	int barLeftMax = 90;
