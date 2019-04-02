@@ -68,6 +68,8 @@ void Sedna::ScoreBoard::writeScore(Sedna::Player * player, std::string name,int 
 
 void Sedna::ScoreBoard::getScore(Sedna::XinputController * controller, Sedna::Stick sticks[], float dt, Sedna::Player * player, int loc)
 {
+	
+
 	flashingScoreTimer += dt;
 	if (((int)(flashingScoreTimer * 2)) % 2 == 0)
 	{

@@ -76,6 +76,10 @@ public:
 	// implement the "static create()" method manually
 	CREATE_FUNC(HelloWorld);
 
+
+	cocos2d::Sprite* aButton;
+	cocos2d::Label* aButtonLabel;
+
 	float bossTimeMax = 121.0f;
 	cocos2d::Label* bossTimeLabel;
 	bool playedWinSound = false;

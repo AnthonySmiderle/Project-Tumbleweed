@@ -168,7 +168,7 @@ void HelloWorld::initSprites()
 	playerTwo = new Sedna::Player(2, 300, 100, managerR, Sedna::Guns::olReliable2);
 	this->addChild(playerTwo->getBox()->getDrawNode());
 	this->addChild(playerTwo->getSprite(), 10);
-	this->addChild(playerTwo->getUI()->getUIGunSprite(), 20);
+	this->addChild(playerTwo->getUI()->getUIGunSprite(), 19);
 	for (unsigned int i = 0; i < playerTwo->getUI()->getLabelList().size(); i++)
 		this->addChild(playerTwo->getUI()->getLabelList()[i], 20);
 	for (unsigned int i = 0; i < playerTwo->getUI()->getHPSprites().size(); i++)
@@ -203,7 +203,7 @@ void HelloWorld::initSprites()
 	this->addChild(score.flashingScore2, 100);
 	score.flashingScore1->setVisible(false);
 	score.flashingScore2->setVisible(false);
-	
+
 	stairs = cocos2d::Sprite::create("stairs.png");
 	stairs->setScale(0.85f, 0.92f);
 	stairs->setAnchorPoint(cocos2d::Vec2(0, 0));
@@ -311,7 +311,21 @@ void HelloWorld::initSprites()
 	this->addChild(bossTimeLabel, 1000);
 	bossTimeLabel->setVisible(false);
 
-
+	aButton = Sprite::create("a1.png"); 
+	aButton->setScale(0.6);
+	aButtonLabel = Label::create(": Select", "fonts/Montague.ttf", 12);
+	aButtonLabel->setAnchorPoint(Vec2(0, 0));
+	aButton->setAnchorPoint(Vec2(0, 0));
+	aButton->setZOrder(1000);
+	aButtonLabel->setZOrder(1000);
+	aButton->setPosition(10, 150);
+	aButtonLabel->setPosition(30, 150);
+	aButton->setVisible(true);
+	aButtonLabel->setVisible(true);
+	this->addChild(aButton);
+	this->addChild(aButtonLabel);
+	aButton->setVisible(false);
+	aButtonLabel->setVisible(false);
 
 
 	if (((Tutorial*)this)->tutorial)
@@ -440,6 +454,10 @@ void HelloWorld::update(float dt)
 		if (this->tutorial)
 			this->gameTutorial(dt);
 		else {
+			
+
+			
+
 			if (!paused) {
 				bossTimer += dt;
 				bossTimeMax -= dt;
@@ -718,11 +736,13 @@ void HelloWorld::play(float dt)
 		btMeter.update();
 		if (playerOne->isDead() && playerTwo->isDead())//is this loss
 		{
+			aButton->setVisible(true);
+			aButtonLabel->setVisible(true);
 			CAMERASPEED = 0;
 			startLabel->setString("You Lose");
 			startLabel->setVisible(true);
 			startLabel->setPosition(50, startLabel->getPosition().y);
-			
+
 			if (!score.hasWritten)
 			{
 				score.highScoreNameLabel->setVisible(true);
@@ -814,48 +834,53 @@ void HelloWorld::boss(float dt)
 		playerTwo->checkBCollision(g, bloodyMaryP_up, theBiggestIronP_up, this);
 	}
 	if (g.empty()) {
+		CAMERASPEED = 0;
+		aButton->setVisible(true);
+		aButtonLabel->setVisible(true);
 		if (!playedWinSound) {
 			cocos2d::experimental::AudioEngine::stopAll();
 			cocos2d::experimental::AudioEngine::play2d("bgmWin.mp3", true);
-			playedWinSound = true;
-			startLabel->setString("You Win");
-			startLabel->setVisible(true);
-			startLabel->setPosition(50, startLabel->getPosition().y);
-			if (!score.hasWritten)
+		}
+		playedWinSound = true;
+		startLabel->setString("You Win");
+		startLabel->setVisible(true);
+		startLabel->setPosition(50, startLabel->getPosition().y);
+		
+		if (!score.hasWritten)
+		{
+
+			score.highScoreNameLabel->setVisible(true);
+			score.highScoreNameLabel->setPosition(200, DDOS->getSprite()->getPosition().y - 200);
+			score.flashingScore1->setPosition(cocos2d::Vec2(198 + score.currentScoreName * 16, DDOS->getSprite()->getPosition().y - 170));
+			score.flashingScore2->setPosition(cocos2d::Vec2(196 + score.currentScoreName * 16, DDOS->getSprite()->getPosition().y - 210));
+			if (playerTwo->getScore() > playerOne->getScore())
 			{
-				score.highScoreNameLabel->setVisible(true);
-				score.highScoreNameLabel->setPosition(200, DDOS->getSprite()->getPosition().y - 200);
-				score.flashingScore1->setPosition(cocos2d::Vec2(198 + score.currentScoreName * 16, DDOS->getSprite()->getPosition().y - 170));
-				score.flashingScore2->setPosition(cocos2d::Vec2(196 + score.currentScoreName * 16, DDOS->getSprite()->getPosition().y - 210));
-				if (playerTwo->getScore() > playerOne->getScore())
-				{
-					score.getScore(p2Controller, p2Sticks, dt, playerTwo, DDOS->getSprite()->getPosition().y - 200);
-				}
-				else
-				{
-					score.getScore(p1Controller, p1Sticks, dt, playerOne, DDOS->getSprite()->getPosition().y - 200);
-				}
+				score.getScore(p2Controller, p2Sticks, dt, playerTwo, DDOS->getSprite()->getPosition().y - 200);
 			}
 			else
 			{
-				loseTimer += dt;
+				score.getScore(p1Controller, p1Sticks, dt, playerOne, DDOS->getSprite()->getPosition().y - 200);
 			}
-			if (loseTimer >= 8.0f)
-			{
-				auto mMenu = MenuScene::create();
-				cocos2d::experimental::AudioEngine::stopAll();
-				end = true;
-
-				director->replaceScene(TransitionFade::create(2.0f, mMenu));
-			}
-			//WIN STUFF
 		}
+		else
+		{
+			loseTimer += dt;
+		}
+		if (loseTimer >= 8.0f)
+		{
+			auto mMenu = MenuScene::create();
+			cocos2d::experimental::AudioEngine::stopAll();
+			end = true;
 
-		bossTime = false;
-
+			director->replaceScene(TransitionFade::create(2.0f, mMenu));
+		}
+		//WIN STUFF
 	}
 
+	bossTime = false;
+
 }
+
 
 void HelloWorld::pause(float dt)
 {
@@ -1230,6 +1255,8 @@ void HelloWorld::notDead(float dt)
 	{
 		bossTimeLabel->setPosition(bossTimeLabel->getPosition() + cocos2d::Vec2(0, CAMERASPEED));
 
+		aButton->setPosition(aButton->getPosition() + cocos2d::Vec2(0, CAMERASPEED));
+		aButtonLabel->setPosition(aButtonLabel->getPosition() + cocos2d::Vec2(0, CAMERASPEED));
 
 		for (unsigned int i = 0; i < pauseMenu->getLabelList().size(); i++) {
 			pauseMenu->getLabelList()[i]->setPosition(cocos2d::Vec2(pauseMenu->getLabelList()[i]->getPosition().x,
@@ -1252,16 +1279,15 @@ void HelloWorld::notDead(float dt)
 
 		if (CAMERASPEED > 0) {
 
-
 			if (DDOS->getSprite()->getPosition().y - bg2->getPosition().y >= 588.8f) {
-				if (bossTimeMax <= 60 && bossTimeMax > 58 && bg2->getTexture() != stairs->getTexture())
+				if (bossTimeMax <= 61 && bossTimeMax > 58 && bg2->getTexture() != stairs->getTexture())
 					bg2->setTexture(stairs->getTexture());///
 				else if (bossTimeMax < 54 && bossTimeMax > 52 && bg2->getTexture() != level2Other->getTexture())
 					bg2->setTexture(level2Other->getTexture());///
-				
 
-				
-				else if (bossTimeMax < 31 && bossTimeMax > 28 && bg2->getTexture() != outsideTransition->getTexture())
+
+
+				else if (bossTimeMax < 33 && bossTimeMax > 28 && bg2->getTexture() != outsideTransition->getTexture())
 					bg2->setTexture(outsideTransition->getTexture());
 				else if (bossTimeMax < 25 && bossTimeMax >22 && bg2->getTexture() != level3Other->getTexture())
 					bg2->setTexture(level3Other->getTexture());
@@ -1271,10 +1297,10 @@ void HelloWorld::notDead(float dt)
 
 
 			if (DDOS->getSprite()->getPosition().y - bg3->getPosition().y >= 588.8f) {
-				if (bossTimeMax <= 60 && bossTimeMax > 55 && bg3->getTexture() != level2->getTexture())
+				if (bossTimeMax <= 61 && bossTimeMax > 55 && bg3->getTexture() != level2->getTexture())
 					bg3->setTexture(level2->getTexture());///
-				
-				if (bossTimeMax <= 31 && bossTimeMax > 26 && bg3->getTexture() != level3->getTexture())
+
+				if (bossTimeMax <= 33 && bossTimeMax > 26 && bg3->getTexture() != level3->getTexture())
 					bg3->setTexture(level3->getTexture());
 
 				bg3->setPosition(cocos2d::Vec2(bg3->getPosition().x, bg3->getPosition().y + 588.8f));
