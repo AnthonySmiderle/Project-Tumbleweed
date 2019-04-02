@@ -68,8 +68,8 @@ public:
 	void recursiveFunctionTable();
 	void recursiveFunctionKnocked();
 	void checkPosAll();
-	void writeScore();
-	void getScore(Sedna::XinputController* controller, Sedna::Stick sticks[], float dt);
+	void writeScore(Sedna::Player* player, std::string name);
+	void getScore(Sedna::XinputController* controller, Sedna::Stick sticks[], float dt,Sedna::Player* player);
 
 	// a selector callback
 	void menuCloseCallback(cocos2d::Ref* pSender);
