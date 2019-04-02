@@ -677,9 +677,10 @@ void HelloWorld::play(float dt)
 			startLabel->setString("You Lose");
 			startLabel->setVisible(true);
 			startLabel->setPosition(50, startLabel->getPosition().y);
-			highScoreNameLabel->setVisible(true);
+			
 			if (!hasWritten)
 			{
+				highScoreNameLabel->setVisible(true);
 				highScoreNameLabel->setPosition(200, DDOS->getSprite()->getPosition().y - 200);
 				flashingScore1->setPosition(cocos2d::Vec2(198 + currentScoreName * 16, DDOS->getSprite()->getPosition().y - 170));
 				flashingScore2->setPosition(cocos2d::Vec2(196 + currentScoreName * 16, DDOS->getSprite()->getPosition().y - 210));
@@ -1258,24 +1259,28 @@ void HelloWorld::writeScore(Sedna::Player* player, std::string name)
 		scoreSheet.push_back(name + HighestScore);
 		HighestScore = name + " had " + HighestScore + " Points!";
 
-		highFileOut = std::ofstream("Saloon_Scores.txt");
-
-		if (highFileOut.is_open())
-			for (unsigned int i = 0; i < scoreSheet.size(); i++)
-				highFileOut << scoreSheet[i] + "\n";
-
-
-		highFileOut.close();
 		for (unsigned int i = 0; i < scoreSheet.size(); i++)
 		{
 			for (unsigned int n = 0; n < scoreSheet.size() - 1; n++)
 			{
 				if (stoi(scoreSheet[n].substr(3)) < stoi(scoreSheet[n + 1].substr(3)))
 				{
-
+					std::string temp = scoreSheet[n];
+					scoreSheet[n] = scoreSheet[n + 1];
+					scoreSheet[n + 1] = temp;
 				}
 			}
 		}
+		if (scoreSheet.size() > 7)
+			scoreSheet.pop_back();
+		highFileOut = std::ofstream("Saloon_Scores.txt");
+		if (highFileOut.is_open())
+			for (unsigned int i = 0; i < scoreSheet.size(); i++)
+				highFileOut << scoreSheet[i] + "\n";
+
+
+		highFileOut.close();
+		
 		HighestScore = "";
 		for (unsigned int i = 0; i < scoreSheet.size(); i++)
 		{
