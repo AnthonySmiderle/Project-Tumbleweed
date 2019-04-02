@@ -118,6 +118,7 @@ void HelloWorld::initSprites()
 	cocos2d::experimental::AudioEngine::preload("revolver.mp3");
 	cocos2d::experimental::AudioEngine::preload("revolver.mp3");
 	cocos2d::experimental::AudioEngine::preload("shotgun.mp3");
+	cocos2d::experimental::AudioEngine::preload("goldmanMad.mp3");
 
 	DDOS = new Sedna::GameObject("a.png", cocos2d::Vec2(100, 300), 1, 1, 1);
 	this->addChild(DDOS->getBox()->getDrawNode());
@@ -142,8 +143,8 @@ void HelloWorld::initSprites()
 	score.highScoreNameLabel->setVisible(false);
 	this->addChild(score.highScoreNameLabel);
 
-	bloodyMaryP_up = new Sedna::Powerup("gun2.png", Sedna::Guns::bloodyMary, -1000, 0);
-	theBiggestIronP_up = new Sedna::Powerup("gun3.png", Sedna::Guns::theBiggestIron, -1000, 0);
+	bloodyMaryP_up = new Sedna::Powerup("gun2.png", Sedna::Guns::bloodyMary, Sedna::Guns::bloodyMary2, -1000, 0);
+	theBiggestIronP_up = new Sedna::Powerup("gun3.png", Sedna::Guns::theBiggestIron, Sedna::Guns::theBiggestIron2, -1000, 0);
 
 	this->addChild(bloodyMaryP_up->getBox()->getDrawNode());
 	this->addChild(bloodyMaryP_up->getSprite());
@@ -202,6 +203,45 @@ void HelloWorld::initSprites()
 	this->addChild(score.flashingScore2, 100);
 	score.flashingScore1->setVisible(false);
 	score.flashingScore2->setVisible(false);
+	
+	stairs = cocos2d::Sprite::create("stairs.png");
+	stairs->setScale(0.85f, 0.92f);
+	stairs->setAnchorPoint(cocos2d::Vec2(0, 0));
+	stairs->setPosition(-1000, 0);
+
+	level2 = cocos2d::Sprite::create("Level 2.png");
+	level2->setScale(0.85f, 0.92f);
+	level2->setAnchorPoint(cocos2d::Vec2(0, 0));
+	level2->setPosition(-1000, 0);
+
+	level2Other = cocos2d::Sprite::create("Other Level 2.png");
+	level2Other->setScale(0.85f, 0.92f);
+	level2Other->setAnchorPoint(cocos2d::Vec2(0, 0));
+	level2Other->setPosition(-1000, 0);
+
+	outsideTransition = cocos2d::Sprite::create("level2Exit.png");
+	outsideTransition->setScale(0.85f, 0.92f);
+	outsideTransition->setAnchorPoint(cocos2d::Vec2(0, 0));
+	outsideTransition->setPosition(-1000, 0);
+
+	level3 = cocos2d::Sprite::create("Level 3.png");
+	level3->setScale(0.85f, 0.92f);
+	level3->setAnchorPoint(cocos2d::Vec2(0, 0));
+	level3->setPosition(-1000, 0);
+
+	level3Other = cocos2d::Sprite::create("Other Level 3.png");
+	level3Other->setScale(0.85f, 0.92f);
+	level3Other->setAnchorPoint(cocos2d::Vec2(0, 0));
+	level3Other->setPosition(-1000, 0);
+
+	this->addChild(stairs);
+	this->addChild(level2);
+	this->addChild(level2Other);
+
+	this->addChild(outsideTransition);
+	this->addChild(level3);
+	this->addChild(level3Other);
+
 	///menu 
 
 	pausedLabel = Label::create("Paused", "fonts/Montague.ttf", 25);
@@ -270,6 +310,9 @@ void HelloWorld::initSprites()
 	bossTimeLabel->setAnchorPoint(cocos2d::Vec2(0.5f, 0.5f));
 	this->addChild(bossTimeLabel, 1000);
 	bossTimeLabel->setVisible(false);
+
+
+
 
 	if (((Tutorial*)this)->tutorial)
 		if (tutBool) {
@@ -637,7 +680,6 @@ void HelloWorld::gameTutorial(float dt)
 			if (playerOne->usedBt)
 				tutorialBulletLabel2->setTextColor(cocos2d::Color4B::GREEN);
 
-			///std::cout << playerOne->getBox()->getLocation().x << " " << playerOne->getBox()->getLocation().y << "\n";
 
 		}
 		srand(time(0));
@@ -660,6 +702,9 @@ void HelloWorld::gameTutorial(float dt)
 
 			playerOne->setScore(0);
 			playerTwo->setScore(0);
+
+			playerOne->getUI()->updateList();
+			playerTwo->getUI()->updateList();
 		}
 	}
 
@@ -756,13 +801,14 @@ void HelloWorld::boss(float dt)
 			}
 		}
 		g.back()->getBox()->setLocation(cocos2d::Vec2(g.back()->getBox()->getLocation().x, DDOS->getSprite()->getPosition().y - 45));
-		((Sedna::Goldman*)g.back())->getHealthBar()->getDrawNode()->setVisible(true);
+		static_cast<Sedna::Goldman*>(g.back())->getHealthBar()->getDrawNode()->setVisible(true);
 		g.back()->updateGameObject();
 		g.back()->animate(dt);
-		((Sedna::Goldman*)g.back())->shoot(dt, this, dummyTracker);
+		static_cast<Sedna::Goldman*>(g.back())->shoot(dt, this, dummyTracker);
 		static_cast<Sedna::Goldman*>(g.back())->checkList();
 		g.back()->checkBCollision(playerOne);
 		g.back()->checkBCollision(playerTwo);
+
 
 		playerOne->checkBCollision(g, bloodyMaryP_up, theBiggestIronP_up, this);
 		playerTwo->checkBCollision(g, bloodyMaryP_up, theBiggestIronP_up, this);
@@ -805,7 +851,8 @@ void HelloWorld::boss(float dt)
 			//WIN STUFF
 		}
 
-		bossTime = false;///
+		bossTime = false;
+
 	}
 
 }
@@ -1149,11 +1196,18 @@ void HelloWorld::performBounce(Sedna::Player* p) {
 		p->getBox()->setLocation(cocos2d::Vec2(90, p->getBox()->getLocation().y));
 		p->getBox()->addForce(25, 0);
 	}
-	if(!p->isDead())
-		if (p->getBox()->getLocation().y >= DDOS->getSprite()->getPosition().y) {
-			p->getBox()->setLocation(cocos2d::Vec2(p->getBox()->getLocation().x, DDOS->getSprite()->getPosition().y));
-			p->getBox()->addForce(0, -25);
+	if (p->getBox()->getLocation().y >= DDOS->getSprite()->getPosition().y) {
+		p->getBox()->setLocation(cocos2d::Vec2(p->getBox()->getLocation().x, DDOS->getSprite()->getPosition().y));
+		p->getBox()->addForce(0, -25);
+	}
+	if (static_cast<Tutorial*>(this)->tutorial) {
+		if (p->getBox()->getLocation().y <= 30) {
+			p->getBox()->setLocation(cocos2d::Vec2(p->getBox()->getLocation().x, 30));
+			p->getBox()->addForce(0, 25);
 		}
+	}
+
+
 }
 void HelloWorld::notDead(float dt)
 {
@@ -1198,11 +1252,33 @@ void HelloWorld::notDead(float dt)
 
 		if (CAMERASPEED > 0) {
 
-			if (DDOS->getSprite()->getPosition().y - bg2->getPosition().y >= 588.8f)
-				bg2->setPosition(cocos2d::Vec2(bg2->getPosition().x, bg2->getPosition().y + 588.8f));
 
-			if (DDOS->getSprite()->getPosition().y - bg3->getPosition().y >= 588.8f)
+			if (DDOS->getSprite()->getPosition().y - bg2->getPosition().y >= 588.8f) {
+				if (bossTimeMax <= 60 && bossTimeMax > 58 && bg2->getTexture() != stairs->getTexture())
+					bg2->setTexture(stairs->getTexture());///
+				else if (bossTimeMax < 54 && bossTimeMax > 52 && bg2->getTexture() != level2Other->getTexture())
+					bg2->setTexture(level2Other->getTexture());///
+				
+
+				
+				else if (bossTimeMax < 31 && bossTimeMax > 28 && bg2->getTexture() != outsideTransition->getTexture())
+					bg2->setTexture(outsideTransition->getTexture());
+				else if (bossTimeMax < 25 && bossTimeMax >22 && bg2->getTexture() != level3Other->getTexture())
+					bg2->setTexture(level3Other->getTexture());
+
+				bg2->setPosition(cocos2d::Vec2(bg2->getPosition().x, bg2->getPosition().y + 588.8f));
+			}
+
+
+			if (DDOS->getSprite()->getPosition().y - bg3->getPosition().y >= 588.8f) {
+				if (bossTimeMax <= 60 && bossTimeMax > 55 && bg3->getTexture() != level2->getTexture())
+					bg3->setTexture(level2->getTexture());///
+				
+				if (bossTimeMax <= 31 && bossTimeMax > 26 && bg3->getTexture() != level3->getTexture())
+					bg3->setTexture(level3->getTexture());
+
 				bg3->setPosition(cocos2d::Vec2(bg3->getPosition().x, bg3->getPosition().y + 588.8f));
+			}
 		}
 		else if (CAMERASPEED < 0) {
 			if (DDOS->getSprite()->getPosition().y - bg2->getPosition().y <= 0.0f)
@@ -1220,13 +1296,16 @@ void HelloWorld::checkUnderScreen(Sedna::Player* p)
 	{
 		p->setHP(0);
 		p->die();
+		p->getUI()->updateList();
 	}
 }
 void HelloWorld::bounds()//this function stops the player from leaving the screen on the left and right
 {
 
-	performBounce(playerOne);
-	performBounce(playerTwo);
+	if (!playerOne->isDead())
+		performBounce(playerOne);
+	if (!playerTwo->isDead())
+		performBounce(playerTwo);
 
 
 

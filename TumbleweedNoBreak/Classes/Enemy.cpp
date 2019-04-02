@@ -63,18 +63,14 @@ namespace Sedna {
 	}
 	void Outlaw::animate(float dt)
 	{
-		if (animationTimer > 0.3f) {
+		if (animationTimer > 0.3f) 
 			this->getSprite()->setTexture("outlawLl.png");
-
-			hasAnimation = false;
-		}
-		if (animationTimer > 0.6f) {
+		
+			if (animationTimer > 0.6f) 
 			animationTimer = 0.0f;
-		}
-		if (!animationTimer) {
+		
+		if (!animationTimer) 
 			this->getSprite()->setTexture("outlawRl.png");
-			hasAnimation = true;
-		}
 		animationTimer += dt;
 	}
 	void Outlaw::checkBCollision(Player * p)
@@ -87,43 +83,43 @@ namespace Sedna {
 
 			if (eProjectiles[i]->getBox()->checkCollision(*p->getBox())) {
 				//TODO remove the invincible stuff 
-				if (!(p->getInvinc())) {
-			
-					p->setHP(p->getHP() - 1);
-					srand(rand() % time(0));
-					int random = (rand() % 3) + 1;
-					if (p->getPlayerNumber() == 1) {
-						if (random == 1)
-							cocos2d::experimental::AudioEngine::play2d("p1Hurt.mp3");
-						if (random == 2)
-							cocos2d::experimental::AudioEngine::play2d("p1Hurt2.mp3");
-						if (random == 3)
-							cocos2d::experimental::AudioEngine::play2d("p1Hurt3.mp3");
-					}
-					else {
-						if (random == 1)
-							cocos2d::experimental::AudioEngine::play2d("p2Hurt.mp3");
-						if (random == 2)
-							cocos2d::experimental::AudioEngine::play2d("p2Hurt2.mp3");
-						if (random == 3)
-							cocos2d::experimental::AudioEngine::play2d("p2Hurt3.mp3");
-					}
-					p->getController()->setVibration(1, 1);
-					p->wasHurt();
-					for (int j = 0; j < p->getUI()->getHPSprites().size(); j++) {
-						if (p->getUI()->getHPSprites()[j]->getZOrder() == 21) {
-							p->getUI()->getHPSprites()[j]->setZOrder(20);
-							p->getUI()->getHPSprites()[j]->setTexture("brokenHeart.png");
-							break;
-						}
-					}
-				}
-			
-				eProjectiles[i]->getBox()->getDrawNode()->removeFromParent();
-				eProjectiles[i]->getSprite()->removeFromParent();
-				eProjectiles.erase(eProjectiles.begin() + i);
-				if (p->getHP() <= 0)
-					p->die();
+				//if (!(p->getInvinc())) {
+				//
+				//	p->setHP(p->getHP() - 1);
+				//	srand(rand() % time(0));
+				//	int random = (rand() % 3) + 1;
+				//	if (p->getPlayerNumber() == 1) {
+				//		if (random == 1)
+				//			cocos2d::experimental::AudioEngine::play2d("p1Hurt.mp3");
+				//		if (random == 2)
+				//			cocos2d::experimental::AudioEngine::play2d("p1Hurt2.mp3");
+				//		if (random == 3)
+				//			cocos2d::experimental::AudioEngine::play2d("p1Hurt3.mp3");
+				//	}
+				//	else {
+				//		if (random == 1)
+				//			cocos2d::experimental::AudioEngine::play2d("p2Hurt.mp3");
+				//		if (random == 2)
+				//			cocos2d::experimental::AudioEngine::play2d("p2Hurt2.mp3");
+				//		if (random == 3)
+				//			cocos2d::experimental::AudioEngine::play2d("p2Hurt3.mp3");
+				//	}
+				//	p->getController()->setVibration(1, 1);
+				//	p->wasHurt();
+				//	for (int j = 0; j < p->getUI()->getHPSprites().size(); j++) {
+				//		if (p->getUI()->getHPSprites()[j]->getZOrder() == 21) {
+				//			p->getUI()->getHPSprites()[j]->setZOrder(20);
+				//			p->getUI()->getHPSprites()[j]->setTexture("brokenHeart.png");
+				//			break;
+				//		}
+				//	}
+				//}
+				//
+				//eProjectiles[i]->getBox()->getDrawNode()->removeFromParent();
+				//eProjectiles[i]->getSprite()->removeFromParent();
+				//eProjectiles.erase(eProjectiles.begin() + i);
+				//if (p->getHP() <= 0)
+				//	p->die();
 			}
 		}
 
@@ -208,27 +204,15 @@ namespace Sedna {
 
 
 
+			for (unsigned i = 0; i < 5; ++i)
+				eProjectiles[i]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-16, 0));
 
-
-			eProjectiles[0]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-16, 0));
-			eProjectiles[1]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-16, 0));
-			eProjectiles[2]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-16, 0));
-			eProjectiles[3]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-16, 0));
-			eProjectiles[4]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-16, 0));
-
-			//eProjectiles[0]->getBox()->setForce(cocos2d::Vec2(-3.25, -3.25));
-			//eProjectiles[1]->getBox()->setForce(cocos2d::Vec2(-1.75, -4.5));
-			//eProjectiles[2]->getBox()->setForce(cocos2d::Vec2(0, -5.06));
-			//eProjectiles[3]->getBox()->setForce(cocos2d::Vec2(1.75, -4.5));
-			//eProjectiles[4]->getBox()->setForce(cocos2d::Vec2(3.25, -3.25));
-
+			
 			if (/*this->getBox()->getLocation().x < 250*/ onLeft) {
 				this->getSprite()->setTexture("shotgunOutlaw1.png");
-				eProjectiles[0]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-22, 0));
-				eProjectiles[1]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-22, 0));
-				eProjectiles[2]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-22, 0));
-				eProjectiles[3]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-22, 0));
-				eProjectiles[4]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-22, 0));
+
+				for (unsigned i = 0; i < 5; ++i)
+					eProjectiles[i]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-22, 0));
 
 
 				eProjectiles[0]->getBox()->setForce(cocos2d::Vec2(0, -5.06));//projectile on the left
@@ -239,11 +223,10 @@ namespace Sedna {
 			}
 			else if (/*this->getBox()->getLocation().x > 250*/!onLeft) {
 				this->getSprite()->setTexture("shotgunOutlaw.png");
-				eProjectiles[0]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(16, 0));
-				eProjectiles[1]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(16, 0));
-				eProjectiles[2]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(16, 0));
-				eProjectiles[3]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(16, 0));
-				eProjectiles[4]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(16, 0));
+
+				for (unsigned i = 0; i < 5; ++i)
+					eProjectiles[i]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(16, 0));
+
 
 				eProjectiles[0]->getBox()->setForce(cocos2d::Vec2(-5.06, 0));//projectile on the left
 				eProjectiles[1]->getBox()->setForce(cocos2d::Vec2(-4.5, -1.75));
@@ -288,24 +271,20 @@ namespace Sedna {
 	RifleOutlaw::RifleOutlaw(float x, float y) : Outlaw(x, y)
 	{
 		points = 300;
-		//this->getSprite()->setRotation(10.0f);
 		track = cocos2d::Vec2(0, 0);
 	}
 
 	void Sedna::RifleOutlaw::animate(float dt)
 	{
-		if (animationTimer > 0.3f) {
+		if (animationTimer > 0.3f) 
 			this->getSprite()->setTexture("rifleLl.png");
-
-			hasAnimation = false;
-		}
-		if (animationTimer > 0.6f) {
+		
+		if (animationTimer > 0.6f) 
 			animationTimer = 0.0f;
-		}
-		if (!animationTimer) {
+		
+		if (!animationTimer) 
 			this->getSprite()->setTexture("rifleRl.png");
-			hasAnimation = true;
-		}
+		
 		animationTimer += dt;
 	}
 
@@ -382,6 +361,16 @@ namespace Sedna {
 
 	void Sedna::CrazyPete::animate(float dt)
 	{
+		if (animationTimer > 0.3f)
+			this->getSprite()->setTexture("CrazyPete.png");
+
+		if (animationTimer > 0.6f)
+			animationTimer = 0.0f;
+
+		if (!animationTimer)
+			this->getSprite()->setTexture("CrazyPete2.png");
+
+		animationTimer += dt;
 	}
 
 	void Sedna::CrazyPete::removeProjectiles()
@@ -496,15 +485,25 @@ namespace Sedna {
 		sprite->setTexture("boss.png");
 		sprite->setScale(0.4f);
 		sprite->setAnchorPoint(cocos2d::Vec2(0.4f, 0.3f));
+		hitBox->setRadius(hitBox->getRadius() + 5);
 		healthBar = new SquarePrimitive(cocos2d::Vec2(this->getBox()->getLocation().x - 160, this->getBox()->getLocation().y - 235),
 			cocos2d::Vec2(this->getBox()->getLocation().x - 160 + this->getHP() * 3, this->getBox()->getLocation().y - 240));
 
+	}
+
+	Goldman::~Goldman()
+	{
+		this->healthBar->getDrawNode()->removeFromParent();
 	}
 
 	void Sedna::Goldman::shoot(float dt, cocos2d::Scene * s, CirclePrimitive* c)
 	{
 		if (this->getHP() <= 25) {
 			phase3 = true;
+			if (!playedMadSound) {
+				cocos2d::experimental::AudioEngine::play2d("goldmanMad.mp3");
+				playedMadSound = true;
+			}
 			if (1 + rand() % 2 == 1) {
 				phase1 = true;
 				phase2 = false;
@@ -523,7 +522,7 @@ namespace Sedna {
 		srand(time(0));
 		if (phase1) {
 
-			if (eShootTimer > ((phase3) ? 0.7f:1.15f)) {
+			if (eShootTimer > ((phase3) ? 0.7f : 1.15f)) {
 				eShootTimer = 0.0f;
 				eHasShot = false;
 			}
@@ -540,6 +539,8 @@ namespace Sedna {
 					s->addChild(eProjectiles.back()->getBox()->getDrawNode());
 					s->addChild(eProjectiles.back()->getSprite());
 				}
+				cocos2d::experimental::AudioEngine::play2d("shotgun.mp3");
+
 				eHasShot = true;
 				v.x = -5;
 				for (int i = 0; i < 10; i++) {
@@ -561,12 +562,12 @@ namespace Sedna {
 
 		}
 		else if (phase2) {
-			if (eShootTimer >((phase3) ? 0.059f:0.089f)) {
+			if (eShootTimer > ((phase3) ? 0.059f : 0.089f)) {
 				eShootTimer = 0.0f;
 				eHasShot = false;
 			}
 			if (!eShootTimer) {
-
+				cocos2d::experimental::AudioEngine::play2d("revolver1.mp3");
 				eHasShot = true;
 
 				if (phase2Vec.x < -5.0f)
@@ -603,33 +604,54 @@ namespace Sedna {
 	{
 		if (!phase3) {
 
-			if (animationTimer > 0.575f) {
-				this->getSprite()->setTexture("boss.png");
+			if (animationTimer > 0.14375f && animationTimer < 0.2875f)
+				this->getSprite()->setTexture("GOLDMAN walk2.png");
 
-				hasAnimation = false;
-			}
-			if (animationTimer > 1.15f) {
+			if (animationTimer > 0.2875f && animationTimer < 0.575f)
+				this->getSprite()->setTexture("GOLDMAN walk3.png");
+
+			if (animationTimer > 0.8625f)
+				this->getSprite()->setTexture("GOLDMAN walk4.png");
+
+			if (animationTimer > 1.15f)
 				animationTimer = 0.0f;
-			}
-			if (!animationTimer) {
-				this->getSprite()->setTexture("boss2.png");
-				hasAnimation = true;
-			}
+
+			if (!animationTimer)
+				this->getSprite()->setTexture("GOLDMAN walk1.png");
+
+
 			animationTimer += dt;
 		}
 		else if (phase3) {
-			if (animationTimer > 0.2875f) {
-				this->getSprite()->setTexture("angerBoss.png");
+			//if (animationTimer > 0.2875f) {
+			//	this->getSprite()->setTexture("angerBoss.png");
+			//
+			//	hasAnimation = false;
+			//}
+			//if (animationTimer > 0.575f) {
+			//	animationTimer = 0.0f;
+			//}
+			//if (!animationTimer) {
+			//	this->getSprite()->setTexture("angerBoss2.png");
+			//	hasAnimation = true;
+			//}
+			//animationTimer += dt;
+			if (animationTimer > 0.14375f/2.0f && animationTimer < 0.2875f/2.0f)
+				this->getSprite()->setTexture("GOLDMAN mad walk2.png");
 
-				hasAnimation = false;
-			}
-			if (animationTimer > 0.575f) {
+			if (animationTimer > 0.2875f/2.0f && animationTimer < 0.575f/2.0f)
+				this->getSprite()->setTexture("GOLDMAN mad walk3.png");
+
+			if (animationTimer > 0.8625f/2.0f)
+				this->getSprite()->setTexture("GOLDMAN mad walk4.png");
+
+			if (animationTimer > 1.15f/2.0f)
 				animationTimer = 0.0f;
-			}
-			if (!animationTimer) {
-				this->getSprite()->setTexture("angerBoss2.png");
-				hasAnimation = true;
-			}
+
+			if (!animationTimer)
+				this->getSprite()->setTexture("GOLDMAN mad walk1.png");
+
+
 			animationTimer += dt;
 		}
 

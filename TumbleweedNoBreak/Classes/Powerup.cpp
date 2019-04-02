@@ -3,7 +3,7 @@
 #include "AudioEngine.h"
 namespace Sedna {
 
-	Sedna::Powerup::Powerup(const char* s, Gun* GUN, float x, float y) : gun(GUN)
+	Sedna::Powerup::Powerup(const char* s, Gun* GUN, Gun* GUN2, float x, float y) : gun(GUN), gun2(GUN2)
 	{
 		sprite = cocos2d::Sprite::create(s);
 		sprite->setScale(spriteScale);
@@ -17,6 +17,7 @@ namespace Sedna {
 		delete sprite;
 		delete hitBox;
 		delete gun;
+		delete gun2;
 	}
 
 
@@ -24,7 +25,7 @@ namespace Sedna {
 	void Sedna::Powerup::pickUp(Player * p)
 	{
 		if (this->getBox()->checkCollision(*p->getBox())) {
-			p->setCurrentGun(gun);
+			p->setCurrentGun(p->getPlayerNumber() == 1 ? gun : gun2);
 			p->getCurrentGun()->setAmmo(p->getCurrentGun()->getOriginalAmmo());
 
 			if (p->getCurrentGun()->getName() == "bloodyMary") {

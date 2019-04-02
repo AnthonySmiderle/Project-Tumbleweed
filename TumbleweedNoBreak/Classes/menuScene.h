@@ -52,7 +52,6 @@ private:
 	cocos2d::Director* director;
 
 	cocos2d::Sprite* background;
-	cocos2d::Label* title;
 	cocos2d::Menu* menu;
 
 	Sedna::XinputManager manager;

@@ -10,17 +10,17 @@
 namespace Sedna {
 
 	class Powerup;
-	
+
 	class SednaUI {
 	public:
-		SednaUI(Gun* currentGun,Player* p, int args, ...);
-		
+		SednaUI(Gun* currentGun, Player* p, int args, ...);
+
 
 		std::vector<cocos2d::Label*> getLabelList() const;
 		cocos2d::Sprite* getUIGunSprite() const;
 		std::vector<cocos2d::Sprite*> getHPSprites() const;
 		void setUIGunSprite(cocos2d::Sprite* s);
-	
+
 
 		void updatePosition(cocos2d::Vec2 p);
 		void updateList();
@@ -33,7 +33,7 @@ namespace Sedna {
 		std::vector<cocos2d::Label*> labelList;
 		Gun* currentGun;
 		cocos2d::Sprite* uiGunSprite;
-		
+
 
 	};
 
@@ -41,14 +41,14 @@ namespace Sedna {
 	{
 	public:
 		Player() {}
-		Player(int wPlayer, float x, float y,XinputManager MANAGER,Gun* CURRENTGUN);
+		Player(int wPlayer, float x, float y, XinputManager MANAGER, Gun* CURRENTGUN);
 		~Player();
 
 		//extend member functions here
 
 		XinputController* getController() const { return pController; }
 		Gun* getCurrentGun() const { return currentGun; }
-		
+
 		int getPlayerNumber() const { return playerNumber; }
 		unsigned int getScore() const;
 		void die();
@@ -56,18 +56,18 @@ namespace Sedna {
 		void checkInput(float dt);
 		void shoot(float dt, cocos2d::Scene* s);
 		void checkList();
-		void checkBCollision(std::vector<Outlaw*>& outlawList,Powerup* power1,Powerup* power2,cocos2d::Scene* s);
+		void checkBCollision(std::vector<Outlaw*>& outlawList, Powerup* power1, Powerup* power2, cocos2d::Scene* s);
 		void checkBCollision(std::vector<Table*>& tableList);
 		void checkTableStuff(std::vector<Table*>& tableList, Sedna::Player*);
 		void updateInvince(float dt);
-		bool getInvinc()const ;
+		bool getInvinc()const;
 		void wasHurt();
 		bool isDead();
 		void setScore(const unsigned int);
 		SednaUI* getUI() const;
 
 		void setGun(Gun* g);
-	
+
 		std::vector<Projectile*> getpProjectile() const;
 
 		///<used for tutorial purposes only>
@@ -76,6 +76,7 @@ namespace Sedna {
 		bool usedShot() const { return shot; }
 		///<not to be confused with xinput>
 		bool pressedA() const { return kickedTable; }
+
 	private:
 		///<used for tutorial purposes only>
 		bool moved = false;
