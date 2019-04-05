@@ -14,7 +14,7 @@ namespace Sedna {
 		//select a place in the list
 		void select(unsigned int index);
 	
-		//does what it says on the tin
+		//gets the selected index
 		unsigned int getIndexOfSelected() const;
 		//get the currently selected label out of the list
 		std::vector<cocos2d::Label*> getLabelList() const;
@@ -55,27 +55,26 @@ private:
 	cocos2d::Menu* menu;
 
 	Sedna::XinputManager manager;
-	Sedna::XinputController* p1Controller;
-	Sedna::XinputController* p2Controller;
+	Sedna::XinputController* p1Controller;//these allow for Xinput in the menu 
 	Sedna::Stick p1Sticks[2];
-	Sedna::Stick p2Sticks[2];
 
-	Sedna::SednaMenu* menuE;
-	cocos2d::Label* label;
-	cocos2d::Label* label2;
-	cocos2d::Label* label3;
+	Sedna::SednaMenu* menuM;
+	cocos2d::Label* mLabel;//labels for the main menu
+	cocos2d::Label* mLabel2;
+	cocos2d::Label* mLabel3;
 
 	Sedna::SednaMenu* menuO;
-	cocos2d::Label* oLabel;
+	cocos2d::Label* oLabel;//labels for the options menu
 	cocos2d::Label* oLabel2;
-	std::string oLabelStrings[2] = {"Music: Off","Music: On"};
+
+	std::string oLabelStrings[2] = {"Music: Off","Music: On"};//Strings for the options menu
 	std::string oLabel2Strings[2] = { "Tutorial: Off","Tutorial: On" };
-	float selectWait = 0.0f;
 
-	float menuWait = 0.0f;
-	bool optionMenuBool = false;
+	float selectWait = 0.0f;//this variable stops you from selecting an item every single update which is impossible for the player to know if it will be on or off when they release the button
+	float menuWait = 0.0f;//this does the same as above but for moving the stick selection so they can stop in the center
+	bool optionMenuBool = false;//this tells us if the Option menu is open or not
 
-	cocos2d::Sprite* bButton;
+	cocos2d::Sprite* bButton;//these labels are polish so that the player can see the select and back Button respectively
 	cocos2d::Label* bButtonLabel;
 
 	cocos2d::Sprite* aButton;
