@@ -4,10 +4,10 @@
 
 void Sedna::SpawnManager::update(float dt, int DDOS)
 {
-	srand(time(0));
+	srand(time(0));//just to reset the random timer
 	totalTime += dt;
-	DDOS += 25;
-	for (unsigned int i = 0; i < tables.update(dt,tableList.size()); i++)
+	DDOS += 25;//just to bump up the height of the spawns so it isn't on screen
+	for (unsigned int i = 0; i < tables.update(dt,tableList.size()); i++)//update all the 
 		tableSpawn(DDOS);
 
 	int tableChainMax = tableChain.update(dt, tableList.size());
@@ -30,7 +30,8 @@ void Sedna::SpawnManager::update(float dt, int DDOS)
 	for (unsigned int i = 0; i < CrazyPetes.update(dt, outlawList.size()); i++)
 		peteSpawn(DDOS);
 }
-
+//all spawn functions
+//they create a new object and push it to the list
 
 void Sedna::SpawnManager::tableSpawn(int DDOS)
 {
