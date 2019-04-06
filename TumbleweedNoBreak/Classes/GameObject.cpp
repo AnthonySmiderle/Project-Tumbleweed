@@ -2,7 +2,7 @@
 namespace Sedna {
 
 
-
+	//create a new gameobject with the default settings for a game object
 GameObject::GameObject(const char * FILEPATH, const cocos2d::Vec2 & LOCATION, float RADIUS, float ANGLE, unsigned int SEGMENTS) 
 	:hitBox(new CirclePrimitive(LOCATION,RADIUS,ANGLE,SEGMENTS))
 {
@@ -24,7 +24,9 @@ CirclePrimitive* GameObject::getBox() const
 
 void GameObject::updateGameObject()
 {
+	//call the update function for the hitbox
 	hitBox->update();
+	//make sure that the sprite is on the hitbox no matter what
 	sprite->setPosition(hitBox->getLocation());
 }
 HP GameObject::getHP() const

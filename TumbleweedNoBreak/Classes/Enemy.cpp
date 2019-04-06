@@ -70,13 +70,13 @@ namespace Sedna {
 	void Outlaw::animate(float dt)
 	{
 		//animate the outlaws
-		if (animationTimer > 0.3f) 
+		if (animationTimer > 0.3f)
 			this->getSprite()->setTexture("outlawLl.png");
-		
-			if (animationTimer > 0.6f) 
+
+		if (animationTimer > 0.6f)
 			animationTimer = 0.0f;
-		
-		if (!animationTimer) 
+
+		if (!animationTimer)
 			this->getSprite()->setTexture("outlawRl.png");
 		animationTimer += dt;
 	}
@@ -90,7 +90,7 @@ namespace Sedna {
 
 			if (eProjectiles[i]->getBox()->checkCollision(*p->getBox())) {
 				if (!(p->getInvinc())) {
-				
+
 					p->setHP(p->getHP() - 1);
 					srand(rand() % time(0));
 					int random = (rand() % 3) + 1;
@@ -124,7 +124,7 @@ namespace Sedna {
 						}
 					}
 				}
-				
+				//remove the bullet
 				eProjectiles[i]->getBox()->getDrawNode()->removeFromParent();
 				eProjectiles[i]->getSprite()->removeFromParent();
 				eProjectiles.erase(eProjectiles.begin() + i);
@@ -140,12 +140,14 @@ namespace Sedna {
 	}
 	void Outlaw::checkBCollision(std::vector<Table*>& tableList)
 	{
+		//check to see if a bullet is colliding with a table
 		bool check = false;
 		for (int i = 0; i < eProjectiles.size(); i++) {
 			for (int j = 0; j < tableList.size(); j++) {
 				if (eProjectiles.empty())
 					break;
 				if (eProjectiles[i]->getBox()->checkCollision(*tableList[j]->getBox())) {
+
 
 					tableList[j]->setHP(tableList[j]->getHP() - 1);
 					eProjectiles[i]->getBox()->getDrawNode()->removeFromParent();
@@ -186,7 +188,7 @@ namespace Sedna {
 	}
 	void Sedna::ShotgunOutlaw::animate(float dt)
 	{
-
+		//this enemy has no animations
 	}
 	void ShotgunOutlaw::shoot(float dt, cocos2d::Scene * s)
 	{
@@ -195,6 +197,7 @@ namespace Sedna {
 			eShootTimer = 0.0f;
 			eHasShot = false;
 		}
+		//if the timer is 0
 		if (!eShootTimer) {
 			for (int i = 0; i < eProjectiles.size(); i++) {
 				eProjectiles[i]->getBox()->getDrawNode()->removeFromParent();
@@ -217,14 +220,14 @@ namespace Sedna {
 			for (unsigned i = 0; i < 5; ++i)
 				eProjectiles[i]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-16, 0));
 
-			
+
 			if (/*this->getBox()->getLocation().x < 250*/ onLeft) {
 				this->getSprite()->setTexture("shotgunOutlaw1.png");
 
 				for (unsigned i = 0; i < 5; ++i)
 					eProjectiles[i]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-22, 0));
 
-
+				//set the projectiles to move in a certain direction
 				eProjectiles[0]->getBox()->setForce(cocos2d::Vec2(0, -5.06));//projectile on the left
 				eProjectiles[1]->getBox()->setForce(cocos2d::Vec2(1.75, -4.5));
 				eProjectiles[2]->getBox()->setForce(cocos2d::Vec2(3.35, -3.35));//projectiles in the middle
@@ -286,15 +289,15 @@ namespace Sedna {
 
 	void Sedna::RifleOutlaw::animate(float dt)
 	{
-		if (animationTimer > 0.3f) 
+		if (animationTimer > 0.3f)
 			this->getSprite()->setTexture("rifleLl.png");
-		
-		if (animationTimer > 0.6f) 
+
+		if (animationTimer > 0.6f)
 			animationTimer = 0.0f;
-		
-		if (!animationTimer) 
+
+		if (!animationTimer)
 			this->getSprite()->setTexture("rifleRl.png");
-		
+
 		animationTimer += dt;
 	}
 
@@ -307,6 +310,7 @@ namespace Sedna {
 		}
 		if (!eShootTimer) {
 			eHasShot = true;
+			//get the normalized vector in the direction of the player
 			auto direction = track / sqrt(track.x*track.x + track.y*track.y);
 			if (direction.y > 0)
 				return;
@@ -400,7 +404,7 @@ namespace Sedna {
 
 	void Sedna::CrazyPete::updateDyn(float dt, cocos2d::Scene * s)
 	{
-		//auto direction = track / sqrt(track.x*track.x + track.y*track.y);
+		//move crazy pete across the screen
 		this->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-1, 0));
 		if (eShootTimer > 2.0f) {
 			eShootTimer = 0.0f;
@@ -427,13 +431,14 @@ namespace Sedna {
 
 	void Sedna::CrazyPete::shoot(float dt, cocos2d::Scene * s)
 	{
+		//remove all past bullets
 		for (int i = 0; i < eProjectiles.size(); i++) {
 			eProjectiles[i]->getBox()->getDrawNode()->removeFromParent();
 			eProjectiles[i]->getSprite()->removeFromParent();
 			eProjectiles.erase(eProjectiles.begin() + i);
 			i--;
 		}
-
+		//make new bullets
 		for (int i = 0; i < 8; i++) {
 			eProjectiles.push_back(new Projectile(dynamite->getBox()->getLocation().x, dynamite->getBox()->getLocation().y, Enemy));
 			s->addChild(eProjectiles.back()->getBox()->getDrawNode());
@@ -443,6 +448,8 @@ namespace Sedna {
 
 
 		auto speed = 6;
+
+		//set the force of all new bullets
 
 		eProjectiles[0]->getBox()->setForce(cocos2d::Vec2(-1, 0)*speed);
 		eProjectiles[1]->getBox()->setForce(cocos2d::Vec2(1, 0) *speed);
@@ -508,6 +515,7 @@ namespace Sedna {
 
 	void Sedna::Goldman::shoot(float dt, cocos2d::Scene * s, CirclePrimitive* c)
 	{
+		//if its phase 3, pick randomly between phase 1 and 2
 		if (this->getHP() <= 25) {
 			phase3 = true;
 			if (!playedMadSound) {
@@ -523,6 +531,7 @@ namespace Sedna {
 				phase2 = true;
 			}
 		}
+		//initiate phase 2
 		else if (this->getHP() <= (100 / 2)/*left it as a fraction incase we wanna change it later*/)
 		{
 			phase1 = false;
@@ -552,6 +561,7 @@ namespace Sedna {
 				cocos2d::experimental::AudioEngine::play2d("shotgun.mp3");
 
 				eHasShot = true;
+				//the following mathematical function produces a random pattern in a shotgun arc/spread
 				v.x = -5;
 				for (int i = 0; i < 10; i++) {
 					v.x++;
@@ -560,8 +570,10 @@ namespace Sedna {
 						(rand() % 2 == 1 ?
 						(rand() % 6) : (-rand() % 6)) : 0.0f;
 					auto second = -3.0f;
+					//make the projectiles come from above the screen
 					eProjectiles[i]->getBox()->setLocation(cocos2d::Vec2(this->getBox()->getLocation().x, this->getBox()->getLocation().y + 60) + v);
 					auto force = v / sqrt(v.x*v.x + v.y*v.y);
+					//set the force to the normalized direction of v, and add in some random force as well
 					eProjectiles[i]->getBox()->setForce(force*1.5f + cocos2d::Vec2(first, second*1.5f));
 				}
 
@@ -590,7 +602,7 @@ namespace Sedna {
 					phase2Vec.x -= 0.1f;
 
 
-
+				//c is an invisible circle primitive that moves back and forth across the screen during the bossfight
 				auto direction = c->getLocation() - this->getBox()->getLocation();
 
 				this->eProjectiles.push_back(new Projectile(this->getBox()->getLocation().x, this->getBox()->getLocation().y + 60, Enemy));
@@ -612,6 +624,7 @@ namespace Sedna {
 
 	void Sedna::Goldman::animate(float dt)
 	{
+		//set 1
 		if (!phase3) {
 
 			if (animationTimer > 0.14375f && animationTimer < 0.2875f)
@@ -632,30 +645,19 @@ namespace Sedna {
 
 			animationTimer += dt;
 		}
+
+		//set 2
 		else if (phase3) {
-			//if (animationTimer > 0.2875f) {
-			//	this->getSprite()->setTexture("angerBoss.png");
-			//
-			//	hasAnimation = false;
-			//}
-			//if (animationTimer > 0.575f) {
-			//	animationTimer = 0.0f;
-			//}
-			//if (!animationTimer) {
-			//	this->getSprite()->setTexture("angerBoss2.png");
-			//	hasAnimation = true;
-			//}
-			//animationTimer += dt;
-			if (animationTimer > 0.14375f/2.0f && animationTimer < 0.2875f/2.0f)
+			if (animationTimer > 0.14375f / 2.0f && animationTimer < 0.2875f / 2.0f)
 				this->getSprite()->setTexture("GOLDMAN mad walk2.png");
 
-			if (animationTimer > 0.2875f/2.0f && animationTimer < 0.575f/2.0f)
+			if (animationTimer > 0.2875f / 2.0f && animationTimer < 0.575f / 2.0f)
 				this->getSprite()->setTexture("GOLDMAN mad walk3.png");
 
-			if (animationTimer > 0.8625f/2.0f)
+			if (animationTimer > 0.8625f / 2.0f)
 				this->getSprite()->setTexture("GOLDMAN mad walk4.png");
 
-			if (animationTimer > 1.15f/2.0f)
+			if (animationTimer > 1.15f / 2.0f)
 				animationTimer = 0.0f;
 
 			if (!animationTimer)
@@ -669,6 +671,7 @@ namespace Sedna {
 
 	void Sedna::Goldman::checkList()
 	{
+		//make sure the healthbar stays on screen and update its length
 		healthBar->setP2x(this->getBox()->getLocation().x - 160 + this->getHP() * 3);
 		healthBar->setP1y(this->getBox()->getLocation().y - 215);
 		healthBar->setP2y(this->getBox()->getLocation().y - 220);

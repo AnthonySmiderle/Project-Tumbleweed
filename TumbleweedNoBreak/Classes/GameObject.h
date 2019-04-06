@@ -8,12 +8,18 @@ namespace Sedna {
 
 	class GameObject{
 	public:
+		//this default constructor is here so that if the lazy programmer wants to create a child of game object, they have to define the hitbox and sprite themselves
 		GameObject() {}
+
 		GameObject(const char* FILEPATH, const cocos2d::Vec2 &LOCATION, float RADIUS, float ANGLE, unsigned int SEGMENTS);
 		virtual ~GameObject() { delete sprite; delete hitBox; }
 		cocos2d::Sprite* getSprite()const;
 		Sedna::CirclePrimitive* getBox()const;
+
+		//you can set the hitbox to a different circle if you really want
 		void setCircle(CirclePrimitive c) { *hitBox = c; }
+
+		///<important function that makes the game work!!>
 		void updateGameObject();
 		HP getHP() const;
 		void setHP(HP hp);

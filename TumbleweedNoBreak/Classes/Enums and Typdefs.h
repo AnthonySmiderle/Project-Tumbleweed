@@ -1,7 +1,6 @@
 #pragma once
 namespace Sedna {
-
-	///<finish this>
+	//some typedefs that were used, some were not used. this was purley for organizational purposes
 	typedef int HP;
 
 	enum Team {

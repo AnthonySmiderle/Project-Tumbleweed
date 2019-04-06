@@ -28,7 +28,6 @@
 #include "AudioEngine.h"
 #include "menuScene.h"
 #include "MusicList.h"
-#include "Options.h"
 #include <fstream>
 
 USING_NS_CC;
@@ -61,13 +60,12 @@ bool HelloWorld::init()
 
 
 
-	//bottom label
-
+	//create the pausemenu
 	auto localL1 = cocos2d::Label::create("Exit to Main Menu", "fonts/Montague.ttf", 25);
 	auto localL2 = cocos2d::Label::create("Resume", "fonts/Montague.ttf", 25);
 	pauseMenu = new Sedna::SednaMenu(2, localL1, localL2);
 
-
+	//initialize xinpu stuff
 	p1Controller = managerR.getController(0);
 	p2Controller = managerR.getController(1);
 
@@ -78,12 +76,15 @@ bool HelloWorld::init()
 	p2Controller->updateSticks(p2Sticks);
 	p2Controller->getTriggers(p2Triggers);
 
+
+	//make sure no tutorial functions happen before the cutscene
 	tutFunc1 = false;
 	tutFunc2 = false;
 	tutFunc3 = false;
 	tutFunc4 = false;
 
 	tutCutscene = true;
+	
 	initSprites();
 
 	director = cocos2d::Director::getInstance();
@@ -96,6 +97,7 @@ bool HelloWorld::init()
 }
 void HelloWorld::initSprites()
 {
+	//preload all the sounds
 	cocos2d::experimental::AudioEngine::preload("bgm.mp3");
 	cocos2d::experimental::AudioEngine::preload("bgm2.mp3");
 	cocos2d::experimental::AudioEngine::preload("bgmWin.mp3");
@@ -120,6 +122,8 @@ void HelloWorld::initSprites()
 	cocos2d::experimental::AudioEngine::preload("shotgun.mp3");
 	cocos2d::experimental::AudioEngine::preload("goldmanMad.mp3");
 
+	///<all of the following lines are just initializations. we will comment on specifically important / outlying code>
+
 	DDOS = new Sedna::GameObject("a.png", cocos2d::Vec2(100, 300), 1, 1, 1);
 	this->addChild(DDOS->getBox()->getDrawNode());
 	this->addChild(DDOS->getSprite());
@@ -132,6 +136,7 @@ void HelloWorld::initSprites()
 	btMeter = Sedna::SquarePrimitive(cocos2d::Vec2(190, DDOS->getSprite()->getPosition().y - 20), cocos2d::Vec2(280, DDOS->getSprite()->getPosition().y - 10));
 	this->addChild(btMeter.getDrawNode(), 100);
 
+	//labels for the scoreboard
 	score.highScoreLabel = cocos2d::Label::create("Highscore", "fonts/Montague.ttf", 15);
 	score.highScoreLabel->setPosition(cocos2d::Vec2(100, DDOS->getSprite()->getPosition().y - 100));
 	score.highScoreLabel->setVisible(false);
@@ -143,6 +148,9 @@ void HelloWorld::initSprites()
 	score.highScoreNameLabel->setVisible(false);
 	this->addChild(score.highScoreNameLabel);
 
+
+
+	//powerups
 	bloodyMaryP_up = new Sedna::Powerup("gun2.png", Sedna::Guns::bloodyMary, Sedna::Guns::bloodyMary2, -1000, 0);
 	theBiggestIronP_up = new Sedna::Powerup("gun3.png", Sedna::Guns::theBiggestIron, Sedna::Guns::theBiggestIron2, -1000, 0);
 
@@ -157,7 +165,6 @@ void HelloWorld::initSprites()
 	this->addChild(playerOne->getSprite(), 10);
 	this->addChild(playerOne->getUI()->getUIGunSprite(), 20);
 
-
 	for (unsigned int i = 0; i < playerOne->getUI()->getLabelList().size(); i++)
 		this->addChild(playerOne->getUI()->getLabelList()[i], 20);
 
@@ -169,8 +176,10 @@ void HelloWorld::initSprites()
 	this->addChild(playerTwo->getBox()->getDrawNode());
 	this->addChild(playerTwo->getSprite(), 10);
 	this->addChild(playerTwo->getUI()->getUIGunSprite(), 19);
+
 	for (unsigned int i = 0; i < playerTwo->getUI()->getLabelList().size(); i++)
 		this->addChild(playerTwo->getUI()->getLabelList()[i], 20);
+	
 	for (unsigned int i = 0; i < playerTwo->getUI()->getHPSprites().size(); i++)
 		this->addChild(playerTwo->getUI()->getHPSprites()[i]);
 
@@ -278,6 +287,8 @@ void HelloWorld::initSprites()
 	pauseMenu->select(1);
 
 
+
+	//tutorial outlaws and tables
 	tutOutlaws.push_back(new Sedna::Outlaw(200, DDOS->getSprite()->getPosition().y));
 	this->addChild(tutOutlaws.back()->getBox()->getDrawNode());
 	this->addChild(tutOutlaws.back()->getSprite());
@@ -288,18 +299,19 @@ void HelloWorld::initSprites()
 		this->addChild(tutTables.back()->getSprite());
 	}
 
+
+
+	//goldman specific stuff
 	dummy = new Sedna::Player(1, 320, 40, managerR, Sedna::Guns::olReliable);
 	this->addChild(dummy->getBox()->getDrawNode());
 	this->addChild(dummy->getSprite());
-
-
 
 	g.push_back(new Sedna::Goldman(250, DDOS->getSprite()->getPosition().y - 60));
 	this->addChild(g.back()->getBox()->getDrawNode());
 	this->addChild(g.back()->getSprite());
 	g.back()->getSprite()->setPosition(cocos2d::Vec2(-1000, 0));
 	this->addChild(((Sedna::Goldman*)g.back())->getHealthBar()->getDrawNode(), 100);
-	((Sedna::Goldman*)g.back())->getHealthBar()->getDrawNode()->setVisible(false);
+	static_cast<Sedna::Goldman*>(g.back())->getHealthBar()->getDrawNode()->setVisible(false);
 
 	dummyTracker = new Sedna::CirclePrimitive(cocos2d::Vec2(0, static_cast<Sedna::Goldman*>(g.back())->getHealthBar()->getP2().y), 5, 20, 50);
 	this->addChild(dummyTracker->getDrawNode());
@@ -327,9 +339,10 @@ void HelloWorld::initSprites()
 	aButton->setVisible(false);
 	aButtonLabel->setVisible(false);
 
-
-	if (((Tutorial*)this)->tutorial)
+	//only make these if the tutorial is true
+	if (static_cast<Tutorial*>(this)->tutorial)
 		if (tutBool) {
+
 			movementSign = new Sedna::Sign("lsl.png", this, cocos2d::Vec2(-1000, 0), true);
 
 			shootSign = new Sedna::Sign("rt.png", this, cocos2d::Vec2(-1000, 0), true);
@@ -437,13 +450,14 @@ void HelloWorld::update(float dt)
 	if (!end) {
 		if (bulletTime)
 			dt *= 0.5f;
+		//update all the xinput stuff
 		managerR.update();
 		p1Controller->updateSticks(p1Sticks);
 		p1Controller->getTriggers(p1Triggers);
 		p2Controller->updateSticks(p2Sticks);
 		p2Controller->getTriggers(p2Triggers);
 
-
+		//switch back to the base gun if you're out of ammo
 		if (playerOne->getCurrentGun()->getAmmo() <= 0)
 			playerOne->setCurrentGun(Sedna::Guns::olReliable);
 		if (playerTwo->getCurrentGun()->getAmmo() <= 0)
@@ -454,10 +468,6 @@ void HelloWorld::update(float dt)
 		if (this->tutorial)
 			this->gameTutorial(dt);
 		else {
-			
-
-			
-
 			if (!paused) {
 				bossTimer += dt;
 				bossTimeMax -= dt;
@@ -486,6 +496,7 @@ void HelloWorld::update(float dt)
 
 void HelloWorld::useBulletTime(float dt)
 {
+
 	if ((p1Triggers.LT > 0.0f || p2Triggers.LT > 0.0f) && bulletTimeMax < 3.0f)//triggers can be replaced by a power up boolean for a drink instead of a toggle thing
 		bulletTime = true;
 
@@ -493,6 +504,7 @@ void HelloWorld::useBulletTime(float dt)
 	{
 		playerOne->usedBt = true;
 		playerTwo->usedBt = true;
+		//pause and unpause REALLY fast (this instance is just toggling pause)
 		paused ^= 1;
 
 		playerOne->getBox()->setRadius(15);	///
@@ -965,7 +977,7 @@ void HelloWorld::pause(float dt)
 			{
 				startLabel->setString("3");
 				if (!playMusic) {
-					if (Sedna::optionStuff::music)
+					if (static_cast<Tutorial*>(this)->music)
 						cocos2d::experimental::AudioEngine::play2d("bgm.mp3", true);
 					playMusic = true;
 				}

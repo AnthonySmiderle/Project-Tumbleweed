@@ -46,6 +46,7 @@ namespace Sedna {
 		void animate(float dt) override;
 		void shoot(float dt, cocos2d::Scene* s) override;
 		void checkList() override;
+		//checks the position relative to the player
 		void onLeftSideOf(Player*p);
 	private:
 		bool onLeft = false;
@@ -58,7 +59,8 @@ namespace Sedna {
 		void animate(float dt) override;
 		void shoot(float dt, cocos2d::Scene* s) override;
 
-		cocos2d::Vec2 getTrack() const;///may be problematic
+		//gets the tracking vector
+		cocos2d::Vec2 getTrack() const;
 		void setTrack(Player* p);
 	private:
 		cocos2d::Vec2 track;
