@@ -7,7 +7,7 @@ namespace Sedna {
 
 	Sedna::Outlaw::Outlaw(float x, float y)
 	{
-
+		//set up the hitbox and sprite
 		sprite = cocos2d::Sprite::create("outlawLl.png");
 		sprite->setScale(spriteScale);
 
@@ -30,13 +30,16 @@ namespace Sedna {
 		if (!eShootTimer) {
 			eHasShot = true;
 
+			//make a new projectile
 			eProjectiles.push_back(new Sedna::Projectile(-1000, 10, Enemy));
 			s->addChild(eProjectiles.back()->getBox()->getDrawNode());
 			s->addChild(eProjectiles.back()->getSprite());
 
+			//create the illusion that the outlaw is "shooting"
 			eProjectiles.back()->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-8, 0));
 			eProjectiles.back()->getBox()->setForce(cocos2d::Vec2(0, -5));
 
+			//play a sound
 			cocos2d::experimental::AudioEngine::play2d("outlawNormal.mp3");
 		}
 		if (eHasShot)
@@ -44,16 +47,19 @@ namespace Sedna {
 	}
 	void Outlaw::checkList()
 	{
+		//if there are more than 4 bullets on the screen, clear them
 		if (eProjectiles.size() > 4) {
 			eProjectiles.front()->getBox()->getDrawNode()->removeFromParent();
 			eProjectiles.front()->getSprite()->removeFromParent();
 			eProjectiles.erase(eProjectiles.begin());
 		}
+		//update the projectiles
 		for (int i = 0; i < eProjectiles.size(); i++)
 			eProjectiles[i]->updateGameObject();
 	}
 	void Outlaw::removeProjectiles()
 	{
+		//clear projectiles
 		for (int i = 0; i < eProjectiles.size(); i++) {
 			eProjectiles[i]->getBox()->getDrawNode()->removeFromParent();
 			eProjectiles[i]->getSprite()->removeFromParent();
@@ -63,6 +69,7 @@ namespace Sedna {
 	}
 	void Outlaw::animate(float dt)
 	{
+		//animate the outlaws
 		if (animationTimer > 0.3f) 
 			this->getSprite()->setTexture("outlawLl.png");
 		
@@ -75,51 +82,54 @@ namespace Sedna {
 	}
 	void Outlaw::checkBCollision(Player * p)
 	{
-
+		//check to see if the projectiles are colliding with the player
 		for (int i = 0; i < eProjectiles.size(); i++) {
 			if (eProjectiles.empty())
 				break;
 
 
 			if (eProjectiles[i]->getBox()->checkCollision(*p->getBox())) {
-				//TODO remove the invincible stuff 
-				///if (!(p->getInvinc())) {
-				///
-				///	p->setHP(p->getHP() - 1);
-				///	srand(rand() % time(0));
-				///	int random = (rand() % 3) + 1;
-				///	if (p->getPlayerNumber() == 1) {
-				///		if (random == 1)
-				///			cocos2d::experimental::AudioEngine::play2d("p1Hurt.mp3");
-				///		if (random == 2)
-				///			cocos2d::experimental::AudioEngine::play2d("p1Hurt2.mp3");
-				///		if (random == 3)
-				///			cocos2d::experimental::AudioEngine::play2d("p1Hurt3.mp3");
-				///	}
-				///	else {
-				///		if (random == 1)
-				///			cocos2d::experimental::AudioEngine::play2d("p2Hurt.mp3");
-				///		if (random == 2)
-				///			cocos2d::experimental::AudioEngine::play2d("p2Hurt2.mp3");
-				///		if (random == 3)
-				///			cocos2d::experimental::AudioEngine::play2d("p2Hurt3.mp3");
-				///	}
-				///	p->getController()->setVibration(1, 1);
-				///	p->wasHurt();
-				///	for (int j = 0; j < p->getUI()->getHPSprites().size(); j++) {
-				///		if (p->getUI()->getHPSprites()[j]->getZOrder() == 21) {
-				///			p->getUI()->getHPSprites()[j]->setZOrder(20);
-				///			p->getUI()->getHPSprites()[j]->setTexture("brokenHeart.png");
-				///			break;
-				///		}
-				///	}
-				///}
-				///
-				///eProjectiles[i]->getBox()->getDrawNode()->removeFromParent();
-				///eProjectiles[i]->getSprite()->removeFromParent();
-				///eProjectiles.erase(eProjectiles.begin() + i);
-				///if (p->getHP() <= 0)
-				///	p->die();
+				if (!(p->getInvinc())) {
+				
+					p->setHP(p->getHP() - 1);
+					srand(rand() % time(0));
+					int random = (rand() % 3) + 1;
+
+					//play a random sound
+					if (p->getPlayerNumber() == 1) {
+						if (random == 1)
+							cocos2d::experimental::AudioEngine::play2d("p1Hurt.mp3");
+						if (random == 2)
+							cocos2d::experimental::AudioEngine::play2d("p1Hurt2.mp3");
+						if (random == 3)
+							cocos2d::experimental::AudioEngine::play2d("p1Hurt3.mp3");
+					}
+					else {
+						if (random == 1)
+							cocos2d::experimental::AudioEngine::play2d("p2Hurt.mp3");
+						if (random == 2)
+							cocos2d::experimental::AudioEngine::play2d("p2Hurt2.mp3");
+						if (random == 3)
+							cocos2d::experimental::AudioEngine::play2d("p2Hurt3.mp3");
+					}
+					//vibrate the player's controller
+					p->getController()->setVibration(1, 1);
+					//reset the invincibility timer
+					p->wasHurt();
+					for (int j = 0; j < p->getUI()->getHPSprites().size(); j++) {
+						if (p->getUI()->getHPSprites()[j]->getZOrder() == 21) {
+							p->getUI()->getHPSprites()[j]->setZOrder(20);
+							p->getUI()->getHPSprites()[j]->setTexture("brokenHeart.png");
+							break;
+						}
+					}
+				}
+				
+				eProjectiles[i]->getBox()->getDrawNode()->removeFromParent();
+				eProjectiles[i]->getSprite()->removeFromParent();
+				eProjectiles.erase(eProjectiles.begin() + i);
+				if (p->getHP() <= 0)
+					p->die();
 			}
 		}
 
@@ -521,7 +531,6 @@ namespace Sedna {
 		auto v = cocos2d::Vec2(0, 0);
 		srand(time(0));
 		if (phase1) {
-			playedMadSound = false;
 
 			if (eShootTimer > ((phase3) ? 0.7f : 1.15f)) {
 				eShootTimer = 0.0f;

@@ -37,7 +37,7 @@
 #include "SpawnManager.h"
 #include "Powerup.h"
 #include "Sign.h"
-#include <fstream>
+#include "ScoreBoard.h"
 namespace Sedna {
 	class SednaMenu;
 }
@@ -76,6 +76,10 @@ public:
 	// implement the "static create()" method manually
 	CREATE_FUNC(HelloWorld);
 
+
+	cocos2d::Sprite* aButton;
+	cocos2d::Label* aButtonLabel;
+
 	float bossTimeMax = 121.0f;
 	cocos2d::Label* bossTimeLabel;
 	bool playedWinSound = false;
@@ -83,8 +87,6 @@ public:
 	bool bossTime = false;
 	std::vector<Sedna::Outlaw*> g;
 	Sedna::CirclePrimitive* dummyTracker;
-
-
 
 	cocos2d::Sprite* noControl;
 	cocos2d::Label* tutorialMovedLabel;
@@ -97,6 +99,7 @@ public:
 	cocos2d::Label* tutorialShootLabel2;
 	cocos2d::Label* tutorialLabel;
 	cocos2d::Label* tutorialLabel2;
+
 	bool tutFunc1 = false;
 	bool tutFunc2 = false;
 	bool tutFunc3 = false;
@@ -189,12 +192,8 @@ public:
 	bool bulletTime = false;
 
 	float loseTimer = 0.0f;
-
-	std::ifstream highFileIn;
-	std::ofstream highFileOut;
-	bool hasWritten = false;
-	void writeScore();
-	cocos2d::Label *highScoreLabel;
+	//score
+	Sedna::ScoreBoard score;
 
 	private:
 		

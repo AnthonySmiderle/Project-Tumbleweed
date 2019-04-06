@@ -5,29 +5,35 @@
 #include <vector>
 
 namespace Sedna {
+	//forward declaring these classes
 	class Player;
 	class Table;
 
-
+	//base class
 	class Outlaw : public GameObject {
 	public:
 		Outlaw(float x, float y);
 		virtual ~Outlaw();
 
+		//get projectiles 
 		std::vector<Projectile*> getEProjectiles() const { return eProjectiles; }
+		//virtual functions
 		virtual void shoot(float dt, cocos2d::Scene* s);
 		virtual void checkList();
 		virtual void removeProjectiles();
 		virtual void animate(float dt);
+
+		//check the collision of the bullets with the player passed in
 		void checkBCollision(Player* p);
+		//check bullet collision with tables
 		void checkBCollision(std::vector<Table*>& tableList);
 		unsigned int points = 100;//this is public because there really isn't a reason to keep it private
 
 	protected:
 		float animationTimer = 0.0f;
 		bool hasAnimation = false;
-		bool yeee = false;
-
+		
+		//projectiles that the outlaw has
 		std::vector<Projectile*> eProjectiles;
 		float eShootTimer = 0.0f;
 		bool eHasShot = false;
