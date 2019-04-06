@@ -2,25 +2,25 @@
 
 void Sedna::ScoreBoard::writeScore(Sedna::Player * player, std::string name,int loc)
 {
-	highFileIn = std::ifstream("Saloon_Scores.txt");
+	highFileIn = std::ifstream("Saloon_Scores.txt");//what file to open
 	if (highFileIn.is_open())
 	{
 		std::string input;
-		std::vector<std::string> scoreSheet;
+		std::vector<std::string> scoreSheet;//read the input file
 		while (std::getline(highFileIn, input))
 		{
 			scoreSheet.push_back(input);
 		}
-		highFileIn.close();
+		highFileIn.close();//it is not saved as binary so we could edit any profanity
 		std::string HighestScore;
 		int intHighScore = 0;
 
-		intHighScore = player->getScore();
-		HighestScore = std::to_string(intHighScore);
-		scoreSheet.push_back(name + HighestScore);
+		intHighScore = player->getScore();//get the players score 
+		HighestScore = std::to_string(intHighScore);//convert to a string
+		scoreSheet.push_back(name + HighestScore);//add the players score to list of highscores
 		HighestScore = name + " had " + HighestScore + " Points!";
 
-		for (unsigned int i = 0; i < scoreSheet.size(); i++)
+		for (unsigned int i = 0; i < scoreSheet.size(); i++)//bubblesort te highscores
 		{
 			for (unsigned int n = 0; n < scoreSheet.size() - 1; n++)
 			{
@@ -32,35 +32,35 @@ void Sedna::ScoreBoard::writeScore(Sedna::Player * player, std::string name,int 
 				}
 			}
 		}
-		if (scoreSheet.size() > 7)
-			scoreSheet.pop_back();
+		if (scoreSheet.size() > 7)//if the scores are more than 7
+			scoreSheet.pop_back();//remove the last one (lowest)
 		highFileOut = std::ofstream("Saloon_Scores.txt");
-		if (highFileOut.is_open())
+		if (highFileOut.is_open())//output the highscores to a text file
 			for (unsigned int i = 0; i < scoreSheet.size(); i++)
 				highFileOut << scoreSheet[i] + "\n";
 
 
-		highFileOut.close();
+		highFileOut.close();//close the file
 
 		HighestScore = "";
 		for (unsigned int i = 0; i < scoreSheet.size(); i++)
 		{
-			HighestScore += scoreSheet[i].substr(0, 3) + "  " + scoreSheet[i].substr(3) + "\n";
+			HighestScore += scoreSheet[i].substr(0, 3) + "  " + scoreSheet[i].substr(3) + "\n";//get the high scores
 		}
-		highScoreLabel->setString(HighestScore);
-		highScoreLabel->setPosition(cocos2d::Vec2(230, loc));
-		highScoreLabel->setVisible(true);
+		highScoreLabel->setString(HighestScore);//put them to the highscore label
+		highScoreLabel->setPosition(cocos2d::Vec2(230, loc));//place it in the center
+		highScoreLabel->setVisible(true);//show us the highscores
 		highScoreNameLabel->setVisible(false);
 	}
 	else
 	{
-		highFileOut = std::ofstream("Saloon_Scores.txt");
+		highFileOut = std::ofstream("Saloon_Scores.txt");//make the file
 		if (highFileOut.is_open())
 		{
 			highFileOut.close();
 		}
 		highFileOut = std::ofstream();
-		writeScore(player, name,loc);
+		writeScore(player, name,loc);//if the file fails to be open just redo it
 	}
 
 	hasWritten = true;
@@ -70,7 +70,7 @@ void Sedna::ScoreBoard::getScore(Sedna::XinputController * controller, Sedna::St
 {
 	
 
-	flashingScoreTimer += dt;
+	flashingScoreTimer += dt;//this lets the arrows flash
 	if (((int)(flashingScoreTimer * 2)) % 2 == 0)
 	{
 		flashingScore1->setVisible(false);
