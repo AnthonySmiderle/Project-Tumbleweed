@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 
-
+//keep and orginized list of the music that we would be using
 class Music
 {
 public:
@@ -13,16 +13,3 @@ public:
 
 
 };
-
-/*
-LIST TO REMOVE IMPORTANT****************************************************************
-
-Yeet.mp3
-Yeet2.mp3
-Yeet3.mp3
-
-
-
-
-
-*/
