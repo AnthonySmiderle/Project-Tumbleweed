@@ -6,10 +6,14 @@ namespace Sedna {
 
 	class Gun : public GameObject {
 	public:
-		Gun(const char* NAME,unsigned int DAMAGE, unsigned int PROJLIMIT,float RATEOFFIRE);
-		Gun(const char* NAME, unsigned int DAMAGE, unsigned int PROJLIMIT, unsigned int AMMO,float RATEOFFIRE);
+		//one constructor for guns that have infinite ammo
+		Gun(const char* NAME, unsigned int DAMAGE, unsigned int PROJLIMIT, float RATEOFFIRE);
+
+		//and another for ones that dont
+		Gun(const char* NAME, unsigned int DAMAGE, unsigned int PROJLIMIT, unsigned int AMMO, float RATEOFFIRE);
 
 		~Gun();
+
 
 		const char* getName() const;
 		void setGunTimer(float t);
@@ -25,10 +29,10 @@ namespace Sedna {
 		unsigned int getOriginalAmmo() const;
 	protected:
 		const char* name;
-		unsigned int originalAmmo;
-		unsigned int ammo;
-		unsigned int damage;
-		unsigned int projLimit;
+		unsigned originalAmmo;
+		unsigned ammo;
+		unsigned damage;
+		unsigned projLimit;
 		float rateOfFire;
 
 		float gunTimer = 0.0f;
@@ -37,6 +41,9 @@ namespace Sedna {
 
 	class Guns {
 	public:
+		//this is a special class that we made because in our game, there are only 3 guns
+		//there are six guns here because we made each player have the ability to access one
+		//the reason why these guns are static is so that we can make sure that no data is lost in between when the player picks up and drops their guns
 		~Guns() {
 			delete olReliable;
 			delete bloodyMary;

@@ -9,6 +9,7 @@ namespace Sedna {
 		ammo(AMMO)
 	{
 		originalAmmo = ammo;
+		//specific to our game, can easily be added on to by adding an if statement with the name of a new gun and adding a new sprite in the resources folder
 		if (name == "olReliable")
 			sprite = cocos2d::Sprite::create("gun1.png");
 		else if (name == "bloodyMary")
@@ -29,6 +30,7 @@ namespace Sedna {
 		delete hitBox;
 	}
 
+	//constructor for the base gun, will always be used for the base gun, and therefore no if statements are needed
 	Sedna::Gun::Gun(const char* NAME, unsigned int DAMAGE, unsigned int PROJLIMIT, float RATEOFFIRE) :
 		name(NAME),
 		damage(DAMAGE),
@@ -95,6 +97,8 @@ namespace Sedna {
 		return originalAmmo;
 	}
 
+
+	//initializing the static data members
 	Gun* Guns::olReliable = new Gun("olReliable", 2, 4, 0.40f);
 	Gun* Guns::bloodyMary = new Gun("bloodyMary", 3, 10, 10, 0.85f);
 	Gun* Guns::theBiggestIron = new Gun("theBiggestIron", 1, 10, 100, 0.089f);

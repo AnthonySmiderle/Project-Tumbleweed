@@ -1,29 +1,17 @@
-//Anthony Smiderle
-//100695532
+
 #pragma once
-
 #include "cocos2d.h"
-
-//forward declaring a vec2 class for use in constructor
-//namespace cocos2d {
-//	class Vec2;
-//	class DrawNode;
-//}
-
-
-		
 
 namespace Sedna {
 	class SquarePrimitive {
 
 	public:
-		//using reference operator to denote a pointer, otherwise it won't work. Vec2 &name literally means an integer in the computer's memory
+		
 		SquarePrimitive(const cocos2d::Vec2 &startingPosition, const cocos2d::Vec2 &endPosition);
 		SquarePrimitive();
 		~SquarePrimitive();
 
 
-		//bool isColliding(SquarePrimitive s);
 		cocos2d::DrawNode* getDrawNode() const;
 		cocos2d::Vec2 getP1() const { return p1; }
 		void setP1x(float X) { p1.x = X; }
@@ -32,8 +20,11 @@ namespace Sedna {
 		void setP2y(float Y) { p2.y = Y; }
 		cocos2d::Vec2 getP2() const { return p2; }
 		cocos2d::Vec2 getCentre();
+		
+		//adding force to the square primtive
 		void addForce(cocos2d::Vec2 v);
 		void update();
+		//dummy parameter to determine what kind of square to draw (filled or not)
 		void update(bool yn);
 	private:
 		cocos2d::DrawNode *Node;

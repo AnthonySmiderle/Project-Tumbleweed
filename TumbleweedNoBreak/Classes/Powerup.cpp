@@ -25,9 +25,11 @@ namespace Sedna {
 	void Sedna::Powerup::pickUp(Player * p)
 	{
 		if (this->getBox()->checkCollision(*p->getBox())) {
+			//depending on which player it is, make them pick up their version of the gun
 			p->setCurrentGun(p->getPlayerNumber() == 1 ? gun : gun2);
 			p->getCurrentGun()->setAmmo(p->getCurrentGun()->getOriginalAmmo());
 
+			//give the player the correct gun
 			if (p->getCurrentGun()->getName() == "bloodyMary") {
 				p->getUI()->getUIGunSprite()->setTexture("gun2.png");
 				cocos2d::experimental::AudioEngine::play2d("pickupShot.mp3");
@@ -40,6 +42,7 @@ namespace Sedna {
 			}
 
 			p->getUI()->updateList();
+			//just move the thing, we dont need to delete it. it'll be used again later
 			this->getBox()->setLocation(cocos2d::Vec2(-1000, 0));
 			this->updateGameObject();
 		}

@@ -21,13 +21,17 @@ static void problemLoading(const char* filename)
 
 namespace Sedna {
 
-	SednaMenu::SednaMenu(int args, ...)//create the Menu based on the arguments provided
+	SednaMenu::SednaMenu(int args, ...)//create the Menu based on the amount of labels passed in
 	{
+		//variadic argument list
 		va_list LIST;
+		//initialize the list
 		va_start(LIST, args);
 		for (int i = 0; i < args; i++) {
+			//pass in the arguments to the list, assuming that the arguments are of label* type
 			labelList.push_back(va_arg(LIST, cocos2d::Label*));
 		}
+		//stop initializing the list
 		va_end(LIST);
 
 	}
@@ -41,23 +45,23 @@ namespace Sedna {
 			exit(std::stoi("exception"));
 #endif
 
+
 		for (unsigned i = 0; i < labelList.size(); i++) {
 			if (i == index)
 				continue;
 			else {
+				//enabling and disabling wrap is the flag that we use to tell if a label is selected.
 				labelList[i]->enableWrap(false);
 				labelList[i]->disableEffect(LabelEffect::UNDERLINE);
 			}
 		}
 
-		//labelList[lastIndex]->enableWrap(false);
+
 		labelList[index]->enableWrap(false);
-		//labelList[lastIndex]->disableEffect(LabelEffect::UNDERLINE);
 		labelList[index]->enableUnderline();
 
 		labelList[index]->enableWrap(true);
 
-		//lastIndex = index;
 	}
 
 	unsigned int SednaMenu::getIndexOfSelected() const
@@ -77,7 +81,7 @@ namespace Sedna {
 
 	cocos2d::Label * SednaMenu::operator[](const unsigned int index)
 	{
-		if (index > labelList.size())
+		if (index > labelList.size() - 1)
 			exit(std::stoi("We're out of index chief"));
 		return labelList[index];
 	}
@@ -104,9 +108,9 @@ bool MenuScene::init() {
 	//    you may modify it.
 
 	// add a "close" icon to exit the progress. it's an autorelease object
-	
 
-	
+
+
 
 	director = Director::getInstance();
 
@@ -122,9 +126,9 @@ bool MenuScene::init() {
 	menuM = new Sedna::SednaMenu(3, mLabel, mLabel2, mLabel3);
 
 	//creation of the options menu and options label
-	oLabel = Label::create(oLabelStrings[((Tutorial*)this)->music], "fonts/Montague.ttf", 25);
-	oLabel2 = Label::create(oLabel2Strings[((Tutorial*)this)->tutorial], "fonts/Montague.ttf", 25);
-	menuO = new Sedna::SednaMenu(2,oLabel,oLabel2);
+	oLabel = Label::create(oLabelStrings[static_cast<Tutorial*>(this)->music], "fonts/Montague.ttf", 25);
+	oLabel2 = Label::create(oLabel2Strings[static_cast<Tutorial*>(this)->tutorial], "fonts/Montague.ttf", 25);
+	menuO = new Sedna::SednaMenu(2, oLabel, oLabel2);
 
 	//creation and placement of the A and B button for the menu
 	bButton = Sprite::create("b.png");
@@ -134,8 +138,8 @@ bool MenuScene::init() {
 	bButton->setAnchorPoint(Vec2(0, 0));
 	bButton->setZOrder(1000);
 	bButtonLabel->setZOrder(1000);
-	bButton->setPosition(10,50);
-	bButtonLabel->setPosition(30,50);
+	bButton->setPosition(10, 50);
+	bButtonLabel->setPosition(30, 50);
 	bButton->setVisible(false);
 	bButtonLabel->setVisible(false);
 	this->addChild(bButton);
@@ -190,7 +194,7 @@ void MenuScene::update(float dt)
 					menuM->select(menuM->getIndexOfSelected() - 1);//go to the next index
 					menuWait += dt;//this stops the player from going through the entire menu in a split second
 				}
-				else if (p1Sticks[0].y > 0.3f&&!(menuM->getIndexOfSelected() + 1 > menuM->getLabelList().size() - 1))//reverse of the top
+				else if (p1Sticks[0].y > 0.3f && !(menuM->getIndexOfSelected() + 1 > menuM->getLabelList().size() - 1))//reverse of the top
 				{
 					menuM->select(menuM->getIndexOfSelected() + 1);//go to the next index
 					menuWait += dt;
@@ -203,6 +207,10 @@ void MenuScene::update(float dt)
 					menuWait = 0.0f;//reset the timer so they can move their selection again
 			}
 
+
+
+
+
 			if (menuM->getIndexOfSelected() == 2 && p1Controller->isButtonPressed(Sedna::A)) {//if the play button is selected
 				auto game = HelloWorld::createScene();//creation of the game scene
 				cocos2d::experimental::AudioEngine::play2d("cha ching.mp3", false);//play a nice sound (Polish)
@@ -212,20 +220,24 @@ void MenuScene::update(float dt)
 				//this->onExit();
 				director->replaceScene(TransitionFade::create(1.0f, game));//transition to the other scene
 			}
+
+
+
 			if (menuM->getIndexOfSelected() == 1 && p1Controller->isButtonPressed(Sedna::A)) {//if the options menu is selected
 				optionMenuBool = true;
 				selectWait += dt;//stop them them selecting multiple times in the split second
-				for (unsigned int i=0; i<menuM->getLabelList().size();i++)
-				{
+				for (unsigned int i = 0; i < menuM->getLabelList().size(); i++)
 					menuM->getLabelList()[i]->setVisible(false);//hide the regular menu
-				}
-				for (unsigned int i=0; i <menuO->getLabelList().size();i++)
-				{
+
+				for (unsigned int i = 0; i < menuO->getLabelList().size(); i++)
 					menuO->getLabelList()[i]->setVisible(true);//show the option menu
-				}
+
+
 				menuO->select(1);//select the top of the menu
 				bButton->setVisible(true);//show the back button stuff
 				bButtonLabel->setVisible(true);
+
+
 			}
 			if (menuM->getIndexOfSelected() == 0 && p1Controller->isButtonPressed(Sedna::A)) {//if the end game button is selected
 				cocos2d::experimental::AudioEngine::play2d("cha ching.mp3", false);//play a sound
@@ -234,17 +246,21 @@ void MenuScene::update(float dt)
 		}
 		else//if the options menu is the current menu
 		{
+
+
 			if (p1Sticks[0].y < -0.3f && menuO->getIndexOfSelected() != 0)//index checking
 			{
-
 				menuO->select(menuM->getIndexOfSelected() - 1);
 				menuWait += dt;
 			}
-			if (p1Sticks[0].y > 0.3f&& !(menuO->getIndexOfSelected() + 1 > menuO->getLabelList().size() - 1))//more index checking
+
+
+			if (p1Sticks[0].y > 0.3f && !(menuO->getIndexOfSelected() + 1 > menuO->getLabelList().size() - 1))//more index checking
 			{
 				menuO->select(menuO->getIndexOfSelected() + 1);
 				menuWait += dt;
 			}
+
 
 			if (menuO->getIndexOfSelected() == 0 && p1Controller->isButtonPressed(Sedna::A) && !selectWait)//if they are selecting the music
 			{
@@ -252,19 +268,25 @@ void MenuScene::update(float dt)
 				menuO->getLabelList()[0]->setString(oLabelStrings[((Tutorial*)this)->music]);//change the boolean to its inverse
 				selectWait += dt;
 			}
+
+
 			else if (menuO->getIndexOfSelected() == 1 && p1Controller->isButtonPressed(Sedna::A) && !selectWait)//for changing the tutorial
 			{
 				((Tutorial*)this)->tutorial ^= 1;
 				menuO->getLabelList()[1]->setString(oLabel2Strings[((Tutorial*)this)->tutorial]);
 				selectWait += dt;
 			}
+
+
 			else//if none has been seleced
 			{
-				if(selectWait)//add the time if the boolean is not zero
+				if (selectWait)//add the time if the boolean is not zero
 					selectWait += dt;
 				if (selectWait >= 0.3f)//if it's greater than 0.3 seconds reset it
 					selectWait = 0.0f;
 			}
+
+
 			if (p1Controller->isButtonPressed(Sedna::B))//if the b button is pressed
 			{
 				optionMenuBool = false;//go back to the main menu
@@ -323,7 +345,7 @@ void MenuScene::initMenu()
 			menuO->getLabelList()[i]->setPosition(140, menuO->getLabelList()[i - 1]->getPosition().y + 30);
 		}
 		menuO->getLabelList()[i]->setVisible(false);
-	}	
+	}
 
 	this->addChild(background, -1000);//add the background image
 }

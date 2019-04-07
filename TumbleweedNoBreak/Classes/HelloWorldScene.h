@@ -76,18 +76,25 @@ public:
 	// implement the "static create()" method manually
 	CREATE_FUNC(HelloWorld);
 
-
+	//used for the scoreboard
 	cocos2d::Sprite* aButton;
 	cocos2d::Label* aButtonLabel;
 
+	//used for displaying the time left until the boss
 	float bossTimeMax = 121.0f;
 	cocos2d::Label* bossTimeLabel;
 	bool playedWinSound = false;
 	float bossTimer = 0.0f;
 	bool bossTime = false;
+	
+	//made a list of outlaws for the boss because all the functions we use take in a list of outlaws
 	std::vector<Sedna::Outlaw*> g;
+
+	//dummy tracker that the boss uses for phase 2
 	Sedna::CirclePrimitive* dummyTracker;
 
+
+	//tutorial stuff
 	cocos2d::Sprite* noControl;
 	cocos2d::Label* tutorialMovedLabel;
 	cocos2d::Label* tutorialKickedLabel;
@@ -122,6 +129,13 @@ public:
 	std::vector<Sedna::Table*>tutTables;
 	std::vector<Sedna::Outlaw*>tutOutlaws;
 
+	cocos2d::Sprite* a;
+	cocos2d::Sprite* b;
+	cocos2d::Sprite* rsl;
+	cocos2d::Sprite* rsr;
+	cocos2d::Sprite* rt;
+
+
 	Sedna::Sign* testSign;
 
 	cocos2d::Label* btLabel;
@@ -132,10 +146,13 @@ public:
 
 	float CAMERASPEED = 1.3f;
 
+	//powerup forms of the two non base guns
 	Sedna::Powerup* bloodyMaryP_up;
 	Sedna::Powerup* theBiggestIronP_up;
 
 	bool playMusic = false;
+
+	//control when the scene should end
 	static bool end;
 	cocos2d::Label* pausedLabel;
 	cocos2d::Label* startLabel;
@@ -143,8 +160,11 @@ public:
 
 	cocos2d::Director* director;
 
+	//spawn manager that controls how enemies spawn
 	Sedna::SpawnManager sManager = Sedna::SpawnManager(this);
 	Sedna::XinputManager managerR;
+
+	//player controllers
 	Sedna::XinputController* p1Controller;
 	Sedna::XinputController* p2Controller;
 	Sedna::Stick p1Sticks[2];
@@ -152,23 +172,21 @@ public:
 	Sedna::Triggers p1Triggers;
 	Sedna::Triggers p2Triggers;
 
-	cocos2d::Sprite* a;
-	cocos2d::Sprite* b;
-	cocos2d::Sprite* rsl;
-	cocos2d::Sprite* rsr;
-	cocos2d::Sprite* rt;
-
+	//the players
 	Sedna::Player* playerOne;
 	Sedna::Player* playerTwo;
 
+	//the default projectile
 	Sedna::Projectile *baseProjectile;
 	std::vector<Sedna::Projectile*>pProjectiles;
 	Sedna::Projectile* eBaseProjectile;
 	std::vector<Sedna::Projectile*>eProjectiles;
 
+	// the DD object spawner, used in conjunction with the spawn manager in order to spawn enemies correctly
 	Sedna::GameObject* DDOS;
 	std::vector <Sedna::Potion> potionList;
 
+	//the different backgrounds loaded in
 	cocos2d::Sprite* bg;
 	cocos2d::Sprite* bg2;
 	cocos2d::Sprite* bg3;
@@ -195,7 +213,6 @@ public:
 	//score
 	Sedna::ScoreBoard score;
 
-	private:
 		
 };
 

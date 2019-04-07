@@ -60,13 +60,12 @@ bool HelloWorld::init()
 
 
 
-	//bottom label
-
+	//create the pausemenu
 	auto localL1 = cocos2d::Label::create("Exit to Main Menu", "fonts/Montague.ttf", 25);
 	auto localL2 = cocos2d::Label::create("Resume", "fonts/Montague.ttf", 25);
 	pauseMenu = new Sedna::SednaMenu(2, localL1, localL2);
 
-
+	//initialize xinpu stuff
 	p1Controller = managerR.getController(0);
 	p2Controller = managerR.getController(1);
 
@@ -77,12 +76,15 @@ bool HelloWorld::init()
 	p2Controller->updateSticks(p2Sticks);
 	p2Controller->getTriggers(p2Triggers);
 
+
+	//make sure no tutorial functions happen before the cutscene
 	tutFunc1 = false;
 	tutFunc2 = false;
 	tutFunc3 = false;
 	tutFunc4 = false;
 
 	tutCutscene = true;
+
 	initSprites();
 
 	director = cocos2d::Director::getInstance();
@@ -95,6 +97,7 @@ bool HelloWorld::init()
 }
 void HelloWorld::initSprites()
 {
+	//preload all the sounds
 	cocos2d::experimental::AudioEngine::preload("bgm.mp3");
 	cocos2d::experimental::AudioEngine::preload("bgm2.mp3");
 	cocos2d::experimental::AudioEngine::preload("bgmWin.mp3");
@@ -119,6 +122,8 @@ void HelloWorld::initSprites()
 	cocos2d::experimental::AudioEngine::preload("shotgun.mp3");
 	cocos2d::experimental::AudioEngine::preload("goldmanMad.mp3");
 
+	///<all of the following lines are just initializations. we will comment on specifically important / outlying code>
+
 	DDOS = new Sedna::GameObject("a.png", cocos2d::Vec2(100, 300), 1, 1, 1);
 	this->addChild(DDOS->getBox()->getDrawNode());
 	this->addChild(DDOS->getSprite());
@@ -131,6 +136,7 @@ void HelloWorld::initSprites()
 	btMeter = Sedna::SquarePrimitive(cocos2d::Vec2(190, DDOS->getSprite()->getPosition().y - 20), cocos2d::Vec2(280, DDOS->getSprite()->getPosition().y - 10));
 	this->addChild(btMeter.getDrawNode(), 100);
 
+	//labels for the scoreboard
 	score.highScoreLabel = cocos2d::Label::create("Highscore", "fonts/Montague.ttf", 15);
 	score.highScoreLabel->setPosition(cocos2d::Vec2(100, DDOS->getSprite()->getPosition().y - 100));
 	score.highScoreLabel->setVisible(false);
@@ -142,6 +148,9 @@ void HelloWorld::initSprites()
 	score.highScoreNameLabel->setVisible(false);
 	this->addChild(score.highScoreNameLabel);
 
+
+
+	//powerups
 	bloodyMaryP_up = new Sedna::Powerup("gun2.png", Sedna::Guns::bloodyMary, Sedna::Guns::bloodyMary2, -1000, 0);
 	theBiggestIronP_up = new Sedna::Powerup("gun3.png", Sedna::Guns::theBiggestIron, Sedna::Guns::theBiggestIron2, -1000, 0);
 
@@ -156,7 +165,6 @@ void HelloWorld::initSprites()
 	this->addChild(playerOne->getSprite(), 10);
 	this->addChild(playerOne->getUI()->getUIGunSprite(), 20);
 
-
 	for (unsigned int i = 0; i < playerOne->getUI()->getLabelList().size(); i++)
 		this->addChild(playerOne->getUI()->getLabelList()[i], 20);
 
@@ -168,8 +176,10 @@ void HelloWorld::initSprites()
 	this->addChild(playerTwo->getBox()->getDrawNode());
 	this->addChild(playerTwo->getSprite(), 10);
 	this->addChild(playerTwo->getUI()->getUIGunSprite(), 19);
+
 	for (unsigned int i = 0; i < playerTwo->getUI()->getLabelList().size(); i++)
 		this->addChild(playerTwo->getUI()->getLabelList()[i], 20);
+
 	for (unsigned int i = 0; i < playerTwo->getUI()->getHPSprites().size(); i++)
 		this->addChild(playerTwo->getUI()->getHPSprites()[i]);
 
@@ -277,6 +287,8 @@ void HelloWorld::initSprites()
 	pauseMenu->select(1);
 
 
+
+	//tutorial outlaws and tables
 	tutOutlaws.push_back(new Sedna::Outlaw(200, DDOS->getSprite()->getPosition().y));
 	this->addChild(tutOutlaws.back()->getBox()->getDrawNode());
 	this->addChild(tutOutlaws.back()->getSprite());
@@ -287,18 +299,19 @@ void HelloWorld::initSprites()
 		this->addChild(tutTables.back()->getSprite());
 	}
 
+
+
+	//goldman specific stuff
 	dummy = new Sedna::Player(1, 320, 40, managerR, Sedna::Guns::olReliable);
 	this->addChild(dummy->getBox()->getDrawNode());
 	this->addChild(dummy->getSprite());
-
-
 
 	g.push_back(new Sedna::Goldman(250, DDOS->getSprite()->getPosition().y - 60));
 	this->addChild(g.back()->getBox()->getDrawNode());
 	this->addChild(g.back()->getSprite());
 	g.back()->getSprite()->setPosition(cocos2d::Vec2(-1000, 0));
 	this->addChild(((Sedna::Goldman*)g.back())->getHealthBar()->getDrawNode(), 100);
-	((Sedna::Goldman*)g.back())->getHealthBar()->getDrawNode()->setVisible(false);
+	static_cast<Sedna::Goldman*>(g.back())->getHealthBar()->getDrawNode()->setVisible(false);
 
 	dummyTracker = new Sedna::CirclePrimitive(cocos2d::Vec2(0, static_cast<Sedna::Goldman*>(g.back())->getHealthBar()->getP2().y), 5, 20, 50);
 	this->addChild(dummyTracker->getDrawNode());
@@ -310,7 +323,7 @@ void HelloWorld::initSprites()
 	this->addChild(bossTimeLabel, 1000);
 	bossTimeLabel->setVisible(false);
 
-	aButton = Sprite::create("a1.png"); 
+	aButton = Sprite::create("a1.png");
 	aButton->setScale(0.6);
 	aButtonLabel = Label::create(": Select", "fonts/Montague.ttf", 12);
 	aButtonLabel->setAnchorPoint(Vec2(0, 0));
@@ -326,9 +339,10 @@ void HelloWorld::initSprites()
 	aButton->setVisible(false);
 	aButtonLabel->setVisible(false);
 
-
-	if (((Tutorial*)this)->tutorial)
+	//only make these if the tutorial is true
+	if (static_cast<Tutorial*>(this)->tutorial)
 		if (tutBool) {
+
 			movementSign = new Sedna::Sign("lsl.png", this, cocos2d::Vec2(-1000, 0), true);
 
 			shootSign = new Sedna::Sign("rt.png", this, cocos2d::Vec2(-1000, 0), true);
@@ -436,13 +450,14 @@ void HelloWorld::update(float dt)
 	if (!end) {
 		if (bulletTime)
 			dt *= 0.5f;
+		//update all the xinput stuff
 		managerR.update();
 		p1Controller->updateSticks(p1Sticks);
 		p1Controller->getTriggers(p1Triggers);
 		p2Controller->updateSticks(p2Sticks);
 		p2Controller->getTriggers(p2Triggers);
 
-
+		//switch back to the base gun if you're out of ammo
 		if (playerOne->getCurrentGun()->getAmmo() <= 0)
 			playerOne->setCurrentGun(Sedna::Guns::olReliable);
 		if (playerTwo->getCurrentGun()->getAmmo() <= 0)
@@ -453,10 +468,6 @@ void HelloWorld::update(float dt)
 		if (this->tutorial)
 			this->gameTutorial(dt);
 		else {
-			
-
-			
-
 			if (!paused) {
 				bossTimer += dt;
 				bossTimeMax -= dt;
@@ -485,6 +496,7 @@ void HelloWorld::update(float dt)
 
 void HelloWorld::useBulletTime(float dt)
 {
+
 	if ((p1Triggers.LT > 0.0f || p2Triggers.LT > 0.0f) && bulletTimeMax < 3.0f)//triggers can be replaced by a power up boolean for a drink instead of a toggle thing
 		bulletTime = true;
 
@@ -492,8 +504,10 @@ void HelloWorld::useBulletTime(float dt)
 	{
 		playerOne->usedBt = true;
 		playerTwo->usedBt = true;
+		//pause and unpause REALLY fast (this instance is just toggling pause)
 		paused ^= 1;
 
+		//decrease the hitbox size of the players
 		playerOne->getBox()->setRadius(15);	///
 		playerTwo->getBox()->setRadius(15);	///
 		bulletTimeMax += dt;
@@ -513,7 +527,7 @@ void HelloWorld::useBulletTime(float dt)
 }
 void HelloWorld::gameTutorial(float dt)
 {
-
+	//set the length of the bullet time meter
 	btMeter.setP2x(280 - (bulletTimeMax * 30));
 
 	btMeter.update();
@@ -522,11 +536,13 @@ void HelloWorld::gameTutorial(float dt)
 	if (!paused) {
 
 		if (!tutCutscene) {
-
+			//if both players have completed the tutorial
 			if (playerOne->getController()->isButtonPressed(Sedna::X) &&
 				playerOne->hasMoved() && playerOne->usedShot() && playerOne->usedBt && playerOne->pressedA() &&
 				playerTwo->hasMoved() && playerTwo->usedShot() && playerTwo->usedBt && playerTwo->pressedA())
 			{
+
+				//move all of the stuff out of the way
 				tutFunc4 = true;
 				for (auto x : tutTables)
 					x->getBox()->setLocation(cocos2d::Vec2(-1000, 0));
@@ -561,21 +577,24 @@ void HelloWorld::gameTutorial(float dt)
 		reviveSign->signUpdate(playerOne);
 		healSign->signUpdate(playerOne);
 
-		//sub images
+		//sub images that go along with the tutorial signs
 		if (shootSign->getDisplayedSprite()->isVisible() && !tutorialGun->isVisible())
 			tutorialGun->setVisible(true);
 		else if (!shootSign->getDisplayedSprite()->isVisible() && tutorialGun->isVisible())
 			tutorialGun->setVisible(false);
+
 
 		if (tablekickSign->getDisplayedSprite()->isVisible() && !tutorialBoot->isVisible())
 			tutorialBoot->setVisible(true);
 		else if (!tablekickSign->getDisplayedSprite()->isVisible() && tutorialBoot->isVisible())
 			tutorialBoot->setVisible(false);
 
+
 		if (btSign->getDisplayedSprite()->isVisible() && !tutorialTime->isVisible())
 			tutorialTime->setVisible(true);
 		else if (!btSign->getDisplayedSprite()->isVisible() && tutorialTime->isVisible())
 			tutorialTime->setVisible(false);
+
 
 		if (shootSign->getDisplayedSprite()->isVisible() && !crosshair->isVisible())
 			crosshair->setVisible(true);
@@ -583,9 +602,9 @@ void HelloWorld::gameTutorial(float dt)
 			crosshair->setVisible(false);
 
 
-
+		//if the cutscene should play
 		if (tutCutscene) {
-
+			//this is the dummy player. it is here to showcase a mechanic in our game
 			if (dummy->getBox()->getLocation().x == 320)
 				dummy->getBox()->setForce(cocos2d::Vec2(1, 0));
 			else if (dummy->getBox()->getLocation().x == 380)
@@ -594,7 +613,7 @@ void HelloWorld::gameTutorial(float dt)
 
 			dummy->updateGameObject();
 
-
+			//play the next part of the cutscene
 			if (tutTables.size() == 2 && !tutFunc1) {
 				tutOutlaws.push_back(new Sedna::ShotgunOutlaw(250, DDOS->getSprite()->getPosition().y));
 				this->addChild(tutOutlaws.back()->getBox()->getDrawNode());
@@ -602,6 +621,8 @@ void HelloWorld::gameTutorial(float dt)
 				tutFunc1 = true;
 			}
 
+
+			//play the next part of the cutscene
 			else if (tutTables.size() == 1 && !tutFunc2) {
 				tutOutlaws.push_back(new Sedna::RifleOutlaw(350, DDOS->getSprite()->getPosition().y));
 				this->addChild(tutOutlaws.back()->getBox()->getDrawNode());
@@ -609,10 +630,14 @@ void HelloWorld::gameTutorial(float dt)
 				tutFunc2 = true;
 			}
 
+
+			//move the most recent outlaw
 			if (tutOutlaws.back()->getBox()->getLocation().y > 200)
 				tutOutlaws.back()->getBox()->setForce(cocos2d::Vec2(0, -2));
 			else
 				tutOutlaws.back()->getBox()->setForce(cocos2d::Vec2(0, 0));
+
+			//if all the tables are gone, move on
 			if (tutTables.empty()) {
 				noControl->removeFromParent();
 				tutCutscene = false;
@@ -634,6 +659,8 @@ void HelloWorld::gameTutorial(float dt)
 			tutorialShootLabel2->setVisible(true);
 			tutorialBulletLabel2->setVisible(true);
 			tutorialMovedLabel2->setVisible(true);
+
+			//clear all the previous stuff
 			if (!tutFunc3) {
 				dummy->getBox()->getDrawNode()->removeFromParent();
 				dummy->getSprite()->removeFromParent();
@@ -669,6 +696,7 @@ void HelloWorld::gameTutorial(float dt)
 
 
 			}
+			//make sure the player doesnt go out of bounds
 			bounds();
 
 			//signs
@@ -679,6 +707,7 @@ void HelloWorld::gameTutorial(float dt)
 			playerTwo->updateGameObject();
 			checkPosAll();
 
+			//set the labels to green when the tutorial actions have been completed
 			if (playerTwo->pressedA())
 				tutorialKickedLabel->setTextColor(cocos2d::Color4B::GREEN);
 			if (playerTwo->hasMoved())
@@ -705,7 +734,10 @@ void HelloWorld::gameTutorial(float dt)
 		checkManyLists(dt);
 
 		if (tutFunc4) {
-			((Tutorial*)this)->tutorial = false;
+			//clear everything and start the game
+
+
+			static_cast<Tutorial*>(this)->tutorial = false;
 			tutorialLabel->removeFromParent();
 			tutorialLabel2->removeFromParent();
 			tutorialKickedLabel->removeFromParent();
@@ -733,6 +765,8 @@ void HelloWorld::play(float dt)
 		btMeter.setP2x(280 - (bulletTimeMax * 30));
 
 		btMeter.update();
+
+		//if the player dies
 		if (playerOne->isDead() && playerTwo->isDead())//is this loss
 		{
 			aButton->setVisible(true);
@@ -748,20 +782,18 @@ void HelloWorld::play(float dt)
 				score.highScoreNameLabel->setPosition(200, DDOS->getSprite()->getPosition().y - 200);
 				score.flashingScore1->setPosition(cocos2d::Vec2(198 + score.currentScoreName * 16, DDOS->getSprite()->getPosition().y - 170));
 				score.flashingScore2->setPosition(cocos2d::Vec2(196 + score.currentScoreName * 16, DDOS->getSprite()->getPosition().y - 210));
+
+				//allow the player with the higher score to enter their highscore
 				if (playerTwo->getScore() > playerOne->getScore())
-				{
 					score.getScore(p2Controller, p2Sticks, dt, playerTwo, DDOS->getSprite()->getPosition().y - 200);
-				}
+
 				else
-				{
 					score.getScore(p1Controller, p1Sticks, dt, playerOne, DDOS->getSprite()->getPosition().y - 200);
-				}
 			}
 			else
-			{
 				loseTimer += dt;
-			}
-			if (loseTimer >= 8.0f)
+
+			if (loseTimer >= 3.0f)
 			{
 				auto mMenu = MenuScene::create();
 				cocos2d::experimental::AudioEngine::stopAll();
@@ -844,7 +876,7 @@ void HelloWorld::boss(float dt)
 		startLabel->setString("You Win");
 		startLabel->setVisible(true);
 		startLabel->setPosition(50, startLabel->getPosition().y);
-		
+
 		if (!score.hasWritten)
 		{
 
@@ -964,7 +996,7 @@ void HelloWorld::pause(float dt)
 			{
 				startLabel->setString("3");
 				if (!playMusic) {
-					if (((Tutorial*)this)->music)
+					if (static_cast<Tutorial*>(this)->music)
 						cocos2d::experimental::AudioEngine::play2d("bgm.mp3", true);
 					playMusic = true;
 				}
@@ -1235,6 +1267,8 @@ void HelloWorld::performBounce(Sedna::Player* p) {
 }
 void HelloWorld::notDead(float dt)
 {
+
+	//update all the player stuff
 	playerOne->updateInvince(dt);
 	playerTwo->updateInvince(dt);
 	bloodyMaryP_up->updateGameObject();
@@ -1252,6 +1286,8 @@ void HelloWorld::notDead(float dt)
 
 	if (moveScreen)
 	{
+		///<basically set all the below variable's positions to their previous position plus the camera speed>
+
 		bossTimeLabel->setPosition(bossTimeLabel->getPosition() + cocos2d::Vec2(0, CAMERASPEED));
 
 		aButton->setPosition(aButton->getPosition() + cocos2d::Vec2(0, CAMERASPEED));
@@ -1278,9 +1314,13 @@ void HelloWorld::notDead(float dt)
 
 		if (CAMERASPEED > 0) {
 
+			//background switching code
 			if (DDOS->getSprite()->getPosition().y - bg2->getPosition().y >= 588.8f) {
+				
+				//this code switches the background sprite based on what the in game time is and where the image is on the screen
 				if (bossTimeMax <= 61 && bossTimeMax > 58 && bg2->getTexture() != stairs->getTexture())
 					bg2->setTexture(stairs->getTexture());///
+				
 				else if (bossTimeMax < 54 && bossTimeMax > 52 && bg2->getTexture() != level2Other->getTexture())
 					bg2->setTexture(level2Other->getTexture());///
 
@@ -1306,6 +1346,8 @@ void HelloWorld::notDead(float dt)
 			}
 		}
 		else if (CAMERASPEED < 0) {
+
+			//make the backgrounds scroll backwards
 			if (DDOS->getSprite()->getPosition().y - bg2->getPosition().y <= 0.0f)
 				bg2->setPosition(cocos2d::Vec2(bg2->getPosition().x, bg2->getPosition().y - 588.8f));
 
@@ -1317,8 +1359,8 @@ void HelloWorld::notDead(float dt)
 }
 void HelloWorld::checkUnderScreen(Sedna::Player* p)
 {
-	if (p->getBox()->getLocation().y <= DDOS->getSprite()->getPosition().y - 400)//TODO change health sprites as well
-	{
+	//player dies if they go off screen
+	if (p->getBox()->getLocation().y <= DDOS->getSprite()->getPosition().y - 400){
 		p->setHP(0);
 		p->die();
 		p->getUI()->updateList();
@@ -1334,7 +1376,7 @@ void HelloWorld::bounds()//this function stops the player from leaving the scree
 
 
 
-	if (((Tutorial*)this)->tutorial) {
+	if (static_cast<Tutorial*>(this)->tutorial) {
 		for (unsigned int i = 0; i < tutTables.size(); i++)
 		{
 			if ((int)tutTables[i]->getBox()->getLocation().x >= barRightMax)
