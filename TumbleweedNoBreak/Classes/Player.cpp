@@ -9,23 +9,22 @@
 namespace Sedna {
 
 
-	Player::Player(int wPlayer, float x, float y, XinputManager MANAGER, Gun* CURRENTGUN)
+	Player::Player(int wPlayer, float x, float y, XinputManager MANAGER, Gun* CURRENTGUN)//constructor
 	{
 		this->playerNumber = wPlayer;
 		this->setHP(3);
 		score = 0;
 
-
 		auto localL1 = cocos2d::Label::create(CURRENTGUN->getName() == "olReliable" ? "" : std::to_string(CURRENTGUN->getAmmo()), "fonts/Montague.ttf", 15);
-		auto localL2 = cocos2d::Label::create(std::to_string(score), "fonts/Montague.ttf", 15);
-		playerUI = new SednaUI(CURRENTGUN, this, 2, localL2, localL1);
+		auto localL2 = cocos2d::Label::create(std::to_string(score), "fonts/Montague.ttf", 15);//ui stuff
+		playerUI = new SednaUI(CURRENTGUN, this, 2, localL2, localL1);//ui
 
-		sprite = cocos2d::Sprite::create(Sedna::Animations::playerImage[playerNumber - 1]);//CHANGE THIS WITH ANIMATION STUFF
+		sprite = cocos2d::Sprite::create(Sedna::Animations::playerImage[playerNumber - 1]);//this allows for us to store the animations in a array and collected them using the player number
 		sprite->setScale(spriteScale);
-		hitBox = new CirclePrimitive(cocos2d::Vec2(x, y), 20, 5, 30);
+		hitBox = new CirclePrimitive(cocos2d::Vec2(x, y), 20, 5, 30);//hitbox data
 		hitBox->getDrawNode()->setVisible(false);
 
-		this->pController = MANAGER.getController(playerNumber - 1);
+		this->pController = MANAGER.getController(playerNumber - 1);//UI and controller using the player number again
 		playerUI->getUIGunSprite()->setPosition(cocos2d::Vec2(100 - 40 + (UIDISPOSITION*(playerNumber - 1)), 130 - 70));
 		playerUI->getLabelList()[0]->setAnchorPoint(cocos2d::Vec2(0, 0));
 		playerUI->getLabelList()[0]->setPosition(cocos2d::Vec2(112 - 40 + (UIDISPOSITION*(playerNumber - 1)), 116 - 70));
@@ -54,14 +53,14 @@ namespace Sedna {
 
 	void Player::die()
 	{
-		takeInputs = false;
+		takeInputs = false;//halts player input and stops them in their tracks
 		this->getBox()->setForce(cocos2d::Vec2(0, 0));
 		this->sprite->setRotation(90);
 	}
 
 	void Player::setCurrentGun(Gun * g)
 	{
-		currentGun = g;
+		currentGun = g;//changing the players weapon
 		if (g->getName() == "olReliable") {
 			playerUI->getUIGunSprite()->setTexture("gun1.png");
 			playerUI->getLabelList()[1]->setString(" ");
@@ -69,9 +68,9 @@ namespace Sedna {
 
 	}
 
-	void Player::checkInput(float dt)
+	void Player::checkInput(float dt)//input data
 	{
-		if (pController->isVibrating()) {
+		if (pController->isVibrating()) {//this stops the players controller from vibrating all the time
 			vibrationTimer += dt;
 			if (vibrationTimer >= 0.2f) {
 				pController->setVibration(0, 0);
@@ -80,7 +79,7 @@ namespace Sedna {
 		}
 		if (takeInputs) {
 			if (this->getBox()->getVelocity() != cocos2d::Vec2(0, 0)) {
-				if (animationTimer > 0.3f && !isAimingLeft && !isAimingRight) {
+				if (animationTimer > 0.3f && !isAimingLeft && !isAimingRight) {//animations
 					this->getSprite()->setTexture(Sedna::Animations::w2[playerNumber - 1]);
 					hasAnimation = false;
 				}
@@ -121,7 +120,7 @@ namespace Sedna {
 				this->getBox()->addForce(this->getBox()->getVelocity().x *-3.0f, this->getBox()->getVelocity().y*-3.0f);
 			else {
 				auto direction = cocos2d::Vec2(pSticks[0].x, pSticks[0].y);
-				auto force = direction / sqrt(direction.x*direction.x + direction.y*direction.y);
+				auto force = direction / sqrt(direction.x*direction.x + direction.y*direction.y);//normalized vector
 
 				this->getBox()->addForce((pSticks[0].x > 0.3f || pSticks[0].x < -0.3f) ?
 					force.x * 5 : 0.0f,
@@ -149,7 +148,7 @@ namespace Sedna {
 
 				shot = true;
 
-				if (currentGun->getGunTimer() > currentGun->getRateOfFire())
+				if (currentGun->getGunTimer() > currentGun->getRateOfFire())//timer for shooting so no super rapid fire
 				{
 					currentGun->setGunTimer(0.0f);
 					currentGun->setHasShot(false);
@@ -162,7 +161,7 @@ namespace Sedna {
 					}
 					else {
 						pController->setVibration(0.0f, 0.0f);
-						pController->setVibration(0.25f, 0.25f);
+						pController->setVibration(0.25f, 0.25f);//player feedback
 
 						cocos2d::experimental::AudioEngine::play2d("revolver1.mp3", false, 0.5f);
 
@@ -220,7 +219,7 @@ namespace Sedna {
 							}
 						}
 
-						else if (currentGun->getName() == "bloodyMary") {
+						else if (currentGun->getName() == "bloodyMary") {//different guns have different properties
 							cocos2d::experimental::AudioEngine::play2d("shotgun.mp3", false, 0.5f);
 
 							for (int i = 0; i < pProjectiles.size(); i++) {
@@ -309,17 +308,17 @@ namespace Sedna {
 		if (pProjectiles.size() > currentGun->getProjLimit()) {
 			pProjectiles.front()->getBox()->getDrawNode()->removeFromParent();
 			pProjectiles.front()->getSprite()->removeFromParent();
-			pProjectiles.erase(pProjectiles.begin());
+			pProjectiles.erase(pProjectiles.begin());//to stop the player from shooting too many bullets
 
 		}
 
 
 		for (int i = 0; i < pProjectiles.size(); i++)
-			pProjectiles[i]->updateGameObject();
+			pProjectiles[i]->updateGameObject();//update each projectile
 
 
 	}
-
+	//checking collisions with enemy and bullets
 	void Player::checkBCollision(std::vector<Outlaw*>& outlawList, Powerup* power1, Powerup* power2, cocos2d::Scene* s)
 	{
 		bool check = false;
@@ -339,9 +338,9 @@ namespace Sedna {
 				}
 				else
 					check = false;
-				if (outlawList[j]->getHP() <= 0) {
+				if (outlawList[j]->getHP() <= 0) {//killing the outlaw
 					if (this->takeInputs)
-						score += outlawList[j]->points;
+						score += outlawList[j]->points;//this stops the player from getting points after their score is recorded
 					srand(time(0));
 					if (rand() % 10 + 1 <= 2) {
 						if (1 + rand() % 6 <= 2) {
@@ -445,11 +444,11 @@ namespace Sedna {
 							}
 						}
 						if (this->getHP() < 3)
-							this->setHP(this->getHP() + 1);
+							this->setHP(this->getHP() + 1);//healing potion restores 1 hp
 					}
 					if (tableList[i]->getBeer() == invinc)
-						invincTimer = 6.0f;
-					if (tableList[i]->getBeer() == revive && !p->takeInputs)
+						invincTimer = 6.0f;//invincibility for the player
+					if (tableList[i]->getBeer() == revive && !p->takeInputs)//revives your friend with full health if they are dead
 					{
 						p->setHP(3);
 						p->sprite->setRotation(0);
@@ -461,12 +460,12 @@ namespace Sedna {
 							p->getUI()->getHPSprites()[k]->setTexture("fullHeart.png");
 						}
 					}
-					score += 200;
+					score += 200;//gives some score
 					playerUI->updateList();
-					tableList[i]->setBeer(blank);
+					tableList[i]->setBeer(blank);//removed the potion
 				}
 
-				tableList[i]->spriteSwitch();
+				tableList[i]->spriteSwitch();//the table changes sprites to look kicked over
 				//times 2 to give a better feel to kicking the table
 				tableList[i]->getBox()->addForce(distanceVector.x * 2, distanceVector.y * 2);
 
@@ -477,7 +476,7 @@ namespace Sedna {
 					tableList[i]->getBox()->getVelocity().x * -1,
 					tableList[i]->getBox()->getVelocity().y * -1);
 			}
-			if (this->getBox()->checkCloseTouching(*tableList[i]->getBox())) {
+			if (this->getBox()->checkCloseTouching(*tableList[i]->getBox())) {//a sort of newtons cradle effct for tables
 				cocos2d::Vec2 distanceVector((this->getBox()->getLocation().x - tableList[i]->getBox()->getLocation().x),
 					(this->getBox()->getLocation().y - tableList[i]->getBox()->getLocation().y));
 				this->getBox()->addForce(((distanceVector.x) / 4), (distanceVector.y) / 4);
@@ -485,7 +484,7 @@ namespace Sedna {
 		}
 	}
 
-	void Player::updateInvince(float dt)
+	void Player::updateInvince(float dt)//this updates the invincibility 
 	{
 		if (invincTimer)
 		{
@@ -493,7 +492,7 @@ namespace Sedna {
 			for (int j = this->getUI()->getHPSprites().size() - 1; j >= 0; j--) {
 				if (this->getUI()->getHPSprites()[j]->getZOrder() == 21) {
 					this->getUI()->getHPSprites()[j]->setZOrder(22);
-					this->getUI()->getHPSprites()[j]->setTexture("goldHeart.png");
+					this->getUI()->getHPSprites()[j]->setTexture("goldHeart.png");//while they are invincible they have gold hearts
 				}
 			}
 		}
@@ -504,7 +503,7 @@ namespace Sedna {
 			for (int j = this->getUI()->getHPSprites().size() - 1; j >= 0; j--) {
 				if (this->getUI()->getHPSprites()[j]->getZOrder() == 22) {
 					this->getUI()->getHPSprites()[j]->setZOrder(21);
-					this->getUI()->getHPSprites()[j]->setTexture("fullHeart.png");
+					this->getUI()->getHPSprites()[j]->setTexture("fullHeart.png");//if not they have normal ones
 				}
 			}
 			invincTimer = 0;
@@ -519,7 +518,7 @@ namespace Sedna {
 
 	void Player::wasHurt()
 	{
-		invincTimer = 0.8f;
+		invincTimer = 0.8f;//small frame of invincibility after being damaged
 	}
 
 	bool Player::isDead()

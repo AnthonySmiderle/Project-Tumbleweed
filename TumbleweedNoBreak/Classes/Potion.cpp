@@ -2,10 +2,6 @@
 namespace Sedna {
 
 
-	void Sedna::Potion::pickUp(Player * p)
-	{
-
-	}
 
 	Sedna::Potion::~Potion()
 	{
@@ -13,10 +9,10 @@ namespace Sedna {
 	}
 	potionType Potion::getType()
 	{
-		return type;
+		return type;//getter
 	}
 	void Potion::setType(potionType a)
 	{
-		type = a;
+		type = a;//setter
 	}
 }

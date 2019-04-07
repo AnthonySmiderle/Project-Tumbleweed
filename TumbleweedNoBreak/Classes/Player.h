@@ -46,24 +46,23 @@ namespace Sedna {
 
 		//extend member functions here
 
-		XinputController* getController() const { return pController; }
+		XinputController* getController() const { return pController; }//getters
 		Gun* getCurrentGun() const { return currentGun; }
-
 		int getPlayerNumber() const { return playerNumber; }
 		unsigned int getScore() const;
-		void die();
-		void setCurrentGun(Gun* g);
-		void checkInput(float dt);
+		void die();//a helpful function to kill the player
+		void setCurrentGun(Gun* g);//setter
+		void checkInput(float dt);//player input
 		void shoot(float dt, cocos2d::Scene* s);
 		void checkList();
 		void checkBCollision(std::vector<Outlaw*>& outlawList, Powerup* power1, Powerup* power2, cocos2d::Scene* s);
 		void checkBCollision(std::vector<Table*>& tableList);
-		void checkTableStuff(std::vector<Table*>& tableList, Sedna::Player*);
-		void updateInvince(float dt);
-		bool getInvinc()const;
+		void checkTableStuff(std::vector<Table*>& tableList, Sedna::Player*);//collisions
+		void updateInvince(float dt);//invincibility frames
+		bool getInvinc()const;//getter
 		void wasHurt();
-		bool isDead();
-		void setScore(const unsigned int);
+		bool isDead();//getter
+		void setScore(const unsigned int);//score setter
 		SednaUI* getUI() const;
 
 		void setGun(Gun* g);
@@ -84,10 +83,10 @@ namespace Sedna {
 		bool kickedTable = false;
 
 		std::vector<cocos2d::ParticleExplosion*> particles;
-		bool isAimingLeft = false;
+		bool isAimingLeft = false;//what direction the player is aiming at
 		bool isAimingRight = false;
 		float animationTimer = 0.0f;
-		bool hasAnimation = false;
+		bool hasAnimation = false;//animations
 		float vibrationTimer = 0.0f;
 		int playerNumber;
 		unsigned int score = 0;
