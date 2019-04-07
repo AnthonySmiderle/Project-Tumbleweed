@@ -3,7 +3,6 @@
 #include "AudioEngine.h"
 #include "HelloWorldScene.h"
 #include "MusicList.h"
-#include "Options.h"
 
 USING_NS_CC;
 
@@ -123,7 +122,7 @@ bool MenuScene::init() {
 	menuM = new Sedna::SednaMenu(3, mLabel, mLabel2, mLabel3);
 
 	//creation of the options menu and options label
-	oLabel = Label::create(oLabelStrings[Sedna::optionStuff::music], "fonts/Montague.ttf", 25);
+	oLabel = Label::create(oLabelStrings[((Tutorial*)this)->music], "fonts/Montague.ttf", 25);
 	oLabel2 = Label::create(oLabel2Strings[((Tutorial*)this)->tutorial], "fonts/Montague.ttf", 25);
 	menuO = new Sedna::SednaMenu(2,oLabel,oLabel2);
 

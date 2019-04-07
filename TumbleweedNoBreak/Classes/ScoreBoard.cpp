@@ -81,7 +81,7 @@ void Sedna::ScoreBoard::getScore(Sedna::XinputController * controller, Sedna::St
 		flashingScore1->setVisible(true);
 		flashingScore2->setVisible(true);
 	}
-	if (sticks[0].y > 0.3 && !hasLetGo)
+	if (sticks[0].y > 0.3 && !hasLetGo)//going up and down the 26 character alphabet with limit protection
 	{
 		if (scoreName[currentScoreName] == 65)
 		{
@@ -105,7 +105,7 @@ void Sedna::ScoreBoard::getScore(Sedna::XinputController * controller, Sedna::St
 		}
 		hasLetGo += dt;
 	}
-	if (controller->isButtonPressed(Sedna::A) && !hasLetGo)
+	if (controller->isButtonPressed(Sedna::A) && !hasLetGo)//selection and back capabilties
 	{
 		currentScoreName++;
 		hasLetGo += dt;
@@ -116,18 +116,18 @@ void Sedna::ScoreBoard::getScore(Sedna::XinputController * controller, Sedna::St
 			currentScoreName--;
 		hasLetGo += dt;
 	}
-	if (hasLetGo > 0.3f)
+	if (hasLetGo > 0.3f)//this stops the player from selecting or going back entirely in a matter of milliseconds
 		hasLetGo = 0.0f;
 	if (hasLetGo)
 		hasLetGo += dt;
 	std::string temp;
-	temp += static_cast<char>(scoreName[0]);
+	temp += static_cast<char>(scoreName[0]);//show there name cast to characters instead of integers
 	temp += static_cast<char>(scoreName[1]);
 	temp += static_cast<char>(scoreName[2]);
 	highScoreNameLabel->setString(temp);
 	if (currentScoreName == 3)
 	{
-		writeScore(player, temp, loc);
+		writeScore(player, temp, loc);//once they have reached 
 		currentScoreName++;
 		flashingScore1->setVisible(false);
 		flashingScore2->setVisible(false);

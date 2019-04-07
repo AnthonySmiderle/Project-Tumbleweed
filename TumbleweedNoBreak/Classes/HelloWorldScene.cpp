@@ -28,7 +28,6 @@
 #include "AudioEngine.h"
 #include "menuScene.h"
 #include "MusicList.h"
-#include "Options.h"
 #include <fstream>
 
 USING_NS_CC;
@@ -965,7 +964,7 @@ void HelloWorld::pause(float dt)
 			{
 				startLabel->setString("3");
 				if (!playMusic) {
-					if (Sedna::optionStuff::music)
+					if (((Tutorial*)this)->music)
 						cocos2d::experimental::AudioEngine::play2d("bgm.mp3", true);
 					playMusic = true;
 				}
