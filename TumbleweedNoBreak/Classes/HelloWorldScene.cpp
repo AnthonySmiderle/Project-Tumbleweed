@@ -29,6 +29,8 @@
 #include "menuScene.h"
 #include "MusicList.h"
 #include <fstream>
+#include "Input.h"
+#include "Events.h"
 
 USING_NS_CC;
 
@@ -497,7 +499,7 @@ void HelloWorld::update(float dt)
 void HelloWorld::useBulletTime(float dt)
 {
 
-	if ((p1Triggers.LT > 0.0f || p2Triggers.LT > 0.0f) && bulletTimeMax < 3.0f)//triggers can be replaced by a power up boolean for a drink instead of a toggle thing
+	if ((p1Triggers.LT > 0.0f || p2Triggers.LT > 0.0f) && bulletTimeMax < 3.0f||isEvent(Events::Enter))//triggers can be replaced by a power up boolean for a drink instead of a toggle thing
 		bulletTime = true;
 
 	if (bulletTime)
@@ -762,6 +764,8 @@ void HelloWorld::play(float dt)
 {
 	if (!paused)
 	{
+		playerOne->getBox()->setLocation(cocos2d::Vec2(playerOne->getBox()->getLocation().x, playerOne->getBox()->getLocation().y+CAMERASPEED));
+		playerOne->setInv();
 		btMeter.setP2x(280 - (bulletTimeMax * 30));
 
 		btMeter.update();
@@ -915,7 +919,7 @@ void HelloWorld::boss(float dt)
 
 void HelloWorld::pause(float dt)
 {
-	if (p1Controller->isButtonPressed(Sedna::START) || p2Controller->isButtonPressed(Sedna::START))
+	if (p1Controller->isButtonPressed(Sedna::START) || p2Controller->isButtonPressed(Sedna::START) || isEvent(Events::Escape))
 	{
 		p1Controller->setVibration(0, 0);
 		p2Controller->setVibration(0, 0);
@@ -931,7 +935,7 @@ void HelloWorld::pause(float dt)
 	}
 
 
-	if (p1Controller->isButtonReleased(Sedna::START) && p2Controller->isButtonReleased(Sedna::START))
+	if (p1Controller->isButtonReleased(Sedna::START) && p2Controller->isButtonReleased(Sedna::START) || isEvent(Events::Space))
 		TEMPPAUSE = false;
 
 
@@ -959,11 +963,11 @@ void HelloWorld::pause(float dt)
 
 
 
-		if (pauseMenu->getIndexOfSelected() == 1 && (p1Controller->isButtonPressed(Sedna::A) || p2Controller->isButtonPressed(Sedna::A)))
+		if (pauseMenu->getIndexOfSelected() == 1 && (p1Controller->isButtonPressed(Sedna::A) || p2Controller->isButtonPressed(Sedna::A) || isEvent(Events::Space)))
 			TRUEPAUSE = false;
 
 
-		if (pauseMenu->getIndexOfSelected() == 0 && (p1Controller->isButtonPressed(Sedna::A) || p2Controller->isButtonPressed(Sedna::A)) && !end) {
+		if (pauseMenu->getIndexOfSelected() == 0 && (p1Controller->isButtonPressed(Sedna::A) || p2Controller->isButtonPressed(Sedna::A) || isEvent(Events::Space)) && !end) {
 			auto mMenu = MenuScene::create();
 			cocos2d::experimental::AudioEngine::stopAll();
 			cocos2d::experimental::AudioEngine::play2d("cha ching.mp3", false);

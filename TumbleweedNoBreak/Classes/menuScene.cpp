@@ -3,6 +3,8 @@
 #include "AudioEngine.h"
 #include "HelloWorldScene.h"
 #include "MusicList.h"
+#include "Input.h"
+#include "Events.h"
 
 USING_NS_CC;
 
@@ -188,13 +190,13 @@ void MenuScene::update(float dt)
 			if (!menuWait)//so that the player doesn't skip over the options every time they try to get to it (cannot condense with the line above) 
 				//it is a float being used as a boolean 
 			{
-				if (p1Sticks[0].y < -0.3f && menuM->getIndexOfSelected() != 0)//stopping the player from trying to get out of the index
+				if ((p1Sticks[0].y < -0.3f || isEvent(Events::S)) && menuM->getIndexOfSelected() != 0)//stopping the player from trying to get out of the index
 				{
 
 					menuM->select(menuM->getIndexOfSelected() - 1);//go to the next index
 					menuWait += dt;//this stops the player from going through the entire menu in a split second
 				}
-				else if (p1Sticks[0].y > 0.3f && !(menuM->getIndexOfSelected() + 1 > menuM->getLabelList().size() - 1))//reverse of the top
+				else if ((p1Sticks[0].y > 0.3f || isEvent(Events::W)) && !(menuM->getIndexOfSelected() + 1 > menuM->getLabelList().size() - 1))//reverse of the top
 				{
 					menuM->select(menuM->getIndexOfSelected() + 1);//go to the next index
 					menuWait += dt;
@@ -211,7 +213,7 @@ void MenuScene::update(float dt)
 
 
 
-			if (menuM->getIndexOfSelected() == 2 && p1Controller->isButtonPressed(Sedna::A)) {//if the play button is selected
+			if (menuM->getIndexOfSelected() == 2 &&( p1Controller->isButtonPressed(Sedna::A) || isEvent(Events::Space))) {//if the play button is selected
 				auto game = HelloWorld::createScene();//creation of the game scene
 				cocos2d::experimental::AudioEngine::play2d("cha ching.mp3", false);//play a nice sound (Polish)
 
@@ -223,7 +225,7 @@ void MenuScene::update(float dt)
 
 
 
-			if (menuM->getIndexOfSelected() == 1 && p1Controller->isButtonPressed(Sedna::A)) {//if the options menu is selected
+			if (menuM->getIndexOfSelected() == 1 && (p1Controller->isButtonPressed(Sedna::A) || isEvent(Events::Space))) {//if the options menu is selected
 				optionMenuBool = true;
 				selectWait += dt;//stop them them selecting multiple times in the split second
 				for (unsigned int i = 0; i < menuM->getLabelList().size(); i++)
@@ -239,7 +241,7 @@ void MenuScene::update(float dt)
 
 
 			}
-			if (menuM->getIndexOfSelected() == 0 && p1Controller->isButtonPressed(Sedna::A)) {//if the end game button is selected
+			if (menuM->getIndexOfSelected() == 0 && (p1Controller->isButtonPressed(Sedna::A) || isEvent(Events::Space))) {//if the end game button is selected
 				cocos2d::experimental::AudioEngine::play2d("cha ching.mp3", false);//play a sound
 				exit(0);//end the game
 			}
@@ -248,21 +250,21 @@ void MenuScene::update(float dt)
 		{
 
 
-			if (p1Sticks[0].y < -0.3f && menuO->getIndexOfSelected() != 0)//index checking
+			if ((p1Sticks[0].y < -0.3f || isEvent(Events::S))&& menuO->getIndexOfSelected() != 0)//index checking
 			{
 				menuO->select(menuM->getIndexOfSelected() - 1);
 				menuWait += dt;
 			}
 
 
-			if (p1Sticks[0].y > 0.3f && !(menuO->getIndexOfSelected() + 1 > menuO->getLabelList().size() - 1))//more index checking
+			if ((p1Sticks[0].y > 0.3f || isEvent(Events::W)) && !(menuO->getIndexOfSelected() + 1 > menuO->getLabelList().size() - 1))//more index checking
 			{
 				menuO->select(menuO->getIndexOfSelected() + 1);
 				menuWait += dt;
 			}
 
 
-			if (menuO->getIndexOfSelected() == 0 && p1Controller->isButtonPressed(Sedna::A) && !selectWait)//if they are selecting the music
+			if (menuO->getIndexOfSelected() == 0 && (p1Controller->isButtonPressed(Sedna::A) || isEvent(Events::Space)) && !selectWait)//if they are selecting the music
 			{
 				((Tutorial*)this)->music ^= 1;
 				menuO->getLabelList()[0]->setString(oLabelStrings[((Tutorial*)this)->music]);//change the boolean to its inverse
@@ -270,7 +272,7 @@ void MenuScene::update(float dt)
 			}
 
 
-			else if (menuO->getIndexOfSelected() == 1 && p1Controller->isButtonPressed(Sedna::A) && !selectWait)//for changing the tutorial
+			else if (menuO->getIndexOfSelected() == 1 && (p1Controller->isButtonPressed(Sedna::A) || isEvent(Events::Space)) && !selectWait)//for changing the tutorial
 			{
 				((Tutorial*)this)->tutorial ^= 1;
 				menuO->getLabelList()[1]->setString(oLabel2Strings[((Tutorial*)this)->tutorial]);
@@ -287,7 +289,7 @@ void MenuScene::update(float dt)
 			}
 
 
-			if (p1Controller->isButtonPressed(Sedna::B))//if the b button is pressed
+			if (p1Controller->isButtonPressed(Sedna::B) || isEvent(Events::Backspace))//if the b button is pressed
 			{
 				optionMenuBool = false;//go back to the main menu
 				for (unsigned int i = 0; i < menuM->getLabelList().size(); i++)

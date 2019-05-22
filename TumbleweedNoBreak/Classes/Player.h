@@ -21,7 +21,7 @@ namespace Sedna {
 		std::vector<cocos2d::Sprite*> getHPSprites() const;
 		void setUIGunSprite(cocos2d::Sprite* s);
 
-
+		
 		void updatePosition(cocos2d::Vec2 p);
 		void updateList();
 	private:
@@ -46,6 +46,7 @@ namespace Sedna {
 
 		//extend member functions here
 
+		void setInv();
 		XinputController* getController() const { return pController; }//getters
 		Gun* getCurrentGun() const { return currentGun; }
 		int getPlayerNumber() const { return playerNumber; }

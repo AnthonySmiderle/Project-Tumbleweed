@@ -2,6 +2,8 @@
 #include <iostream>
 #include "AudioEngine.h"
 #include "Powerup.h"
+#include "Input.h"
+#include "Events.h"
 #define BULLETSPEED 1.5f
 #define BULLETSPEED1 3
 #define UIDISPOSITION 360
@@ -44,6 +46,11 @@ namespace Sedna {
 	Player::~Player()
 	{
 		//delete this;
+	}
+
+	void Player::setInv()
+	{
+		invincTimer = 10.0f;
 	}
 
 	unsigned int Player::getScore() const
@@ -116,16 +123,26 @@ namespace Sedna {
 			pController->updateSticks(pSticks);
 			
 
-			if (pSticks[0].x > -0.3f && pSticks[0].x < 0.3f && pSticks[0].y > -0.3f && pSticks[0].y < 0.3f)
+			if ((pSticks[0].x > -0.3f && pSticks[0].x < 0.3f && pSticks[0].y > -0.3f && pSticks[0].y < 0.3f)&&!((isEvent(Events::W))&&(isEvent(Events::S))&&(isEvent(Events::A))&&(isEvent(Events::D))))
 				this->getBox()->addForce(this->getBox()->getVelocity().x *-3.0f, this->getBox()->getVelocity().y*-3.0f);
 			else {
 				auto direction = cocos2d::Vec2(pSticks[0].x, pSticks[0].y);
+				float tempY, tempX;
+				if (playerNumber == 1)
+				{
+					if (isEvent(Events::W))
+						tempY = 0.5;
+					else if (isEvent(Events::S))
+						tempY = -0.5;
+					if (isEvent(Events::A))
+						tempX = -0.5;
+					else if (isEvent(Events::D))
+						tempX = 0.5;
+					auto direction = cocos2d::Vec2(tempX, tempY);
+				}
 				auto force = direction / sqrt(direction.x*direction.x + direction.y*direction.y);//normalized vector
 
-				this->getBox()->addForce((pSticks[0].x > 0.3f || pSticks[0].x < -0.3f) ?
-					force.x * 5 : 0.0f,
-					(pSticks[0].y > 0.3f || pSticks[0].y < -0.3f) ?
-					force.y * 5 : 0.0f);
+				this->getBox()->addForce((pSticks[0].x > 0.3f || pSticks[0].x < -0.3f) ? force.x * 5 : 0.0f, (pSticks[0].y > 0.3f || pSticks[0].y < -0.3f) ? force.y * 5 : 0.0f);
 				moved = true;
 			}
 		}
@@ -622,6 +639,7 @@ namespace Sedna {
 	{
 		this->uiGunSprite = s;
 	}
+
 
 	void SednaUI::updatePosition(cocos2d::Vec2 p)
 	{
