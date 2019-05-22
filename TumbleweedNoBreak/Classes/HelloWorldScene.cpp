@@ -1315,21 +1315,24 @@ void HelloWorld::notDead(float dt)
 		if (CAMERASPEED > 0) {
 
 			//background switching code
-			if (DDOS->getSprite()->getPosition().y - bg2->getPosition().y >= 588.8f) {
-				
+			cocos2d::Director* temp;
+			temp = cocos2d::Director::getInstance();
+			if (DDOS->getSprite()->getPosition().y - bg2->getPosition().y >= 598.8f) {
+
 				//this code switches the background sprite based on what the in game time is and where the image is on the screen
 				if (bossTimeMax <= 61 && bossTimeMax > 58 && bg2->getTexture() != stairs->getTexture())
 					bg2->setTexture(stairs->getTexture());///
-				
-				else if (bossTimeMax < 54 && bossTimeMax > 52 && bg2->getTexture() != level2Other->getTexture())
+
+				if (bossTimeMax <= 56 && bossTimeMax > 52 && bg2->getTexture() != level2Other->getTexture())
 					bg2->setTexture(level2Other->getTexture());///
 
-
-
-				else if (bossTimeMax < 33 && bossTimeMax > 28 && bg2->getTexture() != outsideTransition->getTexture())
+				if (bossTimeMax <= 33 && bossTimeMax > 28 && bg2->getTexture() != outsideTransition->getTexture())
 					bg2->setTexture(outsideTransition->getTexture());
-				else if (bossTimeMax < 25 && bossTimeMax >22 && bg2->getTexture() != level3Other->getTexture())
+
+				if (bossTimeMax <= 26 && bossTimeMax > 24 && bg2->getTexture() != level3Other->getTexture())
 					bg2->setTexture(level3Other->getTexture());
+
+
 
 				bg2->setPosition(cocos2d::Vec2(bg2->getPosition().x, bg2->getPosition().y + 588.8f));
 			}
@@ -1360,7 +1363,7 @@ void HelloWorld::notDead(float dt)
 void HelloWorld::checkUnderScreen(Sedna::Player* p)
 {
 	//player dies if they go off screen
-	if (p->getBox()->getLocation().y <= DDOS->getSprite()->getPosition().y - 400){
+	if (p->getBox()->getLocation().y <= DDOS->getSprite()->getPosition().y - 400) {
 		p->setHP(0);
 		p->die();
 		p->getUI()->updateList();

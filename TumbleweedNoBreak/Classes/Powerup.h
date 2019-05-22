@@ -2,6 +2,7 @@
 #include "GameObject.h"
 
 namespace Sedna {
+	//forward declaring
 	class Player;
 	class Gun;
 	class Powerup : public GameObject {

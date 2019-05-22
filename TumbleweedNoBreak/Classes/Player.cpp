@@ -114,7 +114,7 @@ namespace Sedna {
 
 
 			pController->updateSticks(pSticks);
-			
+
 
 			if (pSticks[0].x > -0.3f && pSticks[0].x < 0.3f && pSticks[0].y > -0.3f && pSticks[0].y < 0.3f)
 				this->getBox()->addForce(this->getBox()->getVelocity().x *-3.0f, this->getBox()->getVelocity().y*-3.0f);
@@ -207,14 +207,7 @@ namespace Sedna {
 								if (pSticks[1].y > 0.3f && pSticks[1].x < 0.3f && pSticks[1].x > -0.3f ||
 									pSticks[1].y < 0.3f && pSticks[1].y > -0.3f && pSticks[1].x < 0.3f && pSticks[1].x > -0.3f)
 									pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(0, 5)*BULLETSPEED);
-								//pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(test2)*BULLETSPEED1*2);
-
-
-								//auto test = cocos2d::MotionStreak::create(1.0f,5.0f,5.0f,cocos2d::Color3B(255,160,0),"a.png");
-								//s->addChild(test);
-								//test->setPosition(pProjectiles.back()->getBox()->getLocation());
-								//test->update(dt);
-
+								
 
 							}
 						}
@@ -364,17 +357,19 @@ namespace Sedna {
 						i--;
 					}
 
+					//make a bunch of pretty partciles :D
 					particles.push_back(cocos2d::ParticleExplosion::create());
 					particles.back()->setSpeed(650);
 					particles.back()->setSpeedVar(20);
 					particles.back()->setEmissionRate(200);
 					particles.back()->setPosition(outlawList[j]->getBox()->getLocation());
 					particles.back()->setStartColor(cocos2d::Color4F(1.0f, 1.0f, 0.40f, 1.0f));
-					particles.back()->setEndColor(  cocos2d::Color4F(1.0f, 1.0f, 0.40f, 1.0f));
+					particles.back()->setEndColor(cocos2d::Color4F(1.0f, 1.0f, 0.40f, 1.0f));
 					s->addChild(particles.back());
 
 					cocos2d::experimental::AudioEngine::play2d("pain.mp3");
 
+					//kill the outlaw by removing him from the list
 					outlawList[j]->removeProjectiles();
 					outlawList[j]->getBox()->getDrawNode()->removeFromParent();
 					outlawList[j]->getSprite()->removeFromParent();
@@ -429,6 +424,7 @@ namespace Sedna {
 				kickedTable = true;
 				cocos2d::Vec2 distanceVector((tableList[i]->getBox()->getLocation().x - this->getBox()->getLocation().x),
 					(tableList[i]->getBox()->getLocation().y - this->getBox()->getLocation().y));
+				
 				//POWERUP CODE
 				if (tableList[i]->getBeer() != blank)
 				{
@@ -565,44 +561,52 @@ namespace Sedna {
 
 	SednaUI::SednaUI(Gun * CurrentGun, Player* p, int args, ...)
 	{
+		//same variadic template code that we used for the menu
+		//start the list
 		va_list LIST;
 		va_start(LIST, args);
 		for (int i = 0; i < args; i++) {
+			//push back a label, assuming that the programmer has given a label
 			labelList.push_back(va_arg(LIST, cocos2d::Label*));
 		}
+		//stop the list
 		va_end(LIST);
 
 		this->p = p;
 
+
 		labelList[1]->enableWrap(true);
 
+		//hearts
 		hp1 = cocos2d::Sprite::create("fullHeart.png");
 		hp2 = cocos2d::Sprite::create("fullHeart.png");
 		hp3 = cocos2d::Sprite::create("fullHeart.png");
+
 
 		hpSprites.push_back(hp1);
 		hpSprites.push_back(hp2);
 		hpSprites.push_back(hp3);
 
+		//z order check so we can tell whether a heart should be broken or not <- that comes later, so z order is important  here
 		hpSprites[0]->setZOrder(21);
 		hpSprites[1]->setZOrder(21);
 		hpSprites[2]->setZOrder(21);
 
 		this->currentGun = CurrentGun;
 
-		if (this->currentGun->getName() == "olReliable") {
+		//make sure the gun sprite is the right gun
+		if (this->currentGun->getName() == "olReliable")
 			uiGunSprite = cocos2d::Sprite::create("gun1.png");
-		}
 		else if (this->currentGun->getName() == "bloodyMary")
 			uiGunSprite = cocos2d::Sprite::create("gun2.png");
 		else if (this->currentGun->getName() == "theBiggestIron")
 			uiGunSprite = cocos2d::Sprite::create("gun3.png");
-		//else make the other guns work
 
 		uiGunSprite->setScale(0.85f);
 
 	}
-
+	
+	auto y = __cplusplus;
 	std::vector<cocos2d::Label*> SednaUI::getLabelList() const
 	{
 		return labelList;
@@ -625,6 +629,7 @@ namespace Sedna {
 
 	void SednaUI::updatePosition(cocos2d::Vec2 p)
 	{
+		//make sure the UI moves with whatever force that is passed in
 		for (int i = 0; i < labelList.size(); i++)
 			labelList[i]->setPosition(labelList[i]->getPosition() + p);
 
@@ -636,6 +641,7 @@ namespace Sedna {
 
 	void SednaUI::updateList()
 	{
+		//update the label list in the UI
 		this->currentGun = p->getCurrentGun();
 		for (int i = 0; i < labelList.size(); i++) {
 			if (this->currentGun->getName() != "olReliable")
