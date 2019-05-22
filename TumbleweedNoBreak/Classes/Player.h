@@ -52,13 +52,13 @@ namespace Sedna {
 		unsigned int getScore() const;
 		void die();//a helpful function to kill the player
 		void setCurrentGun(Gun* g);//setter
-		void checkInput(float dt);//player input
-		void shoot(float dt, cocos2d::Scene* s);
+		void checkInput();//player input
+		void shoot(cocos2d::Scene* s);
 		void checkList();
 		void checkBCollision(std::vector<Outlaw*>& outlawList, Powerup* power1, Powerup* power2, cocos2d::Scene* s);
 		void checkBCollision(std::vector<Table*>& tableList);
 		void checkTableStuff(std::vector<Table*>& tableList, Sedna::Player*);//collisions
-		void updateInvince(float dt);//invincibility frames
+		void updateInvince();//invincibility frames
 		bool getInvinc()const;//getter
 		void wasHurt();
 		bool isDead();//getter

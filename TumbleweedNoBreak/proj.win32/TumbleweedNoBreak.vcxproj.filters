@@ -1,8 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <ClCompile Include="..\Classes\XinputManager.cpp" />
+    <ClCompile Include="..\Classes\Primitive.cpp" />
     <ClCompile Include="..\Classes\Animations.cpp" />
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
+    <ClCompile Include="..\Classes\Bullet.cpp" />
     <ClCompile Include="..\Classes\Enemy.cpp" />
     <ClCompile Include="..\Classes\GameObject.cpp" />
     <ClCompile Include="..\Classes\Guns.cpp" />
@@ -12,20 +15,23 @@
     <ClCompile Include="..\Classes\Player.cpp" />
     <ClCompile Include="..\Classes\Potion.cpp" />
     <ClCompile Include="..\Classes\Powerup.cpp" />
-    <ClCompile Include="..\Classes\Primitive.cpp" />
     <ClCompile Include="..\Classes\Projectile.cpp" />
+    <ClCompile Include="..\Classes\ScoreBoard.cpp" />
     <ClCompile Include="..\Classes\Sign.cpp" />
     <ClCompile Include="..\Classes\SpawnManager.cpp" />
     <ClCompile Include="..\Classes\SpawnObject.cpp" />
     <ClCompile Include="..\Classes\Table.cpp" />
-    <ClCompile Include="..\Classes\XinputManager.cpp" />
-    <ClCompile Include="main.cpp" />
     <ClCompile Include="..\Classes\Tutorial.cpp" />
-    <ClCompile Include="..\Classes\ScoreBoard.cpp" />
+    <ClCompile Include="..\Classes\TutorialScene.cpp" />
+    <ClCompile Include="..\Classes\UserInterface.cpp" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Classes\XinputManager.h" />
+    <ClInclude Include="..\Classes\Primitive.h" />
     <ClInclude Include="..\Classes\Animations.h" />
     <ClInclude Include="..\Classes\AppDelegate.h" />
+    <ClInclude Include="..\Classes\Bullet.h" />
     <ClInclude Include="..\Classes\Enemy.h" />
     <ClInclude Include="..\Classes\Enums and Typdefs.h" />
     <ClInclude Include="..\Classes\GameObject.h" />
@@ -36,16 +42,17 @@
     <ClInclude Include="..\Classes\Player.h" />
     <ClInclude Include="..\Classes\Potion.h" />
     <ClInclude Include="..\Classes\Powerup.h" />
-    <ClInclude Include="..\Classes\Primitive.h" />
     <ClInclude Include="..\Classes\Projectile.h" />
+    <ClInclude Include="..\Classes\ScoreBoard.h" />
     <ClInclude Include="..\Classes\Sign.h" />
     <ClInclude Include="..\Classes\SpawnManager.h" />
     <ClInclude Include="..\Classes\SpawnObject.h" />
     <ClInclude Include="..\Classes\Table.h" />
-    <ClInclude Include="..\Classes\XinputManager.h" />
-    <ClInclude Include="main.h" />
     <ClInclude Include="..\Classes\Tutorial.h" />
-    <ClInclude Include="..\Classes\ScoreBoard.h" />
+    <ClInclude Include="..\Classes\TutorialScene.h" />
+    <ClInclude Include="..\Classes\UserInterface.h" />
+    <ClInclude Include="main.h" />
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc" />

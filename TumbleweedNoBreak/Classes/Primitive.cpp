@@ -42,9 +42,9 @@ namespace Sedna {
 		return cocos2d::Vec2(p1.x + p2.x / 2, p1.y + p2.y / 2);
 	}
 
-	void  SquarePrimitive::addForce(cocos2d::Vec2 v)
+	void  SquarePrimitive::addForce(cocos2d::Vec2 v,float dt)
 	{
-		velocity += v / 10;//create the illusion of acceleration
+		velocity += v *dt;//create the illusion of acceleration
 
 		update();
 	}
@@ -57,7 +57,7 @@ namespace Sedna {
 		{
 			//make sure dt is either the largest or smallest it can be
 			dt = dt > .9f ? .9f : 0.01f;
-			
+
 			//invert dt2
 			dt2 *= -1;
 		}
@@ -67,7 +67,7 @@ namespace Sedna {
 		p1 += velocity;
 		p2 += velocity;
 		this->Node->clear();
-		
+
 		//draw the new rectangle at the new coordinates determined by adding the velocity to the two member vectors
 		Node->drawSolidRect(p1, p2, colourLerp(cocos2d::Color4F(1.0f, 0.0f, 0.0f, 1.0f), cocos2d::Color4F(0.0f, 0.0f, 1.0f, 1.0f), dt));
 	}
@@ -123,16 +123,16 @@ namespace Sedna {
 
 	}
 
-	void CirclePrimitive::addForce(float vX, float vY)
+	void CirclePrimitive::addForce(float vX, float vY, float dt)
 	{
-		
+
 		cocos2d::Vec2 v = cocos2d::Vec2(vX, vY);
 		int maxVelocity = 4;
 		int minVelocity = -4;
 
 		//velocity is capped here
 
-		velocity += v / 10;
+		velocity += v * dt;
 
 		if (velocity.x >= maxVelocity)
 			velocity.x = maxVelocity;
@@ -144,9 +144,9 @@ namespace Sedna {
 			velocity.y = minVelocity;
 	}
 
-	void CirclePrimitive::setForce(cocos2d::Vec2 v)
+	void CirclePrimitive::setForce(cocos2d::Vec2 v, float dt)
 	{
-		velocity = v;
+		velocity = v * dt;
 	}
 
 	void CirclePrimitive::setLocation(cocos2d::Vec2 p)

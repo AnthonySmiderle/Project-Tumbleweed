@@ -2,8 +2,8 @@
 #include <iostream>
 #include "AudioEngine.h"
 #include "Powerup.h"
-#define BULLETSPEED 1.5f
-#define BULLETSPEED1 3
+#define BULLETSPEED 2*45
+#define BULLETSPEED1 3*45
 #define UIDISPOSITION 360
 
 namespace Sedna {
@@ -54,7 +54,7 @@ namespace Sedna {
 	void Player::die()
 	{
 		takeInputs = false;//halts player input and stops them in their tracks
-		this->getBox()->setForce(cocos2d::Vec2(0, 0));
+		this->getBox()->setForce(cocos2d::Vec2(0, 0),dt);
 		this->sprite->setRotation(90);
 	}
 
@@ -68,7 +68,7 @@ namespace Sedna {
 
 	}
 
-	void Player::checkInput(float dt)//input data
+	void Player::checkInput()//input data
 	{
 		if (pController->isVibrating()) {//this stops the players controller from vibrating all the time
 			vibrationTimer += dt;
@@ -117,7 +117,7 @@ namespace Sedna {
 
 
 			if (pSticks[0].x > -0.3f && pSticks[0].x < 0.3f && pSticks[0].y > -0.3f && pSticks[0].y < 0.3f)
-				this->getBox()->addForce(this->getBox()->getVelocity().x *-3.0f, this->getBox()->getVelocity().y*-3.0f);
+				this->getBox()->addForce(this->getBox()->getVelocity().x *-3.0f, this->getBox()->getVelocity().y*-3.0f, dt);
 			else {
 				auto direction = cocos2d::Vec2(pSticks[0].x, pSticks[0].y);
 				auto force = direction / sqrt(direction.x*direction.x + direction.y*direction.y);//normalized vector
@@ -125,12 +125,12 @@ namespace Sedna {
 				this->getBox()->addForce((pSticks[0].x > 0.3f || pSticks[0].x < -0.3f) ?
 					force.x * 5 : 0.0f,
 					(pSticks[0].y > 0.3f || pSticks[0].y < -0.3f) ?
-					force.y * 5 : 0.0f);
+					force.y * 5 : 0.0f, dt);
 				moved = true;
 			}
 		}
 	}
-	void Player::shoot(float dt, cocos2d::Scene* s)
+	void Player::shoot(cocos2d::Scene* s)
 	{
 		if (takeInputs) {
 			if (pSticks[1].y < 0.3f && pSticks[1].y > -0.3f && pSticks[1].x < 0.3f && pSticks[1].x > -0.3f ||
@@ -183,7 +183,7 @@ namespace Sedna {
 							pProjectiles.back()->getBox()->setLocation(this->getBox()->getLocation());
 							//uncomment this for omnidirectional
 							if (currentGun->getName() == "theBiggestIron")
-								pProjectiles.back()->getBox()->setForce((pSticks[1].x > 0.3f || pSticks[1].x < -0.3f || pSticks[1].y > 0.3f || pSticks[1].y < -0.3f) ? cocos2d::Vec2(test2)*BULLETSPEED1 * 2.5f : cocos2d::Vec2(0, 1) *BULLETSPEED1*2.5f);
+								pProjectiles.back()->getBox()->setForce((pSticks[1].x > 0.3f || pSticks[1].x < -0.3f || pSticks[1].y > 0.3f || pSticks[1].y < -0.3f) ? cocos2d::Vec2(test2)*BULLETSPEED1 * 2.5f : cocos2d::Vec2(0, 1) *BULLETSPEED1*2.5f, dt);
 
 							//comment out this region to enable omnidirectional shooting
 							else {
@@ -193,7 +193,7 @@ namespace Sedna {
 
 									//pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(test2)*BULLETSPEED1*2);
 
-									pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(-3.5, 3.5)*BULLETSPEED);
+									pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(-3.5, 3.5)*BULLETSPEED, dt);
 								}
 
 								if (pSticks[1].x > 0.3f) {
@@ -201,12 +201,12 @@ namespace Sedna {
 
 									//pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(test2)*BULLETSPEED1*2);
 
-									pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(3.5, 3.5)*BULLETSPEED);
+									pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(3.5, 3.5)*BULLETSPEED, dt);
 								}
 
 								if (pSticks[1].y > 0.3f && pSticks[1].x < 0.3f && pSticks[1].x > -0.3f ||
 									pSticks[1].y < 0.3f && pSticks[1].y > -0.3f && pSticks[1].x < 0.3f && pSticks[1].x > -0.3f)
-									pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(0, 5)*BULLETSPEED);
+									pProjectiles.back()->getBox()->setForce(cocos2d::Vec2(0, 5)*BULLETSPEED, dt);
 								
 
 							}
@@ -246,11 +246,11 @@ namespace Sedna {
 
 							if (pSticks[1].y > 0.3f && pSticks[1].x < 0.3f && pSticks[1].x > -0.3f ||
 								pSticks[1].y < 0.3f && pSticks[1].y > -0.3f && pSticks[1].x < 0.3f && pSticks[1].x > -0.3f) {
-								pProjectiles[0]->getBox()->setForce(cocos2d::Vec2(-3.25, 3.25)*BULLETSPEED);//projectile on the left
-								pProjectiles[1]->getBox()->setForce(cocos2d::Vec2(-1.75, 4.5)*BULLETSPEED);
-								pProjectiles[2]->getBox()->setForce(cocos2d::Vec2(0, 5.06)*BULLETSPEED);//projectiles in the middle
-								pProjectiles[3]->getBox()->setForce(cocos2d::Vec2(1.75, 4.5)*BULLETSPEED);
-								pProjectiles[4]->getBox()->setForce(cocos2d::Vec2(3.25, 3.25)*BULLETSPEED);//projectile on the right
+								pProjectiles[0]->getBox()->setForce(cocos2d::Vec2(-3.25, 3.25)*BULLETSPEED, dt);//projectile on the left
+								pProjectiles[1]->getBox()->setForce(cocos2d::Vec2(-1.75, 4.5)*BULLETSPEED, dt);
+								pProjectiles[2]->getBox()->setForce(cocos2d::Vec2(0, 5.06)*BULLETSPEED, dt);//projectiles in the middle
+								pProjectiles[3]->getBox()->setForce(cocos2d::Vec2(1.75, 4.5)*BULLETSPEED, dt);
+								pProjectiles[4]->getBox()->setForce(cocos2d::Vec2(3.25, 3.25)*BULLETSPEED, dt);//projectile on the right
 
 							}
 							if (pSticks[1].x < -0.3f) {
@@ -261,11 +261,11 @@ namespace Sedna {
 								pProjectiles[3]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-16, 0));
 								pProjectiles[4]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-16, 0));
 
-								pProjectiles[0]->getBox()->setForce(cocos2d::Vec2(-5.06, 0)*BULLETSPEED);//projectile on the left
-								pProjectiles[1]->getBox()->setForce(cocos2d::Vec2(-4.5, 1.75)*BULLETSPEED);
-								pProjectiles[2]->getBox()->setForce(cocos2d::Vec2(-3.35, 3.35)*BULLETSPEED);//projectiles in the middle
-								pProjectiles[3]->getBox()->setForce(cocos2d::Vec2(-1.75, 4.5)*BULLETSPEED);
-								pProjectiles[4]->getBox()->setForce(cocos2d::Vec2(0, 5.06)*BULLETSPEED);//projectile on the right
+								pProjectiles[0]->getBox()->setForce(cocos2d::Vec2(-5.06, 0)*BULLETSPEED, dt);//projectile on the left
+								pProjectiles[1]->getBox()->setForce(cocos2d::Vec2(-4.5, 1.75)*BULLETSPEED, dt);
+								pProjectiles[2]->getBox()->setForce(cocos2d::Vec2(-3.35, 3.35)*BULLETSPEED, dt);//projectiles in the middle
+								pProjectiles[3]->getBox()->setForce(cocos2d::Vec2(-1.75, 4.5)*BULLETSPEED, dt);
+								pProjectiles[4]->getBox()->setForce(cocos2d::Vec2(0, 5.06)*BULLETSPEED, dt);//projectile on the right
 
 							}
 							if (pSticks[1].x > 0.3f) {
@@ -276,11 +276,11 @@ namespace Sedna {
 								pProjectiles[3]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(16, 0));
 								pProjectiles[4]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(16, 0));
 
-								pProjectiles[0]->getBox()->setForce(cocos2d::Vec2(0, 5.06)*BULLETSPEED);//projectile on the left
-								pProjectiles[1]->getBox()->setForce(cocos2d::Vec2(1.75, 4.5)*BULLETSPEED);
-								pProjectiles[2]->getBox()->setForce(cocos2d::Vec2(3.35, 3.35)*BULLETSPEED);//projectiles in the middle
-								pProjectiles[3]->getBox()->setForce(cocos2d::Vec2(4.5, 1.75)*BULLETSPEED);
-								pProjectiles[4]->getBox()->setForce(cocos2d::Vec2(5.06, 0)*BULLETSPEED);//projectile on the right
+								pProjectiles[0]->getBox()->setForce(cocos2d::Vec2(0, 5.06)*BULLETSPEED, dt);//projectile on the left
+								pProjectiles[1]->getBox()->setForce(cocos2d::Vec2(1.75, 4.5)*BULLETSPEED, dt);
+								pProjectiles[2]->getBox()->setForce(cocos2d::Vec2(3.35, 3.35)*BULLETSPEED, dt);//projectiles in the middle
+								pProjectiles[3]->getBox()->setForce(cocos2d::Vec2(4.5, 1.75)*BULLETSPEED, dt);
+								pProjectiles[4]->getBox()->setForce(cocos2d::Vec2(5.06, 0)*BULLETSPEED, dt);//projectile on the right
 
 
 							}
@@ -463,24 +463,24 @@ namespace Sedna {
 
 				tableList[i]->spriteSwitch();//the table changes sprites to look kicked over
 				//times 2 to give a better feel to kicking the table
-				tableList[i]->getBox()->addForce(distanceVector.x * 2, distanceVector.y * 2);
+				tableList[i]->getBox()->addForce(distanceVector.x * 2, distanceVector.y * 2, dt);
 
 			}
 			if (tableList[i]->getBox()->getVelocity() != cocos2d::Vec2(0, 0)) {
 
 				tableList[i]->getBox()->addForce(
 					tableList[i]->getBox()->getVelocity().x * -1,
-					tableList[i]->getBox()->getVelocity().y * -1);
+					tableList[i]->getBox()->getVelocity().y * -1, dt);
 			}
 			if (this->getBox()->checkCloseTouching(*tableList[i]->getBox())) {//a sort of newtons cradle effct for tables
 				cocos2d::Vec2 distanceVector((this->getBox()->getLocation().x - tableList[i]->getBox()->getLocation().x),
 					(this->getBox()->getLocation().y - tableList[i]->getBox()->getLocation().y));
-				this->getBox()->addForce(((distanceVector.x) / 4), (distanceVector.y) / 4);
+				this->getBox()->addForce(((distanceVector.x) / 4), (distanceVector.y) / 4, dt);
 			}
 		}
 	}
 
-	void Player::updateInvince(float dt)//this updates the invincibility 
+	void Player::updateInvince()//this updates the invincibility 
 	{
 		if (invincTimer)
 		{

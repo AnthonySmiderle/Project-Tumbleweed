@@ -9,7 +9,7 @@ namespace Sedna {
 	class GameObject{
 	public:
 		//this default constructor is here so that if the lazy programmer wants to create a child of game object, they have to define the hitbox and sprite themselves
-		GameObject() {}
+		GameObject() { gameObjects.push_back(this); }
 
 		GameObject(const char* FILEPATH, const cocos2d::Vec2 &LOCATION, float RADIUS, float ANGLE, unsigned int SEGMENTS);
 		virtual ~GameObject() { delete sprite; delete hitBox; }
@@ -26,6 +26,8 @@ namespace Sedna {
 		virtual void die() {}
 		
 		const float spriteScale = 0.75f;
+		float dt;
+		static std::vector<GameObject*> gameObjects;
 	protected:
 		HP objectHp;
 		cocos2d::Sprite *sprite;

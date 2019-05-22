@@ -77,14 +77,14 @@ namespace Sedna {
 					(table->getBox()->getLocation().y - this->getBox()->getLocation().y));
 				table->spriteSwitch();
 			//times 2 to give a better feel to kicking the table
-				table->getBox()->addForce(distanceVector.x * 2, distanceVector.y * 2);
+				table->getBox()->addForce(distanceVector.x * 2, distanceVector.y * 2,dt);
 			}
 
 			if (table->getBox()->getVelocity() != cocos2d::Vec2(0, 0)) {
 
 					table->getBox()->addForce(
 					table->getBox()->getVelocity().x * -1,
-					table->getBox()->getVelocity().y * -1);
+					table->getBox()->getVelocity().y * -1,dt);
 			}
 
 	}

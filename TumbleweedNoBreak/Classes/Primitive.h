@@ -22,7 +22,7 @@ namespace Sedna {
 		cocos2d::Vec2 getCentre();
 		
 		//adding force to the square primtive
-		void addForce(cocos2d::Vec2 v);
+		void addForce(cocos2d::Vec2 v,float dt);
 		void update();
 		//dummy parameter to determine what kind of square to draw (filled or not)
 		void update(bool yn);
@@ -48,8 +48,8 @@ namespace Sedna {
 		float getRadius() const { return radius; }
 		cocos2d::DrawNode* getDrawNode() const;
 		void update();
-		void addForce(float vX, float vY);
-		void setForce(cocos2d::Vec2 v);
+		void addForce(float vX, float vY,float dt);
+		void setForce(cocos2d::Vec2 v,float dt);
 		void setLocation(cocos2d::Vec2 p);//test function 
 		cocos2d::Vec2 getVelocity() const;
 		cocos2d::Vec2 getLocation() const;

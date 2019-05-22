@@ -3,6 +3,7 @@
 #include "AudioEngine.h"
 #include "Table.h"
 #include <iostream>
+#define BULLETSPEED 1.5f*40
 namespace Sedna {
 
 	Sedna::Outlaw::Outlaw(float x, float y)
@@ -37,7 +38,7 @@ namespace Sedna {
 
 			//create the illusion that the outlaw is "shooting"
 			eProjectiles.back()->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-8, 0));
-			eProjectiles.back()->getBox()->setForce(cocos2d::Vec2(0, -5));
+			eProjectiles.back()->getBox()->setForce(cocos2d::Vec2(0, -5)* BULLETSPEED, dt);
 
 			//play a sound
 			cocos2d::experimental::AudioEngine::play2d("outlawNormal.mp3");
@@ -228,11 +229,11 @@ namespace Sedna {
 					eProjectiles[i]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-22, 0));
 
 				//set the projectiles to move in a certain direction
-				eProjectiles[0]->getBox()->setForce(cocos2d::Vec2(0, -5.06));//projectile on the left
-				eProjectiles[1]->getBox()->setForce(cocos2d::Vec2(1.75, -4.5));
-				eProjectiles[2]->getBox()->setForce(cocos2d::Vec2(3.35, -3.35));//projectiles in the middle
-				eProjectiles[3]->getBox()->setForce(cocos2d::Vec2(4.5, -1.75));
-				eProjectiles[4]->getBox()->setForce(cocos2d::Vec2(5.06, 0));//projectile on the right
+				eProjectiles[0]->getBox()->setForce(cocos2d::Vec2(0, -5.06)* BULLETSPEED, dt);//projectile on the left
+				eProjectiles[1]->getBox()->setForce(cocos2d::Vec2(1.75, -4.5)* BULLETSPEED, dt);
+				eProjectiles[2]->getBox()->setForce(cocos2d::Vec2(3.35, -3.35)* BULLETSPEED, dt);//projectiles in the middle
+				eProjectiles[3]->getBox()->setForce(cocos2d::Vec2(4.5, -1.75)* BULLETSPEED, dt);
+				eProjectiles[4]->getBox()->setForce(cocos2d::Vec2(5.06, 0)* BULLETSPEED, dt);//projectile on the right
 			}
 			else if (/*this->getBox()->getLocation().x > 250*/!onLeft) {
 				this->getSprite()->setTexture("shotgunOutlaw.png");
@@ -241,11 +242,11 @@ namespace Sedna {
 					eProjectiles[i]->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(16, 0));
 
 
-				eProjectiles[0]->getBox()->setForce(cocos2d::Vec2(-5.06, 0));//projectile on the left
-				eProjectiles[1]->getBox()->setForce(cocos2d::Vec2(-4.5, -1.75));
-				eProjectiles[2]->getBox()->setForce(cocos2d::Vec2(-3.35, -3.35));//projectiles in the middle
-				eProjectiles[3]->getBox()->setForce(cocos2d::Vec2(-1.75, -4.5));
-				eProjectiles[4]->getBox()->setForce(cocos2d::Vec2(0, -5.06));//projectile on the right
+				eProjectiles[0]->getBox()->setForce(cocos2d::Vec2(-5.06, 0)* BULLETSPEED, dt);//projectile on the left
+				eProjectiles[1]->getBox()->setForce(cocos2d::Vec2(-4.5, -1.75)* BULLETSPEED, dt);
+				eProjectiles[2]->getBox()->setForce(cocos2d::Vec2(-3.35, -3.35)* BULLETSPEED, dt);//projectiles in the middle
+				eProjectiles[3]->getBox()->setForce(cocos2d::Vec2(-1.75, -4.5)* BULLETSPEED, dt);
+				eProjectiles[4]->getBox()->setForce(cocos2d::Vec2(0, -5.06)* BULLETSPEED, dt);//projectile on the right
 			}
 			cocos2d::experimental::AudioEngine::play2d("outlawShotgun.mp3");
 
@@ -323,7 +324,7 @@ namespace Sedna {
 
 
 			eProjectiles.back()->getBox()->setLocation(this->getBox()->getLocation() + cocos2d::Vec2(-16, 0));
-			eProjectiles.back()->getBox()->setForce(direction * 8);
+			eProjectiles.back()->getBox()->setForce(direction * 8 * BULLETSPEED, dt);
 			cocos2d::experimental::AudioEngine::play2d("outlawRifle.mp3");
 
 		}
@@ -412,17 +413,17 @@ namespace Sedna {
 		}
 		if (!eShootTimer) {
 			eHasShot = true;
-			dynamite->getBox()->setForce(cocos2d::Vec2(0, -4));
+			dynamite->getBox()->setForce(cocos2d::Vec2(0, -4)* BULLETSPEED, dt);
 		}
 
 		if (eHasShot) {
 			eShootTimer += dt;
-			dynamite->getBox()->setForce(cocos2d::Vec2(0, -4));
+			dynamite->getBox()->setForce(cocos2d::Vec2(0, -4)* BULLETSPEED, dt);
 		}
 		if (this->getBox()->getLocation().y - dynamite->getBox()->getLocation().y >= 150) {
 			shoot(dt, s);
 			dynamite->getBox()->setLocation(this->getBox()->getLocation());
-			dynamite->getBox()->setForce(cocos2d::Vec2(0, 0));
+			dynamite->getBox()->setForce(cocos2d::Vec2(0, 0)* BULLETSPEED, dt);
 
 		}
 
@@ -451,15 +452,15 @@ namespace Sedna {
 
 		//set the force of all new bullets
 
-		eProjectiles[0]->getBox()->setForce(cocos2d::Vec2(-1, 0)*speed);
-		eProjectiles[1]->getBox()->setForce(cocos2d::Vec2(1, 0) *speed);
-		eProjectiles[2]->getBox()->setForce(cocos2d::Vec2(0, 1) *speed);
-		eProjectiles[3]->getBox()->setForce(cocos2d::Vec2(0, -1)*speed);
+		eProjectiles[0]->getBox()->setForce(cocos2d::Vec2(-1, 0)*speed* BULLETSPEED, dt);
+		eProjectiles[1]->getBox()->setForce(cocos2d::Vec2(1, 0) *speed* BULLETSPEED, dt);
+		eProjectiles[2]->getBox()->setForce(cocos2d::Vec2(0, 1) *speed* BULLETSPEED, dt);
+		eProjectiles[3]->getBox()->setForce(cocos2d::Vec2(0, -1)*speed* BULLETSPEED, dt);
 
-		eProjectiles[4]->getBox()->setForce(cocos2d::Vec2(-0.5f, -0.5f)*speed);
-		eProjectiles[5]->getBox()->setForce(cocos2d::Vec2(-0.5f, 0.5f) *speed);
-		eProjectiles[6]->getBox()->setForce(cocos2d::Vec2(0.5f, -0.5f) *speed);
-		eProjectiles[7]->getBox()->setForce(cocos2d::Vec2(0.5f, 0.5f)  *speed);
+		eProjectiles[4]->getBox()->setForce(cocos2d::Vec2(-0.5f, -0.5f)*speed* BULLETSPEED, dt);
+		eProjectiles[5]->getBox()->setForce(cocos2d::Vec2(-0.5f, 0.5f) *speed* BULLETSPEED, dt);
+		eProjectiles[6]->getBox()->setForce(cocos2d::Vec2(0.5f, -0.5f) *speed* BULLETSPEED, dt);
+		eProjectiles[7]->getBox()->setForce(cocos2d::Vec2(0.5f, 0.5f)  *speed* BULLETSPEED, dt);
 
 		cocos2d::experimental::AudioEngine::play2d("peteBomb.mp3");
 
@@ -574,7 +575,7 @@ namespace Sedna {
 					eProjectiles[i]->getBox()->setLocation(cocos2d::Vec2(this->getBox()->getLocation().x, this->getBox()->getLocation().y + 60) + v);
 					auto force = v / sqrt(v.x*v.x + v.y*v.y);
 					//set the force to the normalized direction of v, and add in some random force as well
-					eProjectiles[i]->getBox()->setForce(force*1.5f + cocos2d::Vec2(first, second*1.5f));
+					eProjectiles[i]->getBox()->setForce(force*1.5f + cocos2d::Vec2(first, second*1.5f)* BULLETSPEED, dt);
 				}
 
 
@@ -611,7 +612,7 @@ namespace Sedna {
 
 				eProjectiles.back()->getBox()->setLocation(cocos2d::Vec2(this->getBox()->getLocation().x, this->getBox()->getLocation().y + 60) + v);
 				auto force = direction / sqrt(direction.x*direction.x + direction.y*direction.y);
-				eProjectiles.back()->getBox()->setForce(force * 8);
+				eProjectiles.back()->getBox()->setForce(force * 8 * BULLETSPEED, dt);
 
 
 

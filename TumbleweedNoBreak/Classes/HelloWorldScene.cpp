@@ -457,6 +457,10 @@ void HelloWorld::update(float dt)
 		p2Controller->updateSticks(p2Sticks);
 		p2Controller->getTriggers(p2Triggers);
 
+
+		for (auto x : Sedna::GameObject::gameObjects)
+			x->dt = dt;
+
 		//switch back to the base gun if you're out of ammo
 		if (playerOne->getCurrentGun()->getAmmo() <= 0)
 			playerOne->setCurrentGun(Sedna::Guns::olReliable);
@@ -505,7 +509,7 @@ void HelloWorld::useBulletTime(float dt)
 		playerOne->usedBt = true;
 		playerTwo->usedBt = true;
 		//pause and unpause REALLY fast (this instance is just toggling pause)
-		paused ^= 1;
+		//paused ^= 1;
 
 		//decrease the hitbox size of the players
 		playerOne->getBox()->setRadius(15);	///
@@ -606,9 +610,9 @@ void HelloWorld::gameTutorial(float dt)
 		if (tutCutscene) {
 			//this is the dummy player. it is here to showcase a mechanic in our game
 			if (dummy->getBox()->getLocation().x == 320)
-				dummy->getBox()->setForce(cocos2d::Vec2(1, 0));
+				dummy->getBox()->setForce(cocos2d::Vec2(1, 0), dt);
 			else if (dummy->getBox()->getLocation().x == 380)
-				dummy->getBox()->setForce(cocos2d::Vec2(-1, 0));
+				dummy->getBox()->setForce(cocos2d::Vec2(-1, 0), dt);
 			bounds();
 
 			dummy->updateGameObject();
@@ -633,9 +637,9 @@ void HelloWorld::gameTutorial(float dt)
 
 			//move the most recent outlaw
 			if (tutOutlaws.back()->getBox()->getLocation().y > 200)
-				tutOutlaws.back()->getBox()->setForce(cocos2d::Vec2(0, -2));
+				tutOutlaws.back()->getBox()->setForce(cocos2d::Vec2(0, -2), dt);
 			else
-				tutOutlaws.back()->getBox()->setForce(cocos2d::Vec2(0, 0));
+				tutOutlaws.back()->getBox()->setForce(cocos2d::Vec2(0, 0), dt);
 
 			//if all the tables are gone, move on
 			if (tutTables.empty()) {
@@ -701,9 +705,9 @@ void HelloWorld::gameTutorial(float dt)
 
 			//signs
 			checkInput(dt);
-			playerOne->updateInvince(dt);
+			playerOne->updateInvince();
 			playerOne->updateGameObject();
-			playerTwo->updateInvince(dt);
+			playerTwo->updateInvince();
 			playerTwo->updateGameObject();
 			checkPosAll();
 
@@ -834,9 +838,9 @@ void HelloWorld::boss(float dt)
 	if (!g.empty())
 		dummyTracker->setLocation(cocos2d::Vec2(dummyTracker->getLocation().x, g.back()->getBox()->getLocation().y - 260));
 	if (dummyTracker->getLocation().x <= 0)
-		dummyTracker->setForce(cocos2d::Vec2(10, 0));
+		dummyTracker->setForce(cocos2d::Vec2(10, 0), dt);
 	else if (dummyTracker->getLocation().x >= 500)
-		dummyTracker->setForce(cocos2d::Vec2(-10, 0));
+		dummyTracker->setForce(cocos2d::Vec2(-10, 0), dt);
 	dummyTracker->update();
 
 	if (!g.empty())
@@ -1024,11 +1028,11 @@ void HelloWorld::pause(float dt)
 
 void HelloWorld::checkInput(float dt)
 {
-	playerOne->checkInput(dt);
-	playerTwo->checkInput(dt);
+	playerOne->checkInput();
+	playerTwo->checkInput();
 	if (!paused) {
-		playerOne->shoot(dt, this);
-		playerTwo->shoot(dt, this);
+		playerOne->shoot(this);
+		playerTwo->shoot(this);
 	}
 }
 
@@ -1244,22 +1248,22 @@ void HelloWorld::performBounce(Sedna::Player* p) {
 	if ((int)p->getBox()->getLocation().x >= barRightMax)
 	{
 		p->getBox()->setLocation(cocos2d::Vec2(430, p->getBox()->getLocation().y));
-		p->getBox()->addForce(-25, 0);
+		p->getBox()->addForce(-25, 0, p->dt);
 	}
 
 	if ((int)p->getBox()->getLocation().x <= barLeftMax)
 	{
 		p->getBox()->setLocation(cocos2d::Vec2(90, p->getBox()->getLocation().y));
-		p->getBox()->addForce(25, 0);
+		p->getBox()->addForce(25, 0, p->dt);
 	}
 	if (p->getBox()->getLocation().y >= DDOS->getSprite()->getPosition().y) {
 		p->getBox()->setLocation(cocos2d::Vec2(p->getBox()->getLocation().x, DDOS->getSprite()->getPosition().y));
-		p->getBox()->addForce(0, -25);
+		p->getBox()->addForce(0, -25, p->dt);
 	}
 	if (static_cast<Tutorial*>(this)->tutorial) {
 		if (p->getBox()->getLocation().y <= 30) {
 			p->getBox()->setLocation(cocos2d::Vec2(p->getBox()->getLocation().x, 30));
-			p->getBox()->addForce(0, 25);
+			p->getBox()->addForce(0, 25, p->dt);
 		}
 	}
 
@@ -1269,8 +1273,8 @@ void HelloWorld::notDead(float dt)
 {
 
 	//update all the player stuff
-	playerOne->updateInvince(dt);
-	playerTwo->updateInvince(dt);
+	playerOne->updateInvince();
+	playerTwo->updateInvince();
 	bloodyMaryP_up->updateGameObject();
 	theBiggestIronP_up->updateGameObject();
 
@@ -1324,7 +1328,7 @@ void HelloWorld::notDead(float dt)
 				if (bossTimeMax <= 56 && bossTimeMax > 52 && bg2->getTexture() != level2Other->getTexture())
 					bg2->setTexture(level2Other->getTexture());///
 
-				if (bossTimeMax <= 33 && bossTimeMax > 28 && bg2->getTexture() != outsideTransition->getTexture())
+				if (bossTimeMax <= 35 && bossTimeMax > 28 && bg2->getTexture() != outsideTransition->getTexture())
 					bg2->setTexture(outsideTransition->getTexture());
 
 				if (bossTimeMax <= 26 && bossTimeMax > 24 && bg2->getTexture() != level3Other->getTexture())
@@ -1340,7 +1344,7 @@ void HelloWorld::notDead(float dt)
 				if (bossTimeMax <= 61 && bossTimeMax > 56 && bg3->getTexture() != level2->getTexture())
 					bg3->setTexture(level2->getTexture());///
 
-				if (bossTimeMax <= 33 && bossTimeMax > 24 && bg3->getTexture() != level3->getTexture())
+				if (bossTimeMax <= 35 && bossTimeMax > 24 && bg3->getTexture() != level3->getTexture())
 					bg3->setTexture(level3->getTexture());
 
 				bg3->setPosition(cocos2d::Vec2(bg3->getPosition().x, bg3->getPosition().y + 588.8f));
@@ -1383,13 +1387,13 @@ void HelloWorld::bounds()//this function stops the player from leaving the scree
 			if ((int)tutTables[i]->getBox()->getLocation().x >= barRightMax)
 			{
 				tutTables[i]->getBox()->setLocation(cocos2d::Vec2(430, tutTables[i]->getBox()->getLocation().y));
-				tutTables[i]->getBox()->addForce(-25, 0);
+				tutTables[i]->getBox()->addForce(-25, 0, tutTables[i]->dt);
 			}
 
 			if ((int)tutTables[i]->getBox()->getLocation().x <= barLeftMax)
 			{
 				tutTables[i]->getBox()->setLocation(cocos2d::Vec2(90, tutTables[i]->getBox()->getLocation().y));
-				tutTables[i]->getBox()->addForce(25, 0);
+				tutTables[i]->getBox()->addForce(25, 0,tutTables[i]->dt);
 			}
 		}
 	}
@@ -1399,13 +1403,13 @@ void HelloWorld::bounds()//this function stops the player from leaving the scree
 			if ((int)sManager.tableList[i]->getBox()->getLocation().x >= barRightMax)
 			{
 				sManager.tableList[i]->getBox()->setLocation(cocos2d::Vec2(430, sManager.tableList[i]->getBox()->getLocation().y));
-				sManager.tableList[i]->getBox()->addForce(-25, 0);
+				sManager.tableList[i]->getBox()->addForce(-25, 0,sManager.tableList[i]->dt);
 			}
 
 			if ((int)sManager.tableList[i]->getBox()->getLocation().x <= barLeftMax)
 			{
 				sManager.tableList[i]->getBox()->setLocation(cocos2d::Vec2(90, sManager.tableList[i]->getBox()->getLocation().y));
-				sManager.tableList[i]->getBox()->addForce(25, 0);
+				sManager.tableList[i]->getBox()->addForce(25, 0,sManager.tableList[i]->dt);
 			}
 		}
 
