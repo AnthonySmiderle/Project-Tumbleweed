@@ -1315,8 +1315,6 @@ void HelloWorld::notDead(float dt)
 		if (CAMERASPEED > 0) {
 
 			//background switching code
-			cocos2d::Director* temp;
-			temp = cocos2d::Director::getInstance();
 			if (DDOS->getSprite()->getPosition().y - bg2->getPosition().y >= 598.8f) {
 
 				//this code switches the background sprite based on what the in game time is and where the image is on the screen
@@ -1338,11 +1336,11 @@ void HelloWorld::notDead(float dt)
 			}
 
 
-			if (DDOS->getSprite()->getPosition().y - bg3->getPosition().y >= 588.8f) {
-				if (bossTimeMax <= 61 && bossTimeMax > 55 && bg3->getTexture() != level2->getTexture())
+			if (DDOS->getSprite()->getPosition().y - bg3->getPosition().y >= 598.8f) {
+				if (bossTimeMax <= 61 && bossTimeMax > 56 && bg3->getTexture() != level2->getTexture())
 					bg3->setTexture(level2->getTexture());///
 
-				if (bossTimeMax <= 33 && bossTimeMax > 26 && bg3->getTexture() != level3->getTexture())
+				if (bossTimeMax <= 33 && bossTimeMax > 24 && bg3->getTexture() != level3->getTexture())
 					bg3->setTexture(level3->getTexture());
 
 				bg3->setPosition(cocos2d::Vec2(bg3->getPosition().x, bg3->getPosition().y + 588.8f));
